@@ -1,28 +1,8 @@
 {
   "@@locale": "ja",
   "languageName": "日本語",
-  "@languageName": {
-    "description": "This language, written in itself. Shown in the language picker."
-  },
   "vsLastMonthLabel": "先月比 {pct}%",
-  "@vsLastMonthLabel": {
-    "placeholders": {
-      "pct": {
-        "type": "String"
-      }
-    }
-  },
   "levelStreakLabel": "レベル {level} · {streak}",
-  "@levelStreakLabel": {
-    "placeholders": {
-      "level": {
-        "type": "int"
-      },
-      "streak": {
-        "type": "String"
-      }
-    }
-  },
   "save": "保存",
   "cancel": "キャンセル",
   "cancelCaps": "キャンセル",
@@ -47,13 +27,6 @@
   "tools": "ツール",
   "firstSessionHint": "鍛える筋肉を選んで最初のワークアウトを記録しよう",
   "exerciseCount": "{n, plural, =1{{n} 種目} other{{n} 種目}}",
-  "@exerciseCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pushDay": "プッシュデー",
   "pullDay": "プルデー",
   "legDay": "脚",
@@ -70,25 +43,11 @@
   "nothingForFocus": "この重点に合う種目がありません",
   "goBackPick": "戻って、ライブラリに種目がある筋肉を選んでください。",
   "pickedHint": "ワークアウトを組みました — {n} 種目から追加・削除できます。",
-  "@pickedHint": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pickAnExercise": "種目を選択",
   "searchAllExercises": "種目を検索…",
   "noExercisesMatch": "一致する種目がありません",
   "createItInstead": "代わりに自分の種目を作成",
   "startCount": "開始 · {n, plural, =1{{n} 種目} other{{n} 種目}}",
-  "@startCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "inProgress": "進行中",
   "paused": "一時停止",
   "last": "前回",
@@ -96,81 +55,33 @@
   "skip": "スキップ",
   "addSet": "+ セットを追加",
   "finishSession": "ワークアウト終了",
+  "setDone": "セット完了",
+  "nextExercise": "次の種目",
+  "dropExerciseAction": "種目を外す",
+  "restOff": "オフ",
   "setCol": "#",
   "repsCol": "回数",
   "weightCol": "重量 ({unit})",
-  "@weightCol": {
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
   "repsTitle": "回数",
   "weightTitle": "重量 ({unit})",
-  "@weightTitle": {
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
   "sessionComplete": "ワークアウトを記録しました",
   "finishHeadlinePr": "自己ベスト更新",
   "finishHeadlineGoal": "週間目標達成",
   "finishHeadlineStreak": "連続記録継続",
   "finishHeadlineDefault": "また一つ積み上げました",
   "finishBodyPr": "{prs, plural, =1{1種目} other{{prs}種目}}で過去最高を更新しました。記録に保存されました。",
-  "@finishBodyPr": {
-    "placeholders": {
-      "prs": {
-        "type": "int"
-      }
-    }
-  },
   "finishBodyGoal": "今週予定していた回数のワークアウトを達成しました。",
   "finishBodyStreak": "{streak}日連続。難しいのは続けること。",
-  "@finishBodyStreak": {
-    "placeholders": {
-      "streak": {
-        "type": "int"
-      }
-    }
-  },
   "finishBodyDefault": "記録・集計完了。数字を動かすのは継続です。",
   "vsLastTime": "前回比",
   "firstTime": "初回記録",
   "prCount": "{n, plural, =1{{n}件の新記録} other{{n}件の新記録}}",
-  "@prCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "duration": "時間",
   "setsCaps": "セット",
   "exerciseXofY": "種目 {i}/{n}",
-  "@exerciseXofY": {
-    "placeholders": {
-      "i": {
-        "type": "int"
-      },
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "decrease": "減らす",
   "increase": "増やす",
   "markSet": "セット {n} を完了にする",
-  "@markSet": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pauseWorkout": "ワークアウトを一時停止",
   "resumeWorkout": "ワークアウトを再開",
   "discardTitle": "ワークアウトを破棄しますか？",
@@ -183,84 +94,44 @@
   "notifAlertChannelWhy": "休憩終了と同時にバナーを表示します",
   "restOverTitle": "休憩終了",
   "restOverBody": "再開しよう — 次のセットが待っています。",
+  "allTimeSessions": "ワークアウト",
+  "allTimeTime": "時間",
+  "allTimeSets": "セット",
   "consistency": "継続性",
   "sessionsLogged": "{n, plural, =1{{n}回のワークアウトを記録} other{{n}回のワークアウトを記録}}",
-  "@sessionsLogged": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "streakDays": "{n}日連続",
-  "@streakDays": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "bodyweight": "体重",
   "logBodyweight": "体重を記録",
   "trackWeight": "体重の変化を追跡",
   "muscleMap": "筋肉マップ",
   "days7": "7日",
   "days30": "30日",
+  "days90": "90日",
+  "days365": "1年",
+  "daysAll": "すべて",
+  "weeklyAvgTitle": "週の平均",
+  "weekOfDate": "{date}の週",
+  "weightChangeRange": "この期間で{change}",
   "heatLow": "未トレーニング",
   "heatHigh": "最大ボリューム",
   "muscleMapEmpty": "ワークアウトを記録すると、ここで体が色づき始めます。",
   "muscleMapHint": "筋肉をタップしてトレーニング量を確認。",
   "muscleMapBehind": "遅れ気味: {names}",
-  "@muscleMapBehind": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
   "ofTarget": "目標の {pct}%",
-  "@ofTarget": {
-    "placeholders": {
-      "pct": {
-        "type": "int"
-      }
-    }
-  },
   "muscleSplit": "筋肉別配分",
   "personalRecords": "自己ベスト",
   "strength1rm": "筋力 · 推定1RM",
   "strengthEmpty": "同じ種目を2回記録すると筋力の推移が表示されます。",
   "oneRmEst": "推定1RM: {w}",
-  "@oneRmEst": {
-    "placeholders": {
-      "w": {
-        "type": "String"
-      }
-    }
-  },
   "restDayShort": "休養日",
   "restDay": "休養日 — 記録なし。",
   "delete": "削除",
   "deleteEntry": "この記録を削除しますか？",
   "deleteEntryBody": "「{name}」はこの日、記録、グラフから削除されます。",
-  "@deleteEntryBody": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "bodyweightHistory": "履歴",
   "exercisesCaps": "エクササイズ",
   "timeCaps": "時間",
   "libraryCount": "{n, plural, =1{ライブラリに{n}種目} other{ライブラリに{n}種目}}",
-  "@libraryCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "searchExercises": "種目を検索",
   "muscleFilter": "筋肉",
   "levelFilter": "レベル",
@@ -290,342 +161,6 @@
   "noHistory": "まだ記録がありません。この種目を行うと履歴が作成されます。",
   "notes": "メモ",
   "notePlaceholder": "コツ、セットアップ、感覚…",
-  "howTo": "やり方",
-  "similar": "類似",
-  "primaryLabel": "メイン",
-  "secondaryLabel": "サブ",
-  "none": "なし",
-  "setCount": "{n, plural, =1{{n}セット} other{{n}セット}}",
-  "@setCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "volumeSuffix": "ボリューム {v}",
-  "@volumeSuffix": {
-    "placeholders": {
-      "v": {
-        "type": "String"
-      }
-    }
-  },
-  "weeklyPlan": "週間プラン",
-  "yourRoutines": "あなたのルーティン",
-  "noRoutines": "ルーティンはまだありません。作成して種目を追加しましょう。",
-  "newRoutine": "新しいルーティン",
-  "routineName": "ルーティン名",
-  "schedule": "スケジュール",
-  "addFromList": "下のリストから種目を追加してください。",
-  "addExercises": "種目を追加",
-  "deleteRoutine": "このルーティンを削除しますか？",
-  "exercisesWithCount": "種目 · {n}",
-  "@exercisesWithCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "setDay": "{day} を設定",
-  "@setDay": {
-    "placeholders": {
-      "day": {
-        "type": "String"
-      }
-    }
-  },
-  "newRoutineName": "新しいルーティン",
-  "dragToReorder": "点のハンドルをドラッグして並べ替え。この順番でトレーニングします。",
-  "reorderHandle": "{name} を並べ替え",
-  "@reorderHandle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "removeFromRoutine": "ルーティンから削除",
-  "dropExercise": "この種目を外しますか？",
-  "dropExerciseBody": "「{name}」をこのワークアウトから外します。記録済みの内容は失われません。",
-  "@dropExerciseBody": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "drop": "外す",
-  "resetData": "すべてのデータを削除",
-  "resetTitle": "すべて削除しますか？",
-  "resetBody": "ワークアウト、記録、ルーティン、メモ、プロフィールをすべて削除します。元に戻せません — 必要なら先にバックアップを書き出してください。",
-  "resetConfirm": "すべて削除",
-  "resetDone": "すべてのデータを削除しました",
-  "support": "サポート",
-  "reportBug": "バグを報告",
-  "requestFeature": "機能を提案",
-  "starOnGithub": "GitHubでスター",
-  "buyCoffee": "コーヒーをおごる",
-  "cantOpenLink": "リンクを開けませんでした",
-  "theme": "テーマ",
-  "darkTheme": "ダーク",
-  "lightTheme": "ライト",
-  "amoledTheme": "AMOLEDブラック",
-  "editDuration": "トレーニング時間",
-  "sessionName": "トレーニング名",
-  "nameWorkout": "名前をつける",
-  "sessionNameHint": "例：脚、プッシュ、全身",
-  "secondaryPickHint": "この種目で使うほかの筋肉をタップしてください。",
-  "languageLabel": "言語",
-  "unitsLabel": "単位",
-  "restTimer": "休憩タイマー",
-  "alarmBlockedTitle": "通知がオフです",
-  "alarmBlockedBody": "画面ロック中は休憩アラームが鳴りません",
-  "alarmBlockedAction": "オンにする",
-  "alarmSound": "アラーム音",
-  "alarmDefaultName": "デフォルト",
-  "alarmSoundHint": "自分の音を使用 — 最大15秒",
-  "alarmChoose": "音を選択…",
-  "alarmPreview": "現在の音を再生",
-  "alarmReset": "デフォルトに戻す",
-  "alarmTooLong": "この音は15秒を超えています",
-  "alarmInvalid": "この音声ファイルを読み込めませんでした",
-  "alarmChanged": "アラーム音を「{name}」に設定しました",
-  "@alarmChanged": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "alarmChangedDefault": "デフォルト音に戻しました",
-  "addActivityWidget": "アクティビティウィジェットを追加",
-  "addStatsWidget": "統計ウィジェットを追加",
-  "pinUnsupported": "ランチャーのウィジェットメニューから追加してください",
-  "background": "背景",
-  "bgNone": "なし",
-  "bgDots": "ドット",
-  "bgGrid": "グリッド",
-  "exportCsv": "ワークアウトを書き出す（CSV）",
-  "exportBackup": "バックアップを書き出す（ZIP）",
-  "importBackup": "バックアップを読み込む",
-  "importHint": "GymManeから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデータが置き換わります。",
-  "import": "読み込む",
-  "chooseFile": "ファイルを選択",
-  "importFromApp": "別のアプリから読み込む",
-  "importUnknownFormat": "このファイルには日付、種目、回数、重量の列が必要です",
-  "importZipNoWeights": "このZIPには体重ファイルがありません",
-  "importWeights": "{n, plural, =1{{n}件の体重記録を読み込み} other{{n}件の体重記録を読み込み}}",
-  "@importWeights": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "importReadFailed": "このファイルを読み込めませんでした",
-  "importUnitTitle": "このファイルの単位は？",
-  "importUnitBody": "このエクスポートには重量の単位が記載されていません。",
-  "importNothing": "新しく読み込むものはありません",
-  "importDone": "{n, plural, =1{{n}回のワークアウトを読み込み} other{{n}回のワークアウトを読み込み}}",
-  "@importDone": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "aboutGymmane": "GymManeについて",
-  "yourProfile": "プロフィール",
-  "autofills": "計算ツールに自動入力",
-  "nameLabel": "名前",
-  "sexLabel": "性別",
-  "male": "男性",
-  "female": "女性",
-  "ageLabel": "年齢",
-  "heightLabel": "身長",
-  "weightLabel": "体重",
-  "weeklyGoal": "週間目標",
-  "activityLabel": "活動量",
-  "addPhoto": "写真を追加",
-  "removePhoto": "写真を削除",
-  "takePhoto": "写真を撮る",
-  "chooseGallery": "ギャラリーから選択",
-  "backupImported": "バックアップを読み込みました",
-  "backupFailed": "このバックアップを読み込めませんでした",
-  "nothingToExport": "まだ書き出すデータがありません — まずワークアウトを記録してください",
-  "calculatorsCount": "トレーニング用計算ツール {n} 個",
-  "@calculatorsCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "result": "結果",
-  "weightLifted": "挙上重量",
-  "repsPerformed": "実施回数",
-  "neck": "首",
-  "waist": "ウエスト",
-  "hip": "ヒップ（女性）",
-  "targetWeight": "目標体重",
-  "workingWeight": "作業重量",
-  "activityLevel": "活動レベル",
-  "barWeight": "バー重量",
-  "perSide": "片側",
-  "justTheBar": "バーのみ。",
-  "perSideCount": "片側 × {n}",
-  "@perSideCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "toolNameRm": "1RM",
-  "toolNameBmi": "BMI",
-  "toolNameCal": "カロリー",
-  "toolNameBf": "体脂肪",
-  "toolNamePlate": "プレート",
-  "toolNameWarmup": "ウォームアップ",
-  "toolTitleRm": "1RM計算機",
-  "toolTitleBmi": "BMI計算機",
-  "toolTitleCal": "カロリーとマクロ",
-  "toolTitleBf": "体脂肪率",
-  "toolTitlePlate": "プレート計算機",
-  "toolTitleWarmup": "ウォームアップセット",
-  "toolHintRm": "推定1回最大重量（Epley式）",
-  "toolHintCal": "1日の維持必要量の推定",
-  "toolHintBf": "米海軍方式による推定",
-  "toolHintPlate": "バーベル総重量",
-  "toolHintWarmup": "目標作業重量",
-  "toolDescRm": "推定1回最大重量",
-  "toolDescBmi": "BMI（体格指数）",
-  "toolDescCal": "カロリーとマクロ栄養素",
-  "toolDescBf": "体脂肪率",
-  "toolDescPlate": "プレート計算機",
-  "toolDescWarmup": "段階的ウォームアップセット",
-  "bmiUnderweight": "低体重",
-  "bmiNormal": "標準体重",
-  "bmiOverweight": "過体重",
-  "bmiObese": "肥満",
-  "actSedentary": "座りがち",
-  "actLight": "軽い",
-  "actActive": "アクティブ",
-  "actModerate": "中程度",
-  "muscleChest": "胸",
-  "muscleBack": "背中",
-  "muscleLowerBack": "腰",
-  "muscleShoulders": "肩",
-  "muscleBiceps": "上腕二頭筋",
-  "muscleTriceps": "上腕三頭筋",
-  "muscleForearm": "前腕",
-  "muscleTrapezius": "僧帽筋",
-  "muscleAbdomen": "腹筋",
-  "muscleObliques": "腹斜筋",
-  "muscleQuads": "大腿四頭筋",
-  "muscleHamstrings": "ハムストリング",
-  "muscleGlutes": "臀筋",
-  "muscleCalves": "ふくらはぎ",
-  "mgChest": "胸",
-  "mgBack": "背中",
-  "mgLegs": "脚",
-  "mgShoulders": "肩",
-  "mgArms": "腕",
-  "mgCore": "体幹",
-  "equipBarbell": "バーベル",
-  "equipDumbbell": "ダンベル",
-  "equipCable": "ケーブル",
-  "equipMachine": "マシン",
-  "equipBodyweight": "自重",
-  "equipWeighted": "加重",
-  "equipBand": "バンド",
-  "equipKettlebell": "ケトルベル",
-  "equipOther": "その他",
-  "diffBeginner": "初心者",
-  "diffAdvanced": "上級",
-  "diffIntermediate": "中級",
-  "about": "概要",
-  "version": "バージョン {v}",
-  "@version": {
-    "placeholders": {
-      "v": {
-        "type": "String"
-      }
-    }
-  },
-  "aboutBlurb": "トレーニングする人が、トレーニングする人のために作りました。",
-  "freeForever": "ずっと無料",
-  "freeForeverWhy": "サブスクなし、広告なし、課金でロックされる機能なし。",
-  "fullyOffline": "100%オフライン",
-  "fullyOfflineWhy": "アカウントもサーバーも不要。ワークアウトデータはこの端末から出ません。",
-  "yoursToTake": "データはあなたのもの",
-  "yoursToTakeWhy": "いつでもCSVで書き出し、ワンタップですべて削除できます。",
-  "whatsInside": "内容",
-  "exercisesInside": "{n}種目",
-  "@exercisesInside": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "exercisesInsideWhy": "すべてにアニメーションと手順説明があります。",
-  "calculatorsInside": "10個の計算ツール",
-  "calculatorsInsideWhy": "1RM、プレート、BMI、カロリー、体脂肪、FFMI、ウォームアップ、RPE重量、DOTSとWilksの筋力スコア — すべて公開済みの式に基づきます。",
-  "mathInside": "透明な計算",
-  "mathInsideWhy": "ボリューム、記録、セットはあなた自身のデータから計算されます。見た目だけの数字はありません。",
-  "streakCaps": "連続",
-  "daysUnit": "{n, plural, =1{日} other{日}}",
-  "@daysUnit": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "reset": "リセット",
-  "welcomeKicker": "ようこそ",
-  "welcomeBlurb": "すべて端末内に保存。アカウント不要、インターネット不要、支払いなし。",
-  "welcomeStart": "始める",
-  "onbStep": "ステップ {i}/{n}",
-  "@onbStep": {
-    "placeholders": {
-      "i": {
-        "type": "int"
-      },
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "onbNameTitle": "何とお呼びすればいいですか？",
-  "onbNameHint": "名前",
-  "onbNameWhy": "挨拶にのみ使用します。端末外には送信されません。",
-  "onbBodyTitle": "いくつかの数値",
-  "onbBodyWhy": "計算ツールに使います。設定からいつでも変更できます。",
-  "onbGoalTitle": "週にどのくらいトレーニングしますか？",
-  "onbGoalWhy": "週間目標を設定します。無理のない現実的な回数にしましょう。",
-  "perWeek": "{n, plural, =1{週{n}回} other{週{n}回}}",
-  "@perWeek": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "onbUnitsTitle": "キロかポンド？",
-  "next": "次へ",
-  "back": "戻る",
-  "skip2": "スキップ",
-  "setDone": "セット完了",
-  "nextExercise": "次の種目",
-  "dropExerciseAction": "種目を外す",
-  "restOff": "オフ",
-  "allTimeSessions": "ワークアウト",
-  "allTimeTime": "時間",
-  "allTimeSets": "セット",
   "notHere": "{place}には{gear}がありません",
   "notHereWhy": "今日使えるものに入れ替えましょう。",
   "altHere": "ここでできること",
@@ -746,10 +281,229 @@
   "setTypeFailure": "限界まで",
   "addWarmup": "ウォームアップ",
   "platesPerSide": "片側: {plates}",
+  "howTo": "やり方",
+  "similar": "類似",
+  "primaryLabel": "メイン",
+  "secondaryLabel": "サブ",
+  "none": "なし",
+  "setCount": "{n, plural, =1{{n}セット} other{{n}セット}}",
+  "volumeSuffix": "ボリューム {v}",
+  "weeklyPlan": "週間プラン",
+  "yourRoutines": "あなたのルーティン",
+  "noRoutines": "ルーティンはまだありません。作成して種目を追加しましょう。",
+  "newRoutine": "新しいルーティン",
+  "routineName": "ルーティン名",
+  "schedule": "スケジュール",
+  "addFromList": "下のリストから種目を追加してください。",
+  "addExercises": "種目を追加",
+  "deleteRoutine": "このルーティンを削除しますか？",
+  "exercisesWithCount": "種目 · {n}",
+  "setDay": "{day} を設定",
+  "newRoutineName": "新しいルーティン",
+  "dragToReorder": "点のハンドルをドラッグして並べ替え。この順番でトレーニングします。",
+  "reorderHandle": "{name} を並べ替え",
+  "removeFromRoutine": "ルーティンから削除",
+  "dropExercise": "この種目を外しますか？",
+  "dropExerciseBody": "「{name}」をこのワークアウトから外します。記録済みの内容は失われません。",
+  "drop": "外す",
+  "resetData": "すべてのデータを削除",
+  "resetTitle": "すべて削除しますか？",
+  "resetBody": "ワークアウト、記録、ルーティン、メモ、プロフィールをすべて削除します。元に戻せません — 必要なら先にバックアップを書き出してください。",
+  "resetConfirm": "すべて削除",
+  "resetDone": "すべてのデータを削除しました",
+  "support": "サポート",
+  "reportBug": "バグを報告",
+  "requestFeature": "機能を提案",
+  "starOnGithub": "GitHubでスター",
+  "buyCoffee": "コーヒーをおごる",
+  "cantOpenLink": "リンクを開けませんでした",
+  "theme": "テーマ",
+  "darkTheme": "ダーク",
+  "lightTheme": "ライト",
+  "amoledTheme": "AMOLEDブラック",
+  "editDuration": "トレーニング時間",
+  "sessionName": "トレーニング名",
+  "nameWorkout": "名前をつける",
+  "sessionNameHint": "例：脚、プッシュ、全身",
+  "secondaryPickHint": "この種目で使うほかの筋肉をタップしてください。",
+  "languageLabel": "言語",
+  "unitsLabel": "単位",
+  "restTimer": "休憩タイマー",
+  "alarmBlockedTitle": "通知がオフです",
+  "alarmBlockedBody": "画面ロック中は休憩アラームが鳴りません",
+  "alarmBlockedAction": "オンにする",
+  "alarmSound": "アラーム音",
+  "alarmDefaultName": "デフォルト",
+  "alarmSoundHint": "自分の音を使用 — 最大15秒",
+  "alarmChoose": "音を選択…",
+  "alarmPreview": "現在の音を再生",
+  "alarmReset": "デフォルトに戻す",
+  "alarmTooLong": "この音は15秒を超えています",
+  "alarmInvalid": "この音声ファイルを読み込めませんでした",
+  "alarmChanged": "アラーム音を「{name}」に設定しました",
+  "alarmChangedDefault": "デフォルト音に戻しました",
+  "addActivityWidget": "アクティビティウィジェットを追加",
+  "addStatsWidget": "統計ウィジェットを追加",
+  "pinUnsupported": "ランチャーのウィジェットメニューから追加してください",
+  "background": "背景",
+  "bgNone": "なし",
+  "bgDots": "ドット",
+  "bgGrid": "グリッド",
+  "exportCsv": "ワークアウトを書き出す（CSV）",
+  "exportBackup": "バックアップを書き出す（ZIP）",
+  "importBackup": "バックアップを読み込む",
+  "importHint": "GymManeから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデータが置き換わります。",
+  "import": "読み込む",
+  "chooseFile": "ファイルを選択",
+  "importFromApp": "別のアプリから読み込む",
+  "importUnknownFormat": "このファイルには日付、種目、回数、重量の列が必要です",
+  "importZipNoWeights": "このZIPには体重ファイルがありません",
+  "importWeights": "{n, plural, =1{{n}件の体重記録を読み込み} other{{n}件の体重記録を読み込み}}",
+  "importReadFailed": "このファイルを読み込めませんでした",
+  "importUnitTitle": "このファイルの単位は？",
+  "importUnitBody": "このエクスポートには重量の単位が記載されていません。",
+  "importNothing": "新しく読み込むものはありません",
+  "importDone": "{n, plural, =1{{n}回のワークアウトを読み込み} other{{n}回のワークアウトを読み込み}}",
+  "aboutGymmane": "GymManeについて",
+  "yourProfile": "プロフィール",
+  "autofills": "計算ツールに自動入力",
+  "nameLabel": "名前",
+  "sexLabel": "性別",
   "macroProtein": "タンパク質",
   "macroCarbs": "炭水化物",
   "macroFat": "脂質",
+  "male": "男性",
+  "female": "女性",
+  "ageLabel": "年齢",
+  "heightLabel": "身長",
+  "weightLabel": "体重",
+  "weeklyGoal": "週間目標",
+  "activityLabel": "活動量",
+  "addPhoto": "写真を追加",
+  "removePhoto": "写真を削除",
+  "takePhoto": "写真を撮る",
+  "chooseGallery": "ギャラリーから選択",
+  "backupImported": "バックアップを読み込みました",
+  "backupFailed": "このバックアップを読み込めませんでした",
+  "nothingToExport": "まだ書き出すデータがありません — まずワークアウトを記録してください",
+  "calculatorsCount": "トレーニング用計算ツール {n} 個",
+  "result": "結果",
+  "weightLifted": "挙上重量",
+  "repsPerformed": "実施回数",
+  "neck": "首",
+  "waist": "ウエスト",
+  "hip": "ヒップ（女性）",
+  "targetWeight": "目標体重",
+  "workingWeight": "作業重量",
+  "activityLevel": "活動レベル",
+  "barWeight": "バー重量",
+  "perSide": "片側",
+  "justTheBar": "バーのみ。",
+  "perSideCount": "片側 × {n}",
+  "toolNameRm": "1RM",
+  "toolNameBmi": "BMI",
+  "toolNameCal": "カロリー",
+  "toolNameBf": "体脂肪",
+  "toolNamePlate": "プレート",
+  "toolNameWarmup": "ウォームアップ",
+  "toolTitleRm": "1RM計算機",
+  "toolTitleBmi": "BMI計算機",
+  "toolTitleCal": "カロリーとマクロ",
+  "toolTitleBf": "体脂肪率",
+  "toolTitlePlate": "プレート計算機",
+  "toolTitleWarmup": "ウォームアップセット",
+  "toolHintRm": "推定1回最大重量（Epley式）",
+  "toolHintCal": "1日の維持必要量の推定",
+  "toolHintBf": "米海軍方式による推定",
+  "toolHintPlate": "バーベル総重量",
+  "toolHintWarmup": "目標作業重量",
+  "toolDescRm": "推定1回最大重量",
+  "toolDescBmi": "BMI（体格指数）",
+  "toolDescCal": "カロリーとマクロ栄養素",
+  "toolDescBf": "体脂肪率",
+  "toolDescPlate": "プレート計算機",
+  "toolDescWarmup": "段階的ウォームアップセット",
+  "bmiUnderweight": "低体重",
+  "bmiNormal": "標準体重",
+  "bmiOverweight": "過体重",
+  "bmiObese": "肥満",
+  "actSedentary": "座りがち",
+  "actLight": "軽い",
+  "actActive": "アクティブ",
+  "actModerate": "中程度",
+  "muscleChest": "胸",
+  "muscleBack": "背中",
+  "muscleLowerBack": "腰",
+  "muscleShoulders": "肩",
+  "muscleBiceps": "上腕二頭筋",
+  "muscleTriceps": "上腕三頭筋",
+  "muscleForearm": "前腕",
+  "muscleTrapezius": "僧帽筋",
+  "muscleAbdomen": "腹筋",
+  "muscleObliques": "腹斜筋",
+  "muscleQuads": "大腿四頭筋",
+  "muscleHamstrings": "ハムストリング",
+  "muscleGlutes": "臀筋",
+  "muscleCalves": "ふくらはぎ",
+  "mgChest": "胸",
+  "mgBack": "背中",
+  "mgLegs": "脚",
+  "mgShoulders": "肩",
+  "mgArms": "腕",
+  "mgCore": "体幹",
+  "equipBarbell": "バーベル",
+  "equipDumbbell": "ダンベル",
+  "equipCable": "ケーブル",
+  "equipMachine": "マシン",
+  "equipBodyweight": "自重",
+  "equipWeighted": "加重",
+  "equipBand": "バンド",
+  "equipKettlebell": "ケトルベル",
   "equipRings": "リング",
+  "equipOther": "その他",
+  "diffBeginner": "初心者",
+  "diffAdvanced": "上級",
+  "diffIntermediate": "中級",
+  "about": "概要",
+  "version": "バージョン {v}",
+  "aboutBlurb": "トレーニングする人が、トレーニングする人のために作りました。",
+  "freeForever": "ずっと無料",
+  "freeForeverWhy": "サブスクなし、広告なし、課金でロックされる機能なし。",
+  "fullyOffline": "100%オフライン",
+  "fullyOfflineWhy": "アカウントもサーバーも不要。ワークアウトデータはこの端末から出ません。",
+  "yoursToTake": "データはあなたのもの",
+  "yoursToTakeWhy": "いつでもCSVで書き出し、ワンタップですべて削除できます。",
+  "whatsInside": "内容",
+  "exercisesInside": "{n}種目",
+  "exercisesInsideWhy": "すべてにアニメーションと手順説明があります。",
+  "calculatorsInside": "10個の計算ツール",
+  "calculatorsInsideWhy": "1RM、プレート、BMI、カロリー、体脂肪、FFMI、ウォームアップ、RPE重量、DOTSとWilksの筋力スコア — すべて公開済みの式に基づきます。",
+  "mathInside": "透明な計算",
+  "mathInsideWhy": "ボリューム、記録、セットはあなた自身のデータから計算されます。見た目だけの数字はありません。",
+  "streakCaps": "連続",
+  "daysUnit": "{n, plural, =1{日} other{日}}",
+  "reset": "リセット",
+  "welcomeKicker": "ようこそ",
+  "welcomeBlurb": "すべて端末内に保存。アカウント不要、インターネット不要、支払いなし。",
+  "welcomeStart": "始める",
+  "onbStep": "ステップ {i}/{n}",
+  "onbNameTitle": "何とお呼びすればいいですか？",
+  "onbNameHint": "名前",
+  "onbPhotoAdd": "写真を追加",
+  "onbPhotoChange": "写真を変更",
+  "onbPhotoTitle": "プロフィールに顔を",
+  "onbPhotoWhy": "任意です。写真は端末に残り、プロフィールからいつでも変更できます。",
+  "onbPhotoLater": "あとで",
+  "onbNameWhy": "挨拶にのみ使用します。端末外には送信されません。",
+  "onbBodyTitle": "いくつかの数値",
+  "onbBodyWhy": "計算ツールに使います。設定からいつでも変更できます。",
+  "onbGoalTitle": "週にどのくらいトレーニングしますか？",
+  "onbGoalWhy": "週間目標を設定します。無理のない現実的な回数にしましょう。",
+  "perWeek": "{n, plural, =1{週{n}回} other{週{n}回}}",
+  "onbUnitsTitle": "キロかポンド？",
+  "next": "次へ",
+  "back": "戻る",
+  "skip2": "スキップ",
   "madeWithLoveBy": "愛を込めて制作",
   "sourceCode": "ソースコード",
   "suggested": "推奨",
@@ -768,6 +522,15 @@
   "daysShort": "{n}日",
   "focusCard": "今日の重点",
   "autoAdvance": "自動で次へ",
+  "keepScreenOn": "トレーニング中は画面をつけたままにする",
+  "lockWorkout": "画面をロック",
+  "unlockWorkout": "ロック解除",
+  "holdToUnlock": "長押しで解除",
+  "liveChannel": "トレーニング中",
+  "liveChannelWhy": "トレーニング中に現在の種目、セット、休憩タイマーを表示します",
+  "liveSet": "セット {n}/{total}",
+  "liveResting": "休憩中",
+  "liveAllDone": "全セット完了",
   "autoAdvanceHint": "種目の最後のセットを完了すると、自動的に次の種目へ進みます。",
   "autoProgress": "次回は重量を追加",
   "autoProgressHint": "すべての回数を達成すると、次回は {w} 増えた重量で開始します。",
@@ -946,16 +709,6 @@
   "logWorkoutAction": "ワークアウトを記録",
   "logging": "記録中",
   "placesLabel": "マイ場所",
-
-  "keepScreenOn": "トレーニング中は画面をつけたままにする",
-  "lockWorkout": "画面をロック",
-  "unlockWorkout": "ロック解除",
-  "holdToUnlock": "長押しで解除",
-  "liveChannel": "トレーニング中",
-  "liveChannelWhy": "トレーニング中に現在の種目、セット、休憩タイマーを表示します",
-  "liveSet": "セット {n}/{total}",
-  "liveResting": "休憩中",
-  "liveAllDone": "全セット完了",
   "undo": "元に戻す",
   "deleteSet": "セットを削除",
   "setDeleted": "セットを削除しました",
@@ -1076,30 +829,24 @@
   "stickerSaved": "ギャラリーに保存しました",
   "stickerWeek": "今週",
   "getReady": "準備して",
-
   "stickerGallery": "ギャラリー",
   "stickerCamera": "カメラ",
   "shareIntroTitle": "このルーティンを共有",
   "shareIntroBody": "パートナーや友だち、家族に送りましょう。GymMane で開ける小さなファイルが届き、セットや重量ごとワンタップで追加できます。",
   "removedFromRoutine": "ルーティンから外しました",
-
   "radarTitle": "直近30日",
   "radarHint": "もっと鍛えたい部位をチェック",
   "radarEmpty": "数日トレーニングするとバランスが見えます",
   "radarBalanced": "今のところバランス良好",
   "radarFocus": "もっと必要：{list}",
-
   "countdownReady": "準備して",
   "countdownSkip": "タップですぐ開始",
   "countdownSetting": "開始前のカウントダウン",
-
   "effortSetting": "セットごとの強度を記録",
   "effortHint": "RPE：10 はもう 1 回もできない、8 はあと 2 回できた状態。RIR は残っていた回数。記録したセットは、推定 1RM に RPE 表を使います。",
   "rirHint": "0 はもう 1 回もできない、2 はあと 2 回できた状態。",
   "addWeekWidget": "今週のウィジェットを追加",
-
   "gamificationSetting": "メダルとレベル",
-
   "repCount": "{n, plural, =1{{n}回} other{{n}回}}",
   "prBestSet": "ベストセット",
   "weekStartSetting": "週の始まり",
@@ -1121,6 +868,18 @@
   "homeRoutinesHint": "最近やった順に表示。タップで開始します。",
   "homeWeekStats": "ホームの今週",
   "homeWeekStatsHint": "今週のボリューム・セット・記録。",
+  "stepsSetting": "Health Connect の歩数",
+  "stepsSettingHint": "今日の歩数をホームに表示します。データは端末の外に出ません。",
+  "stepsToday": "今日の歩数",
+  "stepsOfGoal": "/ {goal}",
+  "stepsTodayCount": "今日 {count} 歩",
+  "stepsGoal": "1日の歩数目標",
+  "stepsNoAccess": "歩数にアクセスできません",
+  "stepsGrant": "タップして Health Connect で許可",
+  "stepsInfoRead": "歩数だけを読み取ります。それ以外は読まず、Health Connect に書き込むこともありません。",
+  "stepsInfoLocal": "歩数は端末内に残ります。GymMane はインターネットに接続しません。",
+  "stepsInfoOff": "設定または Health Connect でいつでもオフにできます。",
+  "stepsManage": "権限を管理",
   "routineDoneToday": "今日は完了 · お疲れさま",
   "trainAgain": "もう一度トレーニング",
   "lastDoneAgo": "{n, plural, =0{今日実施} =1{昨日実施} other{{n}日前}}",
@@ -1274,5 +1033,214 @@
   "mergeExerciseInto": "{name} を統合…",
   "mergeExerciseTitle": "種目を統合しますか？",
   "mergeExerciseBody": "「{from}」の履歴はすべて「{to}」に移ります。「{from}」はライブラリに残ります。元に戻せません。",
-  "mergedToast": "履歴を統合しました"
+  "mergedToast": "履歴を統合しました",
+  "nutrition": "食事",
+  "nutritionHomeEmpty": "水分・タンパク質・カロリー",
+  "nutritionHomeDetail": "{energy} · タンパク質 {protein} g",
+  "nutritionToday": "今日",
+  "nutritionYesterday": "昨日",
+  "nutritionGoals": "1日の目標",
+  "kcalLabel": "カロリー",
+  "kcalOver": "オーバー",
+  "waterLabel": "水分",
+  "waterDone": "目標達成",
+  "waterCustom": "ほかの量",
+  "glassSize": "グラスの量",
+  "supplementsLabel": "サプリ",
+  "supplementsEmpty": "タップで追加、+ で自分のを追加。",
+  "addSupplement": "新しいサプリ",
+  "supplementNameHint": "クレアチン、ビタミンD…",
+  "removeSupplementTitle": "{name} を削除しますか？",
+  "removeSupplementBody": "飲んだ印をつけた日も一緒に消えます。",
+  "suppCreatine": "クレアチン",
+  "suppVitaminD": "ビタミンD",
+  "suppOmega3": "オメガ3",
+  "suppMagnesium": "マグネシウム",
+  "suppMultivitamin": "マルチビタミン",
+  "suppCaffeine": "カフェイン",
+  "myFoods": "マイ食品",
+  "newFood": "新しい食品",
+  "editFood": "食品を編集",
+  "foodNameHint": "プロテイン、オートミール、パン…",
+  "servingLabel": "1食分",
+  "servingHint": "1スクープ · 30 g",
+  "perServing": "1食あたり",
+  "servingsLabel": "食分",
+  "foodPhotoHint": "無地の背景ならステッカーになります。",
+  "cutoutWorking": "切り抜き中…",
+  "cutoutTry": "切り抜く",
+  "cutoutKeep": "写真全体",
+  "deleteFoodTitle": "{name} を削除しますか？",
+  "deleteFoodBody": "マイ食品から消えます。記録済みのものは残ります。",
+  "mealBreakfast": "朝食",
+  "mealLunch": "昼食",
+  "mealDinner": "夕食",
+  "mealSnacks": "間食",
+  "nothingLogged": "まだ記録がありません。",
+  "addToMeal": "{meal}に追加",
+  "quickAdd": "クイック追加",
+  "quickAddHint": "食品を保存せずに数値だけ。",
+  "quickAddName": "何でしたか？（任意）",
+  "logFood": "追加",
+  "loggedToast": "{meal}に追加しました",
+  "entryRemoved": "削除しました",
+  "goalsFromProfile": "プロフィールから計算",
+  "goalsFromProfileHint": "プロフィールのカロリー、体重1kgあたりタンパク質1.8gと水35ml。",
+  "kcalEaten": "摂取",
+  "kcalRemaining": "残り",
+  "waterTapHint": "グラスをタップ：+ {amount}",
+  "shakeEmpty": "タップしてシェイクを選ぶ",
+  "shakeTapHint": "タップ：+ {name}",
+  "shakePick": "あなたのシェイク",
+  "shakePickHint": "グラスをタップすると一度で記録されます。",
+  "proteinLetter": "P",
+  "carbsLetter": "C",
+  "fatLetter": "F",
+  "addBurnedLabel": "消費カロリーを足す",
+  "addBurnedHint": "消費カロリーはトレーニング時間と体重から推定します。",
+  "amountLabel": "量",
+  "amountIn": "量（{unit}）",
+  "bodyweightLabel": "体重",
+  "copiedMealToast": "{count, plural, other{{count} 品をコピーしました}}",
+  "deleteSavedMealBody": "記録済みのものはそのまま残ります。",
+  "fiberLabel": "食物繊維",
+  "sugarLabel": "糖質",
+  "sodiumLabel": "ナトリウム",
+  "foodDatabase": "食品データベース",
+  "kcalBurned": "消費",
+  "mealOptions": "食事のオプション",
+  "moreNutrients": "食物繊維・糖質・ナトリウム",
+  "ofGoal": "/ {goal} {unit}",
+  "per100": "100 {unit}あたり",
+  "perServingShort": "1食あたり",
+  "portionUnit": "{count, plural, other{{count} 個}}",
+  "portionSlice": "{count, plural, other{{count} 枚}}",
+  "portionScoop": "{count, plural, other{{count} スクープ}}",
+  "portionTbsp": "{count, plural, other{大さじ {count}}}",
+  "portionTsp": "{count, plural, other{小さじ {count}}}",
+  "portionCup": "{count, plural, other{{count} カップ}}",
+  "portionGlass": "{count, plural, other{グラス {count} 杯}}",
+  "recentFoods": "最近",
+  "recipeItems": "{count, plural, other{{count} 品}}",
+  "renameLabel": "名前を変更",
+  "repeatFrom": "ここから繰り返す",
+  "repeatNone": "ほかの日にこの食事の記録はまだありません。",
+  "restDayGoals": "休息日は別の目標にする",
+  "trainingDays": "トレーニング日",
+  "restDays": "休息日",
+  "trainingDay": "トレーニング日",
+  "saveAsMeal": "食事として保存",
+  "savedMealNameHint": "例：いつもの朝食",
+  "savedMealToast": "食事を保存しました",
+  "savedMeals": "保存した食事",
+  "searchFoodsHint": "食品を検索",
+  "searchFoodsEmpty": "写真付きの500以上の食品から探すか、自分で作れます。",
+  "searchFoodsNone": "「{query}」は見つかりません。自分の食品として作成しましょう。",
+  "servingWeight": "グラム",
+  "weekAverage": "今週",
+  "weekAvgEnergy": "1日平均",
+  "weekAvgProtein": "1日のタンパク質",
+  "weekEnergyOnTarget": "カロリー目標内",
+  "weekProteinOnTarget": "タンパク質目標内",
+  "weekProteinAvg": "1日タンパク質 {grams} g",
+  "weekDaysOnTarget": "{days} 日中 {met} 日が目標内",
+  "weekLoggedDays": "{count, plural, other{{count} 日記録}}",
+  "weekNoData": "まだ記録がありません",
+  "weekOnTargetHint": "目標内：カロリーが目標の±10%以内、タンパク質が90%以上。",
+  "weightGoalLabel": "目標体重",
+  "weightGoalTitle": "目標体重（{unit}）",
+  "weightGoalLine": "目標 {weight}",
+  "weightGoalNone": "長押しで目標を設定",
+  "weightGoalReached": "目標達成",
+  "weightToLose": "あと {weight} 減",
+  "weightToGain": "あと {weight} 増",
+  "aminoHis": "ヒスチジン",
+  "aminoIle": "イソロイシン",
+  "aminoLeu": "ロイシン",
+  "aminoLys": "リジン",
+  "aminoSaa": "メチオニン",
+  "aminoAaa": "フェニルアラニン",
+  "aminoThr": "トレオニン",
+  "aminoTrp": "トリプトファン",
+  "aminoVal": "バリン",
+  "animalProtein": "動物性タンパク質",
+  "proteinQuality": "タンパク質の質",
+  "qualityComplete": "完全",
+  "qualityAlmost": "ほぼ完全",
+  "qualityIncomplete": "不完全",
+  "qualityNoData": "まだデータがありません",
+  "qualityNoDataHint": "データベースの食品を記録するとアミノ酸が表示されます。",
+  "qualityAllCovered": "9種類の必須アミノ酸をすべて満たしています。",
+  "qualityLimiting": "{amino}が不足しています。多く含む食品と組み合わせましょう。",
+  "qualityCoverage": "タンパク質の {pct}% で計算：自分の食品にはアミノ酸データがありません。",
+  "fatTypes": "脂肪の種類",
+  "fatSaturated": "飽和",
+  "fatMono": "一価不飽和",
+  "fatPoly": "多価不飽和",
+  "satLimitLine": "飽和脂肪 {grams} g / 上限 {limit} g（カロリーの10%）",
+  "sugarSodium": "糖質とナトリウム",
+  "shakeCard": "プロテインシェイク",
+  "mealOther": "食事",
+  "mealAdd": "食事を追加",
+  "mealAddHint": "例：トレーニング前",
+  "mealsOfDay": "1日の食事",
+  "mealsHint": "好きなだけ作れます。削除すると中身は一つ上の食事に移ります。",
+  "trackersTitle": "カスタマイズ",
+  "trackersHint": "記録したいものだけ表示しましょう。",
+  "trackersDaily": "1日のまとめ",
+  "trackersDetail": "詳細",
+  "trackersCards": "カード",
+  "prepTitle": "作り置き",
+  "prepNewShort": "新しい作り置き",
+  "prepNew": "新しい作り置き",
+  "prepEdit": "作り置きを編集",
+  "prepHint": "鍋ごと一度記録して、少しずつ食べましょう。",
+  "prepEmpty": "数日分を作りましたか？一度記録したら、残りからどれだけ食べたかだけ入力します。",
+  "prepNameHint": "例：チキンライス",
+  "prepDefaultName": "作り置き",
+  "prepIngredients": "材料",
+  "prepAddIngredient": "材料を追加",
+  "prepCookedWeight": "調理後の重さ",
+  "prepCookedHint": "正確にするには調理後に鍋ごと量りましょう。空欄なら生の合計（{grams} g）を使います。",
+  "prepNeedWeight": "調理後の重さを入力してください：グラムのない材料があります。",
+  "prepLeftOf": "残り {left} / {total}",
+  "prepOfWhatsLeft": "残りの %",
+  "prepAll": "全部",
+  "prepLogAmount": "{grams} を記録",
+  "prepWeighLeft": "残りを量る",
+  "prepFinished": "この作り置きはなくなりました。",
+  "approxValues": "概算",
+  "editValues": "値を編集",
+  "editValuesHint": "この記録だけ変わります。次回のために直すにはマイ食品から編集してください。",
+  "editLibraryHint": "同じ写真で自分の食品として保存されます",
+  "per100Line": "100 {unit}あたり {energy}",
+  "rawLabel": "生",
+  "cookedLabel": "調理後",
+  "rawHint": "調理前の重さ",
+  "cookedHint": "調理後の重さ（生の ×{factor}）",
+  "servingsUnit": "食分",
+  "logAmount": "記録 · {energy}",
+  "catFruit": "果物",
+  "catVeg": "野菜",
+  "catMeat": "肉",
+  "catFish": "魚",
+  "catEgg": "卵",
+  "catDairy": "乳製品",
+  "catGrain": "穀物",
+  "catBakery": "パン",
+  "catLegume": "豆類",
+  "catNut": "ナッツ",
+  "catOil": "油",
+  "catPantry": "食材庫",
+  "catDrink": "飲み物",
+  "catSauce": "ソース",
+  "catSpice": "スパイス",
+  "searchFoodsPrompt": "何を食べましたか？",
+  "shelfEmpty": "食品を探すか自分のを撮影しましょう：よく記録するものがここに出ます。",
+  "repeatEntry": "もう一度",
+  "notifSuppChannel": "サプリ",
+  "notifSuppChannelWhy": "サプリを飲むための毎日のお知らせ",
+  "energySplit": "カロリーの内訳",
+  "typicalServing": "一般的な1食分",
+  "cookedYieldLine": "生の重さの{factor}倍"
 }

@@ -1,28 +1,8 @@
 {
   "@@locale": "nl",
   "languageName": "Nederlands",
-  "@languageName": {
-    "description": "This language, written in itself. Shown in the language picker."
-  },
   "vsLastMonthLabel": "{pct}% t.o.v. vorige maand",
-  "@vsLastMonthLabel": {
-    "placeholders": {
-      "pct": {
-        "type": "String"
-      }
-    }
-  },
   "levelStreakLabel": "Niveau {level} · {streak}",
-  "@levelStreakLabel": {
-    "placeholders": {
-      "level": {
-        "type": "int"
-      },
-      "streak": {
-        "type": "String"
-      }
-    }
-  },
   "save": "OPSLAAN",
   "cancel": "Annuleren",
   "cancelCaps": "ANNULEREN",
@@ -47,13 +27,6 @@
   "tools": "TOOLS",
   "firstSessionHint": "Kies je spieren en log je eerste training",
   "exerciseCount": "{n, plural, =1{{n} oefening} other{{n} oefeningen}}",
-  "@exerciseCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pushDay": "PUSH-DAG",
   "pullDay": "PULL-DAG",
   "legDay": "BENEN",
@@ -70,25 +43,11 @@
   "nothingForFocus": "Geen oefening voor deze focus",
   "goBackPick": "Ga terug en kies een spier waarvoor oefeningen in je bibliotheek staan.",
   "pickedHint": "We hebben een training voor je samengesteld — tik om een van de {n} oefeningen toe te voegen of te verwijderen.",
-  "@pickedHint": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pickAnExercise": "KIES EEN OEFENING",
   "searchAllExercises": "Zoek een oefening…",
   "noExercisesMatch": "Geen overeenkomende oefeningen",
   "createItInstead": "Maak in plaats daarvan je eigen oefening",
   "startCount": "START · {n, plural, =1{{n} OEFENING} other{{n} OEFENINGEN}}",
-  "@startCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "inProgress": "BEZIG",
   "paused": "GEPAUZEERD",
   "last": "LAATSTE",
@@ -96,81 +55,33 @@
   "skip": "OVERSLAAN",
   "addSet": "+ SET TOEVOEGEN",
   "finishSession": "TRAINING AFRONDEN",
+  "setDone": "SET KLAAR",
+  "nextExercise": "VOLGENDE OEFENING",
+  "dropExerciseAction": "Oefening verwijderen",
+  "restOff": "Uit",
   "setCol": "#",
   "repsCol": "HERHALINGEN",
   "weightCol": "GEWICHT ({unit})",
-  "@weightCol": {
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
   "repsTitle": "HERHALINGEN",
   "weightTitle": "GEWICHT ({unit})",
-  "@weightTitle": {
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
   "sessionComplete": "TRAINING OPGESLAGEN",
   "finishHeadlinePr": "Nieuw persoonlijk record",
   "finishHeadlineGoal": "Weekdoel behaald",
   "finishHeadlineStreak": "Reeks behouden",
   "finishHeadlineDefault": "Weer een training erbij",
   "finishBodyPr": "Je tilde meer dan ooit bij {prs, plural, =1{één oefening} other{{prs} oefeningen}}. Het staat nu in je records.",
-  "@finishBodyPr": {
-    "placeholders": {
-      "prs": {
-        "type": "int"
-      }
-    }
-  },
   "finishBodyGoal": "Je hebt deze week het geplande aantal trainingen gehaald.",
   "finishBodyStreak": "{streak} dagen op rij. Het moeilijkste is doorgaan.",
-  "@finishBodyStreak": {
-    "placeholders": {
-      "streak": {
-        "type": "int"
-      }
-    }
-  },
   "finishBodyDefault": "Opgeslagen en meegeteld. Consistentie zorgt voor vooruitgang.",
   "vsLastTime": "VS. VORIGE KEER",
   "firstTime": "Eerste registratie",
   "prCount": "{n, plural, =1{{n} nieuw record} other{{n} nieuwe records}}",
-  "@prCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "duration": "DUUR",
   "setsCaps": "SETS",
   "exerciseXofY": "OEFENING {i} VAN {n}",
-  "@exerciseXofY": {
-    "placeholders": {
-      "i": {
-        "type": "int"
-      },
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "decrease": "Verlagen",
   "increase": "Verhogen",
   "markSet": "Set {n} als voltooid markeren",
-  "@markSet": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "pauseWorkout": "Training pauzeren",
   "resumeWorkout": "Training hervatten",
   "discardTitle": "Training weggooien?",
@@ -183,84 +94,44 @@
   "notifAlertChannelWhy": "Toont meteen een banner wanneer je rust voorbij is",
   "restOverTitle": "Rust voorbij",
   "restOverBody": "Daar gaan we weer — de volgende set wacht.",
+  "allTimeSessions": "TRAININGEN",
+  "allTimeTime": "TIJD",
+  "allTimeSets": "SETS",
   "consistency": "CONSISTENTIE",
   "sessionsLogged": "{n, plural, =1{{n} training gelogd} other{{n} trainingen gelogd}}",
-  "@sessionsLogged": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "streakDays": "Reeks van {n} dagen",
-  "@streakDays": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "bodyweight": "LICHAAMSGEWICHT",
   "logBodyweight": "GEWICHT LOGGEN",
   "trackWeight": "Volg je gewicht in de loop van de tijd",
   "muscleMap": "SPIERKAART",
   "days7": "7 D",
   "days30": "30 D",
+  "days90": "90 D",
+  "days365": "1 J",
+  "daysAll": "Alles",
+  "weeklyAvgTitle": "Weekgemiddelde",
+  "weekOfDate": "Week van {date}",
+  "weightChangeRange": "{change} in deze periode",
   "heatLow": "Niet getraind",
   "heatHigh": "Maximaal volume",
   "muscleMapEmpty": "Log een training en je lichaam begint hier op te lichten.",
   "muscleMapHint": "Tik op een spier om te zien hoeveel die heeft gewerkt.",
   "muscleMapBehind": "Achterstand: {names}",
-  "@muscleMapBehind": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
   "ofTarget": "{pct}% van doel",
-  "@ofTarget": {
-    "placeholders": {
-      "pct": {
-        "type": "int"
-      }
-    }
-  },
   "muscleSplit": "SPIERVERDELING",
   "personalRecords": "PERSOONLIJKE RECORDS",
   "strength1rm": "KRACHT · GESCH. 1RM",
   "strengthEmpty": "Log een oefening twee keer en de krachtcurve verschijnt hier.",
   "oneRmEst": "Gesch. 1RM: {w}",
-  "@oneRmEst": {
-    "placeholders": {
-      "w": {
-        "type": "String"
-      }
-    }
-  },
   "restDayShort": "Rustdag",
   "restDay": "Rustdag — niets gelogd.",
   "delete": "Verwijderen",
   "deleteEntry": "Deze invoer verwijderen?",
   "deleteEntryBody": "‘{name}’ wordt van deze dag en uit je records en grafieken verwijderd.",
-  "@deleteEntryBody": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "bodyweightHistory": "GESCHIEDENIS",
   "exercisesCaps": "OEFENINGEN",
   "timeCaps": "TIJD",
   "libraryCount": "{n, plural, =1{{n} oefening in je bibliotheek} other{{n} oefeningen in je bibliotheek}}",
-  "@libraryCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "searchExercises": "Oefeningen zoeken",
   "muscleFilter": "SPIER",
   "levelFilter": "NIVEAU",
@@ -290,342 +161,6 @@
   "noHistory": "Nog geen trainingen gelogd. Train deze oefening om geschiedenis op te bouwen.",
   "notes": "NOTITIES",
   "notePlaceholder": "Tips, uitvoering, gevoel…",
-  "howTo": "HOE UITVOEREN",
-  "similar": "VERGELIJKBAAR",
-  "primaryLabel": "PRIMAIR",
-  "secondaryLabel": "SECUNDAIR",
-  "none": "Geen",
-  "setCount": "{n, plural, =1{{n} set} other{{n} sets}}",
-  "@setCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "volumeSuffix": "{v} volume",
-  "@volumeSuffix": {
-    "placeholders": {
-      "v": {
-        "type": "String"
-      }
-    }
-  },
-  "weeklyPlan": "WEEKPLAN",
-  "yourRoutines": "JE ROUTINES",
-  "noRoutines": "Nog geen routines. Maak er een en voeg je oefeningen toe.",
-  "newRoutine": "NIEUWE ROUTINE",
-  "routineName": "Naam van routine",
-  "schedule": "SCHEMA",
-  "addFromList": "Voeg oefeningen toe uit de lijst hieronder.",
-  "addExercises": "Oefeningen toevoegen",
-  "deleteRoutine": "Deze routine verwijderen?",
-  "exercisesWithCount": "OEFENINGEN · {n}",
-  "@exercisesWithCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "setDay": "{day} INSTELLEN",
-  "@setDay": {
-    "placeholders": {
-      "day": {
-        "type": "String"
-      }
-    }
-  },
-  "newRoutineName": "Nieuwe routine",
-  "dragToReorder": "Sleep aan het stippengreepje om te herschikken — zo train je ze.",
-  "reorderHandle": "{name} herschikken",
-  "@reorderHandle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "removeFromRoutine": "Uit routine verwijderen",
-  "dropExercise": "Deze oefening verwijderen?",
-  "dropExerciseBody": "‘{name}’ wordt uit deze training verwijderd. Reeds gelogde gegevens blijven behouden.",
-  "@dropExerciseBody": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "drop": "Verwijderen",
-  "resetData": "Al mijn gegevens verwijderen",
-  "resetTitle": "Alles verwijderen?",
-  "resetBody": "Trainingen, records, routines, notities en profiel. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.",
-  "resetConfirm": "Alles verwijderen",
-  "resetDone": "Alle gegevens zijn verwijderd",
-  "support": "ONDERSTEUNING",
-  "reportBug": "Bug melden",
-  "requestFeature": "Functie voorstellen",
-  "starOnGithub": "Ster geven op GitHub",
-  "buyCoffee": "Trakteer me op koffie",
-  "cantOpenLink": "Kon de link niet openen",
-  "theme": "Thema",
-  "darkTheme": "Donker",
-  "lightTheme": "Licht",
-  "amoledTheme": "AMOLED-zwart",
-  "editDuration": "Duur van de training",
-  "sessionName": "Naam van de training",
-  "nameWorkout": "Geef een naam",
-  "sessionNameHint": "bijv. Benen, Push, Full body",
-  "secondaryPickHint": "Tik op de andere spieren die deze oefening traint.",
-  "languageLabel": "Taal",
-  "unitsLabel": "Eenheden",
-  "restTimer": "Rusttimer",
-  "alarmBlockedTitle": "Meldingen zijn uitgeschakeld",
-  "alarmBlockedBody": "Het rustalarm gaat niet af als het scherm vergrendeld is",
-  "alarmBlockedAction": "INSCHAKELEN",
-  "alarmSound": "Alarmgeluid",
-  "alarmDefaultName": "Standaard",
-  "alarmSoundHint": "Gebruik je eigen geluid — maximaal 15 seconden",
-  "alarmChoose": "Geluid kiezen…",
-  "alarmPreview": "Huidig geluid afspelen",
-  "alarmReset": "Standaardgeluid herstellen",
-  "alarmTooLong": "Dit geluid is langer dan 15 seconden",
-  "alarmInvalid": "Kon dit audiobestand niet lezen",
-  "alarmChanged": "Alarmgeluid ingesteld op ‘{name}’",
-  "@alarmChanged": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "alarmChangedDefault": "Standaardgeluid hersteld",
-  "addActivityWidget": "Activiteitswidget toevoegen",
-  "addStatsWidget": "Statistiekenwidget toevoegen",
-  "pinUnsupported": "Voeg het toe via het widgetmenu van je launcher",
-  "background": "Achtergrond",
-  "bgNone": "Geen",
-  "bgDots": "Punten",
-  "bgGrid": "Raster",
-  "exportCsv": "Trainingen exporteren (CSV)",
-  "exportBackup": "Back-up exporteren (ZIP)",
-  "importBackup": "Back-up importeren",
-  "importHint": "Kies een .zip-back-up (of oudere .json) die uit GymMane is geëxporteerd. Dit vervangt je huidige gegevens, inclusief media.",
-  "import": "Importeren",
-  "chooseFile": "Bestand kiezen",
-  "importFromApp": "Importeren uit een andere app",
-  "importUnknownFormat": "Dit bestand heeft kolommen nodig voor datum, oefening, herhalingen en gewicht",
-  "importZipNoWeights": "Deze zip bevat geen gewichtsbestand",
-  "importWeights": "{n, plural, =1{{n} weging geïmporteerd} other{{n} wegingen geïmporteerd}}",
-  "@importWeights": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "importReadFailed": "Kon dit bestand niet lezen",
-  "importUnitTitle": "Welke eenheid gebruikt dit bestand?",
-  "importUnitBody": "Deze export vermeldt niet welke gewichtseenheid wordt gebruikt.",
-  "importNothing": "Niets nieuws om te importeren",
-  "importDone": "{n, plural, =1{{n} training geïmporteerd} other{{n} trainingen geïmporteerd}}",
-  "@importDone": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "aboutGymmane": "Over GymMane",
-  "yourProfile": "JE PROFIEL",
-  "autofills": "Vult de calculators automatisch in",
-  "nameLabel": "NAAM",
-  "sexLabel": "GESLACHT",
-  "male": "Man",
-  "female": "Vrouw",
-  "ageLabel": "LEEFTIJD",
-  "heightLabel": "LENGTE",
-  "weightLabel": "GEWICHT",
-  "weeklyGoal": "WEEKDOEL",
-  "activityLabel": "ACTIVITEIT",
-  "addPhoto": "Foto toevoegen",
-  "removePhoto": "Foto verwijderen",
-  "takePhoto": "Foto maken",
-  "chooseGallery": "Uit galerij kiezen",
-  "backupImported": "Back-up geïmporteerd",
-  "backupFailed": "Kon deze back-up niet lezen",
-  "nothingToExport": "Nog niets om te exporteren — log eerst een training",
-  "calculatorsCount": "{n} calculators voor je training",
-  "@calculatorsCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "result": "RESULTAAT",
-  "weightLifted": "GETILD GEWICHT",
-  "repsPerformed": "UITGEVOERDE HERHALINGEN",
-  "neck": "NEK",
-  "waist": "TAILLE",
-  "hip": "HEUP (vrouwen)",
-  "targetWeight": "DOELGEWICHT",
-  "workingWeight": "WERKGEWICHT",
-  "activityLevel": "ACTIVITEITSNIVEAU",
-  "barWeight": "STANGGEWICHT",
-  "perSide": "PER KANT",
-  "justTheBar": "Alleen de stang.",
-  "perSideCount": "× {n} per kant",
-  "@perSideCount": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "toolNameRm": "1RM",
-  "toolNameBmi": "BMI",
-  "toolNameCal": "Calorieën",
-  "toolNameBf": "Lichaamsvet",
-  "toolNamePlate": "Schijven",
-  "toolNameWarmup": "Warming-up",
-  "toolTitleRm": "1RM-calculator",
-  "toolTitleBmi": "BMI-calculator",
-  "toolTitleCal": "Calorieën & macro's",
-  "toolTitleBf": "Lichaamsvet %",
-  "toolTitlePlate": "Schijvencalculator",
-  "toolTitleWarmup": "Opwarmsets",
-  "toolHintRm": "Geschat maximum voor 1 herhaling (Epley-formule)",
-  "toolHintCal": "Schatting van dagelijkse onderhoudsbehoefte",
-  "toolHintBf": "Schatting volgens de US Navy-methode",
-  "toolHintPlate": "Totaal gewicht van de stang",
-  "toolHintWarmup": "Doelwerkgewicht",
-  "toolDescRm": "Geschat maximum voor één herhaling",
-  "toolDescBmi": "Body mass index",
-  "toolDescCal": "Calorieën en macro's",
-  "toolDescBf": "Lichaamsvetpercentage",
-  "toolDescPlate": "Halter-schijvencalculator",
-  "toolDescWarmup": "Opbouwsets voor warming-up",
-  "bmiUnderweight": "Ondergewicht",
-  "bmiNormal": "Normaal gewicht",
-  "bmiOverweight": "Overgewicht",
-  "bmiObese": "Obesitas",
-  "actSedentary": "Zittend",
-  "actLight": "Licht",
-  "actActive": "Actief",
-  "actModerate": "Matig",
-  "muscleChest": "Borst",
-  "muscleBack": "Rug",
-  "muscleLowerBack": "Onderrug",
-  "muscleShoulders": "Schouders",
-  "muscleBiceps": "Biceps",
-  "muscleTriceps": "Triceps",
-  "muscleForearm": "Onderarm",
-  "muscleTrapezius": "Trapezius",
-  "muscleAbdomen": "Buik",
-  "muscleObliques": "Schuine buikspieren",
-  "muscleQuads": "Quadriceps",
-  "muscleHamstrings": "Hamstrings",
-  "muscleGlutes": "Bilspieren",
-  "muscleCalves": "Kuiten",
-  "mgChest": "Borst",
-  "mgBack": "Rug",
-  "mgLegs": "Benen",
-  "mgShoulders": "Schouders",
-  "mgArms": "Armen",
-  "mgCore": "Core",
-  "equipBarbell": "Halterstang",
-  "equipDumbbell": "Dumbbell",
-  "equipCable": "Kabel",
-  "equipMachine": "Machine",
-  "equipBodyweight": "Lichaamsgewicht",
-  "equipWeighted": "Met gewicht",
-  "equipBand": "Weerstandsband",
-  "equipKettlebell": "Kettlebell",
-  "equipOther": "Overig",
-  "diffBeginner": "Beginner",
-  "diffAdvanced": "Gevorderd",
-  "diffIntermediate": "Gemiddeld",
-  "about": "OVER",
-  "version": "Versie {v}",
-  "@version": {
-    "placeholders": {
-      "v": {
-        "type": "String"
-      }
-    }
-  },
-  "aboutBlurb": "Gemaakt door sporters, voor sporters.",
-  "freeForever": "Voor altijd gratis",
-  "freeForeverWhy": "Geen abonnement, geen advertenties, niets achter een betaalmuur.",
-  "fullyOffline": "100% offline",
-  "fullyOfflineWhy": "Geen account, geen server. Je trainingen verlaten deze telefoon nooit.",
-  "yoursToTake": "Je gegevens zijn van jou",
-  "yoursToTakeWhy": "Exporteer ze wanneer je wilt als CSV en verwijder alles in één keer.",
-  "whatsInside": "INHOUD",
-  "exercisesInside": "{n} oefeningen",
-  "@exercisesInside": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "exercisesInsideWhy": "Elk met animatie en stapsgewijze instructies.",
-  "calculatorsInside": "10 calculators",
-  "calculatorsInsideWhy": "1RM, schijven, BMI, calorieën, lichaamsvet, FFMI, warming-up, gewicht via RPE en krachtscores (DOTS en Wilks) — allemaal gebaseerd op gepubliceerde formules.",
-  "mathInside": "Transparante berekeningen",
-  "mathInsideWhy": "Volume, records en sets worden uit je eigen gegevens berekend. Niets is alleen voor de sier.",
-  "streakCaps": "REEKS",
-  "daysUnit": "{n, plural, =1{dag} other{dagen}}",
-  "@daysUnit": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "reset": "RESETTEN",
-  "welcomeKicker": "WELKOM BIJ",
-  "welcomeBlurb": "Alles blijft op je telefoon. Geen account, geen internet, niets te betalen.",
-  "welcomeStart": "BEGINNEN",
-  "onbStep": "STAP {i} VAN {n}",
-  "@onbStep": {
-    "placeholders": {
-      "i": {
-        "type": "int"
-      },
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "onbNameTitle": "Hoe moeten we je noemen?",
-  "onbNameHint": "Je voornaam",
-  "onbNameWhy": "Alleen gebruikt om je te begroeten. Verlaat je telefoon nooit.",
-  "onbBodyTitle": "Een paar gegevens",
-  "onbBodyWhy": "Ze vullen de calculators in. Je kunt ze altijd wijzigen in Instellingen.",
-  "onbGoalTitle": "Hoe vaak train je?",
-  "onbGoalWhy": "Stelt je weekdoel in. Wees realistisch, niet te ambitieus.",
-  "perWeek": "{n, plural, =1{{n} training per week} other{{n} trainingen per week}}",
-  "@perWeek": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "onbUnitsTitle": "Kilo's of ponden?",
-  "next": "VOLGENDE",
-  "back": "TERUG",
-  "skip2": "Overslaan",
-  "setDone": "SET KLAAR",
-  "nextExercise": "VOLGENDE OEFENING",
-  "dropExerciseAction": "Oefening verwijderen",
-  "restOff": "Uit",
-  "allTimeSessions": "TRAININGEN",
-  "allTimeTime": "TIJD",
-  "allTimeSets": "SETS",
   "notHere": "Geen {gear} bij {place}",
   "notHereWhy": "Vervang het door iets dat je vandaag echt kunt gebruiken.",
   "altHere": "WAT JE HIER KUNT DOEN",
@@ -746,10 +281,229 @@
   "setTypeFailure": "Tot falen",
   "addWarmup": "WARMING-UP",
   "platesPerSide": "Per kant: {plates}",
+  "howTo": "HOE UITVOEREN",
+  "similar": "VERGELIJKBAAR",
+  "primaryLabel": "PRIMAIR",
+  "secondaryLabel": "SECUNDAIR",
+  "none": "Geen",
+  "setCount": "{n, plural, =1{{n} set} other{{n} sets}}",
+  "volumeSuffix": "{v} volume",
+  "weeklyPlan": "WEEKPLAN",
+  "yourRoutines": "JE ROUTINES",
+  "noRoutines": "Nog geen routines. Maak er een en voeg je oefeningen toe.",
+  "newRoutine": "NIEUWE ROUTINE",
+  "routineName": "Naam van routine",
+  "schedule": "SCHEMA",
+  "addFromList": "Voeg oefeningen toe uit de lijst hieronder.",
+  "addExercises": "Oefeningen toevoegen",
+  "deleteRoutine": "Deze routine verwijderen?",
+  "exercisesWithCount": "OEFENINGEN · {n}",
+  "setDay": "{day} INSTELLEN",
+  "newRoutineName": "Nieuwe routine",
+  "dragToReorder": "Sleep aan het stippengreepje om te herschikken — zo train je ze.",
+  "reorderHandle": "{name} herschikken",
+  "removeFromRoutine": "Uit routine verwijderen",
+  "dropExercise": "Deze oefening verwijderen?",
+  "dropExerciseBody": "‘{name}’ wordt uit deze training verwijderd. Reeds gelogde gegevens blijven behouden.",
+  "drop": "Verwijderen",
+  "resetData": "Al mijn gegevens verwijderen",
+  "resetTitle": "Alles verwijderen?",
+  "resetBody": "Trainingen, records, routines, notities en profiel. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.",
+  "resetConfirm": "Alles verwijderen",
+  "resetDone": "Alle gegevens zijn verwijderd",
+  "support": "ONDERSTEUNING",
+  "reportBug": "Bug melden",
+  "requestFeature": "Functie voorstellen",
+  "starOnGithub": "Ster geven op GitHub",
+  "buyCoffee": "Trakteer me op koffie",
+  "cantOpenLink": "Kon de link niet openen",
+  "theme": "Thema",
+  "darkTheme": "Donker",
+  "lightTheme": "Licht",
+  "amoledTheme": "AMOLED-zwart",
+  "editDuration": "Duur van de training",
+  "sessionName": "Naam van de training",
+  "nameWorkout": "Geef een naam",
+  "sessionNameHint": "bijv. Benen, Push, Full body",
+  "secondaryPickHint": "Tik op de andere spieren die deze oefening traint.",
+  "languageLabel": "Taal",
+  "unitsLabel": "Eenheden",
+  "restTimer": "Rusttimer",
+  "alarmBlockedTitle": "Meldingen zijn uitgeschakeld",
+  "alarmBlockedBody": "Het rustalarm gaat niet af als het scherm vergrendeld is",
+  "alarmBlockedAction": "INSCHAKELEN",
+  "alarmSound": "Alarmgeluid",
+  "alarmDefaultName": "Standaard",
+  "alarmSoundHint": "Gebruik je eigen geluid — maximaal 15 seconden",
+  "alarmChoose": "Geluid kiezen…",
+  "alarmPreview": "Huidig geluid afspelen",
+  "alarmReset": "Standaardgeluid herstellen",
+  "alarmTooLong": "Dit geluid is langer dan 15 seconden",
+  "alarmInvalid": "Kon dit audiobestand niet lezen",
+  "alarmChanged": "Alarmgeluid ingesteld op ‘{name}’",
+  "alarmChangedDefault": "Standaardgeluid hersteld",
+  "addActivityWidget": "Activiteitswidget toevoegen",
+  "addStatsWidget": "Statistiekenwidget toevoegen",
+  "pinUnsupported": "Voeg het toe via het widgetmenu van je launcher",
+  "background": "Achtergrond",
+  "bgNone": "Geen",
+  "bgDots": "Punten",
+  "bgGrid": "Raster",
+  "exportCsv": "Trainingen exporteren (CSV)",
+  "exportBackup": "Back-up exporteren (ZIP)",
+  "importBackup": "Back-up importeren",
+  "importHint": "Kies een .zip-back-up (of oudere .json) die uit GymMane is geëxporteerd. Dit vervangt je huidige gegevens, inclusief media.",
+  "import": "Importeren",
+  "chooseFile": "Bestand kiezen",
+  "importFromApp": "Importeren uit een andere app",
+  "importUnknownFormat": "Dit bestand heeft kolommen nodig voor datum, oefening, herhalingen en gewicht",
+  "importZipNoWeights": "Deze zip bevat geen gewichtsbestand",
+  "importWeights": "{n, plural, =1{{n} weging geïmporteerd} other{{n} wegingen geïmporteerd}}",
+  "importReadFailed": "Kon dit bestand niet lezen",
+  "importUnitTitle": "Welke eenheid gebruikt dit bestand?",
+  "importUnitBody": "Deze export vermeldt niet welke gewichtseenheid wordt gebruikt.",
+  "importNothing": "Niets nieuws om te importeren",
+  "importDone": "{n, plural, =1{{n} training geïmporteerd} other{{n} trainingen geïmporteerd}}",
+  "aboutGymmane": "Over GymMane",
+  "yourProfile": "JE PROFIEL",
+  "autofills": "Vult de calculators automatisch in",
+  "nameLabel": "NAAM",
+  "sexLabel": "GESLACHT",
   "macroProtein": "EIWIT",
   "macroCarbs": "KOOLHYDRATEN",
   "macroFat": "VET",
+  "male": "Man",
+  "female": "Vrouw",
+  "ageLabel": "LEEFTIJD",
+  "heightLabel": "LENGTE",
+  "weightLabel": "GEWICHT",
+  "weeklyGoal": "WEEKDOEL",
+  "activityLabel": "ACTIVITEIT",
+  "addPhoto": "Foto toevoegen",
+  "removePhoto": "Foto verwijderen",
+  "takePhoto": "Foto maken",
+  "chooseGallery": "Uit galerij kiezen",
+  "backupImported": "Back-up geïmporteerd",
+  "backupFailed": "Kon deze back-up niet lezen",
+  "nothingToExport": "Nog niets om te exporteren — log eerst een training",
+  "calculatorsCount": "{n} calculators voor je training",
+  "result": "RESULTAAT",
+  "weightLifted": "GETILD GEWICHT",
+  "repsPerformed": "UITGEVOERDE HERHALINGEN",
+  "neck": "NEK",
+  "waist": "TAILLE",
+  "hip": "HEUP (vrouwen)",
+  "targetWeight": "DOELGEWICHT",
+  "workingWeight": "WERKGEWICHT",
+  "activityLevel": "ACTIVITEITSNIVEAU",
+  "barWeight": "STANGGEWICHT",
+  "perSide": "PER KANT",
+  "justTheBar": "Alleen de stang.",
+  "perSideCount": "× {n} per kant",
+  "toolNameRm": "1RM",
+  "toolNameBmi": "BMI",
+  "toolNameCal": "Calorieën",
+  "toolNameBf": "Lichaamsvet",
+  "toolNamePlate": "Schijven",
+  "toolNameWarmup": "Warming-up",
+  "toolTitleRm": "1RM-calculator",
+  "toolTitleBmi": "BMI-calculator",
+  "toolTitleCal": "Calorieën & macro's",
+  "toolTitleBf": "Lichaamsvet %",
+  "toolTitlePlate": "Schijvencalculator",
+  "toolTitleWarmup": "Opwarmsets",
+  "toolHintRm": "Geschat maximum voor 1 herhaling (Epley-formule)",
+  "toolHintCal": "Schatting van dagelijkse onderhoudsbehoefte",
+  "toolHintBf": "Schatting volgens de US Navy-methode",
+  "toolHintPlate": "Totaal gewicht van de stang",
+  "toolHintWarmup": "Doelwerkgewicht",
+  "toolDescRm": "Geschat maximum voor één herhaling",
+  "toolDescBmi": "Body mass index",
+  "toolDescCal": "Calorieën en macro's",
+  "toolDescBf": "Lichaamsvetpercentage",
+  "toolDescPlate": "Halter-schijvencalculator",
+  "toolDescWarmup": "Opbouwsets voor warming-up",
+  "bmiUnderweight": "Ondergewicht",
+  "bmiNormal": "Normaal gewicht",
+  "bmiOverweight": "Overgewicht",
+  "bmiObese": "Obesitas",
+  "actSedentary": "Zittend",
+  "actLight": "Licht",
+  "actActive": "Actief",
+  "actModerate": "Matig",
+  "muscleChest": "Borst",
+  "muscleBack": "Rug",
+  "muscleLowerBack": "Onderrug",
+  "muscleShoulders": "Schouders",
+  "muscleBiceps": "Biceps",
+  "muscleTriceps": "Triceps",
+  "muscleForearm": "Onderarm",
+  "muscleTrapezius": "Trapezius",
+  "muscleAbdomen": "Buik",
+  "muscleObliques": "Schuine buikspieren",
+  "muscleQuads": "Quadriceps",
+  "muscleHamstrings": "Hamstrings",
+  "muscleGlutes": "Bilspieren",
+  "muscleCalves": "Kuiten",
+  "mgChest": "Borst",
+  "mgBack": "Rug",
+  "mgLegs": "Benen",
+  "mgShoulders": "Schouders",
+  "mgArms": "Armen",
+  "mgCore": "Core",
+  "equipBarbell": "Halterstang",
+  "equipDumbbell": "Dumbbell",
+  "equipCable": "Kabel",
+  "equipMachine": "Machine",
+  "equipBodyweight": "Lichaamsgewicht",
+  "equipWeighted": "Met gewicht",
+  "equipBand": "Weerstandsband",
+  "equipKettlebell": "Kettlebell",
   "equipRings": "Ringen",
+  "equipOther": "Overig",
+  "diffBeginner": "Beginner",
+  "diffAdvanced": "Gevorderd",
+  "diffIntermediate": "Gemiddeld",
+  "about": "OVER",
+  "version": "Versie {v}",
+  "aboutBlurb": "Gemaakt door sporters, voor sporters.",
+  "freeForever": "Voor altijd gratis",
+  "freeForeverWhy": "Geen abonnement, geen advertenties, niets achter een betaalmuur.",
+  "fullyOffline": "100% offline",
+  "fullyOfflineWhy": "Geen account, geen server. Je trainingen verlaten deze telefoon nooit.",
+  "yoursToTake": "Je gegevens zijn van jou",
+  "yoursToTakeWhy": "Exporteer ze wanneer je wilt als CSV en verwijder alles in één keer.",
+  "whatsInside": "INHOUD",
+  "exercisesInside": "{n} oefeningen",
+  "exercisesInsideWhy": "Elk met animatie en stapsgewijze instructies.",
+  "calculatorsInside": "10 calculators",
+  "calculatorsInsideWhy": "1RM, schijven, BMI, calorieën, lichaamsvet, FFMI, warming-up, gewicht via RPE en krachtscores (DOTS en Wilks) — allemaal gebaseerd op gepubliceerde formules.",
+  "mathInside": "Transparante berekeningen",
+  "mathInsideWhy": "Volume, records en sets worden uit je eigen gegevens berekend. Niets is alleen voor de sier.",
+  "streakCaps": "REEKS",
+  "daysUnit": "{n, plural, =1{dag} other{dagen}}",
+  "reset": "RESETTEN",
+  "welcomeKicker": "WELKOM BIJ",
+  "welcomeBlurb": "Alles blijft op je telefoon. Geen account, geen internet, niets te betalen.",
+  "welcomeStart": "BEGINNEN",
+  "onbStep": "STAP {i} VAN {n}",
+  "onbNameTitle": "Hoe moeten we je noemen?",
+  "onbNameHint": "Je voornaam",
+  "onbPhotoAdd": "Foto toevoegen",
+  "onbPhotoChange": "Foto wijzigen",
+  "onbPhotoTitle": "Geef je profiel een gezicht",
+  "onbPhotoWhy": "Optioneel. Hij blijft op je telefoon en je kunt hem altijd wijzigen in je profiel.",
+  "onbPhotoLater": "LATER",
+  "onbNameWhy": "Alleen gebruikt om je te begroeten. Verlaat je telefoon nooit.",
+  "onbBodyTitle": "Een paar gegevens",
+  "onbBodyWhy": "Ze vullen de calculators in. Je kunt ze altijd wijzigen in Instellingen.",
+  "onbGoalTitle": "Hoe vaak train je?",
+  "onbGoalWhy": "Stelt je weekdoel in. Wees realistisch, niet te ambitieus.",
+  "perWeek": "{n, plural, =1{{n} training per week} other{{n} trainingen per week}}",
+  "onbUnitsTitle": "Kilo's of ponden?",
+  "next": "VOLGENDE",
+  "back": "TERUG",
+  "skip2": "Overslaan",
   "madeWithLoveBy": "MET LIEFDE GEMAAKT DOOR",
   "sourceCode": "BRONCODE",
   "suggested": "AANBEVOLEN",
@@ -768,6 +522,15 @@
   "daysShort": "{n} d",
   "focusCard": "Focus van vandaag",
   "autoAdvance": "Automatisch doorgaan",
+  "keepScreenOn": "Scherm aan laten tijdens het trainen",
+  "lockWorkout": "Scherm vergrendelen",
+  "unlockWorkout": "Ontgrendelen",
+  "holdToUnlock": "Houd ingedrukt om te ontgrendelen",
+  "liveChannel": "Lopende training",
+  "liveChannelWhy": "Toont de huidige oefening, set en rusttimer terwijl je traint",
+  "liveSet": "Set {n} van {total}",
+  "liveResting": "Rust",
+  "liveAllDone": "Alle sets gedaan",
   "autoAdvanceHint": "Wanneer de laatste set van een oefening is afgevinkt, gaat de training automatisch naar de volgende.",
   "autoProgress": "Volgende keer gewicht toevoegen",
   "autoProgressHint": "Haal alle herhalingen en de volgende training begint met {w} extra.",
@@ -946,16 +709,6 @@
   "logWorkoutAction": "TRAINING LOGGEN",
   "logging": "LOGGEN",
   "placesLabel": "Mijn plekken",
-
-  "keepScreenOn": "Scherm aan laten tijdens het trainen",
-  "lockWorkout": "Scherm vergrendelen",
-  "unlockWorkout": "Ontgrendelen",
-  "holdToUnlock": "Houd ingedrukt om te ontgrendelen",
-  "liveChannel": "Lopende training",
-  "liveChannelWhy": "Toont de huidige oefening, set en rusttimer terwijl je traint",
-  "liveSet": "Set {n} van {total}",
-  "liveResting": "Rust",
-  "liveAllDone": "Alle sets gedaan",
   "undo": "Ongedaan maken",
   "deleteSet": "Set verwijderen",
   "setDeleted": "Set verwijderd",
@@ -1076,30 +829,24 @@
   "stickerSaved": "Opgeslagen in je galerij",
   "stickerWeek": "Deze week",
   "getReady": "Maak je klaar",
-
   "stickerGallery": "Galerij",
   "stickerCamera": "Camera",
   "shareIntroTitle": "Deel deze routine",
   "shareIntroBody": "Stuur hem naar je partner, een vriend of je familie. Ze krijgen een klein bestand dat in GymMane opent en hem met één tik toevoegt, met sets en gewichten.",
   "removedFromRoutine": "Uit de routine gehaald",
-
   "radarTitle": "Laatste 30 dagen",
   "radarHint": "Zie welke zones meer werk nodig hebben",
   "radarEmpty": "Train een paar dagen om je balans te zien",
   "radarBalanced": "Tot nu toe mooi in balans",
   "radarFocus": "Meer nodig: {list}",
-
   "countdownReady": "Maak je klaar",
   "countdownSkip": "Tik om meteen te beginnen",
   "countdownSetting": "Aftellen voor de start",
-
   "effortSetting": "Inspanning noteren",
   "effortHint": "RPE: 10 is er geen meer kunnen doen, 8 is er nog twee over hebben. RIR telt de herhalingen die je nog had. Heeft een set er een, dan gebruikt de geschatte 1RM de RPE-tabel.",
   "rirHint": "0 is er geen meer kunnen doen, 2 is er nog twee over hebben.",
   "addWeekWidget": "Weekwidget toevoegen",
-
   "gamificationSetting": "Medailles en niveaus",
-
   "repCount": "{n, plural, =1{{n} herh.} other{{n} herh.}}",
   "prBestSet": "Beste set",
   "weekStartSetting": "Week begint op",
@@ -1121,6 +868,18 @@
   "homeRoutinesHint": "Je routines, de laatst gedane eerst. Tik op een routine om te starten.",
   "homeWeekStats": "Deze week op het startscherm",
   "homeWeekStatsHint": "Volume, sets en PR’s van de week.",
+  "stepsSetting": "Stappen uit Health Connect",
+  "stepsSettingHint": "Toont de stappen van vandaag op Start. Niets verlaat je telefoon.",
+  "stepsToday": "Stappen vandaag",
+  "stepsOfGoal": "van {goal}",
+  "stepsTodayCount": "{count} stappen vandaag",
+  "stepsGoal": "Dagelijks stappendoel",
+  "stepsNoAccess": "Geen toegang tot je stappen",
+  "stepsGrant": "Tik om het toe te staan in Health Connect",
+  "stepsInfoRead": "Leest alleen je aantal stappen. Leest niets anders en schrijft nooit naar Health Connect.",
+  "stepsInfoLocal": "Je stappen blijven op je telefoon. GymMane maakt nooit verbinding met internet.",
+  "stepsInfoOff": "Altijd uit te zetten, in Instellingen of in Health Connect.",
+  "stepsManage": "Toestemming beheren",
   "routineDoneToday": "Klaar voor vandaag · goed gedaan",
   "trainAgain": "Nog een keer trainen",
   "lastDoneAgo": "{n, plural, =0{Vandaag gedaan} =1{Gisteren gedaan} other{{n} dagen geleden}}",
@@ -1274,5 +1033,214 @@
   "mergeExerciseInto": "{name} samenvoegen met…",
   "mergeExerciseTitle": "Oefeningen samenvoegen?",
   "mergeExerciseBody": "De hele geschiedenis van ‘{from}’ gaat naar ‘{to}’. ‘{from}’ blijft in je bibliotheek. Dit kan niet ongedaan worden gemaakt.",
-  "mergedToast": "Geschiedenis samengevoegd"
+  "mergedToast": "Geschiedenis samengevoegd",
+  "nutrition": "Voeding",
+  "nutritionHomeEmpty": "Water, eiwit en calorieën",
+  "nutritionHomeDetail": "{energy} · {protein} g eiwit",
+  "nutritionToday": "Vandaag",
+  "nutritionYesterday": "Gisteren",
+  "nutritionGoals": "Dagdoelen",
+  "kcalLabel": "CALORIEËN",
+  "kcalOver": "te veel",
+  "waterLabel": "WATER",
+  "waterDone": "Doel gehaald",
+  "waterCustom": "Andere hoeveelheid",
+  "glassSize": "Glasgrootte",
+  "supplementsLabel": "SUPPLEMENTEN",
+  "supplementsEmpty": "Tik er een aan om toe te voegen, of + voor je eigen.",
+  "addSupplement": "Nieuw supplement",
+  "supplementNameHint": "Creatine, vitamine D…",
+  "removeSupplementTitle": "{name} verwijderen?",
+  "removeSupplementBody": "De dagen waarop je het afvinkte gaan mee.",
+  "suppCreatine": "Creatine",
+  "suppVitaminD": "Vitamine D",
+  "suppOmega3": "Omega-3",
+  "suppMagnesium": "Magnesium",
+  "suppMultivitamin": "Multivitamine",
+  "suppCaffeine": "Cafeïne",
+  "myFoods": "Mijn voedingsmiddelen",
+  "newFood": "Nieuw voedingsmiddel",
+  "editFood": "Voedingsmiddel bewerken",
+  "foodNameHint": "Whey, havermout, brood…",
+  "servingLabel": "PORTIE",
+  "servingHint": "1 schepje · 30 g",
+  "perServing": "PER PORTIE",
+  "servingsLabel": "Porties",
+  "foodPhotoHint": "Op een effen achtergrond wordt het een sticker.",
+  "cutoutWorking": "Uitknippen…",
+  "cutoutTry": "Uitknippen",
+  "cutoutKeep": "Hele foto",
+  "deleteFoodTitle": "{name} verwijderen?",
+  "deleteFoodBody": "Het verdwijnt uit je voedingsmiddelen. Wat je al noteerde blijft.",
+  "mealBreakfast": "Ontbijt",
+  "mealLunch": "Lunch",
+  "mealDinner": "Avondeten",
+  "mealSnacks": "Tussendoortjes",
+  "nothingLogged": "Nog niets genoteerd.",
+  "addToMeal": "Toevoegen aan {meal}",
+  "quickAdd": "Snel toevoegen",
+  "quickAddHint": "Alleen de cijfers, zonder een voedingsmiddel op te slaan.",
+  "quickAddName": "Wat was het? (optioneel)",
+  "logFood": "Toevoegen",
+  "loggedToast": "Toegevoegd aan {meal}",
+  "entryRemoved": "Verwijderd",
+  "goalsFromProfile": "Berekenen vanuit mijn profiel",
+  "goalsFromProfileHint": "Calorieën uit je profiel, 1,8 g eiwit en 35 ml water per kg lichaamsgewicht.",
+  "kcalEaten": "Gegeten",
+  "kcalRemaining": "Over",
+  "waterTapHint": "Tik op het glas: + {amount}",
+  "shakeEmpty": "Tik om je shake te kiezen",
+  "shakeTapHint": "Tik: + {name}",
+  "shakePick": "Jouw shake",
+  "shakePickHint": "Tik op het glas en hij wordt in één keer genoteerd.",
+  "proteinLetter": "E",
+  "carbsLetter": "K",
+  "fatLetter": "V",
+  "addBurnedLabel": "Verbrande calorieën optellen",
+  "addBurnedHint": "Verbrande calorieën worden geschat uit je trainingsduur en lichaamsgewicht.",
+  "amountLabel": "Hoeveelheid",
+  "amountIn": "Hoeveelheid ({unit})",
+  "bodyweightLabel": "Gewicht",
+  "copiedMealToast": "{count, plural, =1{1 voedingsmiddel gekopieerd} other{{count} voedingsmiddelen gekopieerd}}",
+  "deleteSavedMealBody": "Wat je al noteerde blijft zoals het is.",
+  "fiberLabel": "Vezels",
+  "sugarLabel": "Suiker",
+  "sodiumLabel": "Natrium",
+  "foodDatabase": "Voedingsdatabase",
+  "kcalBurned": "Verbrand",
+  "mealOptions": "Maaltijdopties",
+  "moreNutrients": "Vezels, suiker en natrium",
+  "ofGoal": "van {goal} {unit}",
+  "per100": "per 100 {unit}",
+  "perServingShort": "per portie",
+  "portionUnit": "{count, plural, =1{1 stuk} other{{count} stuks}}",
+  "portionSlice": "{count, plural, =1{1 plak} other{{count} plakken}}",
+  "portionScoop": "{count, plural, =1{1 schepje} other{{count} schepjes}}",
+  "portionTbsp": "{count, plural, =1{1 eetlepel} other{{count} eetlepels}}",
+  "portionTsp": "{count, plural, =1{1 theelepel} other{{count} theelepels}}",
+  "portionCup": "{count, plural, =1{1 kop} other{{count} koppen}}",
+  "portionGlass": "{count, plural, =1{1 glas} other{{count} glazen}}",
+  "recentFoods": "Recent",
+  "recipeItems": "{count, plural, =1{1 voedingsmiddel} other{{count} voedingsmiddelen}}",
+  "renameLabel": "Hernoemen",
+  "repeatFrom": "Herhalen van",
+  "repeatNone": "Op andere dagen staat voor deze maaltijd nog niets.",
+  "restDayGoals": "Andere doelen op rustdagen",
+  "trainingDays": "Trainingsdagen",
+  "restDays": "Rustdagen",
+  "trainingDay": "Trainingsdag",
+  "saveAsMeal": "Opslaan als maaltijd",
+  "savedMealNameHint": "bv. Vast ontbijt",
+  "savedMealToast": "Maaltijd opgeslagen",
+  "savedMeals": "Opgeslagen maaltijden",
+  "searchFoodsHint": "Voedingsmiddelen zoeken",
+  "searchFoodsEmpty": "Zoek tussen meer dan 500 voedingsmiddelen met foto, of maak je eigen.",
+  "searchFoodsNone": "Niets gevonden voor ‘{query}’. Maak het aan als eigen voedingsmiddel.",
+  "servingWeight": "GRAM",
+  "weekAverage": "Deze week",
+  "weekAvgEnergy": "Gemiddeld per dag",
+  "weekAvgProtein": "Eiwit per dag",
+  "weekEnergyOnTarget": "Calorieën op doel",
+  "weekProteinOnTarget": "Eiwit op doel",
+  "weekProteinAvg": "{grams} g eiwit per dag",
+  "weekDaysOnTarget": "{met} van {days} dagen op doel",
+  "weekLoggedDays": "{count, plural, =1{1 dag genoteerd} other{{count} dagen genoteerd}}",
+  "weekNoData": "Nog niets genoteerd",
+  "weekOnTargetHint": "Op doel: calorieën binnen 10 % van het doel en minstens 90 % van het eiwit.",
+  "weightGoalLabel": "Streefgewicht",
+  "weightGoalTitle": "Streefgewicht ({unit})",
+  "weightGoalLine": "Doel {weight}",
+  "weightGoalNone": "Houd vast om een doel te zetten",
+  "weightGoalReached": "Doel gehaald",
+  "weightToLose": "Nog {weight} eraf",
+  "weightToGain": "Nog {weight} erbij",
+  "aminoHis": "histidine",
+  "aminoIle": "isoleucine",
+  "aminoLeu": "leucine",
+  "aminoLys": "lysine",
+  "aminoSaa": "methionine",
+  "aminoAaa": "fenylalanine",
+  "aminoThr": "threonine",
+  "aminoTrp": "tryptofaan",
+  "aminoVal": "valine",
+  "animalProtein": "Dierlijk eiwit",
+  "proteinQuality": "Eiwitkwaliteit",
+  "qualityComplete": "Volledig",
+  "qualityAlmost": "Bijna volledig",
+  "qualityIncomplete": "Onvolledig",
+  "qualityNoData": "Nog geen gegevens",
+  "qualityNoDataHint": "Noteer voedingsmiddelen uit de database om je aminozuren te zien.",
+  "qualityAllCovered": "Alle negen essentiële aminozuren zijn gedekt.",
+  "qualityLimiting": "Te weinig {amino}. Combineer met voedingsmiddelen die er rijk aan zijn.",
+  "qualityCoverage": "Berekend op {pct} % van je eiwit: eigen voedingsmiddelen hebben geen aminozuurgegevens.",
+  "fatTypes": "Soorten vet",
+  "fatSaturated": "Verzadigd",
+  "fatMono": "Enkelv.",
+  "fatPoly": "Meerv.",
+  "satLimitLine": "Verzadigd {grams} g van max. {limit} g (10 % van de calorieën)",
+  "sugarSodium": "Suiker en natrium",
+  "shakeCard": "Eiwitshake",
+  "mealOther": "Maaltijd",
+  "mealAdd": "Maaltijd toevoegen",
+  "mealAddHint": "bv. Pre-workout",
+  "mealsOfDay": "Maaltijden van de dag",
+  "mealsHint": "Maak er zoveel als je wilt. Verwijder je er een, dan gaat de inhoud naar die erboven.",
+  "trackersTitle": "Aanpassen",
+  "trackersHint": "Laat alleen zien wat je wilt bijhouden.",
+  "trackersDaily": "Dagoverzicht",
+  "trackersDetail": "In detail",
+  "trackersCards": "Kaarten",
+  "prepTitle": "Meal prep",
+  "prepNewShort": "Nieuwe batch",
+  "prepNew": "Nieuwe batch",
+  "prepEdit": "Batch bewerken",
+  "prepHint": "Noteer de hele pan één keer en eet hem beetje bij beetje op.",
+  "prepEmpty": "Voor meerdere dagen gekookt? Noteer het één keer en zeg dan alleen hoeveel van de rest je at.",
+  "prepNameHint": "bv. Kip met rijst",
+  "prepDefaultName": "Batch",
+  "prepIngredients": "Ingrediënten",
+  "prepAddIngredient": "Ingrediënt toevoegen",
+  "prepCookedWeight": "GEWICHT GEKOOKT",
+  "prepCookedHint": "Weeg de pan gekookt voor exacte cijfers. Leeg = totaal rauw gewicht ({grams} g).",
+  "prepNeedWeight": "Vul het gekookte gewicht in: sommige ingrediënten hebben geen grammen.",
+  "prepLeftOf": "Nog {left} van {total}",
+  "prepOfWhatsLeft": "% van de rest",
+  "prepAll": "Alles",
+  "prepLogAmount": "{grams} noteren",
+  "prepWeighLeft": "Rest wegen",
+  "prepFinished": "Deze batch is op.",
+  "approxValues": "Ongeveer",
+  "editValues": "Waarden bewerken",
+  "editValuesHint": "Verandert alleen deze notitie. Om het voedingsmiddel voortaan te corrigeren, bewerk je het bij Mijn voedingsmiddelen.",
+  "editLibraryHint": "Wordt opgeslagen als eigen voedingsmiddel, met dezelfde foto",
+  "per100Line": "{energy} per 100 {unit}",
+  "rawLabel": "Rauw",
+  "cookedLabel": "Gekookt",
+  "rawHint": "Gewicht voor het koken",
+  "cookedHint": "Gewicht gekookt (×{factor} het rauwe gewicht)",
+  "servingsUnit": "porties",
+  "logAmount": "Noteren · {energy}",
+  "catFruit": "Fruit",
+  "catVeg": "Groente",
+  "catMeat": "Vlees",
+  "catFish": "Vis",
+  "catEgg": "Eieren",
+  "catDairy": "Zuivel",
+  "catGrain": "Granen",
+  "catBakery": "Brood",
+  "catLegume": "Peulvruchten",
+  "catNut": "Noten",
+  "catOil": "Oliën",
+  "catPantry": "Voorraad",
+  "catDrink": "Dranken",
+  "catSauce": "Sauzen",
+  "catSpice": "Kruiden",
+  "searchFoodsPrompt": "Wat heb je gegeten?",
+  "shelfEmpty": "Zoek een voedingsmiddel of maak een foto van het jouwe: wat je het vaakst noteert verschijnt hier.",
+  "repeatEntry": "Nog eens",
+  "notifSuppChannel": "Supplementen",
+  "notifSuppChannelWhy": "Dagelijkse herinnering voor je supplementen",
+  "energySplit": "Waar de calorieën vandaan komen",
+  "typicalServing": "Gangbare portie",
+  "cookedYieldLine": "Weegt {factor}× het rauwe gewicht"
 }

@@ -10,9 +10,10 @@ import 'body_map.dart';
 import 'svg_icon.dart';
 
 class GoalRing extends StatelessWidget {
-  const GoalRing({super.key, required this.pct, this.size = 40});
+  const GoalRing({super.key, required this.pct, this.size = 40, this.color});
   final double pct;
   final double size;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
@@ -23,7 +24,7 @@ class GoalRing extends StatelessWidget {
         tween: Tween(begin: 0, end: pct),
         duration: const Duration(milliseconds: 700),
         curve: Curves.easeOutCubic,
-        builder: (context, v, _) => CustomPaint(painter: _RingPainter(v, gc.bgRaised2, gc.accent)),
+        builder: (context, v, _) => CustomPaint(painter: _RingPainter(v, gc.bgRaised2, color ?? gc.accent)),
       ),
     );
   }

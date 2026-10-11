@@ -3,7 +3,6 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
-import '../models/workout.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -13,6 +12,7 @@ import '../widgets/exercise_media.dart';
 import '../widgets/glass.dart';
 import '../widgets/home_folder.dart';
 import '../widgets/routine_folder.dart';
+import '../widgets/steps_card.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/ui_kit.dart';
 import 'progress_screen.dart';
@@ -45,6 +45,10 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 14),
             ],
             _weekCard(context, gc),
+            if (fit.stepsOn && fit.stepsAvailable) ...[
+              const SizedBox(height: 14),
+              StepsCard(),
+            ],
             if (fit.photoDue) ...[
               const SizedBox(height: 14),
               _photoNudge(gc),
@@ -59,14 +63,23 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 30),
               _heading(gc, t.routines, onMore: fit.goRoutines),
               const SizedBox(height: 14),
-              SizedBox(
-                height: 128,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  clipBehavior: Clip.none,
-                  itemCount: routines.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 12),
-                  itemBuilder: (_, i) => _routineCard(context, gc, routines[i]),
+              LayoutBuilder(
+                builder: (context, box) => SizedBox(
+                  height: 196,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.none,
+                    itemCount: routines.length,
+                    separatorBuilder: (_, _) => const SizedBox(width: 12),
+                    itemBuilder: (_, i) => SizedBox(
+                      width: (box.maxWidth - 12) / 2,
+                      child: RoutineFolder(
+                        routine: routines[i],
+                        lastDone: true,
+                        onMenu: () => showRoutineMenu(context, routines[i]),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -129,6 +142,16 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
+            if (fit.nutritionBeta) ...[
+              const SizedBox(height: 12),
+              HomeFolder(
+                title: _tc(t.nutrition),
+                detail: _nutritionDetail,
+                peek: const NutritionPeek(),
+                badge: BetaTag(t.sectionBeta, small: true),
+                onTap: fit.goNutrition,
+              ),
+            ],
           ]),
         ),
       ),
@@ -177,6 +200,14 @@ class HomeScreen extends StatelessWidget {
   }
 
   String _tc(String s) => titleCase(s);
+
+  String get _nutritionDetail {
+    final now = DateTime.now();
+    final total = fit.totalOn(now);
+    final water = fit.waterOn(now);
+    if (total.isEmpty && water == 0) return t.nutritionHomeEmpty;
+    return t.nutritionHomeDetail('${fit.energyOf(total.kcal)} ${fit.energyUnit}', total.protein.round());
+  }
 
   Widget _heading(GymColors gc, String title, {VoidCallback? onMore}) {
     return GestureDetector(
@@ -443,51 +474,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Icon(PhosphorIconsBold.caretRight, size: 14, color: gc.textTertiary),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _routineCard(BuildContext context, GymColors gc, Routine r) {
-    final hue = folderHue(r);
-    final last = fit.lastDoneOf(r.id);
-    final now = DateTime.now();
-    final ago = last == null
-        ? null
-        : DateTime(now.year, now.month, now.day).difference(DateTime(last.year, last.month, last.day)).inDays;
-    return Pressable(
-      onTap: () => r.exerciseIds.isEmpty ? fit.openRoutine(r.id) : fit.startRoutine(r),
-      onLongPress: () => showRoutineMenu(context, r),
-      child: Container(
-        width: 156,
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 13),
-        decoration: BoxDecoration(
-          color: gc.bgRaised,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(color: hue, shape: BoxShape.circle),
-              child: Center(
-                child: SvgPathIcon(Ic.play, size: 12, color: Color.lerp(hue, Colors.black, 0.6)!),
-              ),
-            ),
-            const Spacer(),
-            Text(fit.routineTitle(r),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.f(14, weight: FontWeight.w700, color: gc.text, height: 1.2)),
-            const SizedBox(height: 4),
-            Text(
-                [t.exerciseCount(r.exerciseIds.length), if (ago != null) t.lastDoneAgo(ago)].join(' · '),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.f(11, weight: FontWeight.w500, color: gc.textTertiary)),
           ],
         ),
       ),

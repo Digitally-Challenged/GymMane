@@ -20,6 +20,7 @@ import '../widgets/exercise_media.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/muscle_radar.dart';
+import '../widgets/nutrition_art.dart' show ValueLineChart;
 import '../widgets/rolling_text.dart';
 import '../widgets/ruler_picker.dart';
 import '../widgets/ui_kit.dart';
@@ -214,7 +215,7 @@ class ProgressScreen extends StatelessWidget {
                             color: gc.textSecondary,
                             scale: fmt,
                           ),
-                    onTap: () => _logBodyweight(context),
+                    onTap: () => showBodyweightSheet(context),
                   ),
           ),
         ],
@@ -686,37 +687,257 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget bwRow(BuildContext context, GymColors gc, BodyweightEntry e) {
-    return Row(
-      children: [
-        Expanded(child: Text(t.shortDateYear(e.date), style: AppTheme.s(12, color: gc.textSecondary))),
-        Text(fit.weightLabel(e.kg), style: AppTheme.s(13, weight: FontWeight.w600, color: gc.text)),
-        Semantics(
-          button: true,
-          label: '${t.delete} ${fit.weightLabel(e.kg)}',
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => fit.deleteBodyweight(e),
-            child: SizedBox(
-              width: 44,
-              height: 40,
-              child: Icon(PhosphorIconsRegular.trash, size: 14, color: gc.textTertiary),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   void _showDay(BuildContext context, int index) => showDaySheet(context, fit.heatmapWeekDate(index));
 
-  void _logBodyweight(BuildContext context) {
-    final start = fit.latestBodyweight?.kg ?? fit.profile.weightKg;
-    showAppSheet(
+  void _logBodyweight(BuildContext context) => showLogBodyweightSheet(context);
+}
+
+void showLogBodyweightSheet(BuildContext context) {
+  final start = fit.latestBodyweight?.kg ?? fit.profile.weightKg;
+  showAppSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (_) => _LogBodyweightSheet(start: start),
+  );
+}
+
+void showBodyweightSheet(BuildContext context) => showAppSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => _LogBodyweightSheet(start: start),
+      backgroundColor: Colors.transparent,
+      builder: (_) => const _BodyweightSheet(),
+    );
+
+class _BodyweightSheet extends StatefulWidget {
+  const _BodyweightSheet();
+
+  @override
+  State<_BodyweightSheet> createState() => _BodyweightSheetState();
+}
+
+class _BodyweightSheetState extends State<_BodyweightSheet> {
+  int _days = 90;
+
+  Future<void> _editGoal() async {
+    final goal = fit.weightGoalKg;
+    final v = await askNumber(
+      context,
+      title: t.weightGoalTitle(fit.units),
+      initial: goal > 0 ? fit.weightValue(goal) : '',
+      decimal: true,
+    );
+    if (v == null) return;
+    fit.setWeightGoal(v <= 0 ? 0 : fit.fromDisplayWeight(v));
+  }
+
+  String _signed(double kg) => '${kg > 0 ? '+' : kg < 0 ? '−' : ''}${fit.weightLabel(kg.abs())}';
+
+  List<(DateTime, double)> _weeks(List<BodyweightEntry> all) {
+    final sums = <DateTime, (double, int)>{};
+    for (final e in all) {
+      final d = DateTime(e.date.year, e.date.month, e.date.day);
+      final start = shiftDays(d, -((d.weekday - fit.weekStartDay + 7) % 7));
+      final (sum, n) = sums[start] ?? (0.0, 0);
+      sums[start] = (sum + e.kg, n + 1);
+    }
+    final keys = sums.keys.toList()..sort();
+    return [for (final k in keys) (k, sums[k]!.$1 / sums[k]!.$2)];
+  }
+
+  Widget _kicker(GymColors gc, String text) => Padding(
+        padding: const EdgeInsets.only(left: 4, top: 22, bottom: 10),
+        child: Text(text.toUpperCase(),
+            style: AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.1)),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    return AnimatedBuilder(
+      animation: fit,
+      builder: (context, _) {
+        final all = [...fit.bodyweight]..sort((a, b) => a.date.compareTo(b.date));
+        final trend = fit.bodyweightTrend;
+        final from = _days == 0 ? null : shiftDays(DateTime.now(), -_days);
+        bool inRange(BodyweightEntry e) => from == null || !e.date.isBefore(from);
+        final shown = all.where(inRange).toList();
+        final trendShown = trend.where(inRange).toList();
+        final latest = fit.latestBodyweight;
+        final kg = latest?.kg ?? 0.0;
+        final goal = fit.weightGoalKg;
+        final diff = goal > 0 && kg > 0 ? goal - kg : 0.0;
+        final weeks = _weeks(all);
+        final recentWeeks = weeks.length > 8 ? weeks.sublist(weeks.length - 8) : weeks;
+        return Container(
+          constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.9),
+          decoration: BoxDecoration(
+            color: gc.bgRaised,
+            border: Border.all(color: gc.border),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(20, 12, 20, 20 + MediaQuery.paddingOf(context).bottom),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SheetHandle(),
+                const SizedBox(height: 16),
+                SheetTitle(t.bodyweightLabel, subtitle: latest == null ? null : t.shortDateYear(latest.date)),
+                const SizedBox(height: 14),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      RollingText(kg > 0 ? decimalText(fit.weightValue(kg)) : '—',
+                          style: AppTheme.f(46, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+                      const SizedBox(width: 6),
+                      Text(fit.units, style: AppTheme.f(17, weight: FontWeight.w700, color: gc.textSecondary)),
+                    ],
+                  ),
+                ),
+                if (trendShown.length >= 2) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    t.weightChangeRange(_signed(trendShown.last.kg - trendShown.first.kg)),
+                    textAlign: TextAlign.center,
+                    style: AppTheme.f(12.5, weight: FontWeight.w700, color: gc.textSecondary),
+                  ),
+                ],
+                const SizedBox(height: 16),
+                Center(
+                  child: SegToggle([
+                    SegOption(t.days30, _days == 30, () => setState(() => _days = 30)),
+                    SegOption(t.days90, _days == 90, () => setState(() => _days = 90)),
+                    SegOption(t.days365, _days == 365, () => setState(() => _days = 365)),
+                    SegOption(t.daysAll, _days == 0, () => setState(() => _days = 0)),
+                  ]),
+                ),
+                const SizedBox(height: 16),
+                if (shown.length >= 2)
+                  TrendChart(
+                    values: [for (final e in shown) fit.toDisplayWeight(e.kg)],
+                    height: 130,
+                    color: gc.info,
+                    scale: fmt,
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Text(t.trackWeight,
+                        textAlign: TextAlign.center, style: AppTheme.s(13, color: gc.textSecondary)),
+                  ),
+                const SizedBox(height: 16),
+                ToolGroup([
+                  ToolRow(
+                    label: t.weightGoalLabel,
+                    control: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: _editGoal,
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Text(goal > 0 ? fit.weightLabel(goal) : '—',
+                            style: AppTheme.f(14, weight: FontWeight.w800, color: gc.accent)),
+                        const SizedBox(width: 6),
+                        Icon(PhosphorIconsBold.pencilSimple, size: 13, color: gc.accent),
+                      ]),
+                    ),
+                  ),
+                ]),
+                if (goal > 0 && kg > 0) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    diff.abs() < 0.05
+                        ? t.weightGoalReached
+                        : diff < 0
+                            ? t.weightToLose(fit.weightLabel(-diff))
+                            : t.weightToGain(fit.weightLabel(diff)),
+                    textAlign: TextAlign.center,
+                    style: AppTheme.f(12.5, weight: FontWeight.w700, color: diff.abs() < 0.05 ? gc.sage : gc.textSecondary),
+                  ),
+                ],
+                if (recentWeeks.length >= 2) ...[
+                  _kicker(gc, t.weeklyAvgTitle),
+                  SoftCard(
+                    radius: 22,
+                    padding: const EdgeInsets.fromLTRB(12, 16, 12, 10),
+                    child: ValueLineChart(
+                      values: [for (final w in recentWeeks) fit.toDisplayWeight(w.$2)],
+                      labels: [for (final w in recentWeeks) t.shortDate(w.$1)],
+                      format: (v) => fmt((v * 10).round() / 10),
+                      color: gc.info,
+                      goal: goal > 0 ? fit.toDisplayWeight(goal) : null,
+                      fromZero: false,
+                      height: 150,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SoftCard(
+                    radius: 20,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    child: Column(children: [
+                      for (var i = recentWeeks.length - 1; i >= 0; i--)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Row(children: [
+                            Expanded(
+                              child: Text(t.weekOfDate(t.shortDate(recentWeeks[i].$1)),
+                                  style: AppTheme.s(12.5, color: gc.textSecondary)),
+                            ),
+                            Text(fit.weightLabel(recentWeeks[i].$2),
+                                style: AppTheme.f(13.5, weight: FontWeight.w800, color: gc.text)),
+                            SizedBox(
+                              width: 74,
+                              child: i == 0
+                                  ? const SizedBox.shrink()
+                                  : Text(
+                                      _signed(recentWeeks[i].$2 - recentWeeks[i - 1].$2),
+                                      textAlign: TextAlign.right,
+                                      style: AppTheme.f(12, weight: FontWeight.w700, color: gc.textTertiary),
+                                    ),
+                            ),
+                          ]),
+                        ),
+                    ]),
+                  ),
+                ],
+                if (all.isNotEmpty) ...[
+                  _kicker(gc, t.bodyweightHistory),
+                  SoftCard(
+                    radius: 20,
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Column(children: [
+                      for (final e in all.reversed.take(30))
+                        Row(children: [
+                          Expanded(
+                            child: Text(t.shortDateYear(e.date), style: AppTheme.s(12.5, color: gc.textSecondary)),
+                          ),
+                          Text(fit.weightLabel(e.kg), style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.text)),
+                          Semantics(
+                            button: true,
+                            label: '${t.delete} ${fit.weightLabel(e.kg)}',
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => fit.deleteBodyweight(e),
+                              child: SizedBox(
+                                width: 46,
+                                height: 42,
+                                child: Icon(PhosphorIconsRegular.trash, size: 14, color: gc.textTertiary),
+                              ),
+                            ),
+                          ),
+                        ]),
+                    ]),
+                  ),
+                ],
+                const SizedBox(height: 18),
+                PrimaryButton(label: sentenceCase(t.logBodyweight), onTap: () => showLogBodyweightSheet(context)),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

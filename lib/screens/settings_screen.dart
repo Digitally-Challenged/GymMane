@@ -34,6 +34,7 @@ import '../widgets/ruler_picker.dart';
 import '../widgets/timer_panel.dart';
 import 'profile_screen.dart';
 import 'strava_sheet.dart';
+import '../widgets/steps_card.dart';
 import '../widgets/ui_kit.dart';
 
 const _kRepoUrl = 'https://github.com/InlitX/GymMane';
@@ -348,11 +349,32 @@ class SettingsScreen extends StatelessWidget {
                 child: _prefRow(gc, PhosphorIconsRegular.chartBar, t.homeWeekStats,
                     TinySwitch(on: fit.showWeekStats), hint: t.homeWeekStatsHint),
               ),
+              if (fit.stepsAvailable)
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    if (await fit.setStepsOn(!fit.stepsOn) || !context.mounted) return;
+                    showStepsSheet(context);
+                  },
+                  child: _prefRow(gc, PhosphorIconsRegular.footprints, t.stepsSetting,
+                      TinySwitch(on: fit.stepsOn), hint: t.stepsSettingHint),
+                ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: fit.toggleGamification,
                 child: _prefRow(gc, PhosphorIconsRegular.medal, t.gamificationSetting,
                     TinySwitch(on: fit.gamification), hint: t.gamificationHint),
+              ),
+            ]),
+            const SizedBox(height: 18),
+            _group(gc, t.sectionBeta, [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => fit.setNutritionBeta(!fit.nutritionBeta),
+                child: _prefRow(gc, PhosphorIconsRegular.forkKnife, t.nutritionBeta,
+                    TinySwitch(on: fit.nutritionBeta),
+                    hint: t.nutritionBetaHint,
+                    badge: BetaTag(t.sectionBeta, small: true)),
               ),
             ]),
             const SizedBox(height: 18),
@@ -416,7 +438,7 @@ class SettingsScreen extends StatelessWidget {
       Text(t.toUpperCase(),
           style: AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.3));
 
-  Widget _prefRow(GymColors gc, IconData icon, String label, Widget control, {String? hint}) {
+  Widget _prefRow(GymColors gc, IconData icon, String label, Widget control, {String? hint, Widget? badge}) {
     if (hint == null) {
       return SizedBox(
         height: 52,
@@ -441,7 +463,14 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(label, style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text)),
+                  if (badge == null)
+                    Text(label, style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text))
+                  else
+                    Row(children: [
+                      Flexible(child: Text(label, style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text))),
+                      const SizedBox(width: 7),
+                      badge,
+                    ]),
                   const SizedBox(height: 3),
                   Text(hint,
                       style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textSecondary, height: 1.3)),

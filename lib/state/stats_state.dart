@@ -19,6 +19,22 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   int get sessionsToNextLevel => 10 - totalSessions % 10;
 
+  List<BodyweightEntry> get bodyweightTrend {
+    final list = [...bodyweight]..sort((a, b) => a.date.compareTo(b.date));
+    final out = <BodyweightEntry>[];
+    for (final e in list) {
+      if (out.isEmpty) {
+        out.add(BodyweightEntry(e.date, e.kg));
+        continue;
+      }
+      final prev = out.last;
+      final days = math.max(1, e.date.difference(prev.date).inHours / 24);
+      final keep = math.pow(0.9, days).toDouble();
+      out.add(BodyweightEntry(e.date, prev.kg * keep + e.kg * (1 - keep)));
+    }
+    return out;
+  }
+
   BodyweightEntry? get latestBodyweight =>
       bodyweight.isEmpty ? null : bodyweight.reduce((a, b) => a.date.isAfter(b.date) ? a : b);
 
@@ -172,16 +188,27 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   List<int> get heatmapLevels => heatmapLevelsFor(kHeatmapDays);
 
   List<int> heatmapLevelsFor(int days) {
-    final load = <DateTime, double>{for (final d in _checkinDays) d: 1};
+    final active = <DateTime>{..._checkinDays};
+    final load = <DateTime, double>{};
     for (final s in sessions) {
       final k = _dayKey(s.date);
-      load[k] = (load[k] ?? 0) + math.max(1, s.setCount);
+      active.add(k);
+      load[k] = (load[k] ?? 0) + s.volume;
     }
     final today = _dayKey(DateTime.now());
-    final daily = List.generate(days, (i) => load[shiftDays(today, i - (days - 1))] ?? 0.0);
-    final maxV = daily.fold(0.0, (m, v) => v > m ? v : m);
-    if (maxV <= 0) return List.filled(days, 0);
-    return daily.map((v) => heatLevel(v / maxV)).toList();
+    final keys = List.generate(days, (i) => shiftDays(today, i - (days - 1)));
+    final lifted = [for (final k in keys) if ((load[k] ?? 0) > 0) load[k]!]..sort();
+    return [
+      for (final k in keys)
+        if (!active.contains(k))
+          0
+        else if ((load[k] ?? 0) <= 0)
+          1
+        else if (lifted.length < 2)
+          heatLevels
+        else
+          1 + (lifted.indexOf(load[k]!) / (lifted.length - 1) * (heatLevels - 1)).round(),
+    ];
   }
 
   DateTime heatmapDate(int i) =>

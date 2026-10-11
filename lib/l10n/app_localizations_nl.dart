@@ -375,6 +375,28 @@ class AppLocalizationsNl extends AppLocalizations {
   String get days30 => '30 D';
 
   @override
+  String get days90 => '90 D';
+
+  @override
+  String get days365 => '1 J';
+
+  @override
+  String get daysAll => 'Alles';
+
+  @override
+  String get weeklyAvgTitle => 'Weekgemiddelde';
+
+  @override
+  String weekOfDate(String date) {
+    return 'Week van $date';
+  }
+
+  @override
+  String weightChangeRange(String change) {
+    return '$change in deze periode';
+  }
+
+  @override
   String get heatLow => 'Niet getraind';
 
   @override
@@ -1657,6 +1679,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get onbNameHint => 'Je voornaam';
 
   @override
+  String get onbPhotoAdd => 'Foto toevoegen';
+
+  @override
+  String get onbPhotoChange => 'Foto wijzigen';
+
+  @override
+  String get onbPhotoTitle => 'Geef je profiel een gezicht';
+
+  @override
+  String get onbPhotoWhy =>
+      'Optioneel. Hij blijft op je telefoon en je kunt hem altijd wijzigen in je profiel.';
+
+  @override
+  String get onbPhotoLater => 'LATER';
+
+  @override
   String get onbNameWhy => 'Alleen gebruikt om je te begroeten. Verlaat je telefoon nooit.';
 
   @override
@@ -2930,6 +2968,48 @@ class AppLocalizationsNl extends AppLocalizations {
   String get homeWeekStatsHint => 'Volume, sets en PR’s van de week.';
 
   @override
+  String get stepsSetting => 'Stappen uit Health Connect';
+
+  @override
+  String get stepsSettingHint => 'Toont de stappen van vandaag op Start. Niets verlaat je telefoon.';
+
+  @override
+  String get stepsToday => 'Stappen vandaag';
+
+  @override
+  String stepsOfGoal(String goal) {
+    return 'van $goal';
+  }
+
+  @override
+  String stepsTodayCount(String count) {
+    return '$count stappen vandaag';
+  }
+
+  @override
+  String get stepsGoal => 'Dagelijks stappendoel';
+
+  @override
+  String get stepsNoAccess => 'Geen toegang tot je stappen';
+
+  @override
+  String get stepsGrant => 'Tik om het toe te staan in Health Connect';
+
+  @override
+  String get stepsInfoRead =>
+      'Leest alleen je aantal stappen. Leest niets anders en schrijft nooit naar Health Connect.';
+
+  @override
+  String get stepsInfoLocal =>
+      'Je stappen blijven op je telefoon. GymMane maakt nooit verbinding met internet.';
+
+  @override
+  String get stepsInfoOff => 'Altijd uit te zetten, in Instellingen of in Health Connect.';
+
+  @override
+  String get stepsManage => 'Toestemming beheren';
+
+  @override
   String get routineDoneToday => 'Klaar voor vandaag · goed gedaan';
 
   @override
@@ -3472,4 +3552,1179 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get mergedToast => 'Geschiedenis samengevoegd';
+
+  @override
+  String get nutrition => 'Voeding';
+
+  @override
+  String get nutritionHomeEmpty => 'Water, eiwit en calorieën';
+
+  @override
+  String nutritionHomeDetail(String energy, int protein) {
+    return '$energy · $protein g eiwit';
+  }
+
+  @override
+  String get nutritionToday => 'Vandaag';
+
+  @override
+  String get nutritionYesterday => 'Gisteren';
+
+  @override
+  String get nutritionGoals => 'Dagdoelen';
+
+  @override
+  String get kcalLabel => 'CALORIEËN';
+
+  @override
+  String get kcalOver => 'te veel';
+
+  @override
+  String get waterLabel => 'WATER';
+
+  @override
+  String get waterDone => 'Doel gehaald';
+
+  @override
+  String get waterCustom => 'Andere hoeveelheid';
+
+  @override
+  String get glassSize => 'Glasgrootte';
+
+  @override
+  String get supplementsLabel => 'SUPPLEMENTEN';
+
+  @override
+  String get supplementsEmpty => 'Tik er een aan om toe te voegen, of + voor je eigen.';
+
+  @override
+  String get addSupplement => 'Nieuw supplement';
+
+  @override
+  String get supplementNameHint => 'Creatine, vitamine D…';
+
+  @override
+  String removeSupplementTitle(String name) {
+    return '$name verwijderen?';
+  }
+
+  @override
+  String get removeSupplementBody => 'De dagen waarop je het afvinkte gaan mee.';
+
+  @override
+  String get suppCreatine => 'Creatine';
+
+  @override
+  String get suppVitaminD => 'Vitamine D';
+
+  @override
+  String get suppOmega3 => 'Omega-3';
+
+  @override
+  String get suppMagnesium => 'Magnesium';
+
+  @override
+  String get suppMultivitamin => 'Multivitamine';
+
+  @override
+  String get suppCaffeine => 'Cafeïne';
+
+  @override
+  String get myFoods => 'Mijn voedingsmiddelen';
+
+  @override
+  String get newFood => 'Nieuw voedingsmiddel';
+
+  @override
+  String get editFood => 'Voedingsmiddel bewerken';
+
+  @override
+  String get foodNameHint => 'Whey, havermout, brood…';
+
+  @override
+  String get servingLabel => 'PORTIE';
+
+  @override
+  String get servingHint => '1 schepje · 30 g';
+
+  @override
+  String get perServing => 'PER PORTIE';
+
+  @override
+  String get servingsLabel => 'Porties';
+
+  @override
+  String get foodPhotoHint => 'Op een effen achtergrond wordt het een sticker.';
+
+  @override
+  String get cutoutWorking => 'Uitknippen…';
+
+  @override
+  String get cutoutTry => 'Uitknippen';
+
+  @override
+  String get cutoutKeep => 'Hele foto';
+
+  @override
+  String deleteFoodTitle(String name) {
+    return '$name verwijderen?';
+  }
+
+  @override
+  String get deleteFoodBody => 'Het verdwijnt uit je voedingsmiddelen. Wat je al noteerde blijft.';
+
+  @override
+  String get mealBreakfast => 'Ontbijt';
+
+  @override
+  String get mealLunch => 'Lunch';
+
+  @override
+  String get mealDinner => 'Avondeten';
+
+  @override
+  String get mealSnacks => 'Tussendoortjes';
+
+  @override
+  String get nothingLogged => 'Nog niets genoteerd.';
+
+  @override
+  String addToMeal(String meal) {
+    return 'Toevoegen aan $meal';
+  }
+
+  @override
+  String get quickAdd => 'Snel toevoegen';
+
+  @override
+  String get quickAddHint => 'Alleen de cijfers, zonder een voedingsmiddel op te slaan.';
+
+  @override
+  String get quickAddName => 'Wat was het? (optioneel)';
+
+  @override
+  String get logFood => 'Toevoegen';
+
+  @override
+  String loggedToast(String meal) {
+    return 'Toegevoegd aan $meal';
+  }
+
+  @override
+  String get entryRemoved => 'Verwijderd';
+
+  @override
+  String get goalsFromProfile => 'Berekenen vanuit mijn profiel';
+
+  @override
+  String get goalsFromProfileHint =>
+      'Calorieën uit je profiel, 1,8 g eiwit en 35 ml water per kg lichaamsgewicht.';
+
+  @override
+  String get kcalEaten => 'Gegeten';
+
+  @override
+  String get kcalRemaining => 'Over';
+
+  @override
+  String waterTapHint(String amount) {
+    return 'Tik op het glas: + $amount';
+  }
+
+  @override
+  String get shakeEmpty => 'Tik om je shake te kiezen';
+
+  @override
+  String shakeTapHint(String name) {
+    return 'Tik: + $name';
+  }
+
+  @override
+  String get shakePick => 'Jouw shake';
+
+  @override
+  String get shakePickHint => 'Tik op het glas en hij wordt in één keer genoteerd.';
+
+  @override
+  String get proteinLetter => 'E';
+
+  @override
+  String get carbsLetter => 'K';
+
+  @override
+  String get fatLetter => 'V';
+
+  @override
+  String get addBurnedLabel => 'Verbrande calorieën optellen';
+
+  @override
+  String get addBurnedHint => 'Verbrande calorieën worden geschat uit je trainingsduur en lichaamsgewicht.';
+
+  @override
+  String get amountLabel => 'Hoeveelheid';
+
+  @override
+  String amountIn(String unit) {
+    return 'Hoeveelheid ($unit)';
+  }
+
+  @override
+  String get bodyweightLabel => 'Gewicht';
+
+  @override
+  String copiedMealToast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count voedingsmiddelen gekopieerd',
+      one: '1 voedingsmiddel gekopieerd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteSavedMealBody => 'Wat je al noteerde blijft zoals het is.';
+
+  @override
+  String get fiberLabel => 'Vezels';
+
+  @override
+  String get sugarLabel => 'Suiker';
+
+  @override
+  String get sodiumLabel => 'Natrium';
+
+  @override
+  String get foodDatabase => 'Voedingsdatabase';
+
+  @override
+  String get kcalBurned => 'Verbrand';
+
+  @override
+  String get mealOptions => 'Maaltijdopties';
+
+  @override
+  String get moreNutrients => 'Vezels, suiker en natrium';
+
+  @override
+  String ofGoal(int goal, String unit) {
+    return 'van $goal $unit';
+  }
+
+  @override
+  String per100(String unit) {
+    return 'per 100 $unit';
+  }
+
+  @override
+  String get perServingShort => 'per portie';
+
+  @override
+  String portionUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count stuks', one: '1 stuk');
+    return '$_temp0';
+  }
+
+  @override
+  String portionSlice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plakken', one: '1 plak');
+    return '$_temp0';
+  }
+
+  @override
+  String portionScoop(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count schepjes',
+      one: '1 schepje',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String portionTbsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eetlepels',
+      one: '1 eetlepel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String portionTsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count theelepels',
+      one: '1 theelepel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String portionCup(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count koppen', one: '1 kop');
+    return '$_temp0';
+  }
+
+  @override
+  String portionGlass(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count glazen', one: '1 glas');
+    return '$_temp0';
+  }
+
+  @override
+  String get recentFoods => 'Recent';
+
+  @override
+  String recipeItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count voedingsmiddelen',
+      one: '1 voedingsmiddel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get renameLabel => 'Hernoemen';
+
+  @override
+  String get repeatFrom => 'Herhalen van';
+
+  @override
+  String get repeatNone => 'Op andere dagen staat voor deze maaltijd nog niets.';
+
+  @override
+  String get restDayGoals => 'Andere doelen op rustdagen';
+
+  @override
+  String get trainingDays => 'Trainingsdagen';
+
+  @override
+  String get restDays => 'Rustdagen';
+
+  @override
+  String get trainingDay => 'Trainingsdag';
+
+  @override
+  String get saveAsMeal => 'Opslaan als maaltijd';
+
+  @override
+  String get savedMealNameHint => 'bv. Vast ontbijt';
+
+  @override
+  String get savedMealToast => 'Maaltijd opgeslagen';
+
+  @override
+  String get savedMeals => 'Opgeslagen maaltijden';
+
+  @override
+  String get searchFoodsHint => 'Voedingsmiddelen zoeken';
+
+  @override
+  String get searchFoodsEmpty => 'Zoek tussen meer dan 500 voedingsmiddelen met foto, of maak je eigen.';
+
+  @override
+  String searchFoodsNone(String query) {
+    return 'Niets gevonden voor ‘$query’. Maak het aan als eigen voedingsmiddel.';
+  }
+
+  @override
+  String get servingWeight => 'GRAM';
+
+  @override
+  String get weekAverage => 'Deze week';
+
+  @override
+  String get weekAvgEnergy => 'Gemiddeld per dag';
+
+  @override
+  String get weekAvgProtein => 'Eiwit per dag';
+
+  @override
+  String get weekEnergyOnTarget => 'Calorieën op doel';
+
+  @override
+  String get weekProteinOnTarget => 'Eiwit op doel';
+
+  @override
+  String weekProteinAvg(int grams) {
+    return '$grams g eiwit per dag';
+  }
+
+  @override
+  String weekDaysOnTarget(int met, int days) {
+    return '$met van $days dagen op doel';
+  }
+
+  @override
+  String weekLoggedDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dagen genoteerd',
+      one: '1 dag genoteerd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get weekNoData => 'Nog niets genoteerd';
+
+  @override
+  String get weekOnTargetHint =>
+      'Op doel: calorieën binnen 10 % van het doel en minstens 90 % van het eiwit.';
+
+  @override
+  String get weightGoalLabel => 'Streefgewicht';
+
+  @override
+  String weightGoalTitle(String unit) {
+    return 'Streefgewicht ($unit)';
+  }
+
+  @override
+  String weightGoalLine(String weight) {
+    return 'Doel $weight';
+  }
+
+  @override
+  String get weightGoalNone => 'Houd vast om een doel te zetten';
+
+  @override
+  String get weightGoalReached => 'Doel gehaald';
+
+  @override
+  String weightToLose(String weight) {
+    return 'Nog $weight eraf';
+  }
+
+  @override
+  String weightToGain(String weight) {
+    return 'Nog $weight erbij';
+  }
+
+  @override
+  String get aminoHis => 'histidine';
+
+  @override
+  String get aminoIle => 'isoleucine';
+
+  @override
+  String get aminoLeu => 'leucine';
+
+  @override
+  String get aminoLys => 'lysine';
+
+  @override
+  String get aminoSaa => 'methionine';
+
+  @override
+  String get aminoAaa => 'fenylalanine';
+
+  @override
+  String get aminoThr => 'threonine';
+
+  @override
+  String get aminoTrp => 'tryptofaan';
+
+  @override
+  String get aminoVal => 'valine';
+
+  @override
+  String get animalProtein => 'Dierlijk eiwit';
+
+  @override
+  String get proteinQuality => 'Eiwitkwaliteit';
+
+  @override
+  String get qualityComplete => 'Volledig';
+
+  @override
+  String get qualityAlmost => 'Bijna volledig';
+
+  @override
+  String get qualityIncomplete => 'Onvolledig';
+
+  @override
+  String get qualityNoData => 'Nog geen gegevens';
+
+  @override
+  String get qualityNoDataHint => 'Noteer voedingsmiddelen uit de database om je aminozuren te zien.';
+
+  @override
+  String get qualityAllCovered => 'Alle negen essentiële aminozuren zijn gedekt.';
+
+  @override
+  String qualityLimiting(String amino) {
+    return 'Te weinig $amino. Combineer met voedingsmiddelen die er rijk aan zijn.';
+  }
+
+  @override
+  String qualityCoverage(int pct) {
+    return 'Berekend op $pct % van je eiwit: eigen voedingsmiddelen hebben geen aminozuurgegevens.';
+  }
+
+  @override
+  String get fatTypes => 'Soorten vet';
+
+  @override
+  String get fatSaturated => 'Verzadigd';
+
+  @override
+  String get fatMono => 'Enkelv.';
+
+  @override
+  String get fatPoly => 'Meerv.';
+
+  @override
+  String satLimitLine(String grams, int limit) {
+    return 'Verzadigd $grams g van max. $limit g (10 % van de calorieën)';
+  }
+
+  @override
+  String get sugarSodium => 'Suiker en natrium';
+
+  @override
+  String get shakeCard => 'Eiwitshake';
+
+  @override
+  String get mealOther => 'Maaltijd';
+
+  @override
+  String get mealAdd => 'Maaltijd toevoegen';
+
+  @override
+  String get mealAddHint => 'bv. Pre-workout';
+
+  @override
+  String get mealsOfDay => 'Maaltijden van de dag';
+
+  @override
+  String get mealsHint =>
+      'Maak er zoveel als je wilt. Verwijder je er een, dan gaat de inhoud naar die erboven.';
+
+  @override
+  String get trackersTitle => 'Aanpassen';
+
+  @override
+  String get trackersHint => 'Laat alleen zien wat je wilt bijhouden.';
+
+  @override
+  String get trackersDaily => 'Dagoverzicht';
+
+  @override
+  String get trackersDetail => 'In detail';
+
+  @override
+  String get trackersCards => 'Kaarten';
+
+  @override
+  String get prepTitle => 'Meal prep';
+
+  @override
+  String get prepNewShort => 'Nieuwe batch';
+
+  @override
+  String get prepNew => 'Nieuwe batch';
+
+  @override
+  String get prepEdit => 'Batch bewerken';
+
+  @override
+  String get prepHint => 'Noteer de hele pan één keer en eet hem beetje bij beetje op.';
+
+  @override
+  String get prepEmpty =>
+      'Voor meerdere dagen gekookt? Noteer het één keer en zeg dan alleen hoeveel van de rest je at.';
+
+  @override
+  String get prepNameHint => 'bv. Kip met rijst';
+
+  @override
+  String get prepDefaultName => 'Batch';
+
+  @override
+  String get prepIngredients => 'Ingrediënten';
+
+  @override
+  String get prepAddIngredient => 'Ingrediënt toevoegen';
+
+  @override
+  String get prepCookedWeight => 'GEWICHT GEKOOKT';
+
+  @override
+  String prepCookedHint(String grams) {
+    return 'Weeg de pan gekookt voor exacte cijfers. Leeg = totaal rauw gewicht ($grams g).';
+  }
+
+  @override
+  String get prepNeedWeight => 'Vul het gekookte gewicht in: sommige ingrediënten hebben geen grammen.';
+
+  @override
+  String prepLeftOf(String left, String total) {
+    return 'Nog $left van $total';
+  }
+
+  @override
+  String get prepOfWhatsLeft => '% van de rest';
+
+  @override
+  String get prepAll => 'Alles';
+
+  @override
+  String prepLogAmount(String grams) {
+    return '$grams noteren';
+  }
+
+  @override
+  String get prepWeighLeft => 'Rest wegen';
+
+  @override
+  String get prepFinished => 'Deze batch is op.';
+
+  @override
+  String get approxValues => 'Ongeveer';
+
+  @override
+  String get editValues => 'Waarden bewerken';
+
+  @override
+  String get editValuesHint =>
+      'Verandert alleen deze notitie. Om het voedingsmiddel voortaan te corrigeren, bewerk je het bij Mijn voedingsmiddelen.';
+
+  @override
+  String get editLibraryHint => 'Wordt opgeslagen als eigen voedingsmiddel, met dezelfde foto';
+
+  @override
+  String per100Line(String energy, String unit) {
+    return '$energy per 100 $unit';
+  }
+
+  @override
+  String get rawLabel => 'Rauw';
+
+  @override
+  String get cookedLabel => 'Gekookt';
+
+  @override
+  String get rawHint => 'Gewicht voor het koken';
+
+  @override
+  String cookedHint(String factor) {
+    return 'Gewicht gekookt (×$factor het rauwe gewicht)';
+  }
+
+  @override
+  String get servingsUnit => 'porties';
+
+  @override
+  String logAmount(String energy) {
+    return 'Noteren · $energy';
+  }
+
+  @override
+  String get catFruit => 'Fruit';
+
+  @override
+  String get catVeg => 'Groente';
+
+  @override
+  String get catMeat => 'Vlees';
+
+  @override
+  String get catFish => 'Vis';
+
+  @override
+  String get catEgg => 'Eieren';
+
+  @override
+  String get catDairy => 'Zuivel';
+
+  @override
+  String get catGrain => 'Granen';
+
+  @override
+  String get catBakery => 'Brood';
+
+  @override
+  String get catLegume => 'Peulvruchten';
+
+  @override
+  String get catNut => 'Noten';
+
+  @override
+  String get catOil => 'Oliën';
+
+  @override
+  String get catPantry => 'Voorraad';
+
+  @override
+  String get catDrink => 'Dranken';
+
+  @override
+  String get catSauce => 'Sauzen';
+
+  @override
+  String get catSpice => 'Kruiden';
+
+  @override
+  String get searchFoodsPrompt => 'Wat heb je gegeten?';
+
+  @override
+  String get shelfEmpty =>
+      'Zoek een voedingsmiddel of maak een foto van het jouwe: wat je het vaakst noteert verschijnt hier.';
+
+  @override
+  String get repeatEntry => 'Nog eens';
+
+  @override
+  String get notifSuppChannel => 'Supplementen';
+
+  @override
+  String get notifSuppChannelWhy => 'Dagelijkse herinnering voor je supplementen';
+
+  @override
+  String get energySplit => 'Waar de calorieën vandaan komen';
+
+  @override
+  String get typicalServing => 'Gangbare portie';
+
+  @override
+  String cookedYieldLine(String factor) {
+    return 'Weegt $factor× het rauwe gewicht';
+  }
+
+  @override
+  String get readyDishes => 'Dishes';
+
+  @override
+  String weightLastLine(String weight) {
+    return 'Last weigh-in $weight';
+  }
+
+  @override
+  String get proteinAnimalShort => 'Animal';
+
+  @override
+  String get proteinPlantShort => 'Plant';
+
+  @override
+  String kcalFromMacros(String value) {
+    return 'These macros add up to about $value';
+  }
+
+  @override
+  String get useValue => 'Use';
+
+  @override
+  String get suppRowHint => 'Tap to mark · hold for details';
+
+  @override
+  String get suppPhoto => 'Photo';
+
+  @override
+  String get suppDose => 'Dose';
+
+  @override
+  String get suppDoseHint => '5 g, 2 capsules…';
+
+  @override
+  String get suppRemind => 'Remind me';
+
+  @override
+  String mealPlanDefault(int n) {
+    return 'Plan $n';
+  }
+
+  @override
+  String get mealPlansTitle => 'Meal plans';
+
+  @override
+  String get mealPlanNew => 'New plan';
+
+  @override
+  String fromPlan(String name) {
+    return 'From $name';
+  }
+
+  @override
+  String get logPlan => 'Log';
+
+  @override
+  String get planFromDay => 'Copy this day';
+
+  @override
+  String get planNewHint => 'Plan your days like your routines, then log a whole meal with one tap.';
+
+  @override
+  String get planLogDay => 'Log the empty meals';
+
+  @override
+  String planLogged(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n foods logged',
+      one: '1 food logged',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planNoPlan => 'No plan';
+
+  @override
+  String get planWeekHint => 'Tap a day to give it a plan.';
+
+  @override
+  String get planDuplicate => 'Duplicate';
+
+  @override
+  String planDeleteTitle(String name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get planDeleteBody => 'Your logged days stay as they are.';
+
+  @override
+  String get sectionBeta => 'Beta';
+
+  @override
+  String get nutritionBeta => 'Nutrition';
+
+  @override
+  String get nutritionBetaHint =>
+      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+
+  @override
+  String get nutritionAboutTitle => 'About Nutrition';
+
+  @override
+  String get nutritionAboutSub => 'What it is, and what it will never be.';
+
+  @override
+  String get nutritionAboutWhatTitle => 'Part of your training';
+
+  @override
+  String get nutritionAboutWhat =>
+      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+
+  @override
+  String get nutritionAboutScanTitle => 'No scanning, ever';
+
+  @override
+  String get nutritionAboutScan =>
+      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+
+  @override
+  String get nutritionAboutLocalTitle => 'Everything on your phone';
+
+  @override
+  String get nutritionAboutLocal =>
+      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+
+  @override
+  String get nutritionAboutBetaTitle => 'Still in beta';
+
+  @override
+  String get nutritionAboutBeta =>
+      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+
+  @override
+  String get nutritionAboutSuggest => 'Suggest an idea';
+
+  @override
+  String get nutritionAboutOk => 'Got it';
+
+  @override
+  String get planShare => 'Share';
+
+  @override
+  String get planImport => 'Import a plan';
+
+  @override
+  String planImported(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n plans imported',
+      one: '1 plan imported',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planImportNone => 'That file has no meal plans.';
+
+  @override
+  String get planMoveUp => 'Move up';
+
+  @override
+  String get planMoveDown => 'Move down';
+
+  @override
+  String get cutoutEdit => 'Touch up cutout';
+
+  @override
+  String get cutoutEditHint =>
+      'Drag to erase or restore. Tap an area to remove or bring it back whole. Pinch to zoom.';
+
+  @override
+  String get cutoutErase => 'Erase';
+
+  @override
+  String get cutoutRestore => 'Restore';
+
+  @override
+  String get cutoutReset => 'Back to automatic';
+
+  @override
+  String get cutoutByHand => 'Cut out by hand';
+
+  @override
+  String notifSuppTitleFor(String names) {
+    return 'Time to take: $names';
+  }
+
+  @override
+  String get notifSuppTap => 'Tick it off in GymMane once you\'ve taken it.';
+
+  @override
+  String get suppNoneToday => 'Nothing to take today.';
+
+  @override
+  String get suppOtherDays => 'Other days';
+
+  @override
+  String suppEveryN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: 'Every $n days', one: 'Every day');
+    return '$_temp0';
+  }
+
+  @override
+  String get suppDaily => 'Every day';
+
+  @override
+  String suppFromDate(String date) {
+    return 'from $date';
+  }
+
+  @override
+  String suppUntilDate(String date) {
+    return 'until $date';
+  }
+
+  @override
+  String get suppSomeDays => 'Some days';
+
+  @override
+  String get suppEveryShort => 'Every X days';
+
+  @override
+  String get suppWhen => 'When';
+
+  @override
+  String get suppEveryLead => 'Every';
+
+  @override
+  String suppEveryTail(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: 'days', one: 'day');
+    return '$_temp0';
+  }
+
+  @override
+  String get suppStarts => 'Starts';
+
+  @override
+  String get suppEnds => 'Ends';
+
+  @override
+  String get suppTomorrow => 'Tomorrow';
+
+  @override
+  String get suppPickDate => 'Pick a date';
+
+  @override
+  String get suppNever => 'Never';
+
+  @override
+  String get suppOneWeek => 'In 1 week';
+
+  @override
+  String get suppOneMonth => 'In 1 month';
+
+  @override
+  String get planPickHint => 'Pick the plan for this day, or make a new one.';
+
+  @override
+  String planSetForDay(String day) {
+    return 'Plan set for $day';
+  }
+
+  @override
+  String get planSaved => 'Plan saved';
+
+  @override
+  String get planDiscardTitle => 'Discard changes?';
+
+  @override
+  String get planDiscardBody => 'What you changed won\'t be saved.';
+
+  @override
+  String get planDiscard => 'Discard';
+
+  @override
+  String get planEdit => 'Edit plan';
+
+  @override
+  String get planNameHint => 'Plan name';
+
+  @override
+  String get planDaysQuestion => 'Which days?';
+
+  @override
+  String get planDaysHint => 'On those days it shows up in Nutrition so you can log it in one tap.';
+
+  @override
+  String get planDaysNone => 'Pick at least one day, or it won\'t show up anywhere.';
+
+  @override
+  String get planNothingToLog => 'Those meals are already logged';
+
+  @override
+  String get planSave => 'Save plan';
+
+  @override
+  String get planToday => 'Today\'s plan';
+
+  @override
+  String get planLogRest => 'Log the rest';
+
+  @override
+  String get dishNew => 'Create my dish';
+
+  @override
+  String get dishNewHint => 'Pick ingredients and amounts, save it and log it in one tap.';
+
+  @override
+  String get dishEdit => 'Edit dish';
+
+  @override
+  String get dishNameHint => 'E.g. Mum\'s lentils';
+
+  @override
+  String get dishIngredients => 'Ingredients';
+
+  @override
+  String get dishEmptyHint => 'Add what goes in it with the amount you usually eat.';
+
+  @override
+  String get dishSave => 'Save dish';
+
+  @override
+  String get dishNeedsName => 'Give it a name';
+
+  @override
+  String get dishNeedsItems => 'Add at least one ingredient';
+
+  @override
+  String get suppHistory => 'Last 14 days';
+
+  @override
+  String suppTakenOf(int n, int total) {
+    return '$n of $total taken';
+  }
+
+  @override
+  String get suppNoReminder => 'No reminder';
+
+  @override
+  String get suppMarkTaken => 'Mark as taken';
+
+  @override
+  String get suppUnmark => 'Unmark';
+
+  @override
+  String get suppEdit => 'Edit';
+
+  @override
+  String get mealMoveTo => 'Move to';
+
+  @override
+  String get mealClear => 'Clear meal';
+
+  @override
+  String get mealCleared => 'Meal cleared';
+
+  @override
+  String movedMealToast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count foods moved',
+      one: '1 food moved',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get repeatWholeDay => 'Repeat the whole day';
+
+  @override
+  String createFoodNamed(String name) {
+    return 'Create “$name”';
+  }
+
+  @override
+  String get entryDay => 'Day';
+
+  @override
+  String get movedToDay => 'Moved';
+
+  @override
+  String get favFoodsHint => 'Tap ☆ on a food';
+
+  @override
+  String get favFoodsEmpty => 'Tap the star on any food to keep it here, one tap away.';
+
+  @override
+  String savedMealsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count meals', one: '1 meal');
+    return '$_temp0';
+  }
+
+  @override
+  String get savedMealsEmpty => 'Save a meal from its ••• menu, or build your own dish.';
+
+  @override
+  String get sugarLimitLabel => 'Sugar limit';
+
+  @override
+  String get sodiumLimitLabel => 'Sodium limit';
+
+  @override
+  String get waterOptions => 'Water options';
+
+  @override
+  String get waterNone => 'No water logged yet.';
+
+  @override
+  String get waterDailyGoal => 'Daily water';
+
+  @override
+  String get trackersScreen => 'Screen';
+
+  @override
+  String get vesselMotion => 'Moving water and shake';
+
+  @override
+  String get vesselMotionHint =>
+      'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
 }

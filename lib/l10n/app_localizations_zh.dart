@@ -360,6 +360,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get days30 => '30天';
 
   @override
+  String get days90 => '90天';
+
+  @override
+  String get days365 => '1年';
+
+  @override
+  String get daysAll => '全部';
+
+  @override
+  String get weeklyAvgTitle => '每周平均';
+
+  @override
+  String weekOfDate(String date) {
+    return '$date 那周';
+  }
+
+  @override
+  String weightChangeRange(String change) {
+    return '这段时间 $change';
+  }
+
+  @override
   String get heatLow => '未练';
 
   @override
@@ -1587,6 +1609,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onbNameHint => '你的名字或昵称';
 
   @override
+  String get onbPhotoAdd => '添加照片';
+
+  @override
+  String get onbPhotoChange => '更换照片';
+
+  @override
+  String get onbPhotoTitle => '给你的资料配张头像';
+
+  @override
+  String get onbPhotoWhy => '可选。照片只存在手机里，随时可以在个人资料里更换。';
+
+  @override
+  String get onbPhotoLater => '稍后';
+
+  @override
   String get onbNameWhy => '仅用于应用内的日常问候，绝不会离开你的手机。';
 
   @override
@@ -2798,6 +2835,46 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeWeekStatsHint => '本周的训练量、组数和纪录。';
 
   @override
+  String get stepsSetting => '来自 Health Connect 的步数';
+
+  @override
+  String get stepsSettingHint => '在首页显示今天的步数。数据不会离开手机。';
+
+  @override
+  String get stepsToday => '今日步数';
+
+  @override
+  String stepsOfGoal(String goal) {
+    return '/ $goal';
+  }
+
+  @override
+  String stepsTodayCount(String count) {
+    return '今天 $count 步';
+  }
+
+  @override
+  String get stepsGoal => '每日步数目标';
+
+  @override
+  String get stepsNoAccess => '无法读取步数';
+
+  @override
+  String get stepsGrant => '点按以在 Health Connect 中允许';
+
+  @override
+  String get stepsInfoRead => '只读取步数。不读取其他任何内容，也不会写入 Health Connect。';
+
+  @override
+  String get stepsInfoLocal => '步数只保存在手机上。GymMane 从不联网。';
+
+  @override
+  String get stepsInfoOff => '可随时在设置或 Health Connect 中关闭。';
+
+  @override
+  String get stepsManage => '管理权限';
+
+  @override
   String get routineDoneToday => '今天已完成 · 干得好';
 
   @override
@@ -3318,6 +3395,1145 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mergedToast => '记录已合并';
+
+  @override
+  String get nutrition => '饮食';
+
+  @override
+  String get nutritionHomeEmpty => '饮水、蛋白质和热量';
+
+  @override
+  String nutritionHomeDetail(String energy, int protein) {
+    return '$energy · 蛋白质 $protein 克';
+  }
+
+  @override
+  String get nutritionToday => '今天';
+
+  @override
+  String get nutritionYesterday => '昨天';
+
+  @override
+  String get nutritionGoals => '每日目标';
+
+  @override
+  String get kcalLabel => '热量';
+
+  @override
+  String get kcalOver => '超出';
+
+  @override
+  String get waterLabel => '饮水';
+
+  @override
+  String get waterDone => '已达成目标';
+
+  @override
+  String get waterCustom => '其他量';
+
+  @override
+  String get glassSize => '杯子容量';
+
+  @override
+  String get supplementsLabel => '补剂';
+
+  @override
+  String get supplementsEmpty => '点一下添加，或点 + 添加自己的。';
+
+  @override
+  String get addSupplement => '新补剂';
+
+  @override
+  String get supplementNameHint => '肌酸、维生素 D…';
+
+  @override
+  String removeSupplementTitle(String name) {
+    return '删除$name？';
+  }
+
+  @override
+  String get removeSupplementBody => '标记过的日子也会一起删除。';
+
+  @override
+  String get suppCreatine => '肌酸';
+
+  @override
+  String get suppVitaminD => '维生素 D';
+
+  @override
+  String get suppOmega3 => 'Omega-3';
+
+  @override
+  String get suppMagnesium => '镁';
+
+  @override
+  String get suppMultivitamin => '复合维生素';
+
+  @override
+  String get suppCaffeine => '咖啡因';
+
+  @override
+  String get myFoods => '我的食物';
+
+  @override
+  String get newFood => '新食物';
+
+  @override
+  String get editFood => '编辑食物';
+
+  @override
+  String get foodNameHint => '蛋白粉、燕麦、面包…';
+
+  @override
+  String get servingLabel => '份量';
+
+  @override
+  String get servingHint => '1 勺 · 30 克';
+
+  @override
+  String get perServing => '每份';
+
+  @override
+  String get servingsLabel => '份';
+
+  @override
+  String get foodPhotoHint => '纯色背景下会变成贴纸。';
+
+  @override
+  String get cutoutWorking => '正在抠图…';
+
+  @override
+  String get cutoutTry => '抠图';
+
+  @override
+  String get cutoutKeep => '整张照片';
+
+  @override
+  String deleteFoodTitle(String name) {
+    return '删除$name？';
+  }
+
+  @override
+  String get deleteFoodBody => '它会从你的食物中移除，已记录的内容保留。';
+
+  @override
+  String get mealBreakfast => '早餐';
+
+  @override
+  String get mealLunch => '午餐';
+
+  @override
+  String get mealDinner => '晚餐';
+
+  @override
+  String get mealSnacks => '加餐';
+
+  @override
+  String get nothingLogged => '还没有记录。';
+
+  @override
+  String addToMeal(String meal) {
+    return '添加到$meal';
+  }
+
+  @override
+  String get quickAdd => '快速添加';
+
+  @override
+  String get quickAddHint => '只记数字，不保存食物。';
+
+  @override
+  String get quickAddName => '吃了什么？（可选）';
+
+  @override
+  String get logFood => '添加';
+
+  @override
+  String loggedToast(String meal) {
+    return '已添加到$meal';
+  }
+
+  @override
+  String get entryRemoved => '已删除';
+
+  @override
+  String get goalsFromProfile => '按我的资料计算';
+
+  @override
+  String get goalsFromProfileHint => '热量来自你的资料，每公斤体重 1.8 克蛋白质和 35 毫升水。';
+
+  @override
+  String get kcalEaten => '已吃';
+
+  @override
+  String get kcalRemaining => '剩余';
+
+  @override
+  String waterTapHint(String amount) {
+    return '点杯子：+ $amount';
+  }
+
+  @override
+  String get shakeEmpty => '点一下选择你的奶昔';
+
+  @override
+  String shakeTapHint(String name) {
+    return '点一下：+ $name';
+  }
+
+  @override
+  String get shakePick => '你的奶昔';
+
+  @override
+  String get shakePickHint => '点杯子即可一次记录。';
+
+  @override
+  String get proteinLetter => '蛋';
+
+  @override
+  String get carbsLetter => '碳';
+
+  @override
+  String get fatLetter => '脂';
+
+  @override
+  String get addBurnedLabel => '加上消耗的热量';
+
+  @override
+  String get addBurnedHint => '消耗的热量按训练时长和体重估算。';
+
+  @override
+  String get amountLabel => '数量';
+
+  @override
+  String amountIn(String unit) {
+    return '数量（$unit）';
+  }
+
+  @override
+  String get bodyweightLabel => '体重';
+
+  @override
+  String copiedMealToast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '已复制 $count 种食物');
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteSavedMealBody => '已记录的内容保持不变。';
+
+  @override
+  String get fiberLabel => '膳食纤维';
+
+  @override
+  String get sugarLabel => '糖';
+
+  @override
+  String get sodiumLabel => '钠';
+
+  @override
+  String get foodDatabase => '食物库';
+
+  @override
+  String get kcalBurned => '消耗';
+
+  @override
+  String get mealOptions => '餐次选项';
+
+  @override
+  String get moreNutrients => '膳食纤维、糖和钠';
+
+  @override
+  String ofGoal(int goal, String unit) {
+    return '/ $goal $unit';
+  }
+
+  @override
+  String per100(String unit) {
+    return '每 100 $unit';
+  }
+
+  @override
+  String get perServingShort => '每份';
+
+  @override
+  String portionUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 个');
+    return '$_temp0';
+  }
+
+  @override
+  String portionSlice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 片');
+    return '$_temp0';
+  }
+
+  @override
+  String portionScoop(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 勺');
+    return '$_temp0';
+  }
+
+  @override
+  String portionTbsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 汤匙');
+    return '$_temp0';
+  }
+
+  @override
+  String portionTsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 茶匙');
+    return '$_temp0';
+  }
+
+  @override
+  String portionCup(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 杯');
+    return '$_temp0';
+  }
+
+  @override
+  String portionGlass(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 杯');
+    return '$_temp0';
+  }
+
+  @override
+  String get recentFoods => '最近';
+
+  @override
+  String recipeItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 种食物');
+    return '$_temp0';
+  }
+
+  @override
+  String get renameLabel => '重命名';
+
+  @override
+  String get repeatFrom => '从这里复用';
+
+  @override
+  String get repeatNone => '其他日子这一餐还没有记录。';
+
+  @override
+  String get restDayGoals => '休息日使用不同目标';
+
+  @override
+  String get trainingDays => '训练日';
+
+  @override
+  String get restDays => '休息日';
+
+  @override
+  String get trainingDay => '训练日';
+
+  @override
+  String get saveAsMeal => '保存为一餐';
+
+  @override
+  String get savedMealNameHint => '例如：常吃的早餐';
+
+  @override
+  String get savedMealToast => '已保存';
+
+  @override
+  String get savedMeals => '已保存的餐';
+
+  @override
+  String get searchFoodsHint => '搜索食物';
+
+  @override
+  String get searchFoodsEmpty => '在 500 多种带图片的食物中搜索，或创建你自己的。';
+
+  @override
+  String searchFoodsNone(String query) {
+    return '没有找到“$query”。把它创建成你的食物吧。';
+  }
+
+  @override
+  String get servingWeight => '克';
+
+  @override
+  String get weekAverage => '本周';
+
+  @override
+  String get weekAvgEnergy => '日均';
+
+  @override
+  String get weekAvgProtein => '每日蛋白质';
+
+  @override
+  String get weekEnergyOnTarget => '热量达标';
+
+  @override
+  String get weekProteinOnTarget => '蛋白质达标';
+
+  @override
+  String weekProteinAvg(int grams) {
+    return '每天蛋白质 $grams 克';
+  }
+
+  @override
+  String weekDaysOnTarget(int met, int days) {
+    return '$days 天中 $met 天达标';
+  }
+
+  @override
+  String weekLoggedDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '已记录 $count 天');
+    return '$_temp0';
+  }
+
+  @override
+  String get weekNoData => '还没有记录';
+
+  @override
+  String get weekOnTargetHint => '达标：热量在目标 ±10% 以内，且蛋白质至少达到 90%。';
+
+  @override
+  String get weightGoalLabel => '目标体重';
+
+  @override
+  String weightGoalTitle(String unit) {
+    return '目标体重（$unit）';
+  }
+
+  @override
+  String weightGoalLine(String weight) {
+    return '目标 $weight';
+  }
+
+  @override
+  String get weightGoalNone => '长按设置目标';
+
+  @override
+  String get weightGoalReached => '已达成目标';
+
+  @override
+  String weightToLose(String weight) {
+    return '还需减 $weight';
+  }
+
+  @override
+  String weightToGain(String weight) {
+    return '还需增 $weight';
+  }
+
+  @override
+  String get aminoHis => '组氨酸';
+
+  @override
+  String get aminoIle => '异亮氨酸';
+
+  @override
+  String get aminoLeu => '亮氨酸';
+
+  @override
+  String get aminoLys => '赖氨酸';
+
+  @override
+  String get aminoSaa => '蛋氨酸';
+
+  @override
+  String get aminoAaa => '苯丙氨酸';
+
+  @override
+  String get aminoThr => '苏氨酸';
+
+  @override
+  String get aminoTrp => '色氨酸';
+
+  @override
+  String get aminoVal => '缬氨酸';
+
+  @override
+  String get animalProtein => '动物蛋白';
+
+  @override
+  String get proteinQuality => '蛋白质质量';
+
+  @override
+  String get qualityComplete => '完全';
+
+  @override
+  String get qualityAlmost => '接近完全';
+
+  @override
+  String get qualityIncomplete => '不完全';
+
+  @override
+  String get qualityNoData => '暂无数据';
+
+  @override
+  String get qualityNoDataHint => '记录食物库中的食物即可查看氨基酸。';
+
+  @override
+  String get qualityAllCovered => '九种必需氨基酸都已满足。';
+
+  @override
+  String qualityLimiting(String amino) {
+    return '缺少$amino。搭配富含它的食物吧。';
+  }
+
+  @override
+  String qualityCoverage(int pct) {
+    return '基于你 $pct% 的蛋白质计算：自己创建的食物没有氨基酸数据。';
+  }
+
+  @override
+  String get fatTypes => '脂肪类型';
+
+  @override
+  String get fatSaturated => '饱和';
+
+  @override
+  String get fatMono => '单不饱和';
+
+  @override
+  String get fatPoly => '多不饱和';
+
+  @override
+  String satLimitLine(String grams, int limit) {
+    return '饱和脂肪 $grams 克，上限 $limit 克（热量的 10%）';
+  }
+
+  @override
+  String get sugarSodium => '糖和钠';
+
+  @override
+  String get shakeCard => '蛋白奶昔';
+
+  @override
+  String get mealOther => '餐';
+
+  @override
+  String get mealAdd => '添加一餐';
+
+  @override
+  String get mealAddHint => '例如：训练前';
+
+  @override
+  String get mealsOfDay => '一天的餐次';
+
+  @override
+  String get mealsHint => '想建几餐都行。删除一餐后，它的记录会移到上一餐。';
+
+  @override
+  String get trackersTitle => '自定义';
+
+  @override
+  String get trackersHint => '只保留你想追踪的内容。';
+
+  @override
+  String get trackersDaily => '当日概览';
+
+  @override
+  String get trackersDetail => '详细';
+
+  @override
+  String get trackersCards => '卡片';
+
+  @override
+  String get prepTitle => '备餐';
+
+  @override
+  String get prepNewShort => '新备餐';
+
+  @override
+  String get prepNew => '新备餐';
+
+  @override
+  String get prepEdit => '编辑备餐';
+
+  @override
+  String get prepHint => '整锅记录一次，然后一点点吃。';
+
+  @override
+  String get prepEmpty => '做了好几天的量？记录一次，之后只需说吃了剩下的多少。';
+
+  @override
+  String get prepNameHint => '例如：鸡肉饭';
+
+  @override
+  String get prepDefaultName => '备餐';
+
+  @override
+  String get prepIngredients => '食材';
+
+  @override
+  String get prepAddIngredient => '添加食材';
+
+  @override
+  String get prepCookedWeight => '熟重';
+
+  @override
+  String prepCookedHint(String grams) {
+    return '做好后连锅称重更准确。留空则用生重总和（$grams 克）。';
+  }
+
+  @override
+  String get prepNeedWeight => '请填写熟重：有些食材没有克数。';
+
+  @override
+  String prepLeftOf(String left, String total) {
+    return '剩 $left，共 $total';
+  }
+
+  @override
+  String get prepOfWhatsLeft => '剩余的 %';
+
+  @override
+  String get prepAll => '全部';
+
+  @override
+  String prepLogAmount(String grams) {
+    return '记录 $grams';
+  }
+
+  @override
+  String get prepWeighLeft => '称一下剩余';
+
+  @override
+  String get prepFinished => '这份备餐已吃完。';
+
+  @override
+  String get approxValues => '约值';
+
+  @override
+  String get editValues => '编辑数值';
+
+  @override
+  String get editValuesHint => '只修改这一条记录。若要以后都更正，请在“我的食物”中编辑。';
+
+  @override
+  String get editLibraryHint => '将以相同照片保存为你的食物';
+
+  @override
+  String per100Line(String energy, String unit) {
+    return '每 100 $unit $energy';
+  }
+
+  @override
+  String get rawLabel => '生';
+
+  @override
+  String get cookedLabel => '熟';
+
+  @override
+  String get rawHint => '烹饪前重量';
+
+  @override
+  String cookedHint(String factor) {
+    return '烹饪后重量（生重 ×$factor）';
+  }
+
+  @override
+  String get servingsUnit => '份';
+
+  @override
+  String logAmount(String energy) {
+    return '记录 · $energy';
+  }
+
+  @override
+  String get catFruit => '水果';
+
+  @override
+  String get catVeg => '蔬菜';
+
+  @override
+  String get catMeat => '肉类';
+
+  @override
+  String get catFish => '鱼类';
+
+  @override
+  String get catEgg => '蛋类';
+
+  @override
+  String get catDairy => '乳制品';
+
+  @override
+  String get catGrain => '谷物';
+
+  @override
+  String get catBakery => '面包';
+
+  @override
+  String get catLegume => '豆类';
+
+  @override
+  String get catNut => '坚果';
+
+  @override
+  String get catOil => '油';
+
+  @override
+  String get catPantry => '干货';
+
+  @override
+  String get catDrink => '饮品';
+
+  @override
+  String get catSauce => '酱料';
+
+  @override
+  String get catSpice => '香料';
+
+  @override
+  String get searchFoodsPrompt => '你吃了什么？';
+
+  @override
+  String get shelfEmpty => '搜索食物或给你的食物拍照：最常记录的会出现在这里。';
+
+  @override
+  String get repeatEntry => '再记一次';
+
+  @override
+  String get notifSuppChannel => '补剂';
+
+  @override
+  String get notifSuppChannelWhy => '每日服用补剂提醒';
+
+  @override
+  String get energySplit => '热量来源';
+
+  @override
+  String get typicalServing => '常见份量';
+
+  @override
+  String cookedYieldLine(String factor) {
+    return '重量为生重的 $factor 倍';
+  }
+
+  @override
+  String get readyDishes => 'Dishes';
+
+  @override
+  String weightLastLine(String weight) {
+    return 'Last weigh-in $weight';
+  }
+
+  @override
+  String get proteinAnimalShort => 'Animal';
+
+  @override
+  String get proteinPlantShort => 'Plant';
+
+  @override
+  String kcalFromMacros(String value) {
+    return 'These macros add up to about $value';
+  }
+
+  @override
+  String get useValue => 'Use';
+
+  @override
+  String get suppRowHint => 'Tap to mark · hold for details';
+
+  @override
+  String get suppPhoto => 'Photo';
+
+  @override
+  String get suppDose => 'Dose';
+
+  @override
+  String get suppDoseHint => '5 g, 2 capsules…';
+
+  @override
+  String get suppRemind => 'Remind me';
+
+  @override
+  String mealPlanDefault(int n) {
+    return 'Plan $n';
+  }
+
+  @override
+  String get mealPlansTitle => 'Meal plans';
+
+  @override
+  String get mealPlanNew => 'New plan';
+
+  @override
+  String fromPlan(String name) {
+    return 'From $name';
+  }
+
+  @override
+  String get logPlan => 'Log';
+
+  @override
+  String get planFromDay => 'Copy this day';
+
+  @override
+  String get planNewHint => 'Plan your days like your routines, then log a whole meal with one tap.';
+
+  @override
+  String get planLogDay => 'Log the empty meals';
+
+  @override
+  String planLogged(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n foods logged',
+      one: '1 food logged',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planNoPlan => 'No plan';
+
+  @override
+  String get planWeekHint => 'Tap a day to give it a plan.';
+
+  @override
+  String get planDuplicate => 'Duplicate';
+
+  @override
+  String planDeleteTitle(String name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get planDeleteBody => 'Your logged days stay as they are.';
+
+  @override
+  String get sectionBeta => 'Beta';
+
+  @override
+  String get nutritionBeta => 'Nutrition';
+
+  @override
+  String get nutritionBetaHint =>
+      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+
+  @override
+  String get nutritionAboutTitle => 'About Nutrition';
+
+  @override
+  String get nutritionAboutSub => 'What it is, and what it will never be.';
+
+  @override
+  String get nutritionAboutWhatTitle => 'Part of your training';
+
+  @override
+  String get nutritionAboutWhat =>
+      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+
+  @override
+  String get nutritionAboutScanTitle => 'No scanning, ever';
+
+  @override
+  String get nutritionAboutScan =>
+      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+
+  @override
+  String get nutritionAboutLocalTitle => 'Everything on your phone';
+
+  @override
+  String get nutritionAboutLocal =>
+      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+
+  @override
+  String get nutritionAboutBetaTitle => 'Still in beta';
+
+  @override
+  String get nutritionAboutBeta =>
+      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+
+  @override
+  String get nutritionAboutSuggest => 'Suggest an idea';
+
+  @override
+  String get nutritionAboutOk => 'Got it';
+
+  @override
+  String get planShare => 'Share';
+
+  @override
+  String get planImport => 'Import a plan';
+
+  @override
+  String planImported(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n plans imported',
+      one: '1 plan imported',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planImportNone => 'That file has no meal plans.';
+
+  @override
+  String get planMoveUp => 'Move up';
+
+  @override
+  String get planMoveDown => 'Move down';
+
+  @override
+  String get cutoutEdit => 'Touch up cutout';
+
+  @override
+  String get cutoutEditHint =>
+      'Drag to erase or restore. Tap an area to remove or bring it back whole. Pinch to zoom.';
+
+  @override
+  String get cutoutErase => 'Erase';
+
+  @override
+  String get cutoutRestore => 'Restore';
+
+  @override
+  String get cutoutReset => 'Back to automatic';
+
+  @override
+  String get cutoutByHand => 'Cut out by hand';
+
+  @override
+  String notifSuppTitleFor(String names) {
+    return 'Time to take: $names';
+  }
+
+  @override
+  String get notifSuppTap => 'Tick it off in GymMane once you\'ve taken it.';
+
+  @override
+  String get suppNoneToday => 'Nothing to take today.';
+
+  @override
+  String get suppOtherDays => 'Other days';
+
+  @override
+  String suppEveryN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: 'Every $n days', one: 'Every day');
+    return '$_temp0';
+  }
+
+  @override
+  String get suppDaily => 'Every day';
+
+  @override
+  String suppFromDate(String date) {
+    return 'from $date';
+  }
+
+  @override
+  String suppUntilDate(String date) {
+    return 'until $date';
+  }
+
+  @override
+  String get suppSomeDays => 'Some days';
+
+  @override
+  String get suppEveryShort => 'Every X days';
+
+  @override
+  String get suppWhen => 'When';
+
+  @override
+  String get suppEveryLead => 'Every';
+
+  @override
+  String suppEveryTail(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: 'days', one: 'day');
+    return '$_temp0';
+  }
+
+  @override
+  String get suppStarts => 'Starts';
+
+  @override
+  String get suppEnds => 'Ends';
+
+  @override
+  String get suppTomorrow => 'Tomorrow';
+
+  @override
+  String get suppPickDate => 'Pick a date';
+
+  @override
+  String get suppNever => 'Never';
+
+  @override
+  String get suppOneWeek => 'In 1 week';
+
+  @override
+  String get suppOneMonth => 'In 1 month';
+
+  @override
+  String get planPickHint => 'Pick the plan for this day, or make a new one.';
+
+  @override
+  String planSetForDay(String day) {
+    return 'Plan set for $day';
+  }
+
+  @override
+  String get planSaved => 'Plan saved';
+
+  @override
+  String get planDiscardTitle => 'Discard changes?';
+
+  @override
+  String get planDiscardBody => 'What you changed won\'t be saved.';
+
+  @override
+  String get planDiscard => 'Discard';
+
+  @override
+  String get planEdit => 'Edit plan';
+
+  @override
+  String get planNameHint => 'Plan name';
+
+  @override
+  String get planDaysQuestion => 'Which days?';
+
+  @override
+  String get planDaysHint => 'On those days it shows up in Nutrition so you can log it in one tap.';
+
+  @override
+  String get planDaysNone => 'Pick at least one day, or it won\'t show up anywhere.';
+
+  @override
+  String get planNothingToLog => 'Those meals are already logged';
+
+  @override
+  String get planSave => 'Save plan';
+
+  @override
+  String get planToday => 'Today\'s plan';
+
+  @override
+  String get planLogRest => 'Log the rest';
+
+  @override
+  String get dishNew => 'Create my dish';
+
+  @override
+  String get dishNewHint => 'Pick ingredients and amounts, save it and log it in one tap.';
+
+  @override
+  String get dishEdit => 'Edit dish';
+
+  @override
+  String get dishNameHint => 'E.g. Mum\'s lentils';
+
+  @override
+  String get dishIngredients => 'Ingredients';
+
+  @override
+  String get dishEmptyHint => 'Add what goes in it with the amount you usually eat.';
+
+  @override
+  String get dishSave => 'Save dish';
+
+  @override
+  String get dishNeedsName => 'Give it a name';
+
+  @override
+  String get dishNeedsItems => 'Add at least one ingredient';
+
+  @override
+  String get suppHistory => 'Last 14 days';
+
+  @override
+  String suppTakenOf(int n, int total) {
+    return '$n of $total taken';
+  }
+
+  @override
+  String get suppNoReminder => 'No reminder';
+
+  @override
+  String get suppMarkTaken => 'Mark as taken';
+
+  @override
+  String get suppUnmark => 'Unmark';
+
+  @override
+  String get suppEdit => 'Edit';
+
+  @override
+  String get mealMoveTo => 'Move to';
+
+  @override
+  String get mealClear => 'Clear meal';
+
+  @override
+  String get mealCleared => 'Meal cleared';
+
+  @override
+  String movedMealToast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count foods moved',
+      one: '1 food moved',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get repeatWholeDay => 'Repeat the whole day';
+
+  @override
+  String createFoodNamed(String name) {
+    return 'Create “$name”';
+  }
+
+  @override
+  String get entryDay => 'Day';
+
+  @override
+  String get movedToDay => 'Moved';
+
+  @override
+  String get favFoodsHint => 'Tap ☆ on a food';
+
+  @override
+  String get favFoodsEmpty => 'Tap the star on any food to keep it here, one tap away.';
+
+  @override
+  String savedMealsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count meals', one: '1 meal');
+    return '$_temp0';
+  }
+
+  @override
+  String get savedMealsEmpty => 'Save a meal from its ••• menu, or build your own dish.';
+
+  @override
+  String get sugarLimitLabel => 'Sugar limit';
+
+  @override
+  String get sodiumLimitLabel => 'Sodium limit';
+
+  @override
+  String get waterOptions => 'Water options';
+
+  @override
+  String get waterNone => 'No water logged yet.';
+
+  @override
+  String get waterDailyGoal => 'Daily water';
+
+  @override
+  String get trackersScreen => 'Screen';
+
+  @override
+  String get vesselMotion => 'Moving water and shake';
+
+  @override
+  String get vesselMotionHint =>
+      'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3674,6 +4890,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get days30 => '30 天';
+
+  @override
+  String get days90 => '90 天';
+
+  @override
+  String get days365 => '1 年';
+
+  @override
+  String get daysAll => '全部';
+
+  @override
+  String get weeklyAvgTitle => '每週平均';
+
+  @override
+  String weekOfDate(String date) {
+    return '$date 那週';
+  }
+
+  @override
+  String weightChangeRange(String change) {
+    return '這段時間 $change';
+  }
 
   @override
   String get heatLow => '未訓練';
@@ -4901,6 +6139,21 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get onbNameHint => '你的名字';
+
+  @override
+  String get onbPhotoAdd => '新增照片';
+
+  @override
+  String get onbPhotoChange => '更換照片';
+
+  @override
+  String get onbPhotoTitle => '替你的個人檔案配張頭像';
+
+  @override
+  String get onbPhotoWhy => '可選。照片只存在手機裡，隨時可以在個人檔案裡更換。';
+
+  @override
+  String get onbPhotoLater => '稍後';
 
   @override
   String get onbNameWhy => '僅用於稱呼你。永遠不會離開你的手機。';
@@ -6131,6 +7384,46 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get homeWeekStatsHint => '本週的訓練量、組數和紀錄。';
 
   @override
+  String get stepsSetting => '來自 Health Connect 的步數';
+
+  @override
+  String get stepsSettingHint => '在首頁顯示今天的步數。資料不會離開手機。';
+
+  @override
+  String get stepsToday => '今日步數';
+
+  @override
+  String stepsOfGoal(String goal) {
+    return '/ $goal';
+  }
+
+  @override
+  String stepsTodayCount(String count) {
+    return '今天 $count 步';
+  }
+
+  @override
+  String get stepsGoal => '每日步數目標';
+
+  @override
+  String get stepsNoAccess => '無法讀取步數';
+
+  @override
+  String get stepsGrant => '點按以在 Health Connect 中允許';
+
+  @override
+  String get stepsInfoRead => '只讀取步數。不讀取其他任何內容，也不會寫入 Health Connect。';
+
+  @override
+  String get stepsInfoLocal => '步數只保存在手機上。GymMane 從不連網。';
+
+  @override
+  String get stepsInfoOff => '可隨時在設定或 Health Connect 中關閉。';
+
+  @override
+  String get stepsManage => '管理權限';
+
+  @override
   String get routineDoneToday => '今天完成了 · 做得好';
 
   @override
@@ -6651,4 +7944,715 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get mergedToast => '紀錄已合併';
+
+  @override
+  String get nutrition => '飲食';
+
+  @override
+  String get nutritionHomeEmpty => '飲水、蛋白質和熱量';
+
+  @override
+  String nutritionHomeDetail(String energy, int protein) {
+    return '$energy · 蛋白質 $protein 克';
+  }
+
+  @override
+  String get nutritionToday => '今天';
+
+  @override
+  String get nutritionYesterday => '昨天';
+
+  @override
+  String get nutritionGoals => '每日目標';
+
+  @override
+  String get kcalLabel => '熱量';
+
+  @override
+  String get kcalOver => '超出';
+
+  @override
+  String get waterLabel => '飲水';
+
+  @override
+  String get waterDone => '已達成目標';
+
+  @override
+  String get waterCustom => '其他份量';
+
+  @override
+  String get glassSize => '杯子容量';
+
+  @override
+  String get supplementsLabel => '補充品';
+
+  @override
+  String get supplementsEmpty => '點一下加入，或點 + 加入自己的。';
+
+  @override
+  String get addSupplement => '新補充品';
+
+  @override
+  String get supplementNameHint => '肌酸、維生素 D…';
+
+  @override
+  String removeSupplementTitle(String name) {
+    return '刪除$name？';
+  }
+
+  @override
+  String get removeSupplementBody => '標記過的日子也會一起刪除。';
+
+  @override
+  String get suppCreatine => '肌酸';
+
+  @override
+  String get suppVitaminD => '維生素 D';
+
+  @override
+  String get suppOmega3 => 'Omega-3';
+
+  @override
+  String get suppMagnesium => '鎂';
+
+  @override
+  String get suppMultivitamin => '綜合維他命';
+
+  @override
+  String get suppCaffeine => '咖啡因';
+
+  @override
+  String get myFoods => '我的食物';
+
+  @override
+  String get newFood => '新食物';
+
+  @override
+  String get editFood => '編輯食物';
+
+  @override
+  String get foodNameHint => '乳清蛋白、燕麥、麵包…';
+
+  @override
+  String get servingLabel => '份量';
+
+  @override
+  String get servingHint => '1 勺 · 30 克';
+
+  @override
+  String get perServing => '每份';
+
+  @override
+  String get servingsLabel => '份';
+
+  @override
+  String get foodPhotoHint => '純色背景下會變成貼紙。';
+
+  @override
+  String get cutoutWorking => '去背中…';
+
+  @override
+  String get cutoutTry => '去背';
+
+  @override
+  String get cutoutKeep => '整張照片';
+
+  @override
+  String deleteFoodTitle(String name) {
+    return '刪除$name？';
+  }
+
+  @override
+  String get deleteFoodBody => '會從你的食物中移除，已記錄的內容保留。';
+
+  @override
+  String get mealBreakfast => '早餐';
+
+  @override
+  String get mealLunch => '午餐';
+
+  @override
+  String get mealDinner => '晚餐';
+
+  @override
+  String get mealSnacks => '點心';
+
+  @override
+  String get nothingLogged => '還沒有記錄。';
+
+  @override
+  String addToMeal(String meal) {
+    return '加到$meal';
+  }
+
+  @override
+  String get quickAdd => '快速加入';
+
+  @override
+  String get quickAddHint => '只記數字，不儲存食物。';
+
+  @override
+  String get quickAddName => '吃了什麼？（選填）';
+
+  @override
+  String get logFood => '加入';
+
+  @override
+  String loggedToast(String meal) {
+    return '已加到$meal';
+  }
+
+  @override
+  String get entryRemoved => '已刪除';
+
+  @override
+  String get goalsFromProfile => '依我的資料計算';
+
+  @override
+  String get goalsFromProfileHint => '熱量來自你的資料，每公斤體重 1.8 克蛋白質和 35 毫升水。';
+
+  @override
+  String get kcalEaten => '已吃';
+
+  @override
+  String get kcalRemaining => '剩餘';
+
+  @override
+  String waterTapHint(String amount) {
+    return '點杯子：+ $amount';
+  }
+
+  @override
+  String get shakeEmpty => '點一下選擇你的奶昔';
+
+  @override
+  String shakeTapHint(String name) {
+    return '點一下：+ $name';
+  }
+
+  @override
+  String get shakePick => '你的奶昔';
+
+  @override
+  String get shakePickHint => '點杯子就能一次記錄。';
+
+  @override
+  String get proteinLetter => '蛋';
+
+  @override
+  String get carbsLetter => '碳';
+
+  @override
+  String get fatLetter => '脂';
+
+  @override
+  String get addBurnedLabel => '加上消耗的熱量';
+
+  @override
+  String get addBurnedHint => '消耗的熱量依訓練時長和體重估算。';
+
+  @override
+  String get amountLabel => '數量';
+
+  @override
+  String amountIn(String unit) {
+    return '數量（$unit）';
+  }
+
+  @override
+  String get bodyweightLabel => '體重';
+
+  @override
+  String copiedMealToast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '已複製 $count 種食物');
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteSavedMealBody => '已記錄的內容維持不變。';
+
+  @override
+  String get fiberLabel => '膳食纖維';
+
+  @override
+  String get sugarLabel => '糖';
+
+  @override
+  String get sodiumLabel => '鈉';
+
+  @override
+  String get foodDatabase => '食物庫';
+
+  @override
+  String get kcalBurned => '消耗';
+
+  @override
+  String get mealOptions => '餐次選項';
+
+  @override
+  String get moreNutrients => '膳食纖維、糖和鈉';
+
+  @override
+  String ofGoal(int goal, String unit) {
+    return '/ $goal $unit';
+  }
+
+  @override
+  String per100(String unit) {
+    return '每 100 $unit';
+  }
+
+  @override
+  String get perServingShort => '每份';
+
+  @override
+  String portionUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 個');
+    return '$_temp0';
+  }
+
+  @override
+  String portionSlice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 片');
+    return '$_temp0';
+  }
+
+  @override
+  String portionScoop(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 勺');
+    return '$_temp0';
+  }
+
+  @override
+  String portionTbsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 湯匙');
+    return '$_temp0';
+  }
+
+  @override
+  String portionTsp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 茶匙');
+    return '$_temp0';
+  }
+
+  @override
+  String portionCup(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 杯');
+    return '$_temp0';
+  }
+
+  @override
+  String portionGlass(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 杯');
+    return '$_temp0';
+  }
+
+  @override
+  String get recentFoods => '最近';
+
+  @override
+  String recipeItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count 種食物');
+    return '$_temp0';
+  }
+
+  @override
+  String get renameLabel => '重新命名';
+
+  @override
+  String get repeatFrom => '從這裡沿用';
+
+  @override
+  String get repeatNone => '其他日子這一餐還沒有記錄。';
+
+  @override
+  String get restDayGoals => '休息日使用不同目標';
+
+  @override
+  String get trainingDays => '訓練日';
+
+  @override
+  String get restDays => '休息日';
+
+  @override
+  String get trainingDay => '訓練日';
+
+  @override
+  String get saveAsMeal => '儲存為一餐';
+
+  @override
+  String get savedMealNameHint => '例如：常吃的早餐';
+
+  @override
+  String get savedMealToast => '已儲存';
+
+  @override
+  String get savedMeals => '已儲存的餐';
+
+  @override
+  String get searchFoodsHint => '搜尋食物';
+
+  @override
+  String get searchFoodsEmpty => '在 500 多種附照片的食物中搜尋，或建立你自己的。';
+
+  @override
+  String searchFoodsNone(String query) {
+    return '找不到「$query」。把它建立成你的食物吧。';
+  }
+
+  @override
+  String get servingWeight => '克';
+
+  @override
+  String get weekAverage => '本週';
+
+  @override
+  String get weekAvgEnergy => '每日平均';
+
+  @override
+  String get weekAvgProtein => '每日蛋白質';
+
+  @override
+  String get weekEnergyOnTarget => '熱量達標';
+
+  @override
+  String get weekProteinOnTarget => '蛋白質達標';
+
+  @override
+  String weekProteinAvg(int grams) {
+    return '每天蛋白質 $grams 克';
+  }
+
+  @override
+  String weekDaysOnTarget(int met, int days) {
+    return '$days 天中 $met 天達標';
+  }
+
+  @override
+  String weekLoggedDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '已記錄 $count 天');
+    return '$_temp0';
+  }
+
+  @override
+  String get weekNoData => '還沒有記錄';
+
+  @override
+  String get weekOnTargetHint => '達標：熱量在目標 ±10% 以內，且蛋白質至少達到 90%。';
+
+  @override
+  String get weightGoalLabel => '目標體重';
+
+  @override
+  String weightGoalTitle(String unit) {
+    return '目標體重（$unit）';
+  }
+
+  @override
+  String weightGoalLine(String weight) {
+    return '目標 $weight';
+  }
+
+  @override
+  String get weightGoalNone => '長按設定目標';
+
+  @override
+  String get weightGoalReached => '已達成目標';
+
+  @override
+  String weightToLose(String weight) {
+    return '還要減 $weight';
+  }
+
+  @override
+  String weightToGain(String weight) {
+    return '還要增 $weight';
+  }
+
+  @override
+  String get aminoHis => '組胺酸';
+
+  @override
+  String get aminoIle => '異白胺酸';
+
+  @override
+  String get aminoLeu => '白胺酸';
+
+  @override
+  String get aminoLys => '離胺酸';
+
+  @override
+  String get aminoSaa => '甲硫胺酸';
+
+  @override
+  String get aminoAaa => '苯丙胺酸';
+
+  @override
+  String get aminoThr => '蘇胺酸';
+
+  @override
+  String get aminoTrp => '色胺酸';
+
+  @override
+  String get aminoVal => '纈胺酸';
+
+  @override
+  String get animalProtein => '動物性蛋白質';
+
+  @override
+  String get proteinQuality => '蛋白質品質';
+
+  @override
+  String get qualityComplete => '完全';
+
+  @override
+  String get qualityAlmost => '接近完全';
+
+  @override
+  String get qualityIncomplete => '不完全';
+
+  @override
+  String get qualityNoData => '尚無資料';
+
+  @override
+  String get qualityNoDataHint => '記錄食物庫裡的食物就能看到胺基酸。';
+
+  @override
+  String get qualityAllCovered => '九種必需胺基酸都已滿足。';
+
+  @override
+  String qualityLimiting(String amino) {
+    return '缺少$amino。搭配富含它的食物吧。';
+  }
+
+  @override
+  String qualityCoverage(int pct) {
+    return '以你 $pct% 的蛋白質計算：自己建立的食物沒有胺基酸資料。';
+  }
+
+  @override
+  String get fatTypes => '脂肪種類';
+
+  @override
+  String get fatSaturated => '飽和';
+
+  @override
+  String get fatMono => '單元不飽和';
+
+  @override
+  String get fatPoly => '多元不飽和';
+
+  @override
+  String satLimitLine(String grams, int limit) {
+    return '飽和脂肪 $grams 克，上限 $limit 克（熱量的 10%）';
+  }
+
+  @override
+  String get sugarSodium => '糖和鈉';
+
+  @override
+  String get shakeCard => '蛋白奶昔';
+
+  @override
+  String get mealOther => '餐';
+
+  @override
+  String get mealAdd => '新增一餐';
+
+  @override
+  String get mealAddHint => '例如：訓練前';
+
+  @override
+  String get mealsOfDay => '一天的餐次';
+
+  @override
+  String get mealsHint => '想建幾餐都可以。刪除一餐後，它的記錄會移到上一餐。';
+
+  @override
+  String get trackersTitle => '自訂';
+
+  @override
+  String get trackersHint => '只留下你想追蹤的項目。';
+
+  @override
+  String get trackersDaily => '當日概覽';
+
+  @override
+  String get trackersDetail => '詳細';
+
+  @override
+  String get trackersCards => '卡片';
+
+  @override
+  String get prepTitle => '備餐';
+
+  @override
+  String get prepNewShort => '新備餐';
+
+  @override
+  String get prepNew => '新備餐';
+
+  @override
+  String get prepEdit => '編輯備餐';
+
+  @override
+  String get prepHint => '整鍋記錄一次，然後一點一點吃。';
+
+  @override
+  String get prepEmpty => '煮了好幾天的份量？記錄一次，之後只要說吃了剩下的多少。';
+
+  @override
+  String get prepNameHint => '例如：雞肉飯';
+
+  @override
+  String get prepDefaultName => '備餐';
+
+  @override
+  String get prepIngredients => '食材';
+
+  @override
+  String get prepAddIngredient => '新增食材';
+
+  @override
+  String get prepCookedWeight => '熟重';
+
+  @override
+  String prepCookedHint(String grams) {
+    return '煮好後連鍋秤重更準確。留空則用生重總和（$grams 克）。';
+  }
+
+  @override
+  String get prepNeedWeight => '請填寫熟重：有些食材沒有克數。';
+
+  @override
+  String prepLeftOf(String left, String total) {
+    return '剩 $left，共 $total';
+  }
+
+  @override
+  String get prepOfWhatsLeft => '剩餘的 %';
+
+  @override
+  String get prepAll => '全部';
+
+  @override
+  String prepLogAmount(String grams) {
+    return '記錄 $grams';
+  }
+
+  @override
+  String get prepWeighLeft => '秤一下剩餘';
+
+  @override
+  String get prepFinished => '這份備餐已吃完。';
+
+  @override
+  String get approxValues => '約略值';
+
+  @override
+  String get editValues => '編輯數值';
+
+  @override
+  String get editValuesHint => '只修改這一筆記錄。若要之後都更正，請在「我的食物」中編輯。';
+
+  @override
+  String get editLibraryHint => '會以相同照片儲存為你的食物';
+
+  @override
+  String per100Line(String energy, String unit) {
+    return '每 100 $unit $energy';
+  }
+
+  @override
+  String get rawLabel => '生';
+
+  @override
+  String get cookedLabel => '熟';
+
+  @override
+  String get rawHint => '烹調前重量';
+
+  @override
+  String cookedHint(String factor) {
+    return '烹調後重量（生重 ×$factor）';
+  }
+
+  @override
+  String get servingsUnit => '份';
+
+  @override
+  String logAmount(String energy) {
+    return '記錄 · $energy';
+  }
+
+  @override
+  String get catFruit => '水果';
+
+  @override
+  String get catVeg => '蔬菜';
+
+  @override
+  String get catMeat => '肉類';
+
+  @override
+  String get catFish => '魚類';
+
+  @override
+  String get catEgg => '蛋類';
+
+  @override
+  String get catDairy => '乳製品';
+
+  @override
+  String get catGrain => '穀物';
+
+  @override
+  String get catBakery => '麵包';
+
+  @override
+  String get catLegume => '豆類';
+
+  @override
+  String get catNut => '堅果';
+
+  @override
+  String get catOil => '油';
+
+  @override
+  String get catPantry => '乾貨';
+
+  @override
+  String get catDrink => '飲品';
+
+  @override
+  String get catSauce => '醬料';
+
+  @override
+  String get catSpice => '香料';
+
+  @override
+  String get searchFoodsPrompt => '你吃了什麼？';
+
+  @override
+  String get shelfEmpty => '搜尋食物或幫你的食物拍照：最常記錄的會出現在這裡。';
+
+  @override
+  String get repeatEntry => '再記一次';
+
+  @override
+  String get notifSuppChannel => '補充品';
+
+  @override
+  String get notifSuppChannelWhy => '每日服用補充品提醒';
+
+  @override
+  String get energySplit => '熱量來源';
+
+  @override
+  String get typicalServing => '常見份量';
+
+  @override
+  String cookedYieldLine(String factor) {
+    return '重量為生重的 $factor 倍';
+  }
 }

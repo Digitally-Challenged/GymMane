@@ -15,6 +15,7 @@ import '../screens/home_screen.dart';
 import '../screens/measures_screen.dart';
 import '../screens/note_edit_screen.dart';
 import '../screens/notes_screen.dart';
+import '../screens/nutrition_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/places_screen.dart';
 import '../screens/plan_import_sheet.dart';
@@ -31,6 +32,7 @@ import '../screens/timeline_screen.dart';
 import '../screens/tool_detail_screen.dart';
 import '../screens/tools_screen.dart';
 import '../screens/train_screen.dart';
+import '../services/health_steps.dart';
 import '../services/incoming_share.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
@@ -38,6 +40,7 @@ import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 import '../widgets/award_celebration.dart';
 import '../widgets/dialogs.dart';
+import '../widgets/steps_card.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/start_countdown.dart';
@@ -80,21 +83,34 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   String? _incoming;
   bool _scrolled = false;
   int _restTick = fit.restDoneTick;
+  final _snap = SnapshotController();
+  bool _changedUnder = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    glassOpen.addListener(_syncSnap);
+    glassShown.addListener(_syncSnap);
+    fit.addListener(_fitChanged);
     fit.refreshAlarmPermission();
     fit.addListener(_queueCelebration);
     fit.addListener(_offerIncoming);
     fit.addListener(_restOver);
     _queueCelebration();
     IncomingShare.listen(_receive);
+    HealthSteps.listen(_showStepsInfo);
+    fit.refreshSteps();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final text = await IncomingShare.take();
       if (text != null) _receive(text);
+      if (await HealthSteps.takeUsage()) _showStepsInfo();
     });
+  }
+
+  void _showStepsInfo() {
+    if (!mounted || !fit.onboarded) return;
+    showStepsSheet(context);
   }
 
   void _receive(String text) {
@@ -107,7 +123,17 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     if (text == null || !mounted || !fit.onboarded || fit.isSessionActive) return;
     _incoming = null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) showPlanImportSheet(context, text: text);
+      if (!mounted) return;
+      if (fit.isMealPlanText(text)) {
+        final n = fit.importMealPlans(text);
+        if (n > 0) {
+          fit.setNutritionBeta(true);
+          fit.goNutrition();
+        }
+        showMealPlanImportResult(context, n);
+        return;
+      }
+      showPlanImportSheet(context, text: text);
     });
   }
 
@@ -132,12 +158,34 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   bool _onScroll(ScrollNotification n) {
     if (n.depth != 0 || n.metrics.axis != Axis.vertical) return false;
     final scrolled = n.metrics.pixels > 6;
-    if (scrolled != _scrolled) setState(() => _scrolled = scrolled);
+    if (scrolled == _scrolled) return false;
+    if (_blurTop.contains(fit.route)) {
+      setState(() => _scrolled = scrolled);
+    } else {
+      _scrolled = scrolled;
+    }
     return false;
   }
 
+  void _fitChanged() {
+    if (_snap.allowSnapshotting) _changedUnder = true;
+    _syncSnap();
+  }
+
+  void _syncSnap() => scheduleMicrotask(() {
+        if (!mounted) return;
+        final on = fit.route == 'nutrition' && (glassOpen.value > 0 || (glassShown.value > 0 && !_changedUnder));
+        if (on == _snap.allowSnapshotting) return;
+        _changedUnder = false;
+        _snap.allowSnapshotting = on;
+      });
+
   @override
   void dispose() {
+    glassOpen.removeListener(_syncSnap);
+    glassShown.removeListener(_syncSnap);
+    fit.removeListener(_fitChanged);
+    _snap.dispose();
     fit.removeListener(_restOver);
     fit.removeListener(_offerIncoming);
     fit.removeListener(_queueCelebration);
@@ -180,6 +228,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
       fit.refreshAlarmPermission();
       fit.syncRest();
       fit.refreshWidgets();
+      fit.refreshSteps();
     }
   }
 
@@ -214,24 +263,35 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
             child: BackdropGroup(
               child: Stack(
               children: [
-                Positioned.fill(child: ColoredBox(color: context.gc.bg)),
                 Positioned.fill(
-                  child: AppBackground(
-                    pattern: fit.bgPattern,
-                    photo: fit.bgPhotoPath,
-                    dim: fit.bgDim,
-                  ),
-                ),
-                Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: (MediaQuery.viewInsetsOf(context).bottom > 0 ? 0 : MediaQuery.viewPaddingOf(context).bottom) +
-                            (parked ? _pillSpace : 0)),
-                    child: NotificationListener<ScrollNotification>(
-                      onNotification: _onScroll,
-                      child: _animatedScreen(),
-                    ),
+                  child: SnapshotWidget(
+                    controller: _snap,
+                    mode: SnapshotMode.permissive,
+                    autoresize: true,
+                    child: Stack(children: [
+                      Positioned.fill(child: ColoredBox(color: context.gc.bg)),
+                      Positioned.fill(
+                        child: AppBackground(
+                          pattern: fit.bgPattern,
+                          photo: fit.bgPhotoPath,
+                          dim: fit.bgDim,
+                        ),
+                      ),
+                      Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: Padding(
+                          padding: EdgeInsets.only(
+                              bottom: (MediaQuery.viewInsetsOf(context).bottom > 0
+                                      ? 0
+                                      : MediaQuery.viewPaddingOf(context).bottom) +
+                                  (parked ? _pillSpace : 0)),
+                          child: NotificationListener<ScrollNotification>(
+                            onNotification: _onScroll,
+                            child: _animatedScreen(),
+                          ),
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
                 Positioned(
@@ -403,6 +463,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
         return CompareScreen();
       case 'notes':
         return NotesScreen();
+      case 'nutrition':
+        return NutritionScreen();
       case 'note-edit':
         return NoteEditScreen(key: ValueKey(fit.editingNoteId ?? 'new'));
       case 'home':

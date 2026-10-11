@@ -435,10 +435,12 @@ class ScreenHeader extends StatelessWidget {
     this.titleSize = 20,
     this.titleSpacing = 2,
     this.actions = const [],
+    this.badge,
   });
 
   final String title;
   final VoidCallback onBack;
+  final Widget? badge;
   final String? subtitle;
   final double titleSize;
   final double titleSpacing;
@@ -455,7 +457,14 @@ class ScreenHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ScreenTitle(title, size: titleSize, spacing: titleSpacing),
+              if (badge == null)
+                ScreenTitle(title, size: titleSize, spacing: titleSpacing)
+              else
+                Row(children: [
+                  Flexible(child: ScreenTitle(title, size: titleSize, spacing: titleSpacing)),
+                  const SizedBox(width: 8),
+                  badge!,
+                ]),
               if (subtitle != null) ...[
                 const SizedBox(height: 2),
                 Text(subtitle!,
@@ -467,6 +476,32 @@ class ScreenHeader extends StatelessWidget {
         ),
         ...actions,
       ],
+    );
+  }
+}
+
+class BetaTag extends StatelessWidget {
+  const BetaTag(this.label, {super.key, this.small = false});
+
+  final String label;
+  final bool small;
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    return Container(
+      padding: EdgeInsets.fromLTRB(small ? 5 : 6, small ? 2 : 3, small ? 6 : 7, small ? 2 : 3),
+      decoration: BoxDecoration(
+        color: gc.accent.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: gc.accent.withValues(alpha: 0.4), width: 0.8),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(PhosphorIconsFill.flask, size: small ? 9 : 10.5, color: gc.accent),
+        const SizedBox(width: 3),
+        Text(label.toUpperCase(),
+            style: AppTheme.f(small ? 8.5 : 9.5, weight: FontWeight.w800, color: gc.accent, letterSpacing: 1.1, height: 1.1)),
+      ]),
     );
   }
 }
