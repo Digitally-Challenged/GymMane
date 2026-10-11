@@ -1,4 +1,4 @@
-name: Fix Crowdin locales
+name: Tidy Crowdin translations
 
 on:
   pull_request_target:
@@ -20,15 +20,14 @@ jobs:
         with:
           ref: l10n_main
 
-      - name: Match @@locale to the file name
+      - name: Match @@locale and the repo layout
         run: |
-          for f in lib/l10n/app_*.arb; do
-            code=$(basename "$f" .arb)
-            code=${code#app_}
-            sed -i -E "s/(\"@@locale\": *\")[^\"]*\"/\1$code\"/" "$f"
-          done
-          if git diff --quiet; then exit 0; fi
+          git fetch --depth=1 origin main
+          git checkout origin/main -- lib/l10n/app_es.arb
+          git show origin/main:tool/arb_tidy.py > "$RUNNER_TEMP/arb_tidy.py"
+          python3 "$RUNNER_TEMP/arb_tidy.py"
+          if git diff --quiet HEAD; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "Match @@locale to the file names"
+          git commit -am "Tidy the translation files"
           git push origin HEAD:l10n_main
