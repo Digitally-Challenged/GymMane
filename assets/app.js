@@ -24,7 +24,7 @@
       shotsTitle: 'Capturas',
       shotsLead: 'Sacadas de la app en un móvil. Toca una para verla en grande.',
       sHome: 'Inicio', sProgress: 'Progreso', sTrain: 'Entrenar', sSession: 'Sesión',
-      sLibrary: 'Ejercicios', sRoutines: 'Rutinas', sProfile: 'Perfil', sSettings: 'Ajustes',
+      sLibrary: 'Ejercicios', sRoutines: 'Rutinas', sProfile: 'Perfil', sSettings: 'Ajustes', sNutrition: 'Nutrición', sMeal: 'Una comida',
       restReady: 'Listo',
       privTitle: 'Tus datos no salen del móvil',
       privP1: 'GymMane no tiene permiso de internet, así que no puede enviar nada a ningún sitio. No hay cuenta, ni anuncios, ni analítica.',
@@ -102,7 +102,7 @@
       shotsTitle: 'Screens',
       shotsLead: 'Taken from the app on a phone. Tap one to see it bigger.',
       sHome: 'Home', sProgress: 'Progress', sTrain: 'Train', sSession: 'Session',
-      sLibrary: 'Exercises', sRoutines: 'Routines', sProfile: 'Profile', sSettings: 'Settings',
+      sLibrary: 'Exercises', sRoutines: 'Routines', sProfile: 'Profile', sSettings: 'Settings', sNutrition: 'Nutrition', sMeal: 'A meal',
       restReady: 'Ready',
       privTitle: 'Your data stays on your phone',
       privP1: 'GymMane doesn\'t have the internet permission, so it can\'t send anything anywhere. No account, no ads, no analytics.',
@@ -207,7 +207,7 @@
 
   var SHOTS = [
     { f: 'home', k: 'sHome' }, { f: 'train', k: 'sTrain' }, { f: 'session', k: 'sSession' },
-    { f: 'progress', k: 'sProgress' }, { f: 'library', k: 'sLibrary' }, { f: 'routines', k: 'sRoutines' },
+    { f: 'progress', k: 'sProgress' }, { f: 'nutrition', k: 'sNutrition' }, { f: 'meal', k: 'sMeal' }, { f: 'library', k: 'sLibrary' }, { f: 'routines', k: 'sRoutines' },
     { f: 'profile', k: 'sProfile' }, { f: 'settings', k: 'sSettings' }
   ];
   var rail = document.getElementById('shotsRail');
