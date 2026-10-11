@@ -19,6 +19,7 @@
   <img alt="Art CC BY-SA 4.0" src="https://img.shields.io/badge/Art-CC%20BY--SA%204.0-8A6B41?style=flat&logo=creativecommons&logoColor=white" />
   <a href="https://crowdin.com/project/gymmane"><img alt="Crowdin" src="https://badges.crowdin.net/gymmane/localized.svg" /></a>
   <a href="https://github.com/InlitX/GymMane/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/InlitX/GymMane?style=flat&color=D9A184&labelColor=181717&logo=github" /></a>
+  <a href="https://github.com/InlitX/GymMane/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/InlitX/GymMane/total?style=flat&color=D9A184&labelColor=181717&logo=github&label=downloads" /></a>
 </p>
 
 <p>
@@ -40,13 +41,14 @@
 <br/>
 <br/>
 
-<img src="../screenshots/store/en/01-hero.jpg" width="250" alt="举铁 · 记录 · 蜕变" />
-<img src="../screenshots/store/en/02-train.jpg" width="250" alt="点击肌群，即刻开始训练" />
-<img src="../screenshots/store/en/03-rest.jpg" width="250" alt="打勾完成组，休息倒计时自动响起" />
+<img src="../screenshots/store/en/01-hero.jpg" width="196" alt="举铁 · 记录 · 蜕变" />
+<img src="../screenshots/store/en/02-train.jpg" width="196" alt="点击肌群，即刻开始训练" />
+<img src="../screenshots/store/en/03-rest.jpg" width="196" alt="打勾完成组，休息倒计时自动响起" />
+<img src="../screenshots/store/en/04-progress.jpg" width="196" alt="完全源于真实组数的进度图表" />
 
-<img src="../screenshots/store/en/04-progress.jpg" width="250" alt="完全源于真实组数的进度图表" />
-<img src="../screenshots/store/en/05-library.jpg" width="250" alt="500+ 内置动作配带动画" />
-<img src="../screenshots/store/en/06-privacy.jpg" width="250" alt="无账号 · 无网络权限 · 纯粹离线" />
+<img src="../screenshots/store/en/05-library.jpg" width="196" alt="500+ 内置动作配带动画" />
+<img src="../screenshots/store/en/10-nutrition.jpg" width="196" alt="饮食一目了然" />
+<img src="../screenshots/store/en/06-privacy.jpg" width="196" alt="无账号 · 无网络权限 · 纯粹离线" />
 
 <details>
 <summary><sub><b>界面截图</b>，全部来自真机</sub></summary>
@@ -141,6 +143,15 @@
 </td>
 </tr>
 </table>
+
+## 营养（测试版）
+
+- **500 多种带图片的食物**，以及你自己的食物和菜品
+- 热量和宏量营养素对照目标，**休息日可单独设目标**
+- **饮水**、**蛋白奶昔**和**补剂**，带提醒
+- 按星期安排的**饮食计划**、**分批备餐**和每周总结
+- 没有扫码，也没有在线数据库：所有数据都留在你的手机上
+- 默认开启。不需要？可在 **设置 › 测试版** 中关闭
 
 ## 下载
 

@@ -19,6 +19,7 @@ Toca los músculos que quieres entrenar, apunta tus series y mira cómo suben tu
   <img alt="Art CC BY-SA 4.0" src="https://img.shields.io/badge/Art-CC%20BY--SA%204.0-8A6B41?style=flat&logo=creativecommons&logoColor=white" />
   <a href="https://crowdin.com/project/gymmane"><img alt="Crowdin" src="https://badges.crowdin.net/gymmane/localized.svg" /></a>
   <a href="https://github.com/InlitX/GymMane/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/InlitX/GymMane?style=flat&color=D9A184&labelColor=181717&logo=github" /></a>
+  <a href="https://github.com/InlitX/GymMane/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/InlitX/GymMane/total?style=flat&color=D9A184&labelColor=181717&logo=github&label=downloads" /></a>
 </p>
 
 <p>
@@ -40,13 +41,14 @@ Toca los músculos que quieres entrenar, apunta tus series y mira cómo suben tu
 <br/>
 <br/>
 
-<img src="../screenshots/store/es/01-hero.jpg" width="250" alt="Levanta. Anota. Mejora." />
-<img src="../screenshots/store/es/02-train.jpg" width="250" alt="Toca el músculo y tienes la sesión" />
-<img src="../screenshots/store/es/03-rest.jpg" width="250" alt="Marca la serie y el descanso suena solo" />
+<img src="../screenshots/store/es/01-hero.jpg" width="196" alt="Levanta. Anota. Mejora." />
+<img src="../screenshots/store/es/02-train.jpg" width="196" alt="Toca el músculo y tienes la sesión" />
+<img src="../screenshots/store/es/03-rest.jpg" width="196" alt="Marca la serie y el descanso suena solo" />
+<img src="../screenshots/store/es/04-progress.jpg" width="196" alt="Progreso salido de tus propias series" />
 
-<img src="../screenshots/store/es/04-progress.jpg" width="250" alt="Progreso salido de tus propias series" />
-<img src="../screenshots/store/es/05-library.jpg" width="250" alt="+500 ejercicios con animación" />
-<img src="../screenshots/store/es/06-privacy.jpg" width="250" alt="Sin cuenta. Sin internet. Sin humo." />
+<img src="../screenshots/store/es/05-library.jpg" width="196" alt="+500 ejercicios con animación" />
+<img src="../screenshots/store/es/10-nutrition.jpg" width="196" alt="Lo que comes, de un vistazo" />
+<img src="../screenshots/store/es/06-privacy.jpg" width="196" alt="Sin cuenta. Sin internet. Sin humo." />
 
 <details>
 <summary><sub><b>Capturas sin retoques</b>, todas las pantallas sacadas del móvil</sub></summary>
@@ -147,6 +149,15 @@ Toca los músculos que quieres entrenar, apunta tus series y mira cómo suben tu
 </td>
 </tr>
 </table>
+
+## Nutrición (beta)
+
+- **Más de 500 alimentos** con foto, tus alimentos y tus platos
+- Calorías y macros frente a tu objetivo, con **objetivos aparte para los días de descanso**
+- **Agua**, **batido de proteína** y **suplementos** con aviso
+- **Planes de comida** por día de la semana, **meal prep** por lotes y resumen semanal
+- Sin escáner ni base de datos en línea: todo se queda en tu móvil
+- Viene activada. ¿No la necesitas? Apágala en **Ajustes › Beta**
 
 ## Descarga
 

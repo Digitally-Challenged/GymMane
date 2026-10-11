@@ -19,6 +19,7 @@ Tap the muscles you want to train, log your sets and watch your numbers go up.
   <img alt="Art CC BY-SA 4.0" src="https://img.shields.io/badge/Art-CC%20BY--SA%204.0-8A6B41?style=flat&logo=creativecommons&logoColor=white" />
   <a href="https://crowdin.com/project/gymmane"><img alt="Crowdin" src="https://badges.crowdin.net/gymmane/localized.svg" /></a>
   <a href="https://github.com/InlitX/GymMane/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/InlitX/GymMane?style=flat&color=D9A184&labelColor=181717&logo=github" /></a>
+  <a href="https://github.com/InlitX/GymMane/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/InlitX/GymMane/total?style=flat&color=D9A184&labelColor=181717&logo=github&label=downloads" /></a>
 </p>
 
 <p>
@@ -40,13 +41,14 @@ Tap the muscles you want to train, log your sets and watch your numbers go up.
 <br/>
 <br/>
 
-<img src="docs/screenshots/store/en/01-hero.jpg" width="250" alt="Lift. Log it. Grow." />
-<img src="docs/screenshots/store/en/02-train.jpg" width="250" alt="Tap the muscle, get the session" />
-<img src="docs/screenshots/store/en/03-rest.jpg" width="250" alt="Tick the set, rest rings itself" />
+<img src="docs/screenshots/store/en/01-hero.jpg" width="196" alt="Lift. Log it. Grow." />
+<img src="docs/screenshots/store/en/02-train.jpg" width="196" alt="Tap the muscle, get the session" />
+<img src="docs/screenshots/store/en/03-rest.jpg" width="196" alt="Tick the set, rest rings itself" />
+<img src="docs/screenshots/store/en/04-progress.jpg" width="196" alt="Progress from your own sets" />
 
-<img src="docs/screenshots/store/en/04-progress.jpg" width="250" alt="Progress from your own sets" />
-<img src="docs/screenshots/store/en/05-library.jpg" width="250" alt="500+ exercises with animations" />
-<img src="docs/screenshots/store/en/06-privacy.jpg" width="250" alt="No account. No internet. No smoke." />
+<img src="docs/screenshots/store/en/05-library.jpg" width="196" alt="500+ exercises with animations" />
+<img src="docs/screenshots/store/en/10-nutrition.jpg" width="196" alt="What you eat, at a glance" />
+<img src="docs/screenshots/store/en/06-privacy.jpg" width="196" alt="No account. No internet. No smoke." />
 
 <details>
 <summary><sub><b>Plain screenshots</b>, every screen straight off the phone</sub></summary>
@@ -147,6 +149,15 @@ Tap the muscles you want to train, log your sets and watch your numbers go up.
 </td>
 </tr>
 </table>
+
+## Nutrition (beta)
+
+- **500+ foods** with photos, your own foods and dishes
+- Calories and macros against your goal, with **separate goals for rest days**
+- **Water**, **protein shake** and **supplements** with reminders
+- **Meal plans** for each weekday, **meal prep** batches and a weekly summary
+- No scanner and no online database: everything stays on your phone
+- On by default. Don't need it? Turn it off in **Settings › Beta**
 
 ## Download
 
