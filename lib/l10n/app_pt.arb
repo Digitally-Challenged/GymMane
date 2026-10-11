@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Lembrete diário para tomar seus suplementos",
   "energySplit": "De onde vêm as calorias",
   "typicalServing": "Porção típica",
-  "cookedYieldLine": "Pesa {factor}× o peso cru"
+  "cookedYieldLine": "Pesa {factor}× o peso cru",
+  "sectionBeta": "Beta",
+  "nutritionBeta": "Nutrição",
+  "nutritionBetaHint": "Refeições, água, proteína e suplementos. Ainda em construção: seus dados continuam mesmo se você desativar.",
+  "nutritionAboutTitle": "Sobre a nutrição",
+  "nutritionAboutSub": "O que é, e o que nunca vai ser.",
+  "nutritionAboutWhatTitle": "Parte do seu treino",
+  "nutritionAboutWhat": "Um jeito simples de anotar refeições, água, proteína e suplementos ao lado dos seus treinos. O GymMane é antes de tudo um app de academia: a nutrição está aqui para você ter tudo num só lugar, não para substituir um app de dieta.",
+  "nutritionAboutScanTitle": "Sem scanner, nunca",
+  "nutritionAboutScan": "Escanear um código de barras e ver tudo preenchido sozinho seria prático. Mas isso exige internet e um enorme banco de dados de alimentos online, e o que você come vai parar nos servidores de outra pessoa. Esses dados mostram quando você come, o que você come e como cuida do seu corpo, e podem ser usados para publicidade ou acabar nas mãos de grandes empresas. Por isso não há scanner, e não vai haver.",
+  "nutritionAboutLocalTitle": "Tudo no seu celular",
+  "nutritionAboutLocal": "O app já vem com mais de 500 alimentos com foto. Você pode adicionar os seus, trocar as fotos e editar os valores. Tudo fica no seu celular, como o resto do GymMane.",
+  "nutritionAboutBetaTitle": "Ainda em beta",
+  "nutritionAboutBeta": "Se sentir falta de algo, sugira no GitHub. Só não peça scanner nem um banco de alimentos maior: além da sua privacidade, isso deixaria o app muito mais pesado. Não precisa da nutrição? Desative em Configurações e seus dados continuam lá.",
+  "nutritionAboutSuggest": "Sugerir uma ideia",
+  "nutritionAboutOk": "Entendi"
 }

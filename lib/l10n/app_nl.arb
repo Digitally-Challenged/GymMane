@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Dagelijkse herinnering voor je supplementen",
   "energySplit": "Waar de calorieën vandaan komen",
   "typicalServing": "Gangbare portie",
-  "cookedYieldLine": "Weegt {factor}× het rauwe gewicht"
+  "cookedYieldLine": "Weegt {factor}× het rauwe gewicht",
+  "sectionBeta": "Bèta",
+  "nutritionBeta": "Voeding",
+  "nutritionBetaHint": "Maaltijden, water, eiwit en supplementen. Nog in aanbouw: je gegevens blijven, ook als je het uitzet.",
+  "nutritionAboutTitle": "Over voeding",
+  "nutritionAboutSub": "Wat het is, en wat het nooit wordt.",
+  "nutritionAboutWhatTitle": "Onderdeel van je training",
+  "nutritionAboutWhat": "Een eenvoudige manier om maaltijden, water, eiwit en supplementen bij te houden, direct naast je workouts. GymMane is in de eerste plaats een gym-app: voeding is er zodat je alles op één plek hebt, niet om een echte dieet-app te vervangen.",
+  "nutritionAboutScanTitle": "Geen scanner, nooit",
+  "nutritionAboutScan": "Een barcode scannen en alles vanzelf ingevuld krijgen zou handig zijn. Maar daarvoor zijn internet en een enorme online voedingsdatabase nodig, en wat je eet komt op de servers van iemand anders terecht. Die gegevens laten zien wanneer je eet, wat je eet en hoe je voor je lichaam zorgt, en ze kunnen voor reclame worden gebruikt of bij grote bedrijven belanden. Daarom is er geen scanner, en die komt er ook niet.",
+  "nutritionAboutLocalTitle": "Alles op je telefoon",
+  "nutritionAboutLocal": "De app bevat meer dan 500 voedingsmiddelen met foto. Je kunt je eigen toevoegen, hun foto’s veranderen en hun waarden aanpassen. Alles blijft op je telefoon, net als de rest van GymMane.",
+  "nutritionAboutBetaTitle": "Nog in bèta",
+  "nutritionAboutBeta": "Mis je iets? Stel het voor op GitHub. Alleen geen scanner of grotere voedingsdatabase: naast je privacy zou de app er veel zwaarder van worden. Heb je voeding niet nodig? Zet het uit in Instellingen, je gegevens blijven bewaard.",
+  "nutritionAboutSuggest": "Idee voorstellen",
+  "nutritionAboutOk": "Begrepen"
 }

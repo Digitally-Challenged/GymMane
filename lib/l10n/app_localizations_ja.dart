@@ -4246,54 +4246,53 @@ class AppLocalizationsJa extends AppLocalizations {
   String get planDeleteBody => 'Your logged days stay as they are.';
 
   @override
-  String get sectionBeta => 'Beta';
+  String get sectionBeta => 'ベータ';
 
   @override
-  String get nutritionBeta => 'Nutrition';
+  String get nutritionBeta => '食事';
 
   @override
-  String get nutritionBetaHint =>
-      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+  String get nutritionBetaHint => '食事、水、プロテイン、サプリ。まだ開発中です。オフにしてもデータは残ります。';
 
   @override
-  String get nutritionAboutTitle => 'About Nutrition';
+  String get nutritionAboutTitle => '食事について';
 
   @override
-  String get nutritionAboutSub => 'What it is, and what it will never be.';
+  String get nutritionAboutSub => 'これが何なのか、そして決してならないもの。';
 
   @override
-  String get nutritionAboutWhatTitle => 'Part of your training';
+  String get nutritionAboutWhatTitle => 'トレーニングの一部';
 
   @override
   String get nutritionAboutWhat =>
-      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+      '食事、水、プロテイン、サプリをトレーニングのすぐ隣で記録できるシンプルな機能です。GymMane はまずジムのアプリです。食事はすべてを一か所にまとめるためのもので、本格的なダイエットアプリの代わりではありません。';
 
   @override
-  String get nutritionAboutScanTitle => 'No scanning, ever';
+  String get nutritionAboutScanTitle => 'スキャンは今後もなし';
 
   @override
   String get nutritionAboutScan =>
-      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+      'バーコードを読み取るだけで全部入力されたら便利です。でもそのためにはインターネットと巨大なオンライン食品データベースが必要で、あなたが食べたものは他人のサーバーに送られます。そのデータはいつ何を食べ、どう体を管理しているかを示し、広告に使われたり大企業の手に渡ったりすることがあります。だからスキャナーはありませんし、これからも付けません。';
 
   @override
-  String get nutritionAboutLocalTitle => 'Everything on your phone';
+  String get nutritionAboutLocalTitle => 'すべてスマホの中に';
 
   @override
   String get nutritionAboutLocal =>
-      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+      'アプリには写真付きの食品が500以上入っています。自分の食品を追加したり、写真を変えたり、数値を編集したりできます。GymMane の他の部分と同じく、すべてあなたのスマホに残ります。';
 
   @override
-  String get nutritionAboutBetaTitle => 'Still in beta';
+  String get nutritionAboutBetaTitle => 'まだベータ版';
 
   @override
   String get nutritionAboutBeta =>
-      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+      '足りないものがあれば GitHub で提案してください。ただしスキャナーや大きな食品データベースは除きます。プライバシーの問題に加えて、アプリがずっと重くなってしまいます。食事が不要なら、設定でオフにできます。データは残ります。';
 
   @override
-  String get nutritionAboutSuggest => 'Suggest an idea';
+  String get nutritionAboutSuggest => 'アイデアを提案';
 
   @override
-  String get nutritionAboutOk => 'Got it';
+  String get nutritionAboutOk => 'わかった';
 
   @override
   String get planShare => 'Share';

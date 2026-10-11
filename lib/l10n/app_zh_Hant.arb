@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "每日服用補充品提醒",
   "energySplit": "熱量來源",
   "typicalServing": "常見份量",
-  "cookedYieldLine": "重量為生重的 {factor} 倍"
+  "cookedYieldLine": "重量為生重的 {factor} 倍",
+  "sectionBeta": "測試版",
+  "nutritionBeta": "飲食",
+  "nutritionBetaHint": "飲食、飲水、蛋白質和補充品。仍在建置中：即使關閉，你的資料也會保留。",
+  "nutritionAboutTitle": "關於飲食",
+  "nutritionAboutSub": "它是什麼，以及它永遠不會是什麼。",
+  "nutritionAboutWhatTitle": "訓練的一部分",
+  "nutritionAboutWhat": "一種在訓練旁邊記錄飲食、飲水、蛋白質和補充品的簡單方式。GymMane 首先是一款健身房 App：飲食功能是為了讓你把一切放在同一個地方，而不是取代專門的飲食 App。",
+  "nutritionAboutScanTitle": "沒有掃描，永遠不會有",
+  "nutritionAboutScan": "掃一下條碼就自動填好所有資訊會很方便。但這需要連網和一個龐大的線上食物資料庫，你吃的東西會進到別人的伺服器。這些資料會顯示你什麼時候吃、吃什麼、如何照顧自己的身體，可能被用於廣告或落入大公司手中。所以沒有掃描功能，以後也不會有。",
+  "nutritionAboutLocalTitle": "一切都在你的手機上",
+  "nutritionAboutLocal": "App 內建 500 多種附照片的食物。你可以新增自己的食物、更換照片、編輯數值。和 GymMane 的其他部分一樣，一切都留在你的手機上。",
+  "nutritionAboutBetaTitle": "仍是測試版",
+  "nutritionAboutBeta": "如果缺少什麼，請在 GitHub 上提出。只是別要掃描或更大的食物資料庫：除了隱私問題，這還會讓 App 變得重很多。不需要飲食功能？在設定中關閉即可，你的資料會保留。",
+  "nutritionAboutSuggest": "提個建議",
+  "nutritionAboutOk": "知道了"
 }

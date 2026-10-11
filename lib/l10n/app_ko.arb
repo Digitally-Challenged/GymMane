@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "보충제 복용을 위한 매일 알림",
   "energySplit": "칼로리 구성",
   "typicalServing": "보통 1회 분량",
-  "cookedYieldLine": "생것 무게의 {factor}배"
+  "cookedYieldLine": "생것 무게의 {factor}배",
+  "sectionBeta": "베타",
+  "nutritionBeta": "식단",
+  "nutritionBetaHint": "식사, 물, 단백질, 보충제. 아직 만드는 중이에요. 꺼도 데이터는 남습니다.",
+  "nutritionAboutTitle": "식단 정보",
+  "nutritionAboutSub": "무엇인지, 그리고 절대 되지 않을 것.",
+  "nutritionAboutWhatTitle": "운동의 일부",
+  "nutritionAboutWhat": "식사, 물, 단백질, 보충제를 운동 바로 옆에 기록하는 간단한 방법입니다. GymMane은 무엇보다 헬스 앱입니다. 식단은 모든 것을 한곳에 모으기 위한 것이지, 다이어트 앱을 대신하려는 것이 아닙니다.",
+  "nutritionAboutScanTitle": "스캐너는 앞으로도 없음",
+  "nutritionAboutScan": "바코드를 찍으면 모든 정보가 자동으로 채워진다면 편하겠죠. 하지만 그러려면 인터넷과 거대한 온라인 음식 데이터베이스가 필요하고, 당신이 먹는 것이 남의 서버로 넘어갑니다. 그 데이터는 언제, 무엇을 먹는지, 몸을 어떻게 관리하는지 보여 주며, 광고에 쓰이거나 대기업의 손에 들어갈 수 있습니다. 그래서 스캐너는 없고, 앞으로도 없을 겁니다.",
+  "nutritionAboutLocalTitle": "모든 것은 휴대폰 안에",
+  "nutritionAboutLocal": "앱에는 사진이 있는 음식이 500개 넘게 들어 있습니다. 직접 음식을 추가하고, 사진을 바꾸고, 값을 수정할 수 있습니다. GymMane의 다른 부분처럼 모든 것이 휴대폰에 남습니다.",
+  "nutritionAboutBetaTitle": "아직 베타",
+  "nutritionAboutBeta": "부족한 것이 있다면 GitHub에 제안해 주세요. 다만 스캐너나 더 큰 음식 데이터베이스는 빼고요. 개인정보 문제 외에도 앱이 훨씬 무거워집니다. 식단이 필요 없나요? 설정에서 끄면 되고, 데이터는 그대로 남습니다.",
+  "nutritionAboutSuggest": "아이디어 제안",
+  "nutritionAboutOk": "알겠어요"
 }

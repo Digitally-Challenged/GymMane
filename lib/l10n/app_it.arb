@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Promemoria quotidiano per prendere gli integratori",
   "energySplit": "Da dove vengono le calorie",
   "typicalServing": "Porzione tipica",
-  "cookedYieldLine": "Pesa {factor}× il peso da crudo"
+  "cookedYieldLine": "Pesa {factor}× il peso da crudo",
+  "sectionBeta": "Beta",
+  "nutritionBeta": "Nutrizione",
+  "nutritionBetaHint": "Pasti, acqua, proteine e integratori. Ancora in costruzione: i tuoi dati restano anche se la disattivi.",
+  "nutritionAboutTitle": "Informazioni sulla nutrizione",
+  "nutritionAboutSub": "Cos’è, e cosa non sarà mai.",
+  "nutritionAboutWhatTitle": "Parte del tuo allenamento",
+  "nutritionAboutWhat": "Un modo semplice per segnare pasti, acqua, proteine e integratori accanto ai tuoi allenamenti. GymMane è prima di tutto un’app da palestra: la nutrizione c’è per avere tutto in un unico posto, non per sostituire un’app di diete.",
+  "nutritionAboutScanTitle": "Niente scanner, mai",
+  "nutritionAboutScan": "Scansionare un codice a barre e vedere tutto compilato da solo sarebbe comodo. Ma servono Internet e un enorme database di alimenti online, e quello che mangi finisce sui server di qualcun altro. Quei dati dicono quando mangi, cosa mangi e come ti prendi cura del tuo corpo, e possono essere usati per la pubblicità o finire nelle mani di grandi aziende. Per questo non c’è uno scanner, e non ci sarà.",
+  "nutritionAboutLocalTitle": "Tutto sul tuo telefono",
+  "nutritionAboutLocal": "L’app include più di 500 alimenti con foto. Puoi aggiungere i tuoi, cambiarne le foto e modificarne i valori. Tutto resta sul tuo telefono, come il resto di GymMane.",
+  "nutritionAboutBetaTitle": "Ancora in beta",
+  "nutritionAboutBeta": "Se ti manca qualcosa, proponilo su GitHub. Ma niente scanner né un database di alimenti più grande: oltre alla tua privacy, renderebbe l’app molto più pesante. Non ti serve la nutrizione? Disattivala nelle Impostazioni e i tuoi dati restano.",
+  "nutritionAboutSuggest": "Proponi un’idea",
+  "nutritionAboutOk": "Ho capito"
 }

@@ -4394,54 +4394,54 @@ class AppLocalizationsNl extends AppLocalizations {
   String get planDeleteBody => 'Your logged days stay as they are.';
 
   @override
-  String get sectionBeta => 'Beta';
+  String get sectionBeta => 'Bèta';
 
   @override
-  String get nutritionBeta => 'Nutrition';
+  String get nutritionBeta => 'Voeding';
 
   @override
   String get nutritionBetaHint =>
-      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+      'Maaltijden, water, eiwit en supplementen. Nog in aanbouw: je gegevens blijven, ook als je het uitzet.';
 
   @override
-  String get nutritionAboutTitle => 'About Nutrition';
+  String get nutritionAboutTitle => 'Over voeding';
 
   @override
-  String get nutritionAboutSub => 'What it is, and what it will never be.';
+  String get nutritionAboutSub => 'Wat het is, en wat het nooit wordt.';
 
   @override
-  String get nutritionAboutWhatTitle => 'Part of your training';
+  String get nutritionAboutWhatTitle => 'Onderdeel van je training';
 
   @override
   String get nutritionAboutWhat =>
-      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+      'Een eenvoudige manier om maaltijden, water, eiwit en supplementen bij te houden, direct naast je workouts. GymMane is in de eerste plaats een gym-app: voeding is er zodat je alles op één plek hebt, niet om een echte dieet-app te vervangen.';
 
   @override
-  String get nutritionAboutScanTitle => 'No scanning, ever';
+  String get nutritionAboutScanTitle => 'Geen scanner, nooit';
 
   @override
   String get nutritionAboutScan =>
-      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+      'Een barcode scannen en alles vanzelf ingevuld krijgen zou handig zijn. Maar daarvoor zijn internet en een enorme online voedingsdatabase nodig, en wat je eet komt op de servers van iemand anders terecht. Die gegevens laten zien wanneer je eet, wat je eet en hoe je voor je lichaam zorgt, en ze kunnen voor reclame worden gebruikt of bij grote bedrijven belanden. Daarom is er geen scanner, en die komt er ook niet.';
 
   @override
-  String get nutritionAboutLocalTitle => 'Everything on your phone';
+  String get nutritionAboutLocalTitle => 'Alles op je telefoon';
 
   @override
   String get nutritionAboutLocal =>
-      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+      'De app bevat meer dan 500 voedingsmiddelen met foto. Je kunt je eigen toevoegen, hun foto’s veranderen en hun waarden aanpassen. Alles blijft op je telefoon, net als de rest van GymMane.';
 
   @override
-  String get nutritionAboutBetaTitle => 'Still in beta';
+  String get nutritionAboutBetaTitle => 'Nog in bèta';
 
   @override
   String get nutritionAboutBeta =>
-      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+      'Mis je iets? Stel het voor op GitHub. Alleen geen scanner of grotere voedingsdatabase: naast je privacy zou de app er veel zwaarder van worden. Heb je voeding niet nodig? Zet het uit in Instellingen, je gegevens blijven bewaard.';
 
   @override
-  String get nutritionAboutSuggest => 'Suggest an idea';
+  String get nutritionAboutSuggest => 'Idee voorstellen';
 
   @override
-  String get nutritionAboutOk => 'Got it';
+  String get nutritionAboutOk => 'Begrepen';
 
   @override
   String get planShare => 'Share';

@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "サプリを飲むための毎日のお知らせ",
   "energySplit": "カロリーの内訳",
   "typicalServing": "一般的な1食分",
-  "cookedYieldLine": "生の重さの{factor}倍"
+  "cookedYieldLine": "生の重さの{factor}倍",
+  "sectionBeta": "ベータ",
+  "nutritionBeta": "食事",
+  "nutritionBetaHint": "食事、水、プロテイン、サプリ。まだ開発中です。オフにしてもデータは残ります。",
+  "nutritionAboutTitle": "食事について",
+  "nutritionAboutSub": "これが何なのか、そして決してならないもの。",
+  "nutritionAboutWhatTitle": "トレーニングの一部",
+  "nutritionAboutWhat": "食事、水、プロテイン、サプリをトレーニングのすぐ隣で記録できるシンプルな機能です。GymMane はまずジムのアプリです。食事はすべてを一か所にまとめるためのもので、本格的なダイエットアプリの代わりではありません。",
+  "nutritionAboutScanTitle": "スキャンは今後もなし",
+  "nutritionAboutScan": "バーコードを読み取るだけで全部入力されたら便利です。でもそのためにはインターネットと巨大なオンライン食品データベースが必要で、あなたが食べたものは他人のサーバーに送られます。そのデータはいつ何を食べ、どう体を管理しているかを示し、広告に使われたり大企業の手に渡ったりすることがあります。だからスキャナーはありませんし、これからも付けません。",
+  "nutritionAboutLocalTitle": "すべてスマホの中に",
+  "nutritionAboutLocal": "アプリには写真付きの食品が500以上入っています。自分の食品を追加したり、写真を変えたり、数値を編集したりできます。GymMane の他の部分と同じく、すべてあなたのスマホに残ります。",
+  "nutritionAboutBetaTitle": "まだベータ版",
+  "nutritionAboutBeta": "足りないものがあれば GitHub で提案してください。ただしスキャナーや大きな食品データベースは除きます。プライバシーの問題に加えて、アプリがずっと重くなってしまいます。食事が不要なら、設定でオフにできます。データは残ります。",
+  "nutritionAboutSuggest": "アイデアを提案",
+  "nutritionAboutOk": "わかった"
 }

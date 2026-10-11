@@ -4407,54 +4407,54 @@ class AppLocalizationsFr extends AppLocalizations {
   String get planDeleteBody => 'Your logged days stay as they are.';
 
   @override
-  String get sectionBeta => 'Beta';
+  String get sectionBeta => 'Bêta';
 
   @override
   String get nutritionBeta => 'Nutrition';
 
   @override
   String get nutritionBetaHint =>
-      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+      'Repas, eau, protéines et compléments. Encore en construction : tes données restent même si tu la désactives.';
 
   @override
-  String get nutritionAboutTitle => 'About Nutrition';
+  String get nutritionAboutTitle => 'À propos de la nutrition';
 
   @override
-  String get nutritionAboutSub => 'What it is, and what it will never be.';
+  String get nutritionAboutSub => 'Ce que c’est, et ce que ce ne sera jamais.';
 
   @override
-  String get nutritionAboutWhatTitle => 'Part of your training';
+  String get nutritionAboutWhatTitle => 'Une partie de ton entraînement';
 
   @override
   String get nutritionAboutWhat =>
-      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+      'Une façon simple de noter tes repas, ton eau, tes protéines et tes compléments juste à côté de tes séances. GymMane est d’abord une app de musculation : la nutrition est là pour que tout soit au même endroit, pas pour remplacer une vraie app de régime.';
 
   @override
-  String get nutritionAboutScanTitle => 'No scanning, ever';
+  String get nutritionAboutScanTitle => 'Pas de scanner, jamais';
 
   @override
   String get nutritionAboutScan =>
-      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+      'Scanner un code-barres et voir tout se remplir tout seul serait pratique. Mais cela demande Internet et une énorme base de données d’aliments en ligne, et ce que tu manges finit sur les serveurs de quelqu’un d’autre. Ces données montrent quand tu manges, ce que tu manges et comment tu prends soin de ton corps, et elles peuvent servir à la publicité ou finir entre les mains de grandes entreprises. C’est pour ça qu’il n’y a pas de scanner, et qu’il n’y en aura pas.';
 
   @override
-  String get nutritionAboutLocalTitle => 'Everything on your phone';
+  String get nutritionAboutLocalTitle => 'Tout sur ton téléphone';
 
   @override
   String get nutritionAboutLocal =>
-      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+      'Plus de 500 aliments avec photo sont inclus dans l’app. Tu peux ajouter les tiens, changer leurs photos et modifier leurs valeurs. Tout reste sur ton téléphone, comme le reste de GymMane.';
 
   @override
-  String get nutritionAboutBetaTitle => 'Still in beta';
+  String get nutritionAboutBetaTitle => 'Encore en bêta';
 
   @override
   String get nutritionAboutBeta =>
-      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+      'S’il te manque quelque chose, propose-le sur GitHub. Sauf un scanner ou une base d’aliments plus grande : en plus de ta vie privée, l’app deviendrait beaucoup plus lourde. Pas besoin de la nutrition ? Désactive-la dans les Paramètres, tes données restent.';
 
   @override
-  String get nutritionAboutSuggest => 'Suggest an idea';
+  String get nutritionAboutSuggest => 'Proposer une idée';
 
   @override
-  String get nutritionAboutOk => 'Got it';
+  String get nutritionAboutOk => 'Compris';
 
   @override
   String get planShare => 'Share';

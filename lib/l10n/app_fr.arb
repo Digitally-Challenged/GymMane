@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Rappel quotidien pour prendre tes compléments",
   "energySplit": "D’où viennent les calories",
   "typicalServing": "Portion type",
-  "cookedYieldLine": "Pèse {factor}× son poids cru"
+  "cookedYieldLine": "Pèse {factor}× son poids cru",
+  "sectionBeta": "Bêta",
+  "nutritionBeta": "Nutrition",
+  "nutritionBetaHint": "Repas, eau, protéines et compléments. Encore en construction : tes données restent même si tu la désactives.",
+  "nutritionAboutTitle": "À propos de la nutrition",
+  "nutritionAboutSub": "Ce que c’est, et ce que ce ne sera jamais.",
+  "nutritionAboutWhatTitle": "Une partie de ton entraînement",
+  "nutritionAboutWhat": "Une façon simple de noter tes repas, ton eau, tes protéines et tes compléments juste à côté de tes séances. GymMane est d’abord une app de musculation : la nutrition est là pour que tout soit au même endroit, pas pour remplacer une vraie app de régime.",
+  "nutritionAboutScanTitle": "Pas de scanner, jamais",
+  "nutritionAboutScan": "Scanner un code-barres et voir tout se remplir tout seul serait pratique. Mais cela demande Internet et une énorme base de données d’aliments en ligne, et ce que tu manges finit sur les serveurs de quelqu’un d’autre. Ces données montrent quand tu manges, ce que tu manges et comment tu prends soin de ton corps, et elles peuvent servir à la publicité ou finir entre les mains de grandes entreprises. C’est pour ça qu’il n’y a pas de scanner, et qu’il n’y en aura pas.",
+  "nutritionAboutLocalTitle": "Tout sur ton téléphone",
+  "nutritionAboutLocal": "Plus de 500 aliments avec photo sont inclus dans l’app. Tu peux ajouter les tiens, changer leurs photos et modifier leurs valeurs. Tout reste sur ton téléphone, comme le reste de GymMane.",
+  "nutritionAboutBetaTitle": "Encore en bêta",
+  "nutritionAboutBeta": "S’il te manque quelque chose, propose-le sur GitHub. Sauf un scanner ou une base d’aliments plus grande : en plus de ta vie privée, l’app deviendrait beaucoup plus lourde. Pas besoin de la nutrition ? Désactive-la dans les Paramètres, tes données restent.",
+  "nutritionAboutSuggest": "Proposer une idée",
+  "nutritionAboutOk": "Compris"
 }

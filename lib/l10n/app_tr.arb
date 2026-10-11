@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Takviyelerini almak için günlük hatırlatma",
   "energySplit": "Kaloriler nereden geliyor",
   "typicalServing": "Tipik porsiyon",
-  "cookedYieldLine": "Çiğ ağırlığının {factor} katı gelir"
+  "cookedYieldLine": "Çiğ ağırlığının {factor} katı gelir",
+  "sectionBeta": "Beta",
+  "nutritionBeta": "Beslenme",
+  "nutritionBetaHint": "Öğünler, su, protein ve takviyeler. Hâlâ yapım aşamasında: kapatsan bile verilerin kalır.",
+  "nutritionAboutTitle": "Beslenme hakkında",
+  "nutritionAboutSub": "Ne olduğu ve asla ne olmayacağı.",
+  "nutritionAboutWhatTitle": "Antrenmanının bir parçası",
+  "nutritionAboutWhat": "Öğünlerini, suyunu, proteinini ve takviyelerini antrenmanlarının hemen yanında kaydetmenin basit bir yolu. GymMane her şeyden önce bir spor salonu uygulaması: Beslenme her şeyi tek bir yerde tutman için var, bir diyet uygulamasının yerini almak için değil.",
+  "nutritionAboutScanTitle": "Tarayıcı yok, asla",
+  "nutritionAboutScan": "Bir barkodu tarayıp her şeyin kendiliğinden dolması kullanışlı olurdu. Ama bunun için internet ve devasa bir çevrimiçi gıda veritabanı gerekir ve yediklerin başkalarının sunucularına gider. Bu veriler ne zaman yediğini, ne yediğini ve vücuduna nasıl baktığını gösterir; reklam için kullanılabilir ya da büyük şirketlerin eline geçebilir. Bu yüzden tarayıcı yok ve olmayacak.",
+  "nutritionAboutLocalTitle": "Her şey telefonunda",
+  "nutritionAboutLocal": "Uygulamada fotoğraflı 500’den fazla yiyecek var. Kendi yiyeceklerini ekleyebilir, fotoğraflarını değiştirebilir ve değerlerini düzenleyebilirsin. GymMane’in geri kalanı gibi her şey telefonunda kalır.",
+  "nutritionAboutBetaTitle": "Hâlâ beta",
+  "nutritionAboutBeta": "Eksik bir şey varsa GitHub’da öner. Yalnızca tarayıcı ya da daha büyük bir gıda veritabanı olmasın: gizliliğinin yanı sıra uygulamayı çok daha ağır yapar. Beslenmeye ihtiyacın yok mu? Ayarlar’dan kapat, verilerin kalır.",
+  "nutritionAboutSuggest": "Fikir öner",
+  "nutritionAboutOk": "Anladım"
 }

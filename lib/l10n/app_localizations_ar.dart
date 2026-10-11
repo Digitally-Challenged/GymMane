@@ -4372,54 +4372,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get planDeleteBody => 'Your logged days stay as they are.';
 
   @override
-  String get sectionBeta => 'Beta';
+  String get sectionBeta => 'تجريبي';
 
   @override
-  String get nutritionBeta => 'Nutrition';
+  String get nutritionBeta => 'التغذية';
 
   @override
   String get nutritionBetaHint =>
-      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+      'الوجبات والماء والبروتين والمكملات. ما زالت قيد التطوير: تبقى بياناتك حتى لو أوقفتها.';
 
   @override
-  String get nutritionAboutTitle => 'About Nutrition';
+  String get nutritionAboutTitle => 'حول التغذية';
 
   @override
-  String get nutritionAboutSub => 'What it is, and what it will never be.';
+  String get nutritionAboutSub => 'ما هي، وما لن تكونه أبدًا.';
 
   @override
-  String get nutritionAboutWhatTitle => 'Part of your training';
+  String get nutritionAboutWhatTitle => 'جزء من تمرينك';
 
   @override
   String get nutritionAboutWhat =>
-      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+      'طريقة بسيطة لتسجيل وجباتك والماء والبروتين والمكملات بجانب تمارينك. GymMane تطبيق للصالة الرياضية أولًا: التغذية موجودة لتجمع كل شيء في مكان واحد، لا لتحل محل تطبيق حمية.';
 
   @override
-  String get nutritionAboutScanTitle => 'No scanning, ever';
+  String get nutritionAboutScanTitle => 'لا ماسح ضوئي، أبدًا';
 
   @override
   String get nutritionAboutScan =>
-      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+      'مسح الباركود وتعبئة كل التفاصيل تلقائيًا سيكون مريحًا. لكن ذلك يحتاج إلى الإنترنت وقاعدة بيانات ضخمة للأطعمة على الإنترنت، وما تأكله ينتهي على خوادم غيرك. هذه البيانات تكشف متى تأكل وماذا تأكل وكيف تعتني بجسمك، ويمكن استخدامها للإعلانات أو أن تصل إلى شركات كبرى. لهذا لا يوجد ماسح ضوئي، ولن يوجد.';
 
   @override
-  String get nutritionAboutLocalTitle => 'Everything on your phone';
+  String get nutritionAboutLocalTitle => 'كل شيء على هاتفك';
 
   @override
   String get nutritionAboutLocal =>
-      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+      'يأتي التطبيق بأكثر من 500 طعام مع صورها. يمكنك إضافة أطعمتك، وتغيير صورها، وتعديل قيمها. كل شيء يبقى على هاتفك، مثل بقية GymMane.';
 
   @override
-  String get nutritionAboutBetaTitle => 'Still in beta';
+  String get nutritionAboutBetaTitle => 'ما زالت تجريبية';
 
   @override
   String get nutritionAboutBeta =>
-      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+      'إذا افتقدت شيئًا، فاقترحه على GitHub. ما عدا الماسح الضوئي أو قاعدة أطعمة أكبر: فإلى جانب خصوصيتك، سيصبح التطبيق أثقل بكثير. لا تحتاج إلى التغذية؟ أوقفها من الإعدادات، وتبقى بياناتك.';
 
   @override
-  String get nutritionAboutSuggest => 'Suggest an idea';
+  String get nutritionAboutSuggest => 'اقترح فكرة';
 
   @override
-  String get nutritionAboutOk => 'Got it';
+  String get nutritionAboutOk => 'فهمت';
 
   @override
   String get planShare => 'Share';

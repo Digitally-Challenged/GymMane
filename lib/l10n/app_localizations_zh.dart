@@ -4201,54 +4201,52 @@ class AppLocalizationsZh extends AppLocalizations {
   String get planDeleteBody => 'Your logged days stay as they are.';
 
   @override
-  String get sectionBeta => 'Beta';
+  String get sectionBeta => '测试版';
 
   @override
-  String get nutritionBeta => 'Nutrition';
+  String get nutritionBeta => '饮食';
 
   @override
-  String get nutritionBetaHint =>
-      'Meals, water, protein and supplements. Still being built: your data stays even if you turn it off.';
+  String get nutritionBetaHint => '饮食、饮水、蛋白质和补剂。仍在建设中：即使关闭，你的数据也会保留。';
 
   @override
-  String get nutritionAboutTitle => 'About Nutrition';
+  String get nutritionAboutTitle => '关于饮食';
 
   @override
-  String get nutritionAboutSub => 'What it is, and what it will never be.';
+  String get nutritionAboutSub => '它是什么，以及它永远不会是什么。';
 
   @override
-  String get nutritionAboutWhatTitle => 'Part of your training';
+  String get nutritionAboutWhatTitle => '训练的一部分';
 
   @override
   String get nutritionAboutWhat =>
-      'A simple way to log meals, water, protein and supplements right next to your workouts. GymMane is a gym app first: Nutrition is here so you can keep everything in one place, not to replace a dedicated diet app.';
+      '一种在训练旁边记录饮食、饮水、蛋白质和补剂的简单方式。GymMane 首先是一款健身房应用：饮食功能是为了让你把一切放在一个地方，而不是取代专门的饮食应用。';
 
   @override
-  String get nutritionAboutScanTitle => 'No scanning, ever';
+  String get nutritionAboutScanTitle => '没有扫码，永远不会有';
 
   @override
   String get nutritionAboutScan =>
-      'Scanning a barcode and having every detail filled in for you would be handy. But it needs the internet and a huge online food database, and what you eat ends up on someone else\'s servers. That data shows when you eat, what you eat and how you look after your body, and it can be used for advertising or passed on to big companies. That\'s why there\'s no scanner, and there won\'t be one.';
+      '扫一下条形码就自动填好所有信息会很方便。但这需要联网和一个庞大的在线食物数据库，你吃的东西会进入别人的服务器。这些数据会显示你什么时候吃、吃什么、如何照顾自己的身体，可能被用于广告或落入大公司手中。所以没有扫码功能，以后也不会有。';
 
   @override
-  String get nutritionAboutLocalTitle => 'Everything on your phone';
+  String get nutritionAboutLocalTitle => '一切都在你的手机上';
 
   @override
-  String get nutritionAboutLocal =>
-      'More than 500 foods with photos come inside the app. You can add your own, change their photos and edit their values. It all stays on your phone, like the rest of GymMane.';
+  String get nutritionAboutLocal => '应用内置 500 多种带图片的食物。你可以添加自己的食物、更换图片、编辑数值。和 GymMane 的其他部分一样，一切都留在你的手机上。';
 
   @override
-  String get nutritionAboutBetaTitle => 'Still in beta';
+  String get nutritionAboutBetaTitle => '仍是测试版';
 
   @override
   String get nutritionAboutBeta =>
-      'If you miss something, suggest it on GitHub. Just not scanning or a bigger food database: besides your privacy, it would make the app much heavier. Don\'t need Nutrition? Turn it off in Settings and your data stays.';
+      '如果缺少什么，请在 GitHub 上提出。只是别要扫码或更大的食物数据库：除了隐私问题，这还会让应用变得重得多。不需要饮食功能？在设置中关闭即可，你的数据会保留。';
 
   @override
-  String get nutritionAboutSuggest => 'Suggest an idea';
+  String get nutritionAboutSuggest => '提个建议';
 
   @override
-  String get nutritionAboutOk => 'Got it';
+  String get nutritionAboutOk => '知道了';
 
   @override
   String get planShare => 'Share';
@@ -8655,4 +8653,52 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String cookedYieldLine(String factor) {
     return '重量為生重的 $factor 倍';
   }
+
+  @override
+  String get sectionBeta => '測試版';
+
+  @override
+  String get nutritionBeta => '飲食';
+
+  @override
+  String get nutritionBetaHint => '飲食、飲水、蛋白質和補充品。仍在建置中：即使關閉，你的資料也會保留。';
+
+  @override
+  String get nutritionAboutTitle => '關於飲食';
+
+  @override
+  String get nutritionAboutSub => '它是什麼，以及它永遠不會是什麼。';
+
+  @override
+  String get nutritionAboutWhatTitle => '訓練的一部分';
+
+  @override
+  String get nutritionAboutWhat =>
+      '一種在訓練旁邊記錄飲食、飲水、蛋白質和補充品的簡單方式。GymMane 首先是一款健身房 App：飲食功能是為了讓你把一切放在同一個地方，而不是取代專門的飲食 App。';
+
+  @override
+  String get nutritionAboutScanTitle => '沒有掃描，永遠不會有';
+
+  @override
+  String get nutritionAboutScan =>
+      '掃一下條碼就自動填好所有資訊會很方便。但這需要連網和一個龐大的線上食物資料庫，你吃的東西會進到別人的伺服器。這些資料會顯示你什麼時候吃、吃什麼、如何照顧自己的身體，可能被用於廣告或落入大公司手中。所以沒有掃描功能，以後也不會有。';
+
+  @override
+  String get nutritionAboutLocalTitle => '一切都在你的手機上';
+
+  @override
+  String get nutritionAboutLocal => 'App 內建 500 多種附照片的食物。你可以新增自己的食物、更換照片、編輯數值。和 GymMane 的其他部分一樣，一切都留在你的手機上。';
+
+  @override
+  String get nutritionAboutBetaTitle => '仍是測試版';
+
+  @override
+  String get nutritionAboutBeta =>
+      '如果缺少什麼，請在 GitHub 上提出。只是別要掃描或更大的食物資料庫：除了隱私問題，這還會讓 App 變得重很多。不需要飲食功能？在設定中關閉即可，你的資料會保留。';
+
+  @override
+  String get nutritionAboutSuggest => '提個建議';
+
+  @override
+  String get nutritionAboutOk => '知道了';
 }

@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Codzienne przypomnienie o suplementach",
   "energySplit": "Skąd pochodzą kalorie",
   "typicalServing": "Typowa porcja",
-  "cookedYieldLine": "Waży {factor}× tyle co na surowo"
+  "cookedYieldLine": "Waży {factor}× tyle co na surowo",
+  "sectionBeta": "Beta",
+  "nutritionBeta": "Odżywianie",
+  "nutritionBetaHint": "Posiłki, woda, białko i suplementy. Wciąż w budowie: twoje dane zostają, nawet jeśli to wyłączysz.",
+  "nutritionAboutTitle": "O odżywianiu",
+  "nutritionAboutSub": "Czym jest i czym nigdy nie będzie.",
+  "nutritionAboutWhatTitle": "Część twojego treningu",
+  "nutritionAboutWhat": "Prosty sposób na zapisywanie posiłków, wody, białka i suplementów tuż obok treningów. GymMane to przede wszystkim aplikacja na siłownię: odżywianie jest po to, żebyś miał wszystko w jednym miejscu, a nie żeby zastąpić aplikację dietetyczną.",
+  "nutritionAboutScanTitle": "Bez skanera, nigdy",
+  "nutritionAboutScan": "Zeskanowanie kodu kreskowego i automatyczne uzupełnienie wszystkiego byłoby wygodne. Ale wymaga to internetu i ogromnej internetowej bazy produktów, a to, co jesz, trafia na cudze serwery. Te dane pokazują, kiedy jesz, co jesz i jak dbasz o swoje ciało, i mogą zostać użyte do reklam albo trafić do dużych firm. Dlatego nie ma skanera i nie będzie.",
+  "nutritionAboutLocalTitle": "Wszystko w twoim telefonie",
+  "nutritionAboutLocal": "Aplikacja zawiera ponad 500 produktów ze zdjęciami. Możesz dodawać własne, zmieniać ich zdjęcia i edytować wartości. Wszystko zostaje w twoim telefonie, jak cała reszta GymMane.",
+  "nutritionAboutBetaTitle": "Wciąż w becie",
+  "nutritionAboutBeta": "Jeśli czegoś ci brakuje, zaproponuj to na GitHubie. Tylko nie skaner ani większa baza produktów: poza twoją prywatnością aplikacja byłaby dużo cięższa. Nie potrzebujesz odżywiania? Wyłącz je w Ustawieniach, a twoje dane zostaną.",
+  "nutritionAboutSuggest": "Zaproponuj pomysł",
+  "nutritionAboutOk": "Rozumiem"
 }

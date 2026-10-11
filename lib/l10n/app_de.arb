@@ -1242,5 +1242,20 @@
   "notifSuppChannelWhy": "Tägliche Erinnerung an deine Supplements",
   "energySplit": "Woher die Kalorien kommen",
   "typicalServing": "Typische Portion",
-  "cookedYieldLine": "Wiegt {factor}× so viel wie roh"
+  "cookedYieldLine": "Wiegt {factor}× so viel wie roh",
+  "sectionBeta": "Beta",
+  "nutritionBeta": "Ernährung",
+  "nutritionBetaHint": "Mahlzeiten, Wasser, Protein und Supplements. Noch im Aufbau: Deine Daten bleiben, auch wenn du es ausschaltest.",
+  "nutritionAboutTitle": "Über Ernährung",
+  "nutritionAboutSub": "Was es ist und was es nie sein wird.",
+  "nutritionAboutWhatTitle": "Teil deines Trainings",
+  "nutritionAboutWhat": "Eine einfache Art, Mahlzeiten, Wasser, Protein und Supplements direkt neben deinen Workouts festzuhalten. GymMane ist zuerst eine Gym-App: Ernährung ist da, damit du alles an einem Ort hast, nicht um eine richtige Diät-App zu ersetzen.",
+  "nutritionAboutScanTitle": "Kein Scanner, niemals",
+  "nutritionAboutScan": "Einen Barcode zu scannen und alles automatisch ausgefüllt zu bekommen, wäre praktisch. Aber dafür braucht es Internet und eine riesige Online-Lebensmitteldatenbank, und was du isst, landet auf fremden Servern. Diese Daten zeigen, wann du isst, was du isst und wie du auf deinen Körper achtest, und sie können für Werbung genutzt oder an große Konzerne weitergegeben werden. Deshalb gibt es keinen Scanner, und es wird auch keinen geben.",
+  "nutritionAboutLocalTitle": "Alles auf deinem Handy",
+  "nutritionAboutLocal": "Über 500 Lebensmittel mit Fotos sind in der App enthalten. Du kannst eigene hinzufügen, ihre Fotos ändern und ihre Werte bearbeiten. Alles bleibt auf deinem Handy, wie der Rest von GymMane.",
+  "nutritionAboutBetaTitle": "Noch in der Beta",
+  "nutritionAboutBeta": "Wenn dir etwas fehlt, schlag es auf GitHub vor. Nur keinen Scanner und keine größere Lebensmitteldatenbank: Abgesehen von deiner Privatsphäre würde das die App viel schwerer machen. Brauchst du Ernährung nicht? Schalte sie in den Einstellungen aus, deine Daten bleiben erhalten.",
+  "nutritionAboutSuggest": "Idee vorschlagen",
+  "nutritionAboutOk": "Verstanden"
 }
