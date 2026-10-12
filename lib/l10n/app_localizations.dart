@@ -283,7 +283,7 @@ abstract class AppLocalizations {
   /// No description provided for @exerciseCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} exercise} other{{n} exercises}}'**
+  /// **'{n, plural, one{{n} exercise} other{{n} exercises}}'**
   String exerciseCount(int n);
 
   /// No description provided for @pushDay.
@@ -409,7 +409,7 @@ abstract class AppLocalizations {
   /// No description provided for @startCount.
   ///
   /// In en, this message translates to:
-  /// **'START · {n, plural, =1{{n} EXERCISE} other{{n} EXERCISES}}'**
+  /// **'START · {n, plural, one{{n} EXERCISE} other{{n} EXERCISES}}'**
   String startCount(int n);
 
   /// No description provided for @inProgress.
@@ -541,7 +541,7 @@ abstract class AppLocalizations {
   /// No description provided for @finishBodyPr.
   ///
   /// In en, this message translates to:
-  /// **'You lifted more than ever on {prs, plural, =1{an exercise} other{{prs} exercises}}. It is in your records now.'**
+  /// **'You lifted more than ever on {prs, plural, one{an exercise} other{{prs} exercises}}. It is in your records now.'**
   String finishBodyPr(int prs);
 
   /// No description provided for @finishBodyGoal.
@@ -577,7 +577,7 @@ abstract class AppLocalizations {
   /// No description provided for @prCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} new record} other{{n} new records}}'**
+  /// **'{n, plural, one{{n} new record} other{{n} new records}}'**
   String prCount(int n);
 
   /// No description provided for @duration.
@@ -715,7 +715,7 @@ abstract class AppLocalizations {
   /// No description provided for @sessionsLogged.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} session logged} other{{n} sessions logged}}'**
+  /// **'{n, plural, one{{n} session logged} other{{n} sessions logged}}'**
   String sessionsLogged(int n);
 
   /// No description provided for @streakDays.
@@ -913,7 +913,7 @@ abstract class AppLocalizations {
   /// No description provided for @libraryCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} exercise in your library} other{{n} exercises in your library}}'**
+  /// **'{n, plural, one{{n} exercise in your library} other{{n} exercises in your library}}'**
   String libraryCount(int n);
 
   /// No description provided for @searchExercises.
@@ -1219,7 +1219,7 @@ abstract class AppLocalizations {
   /// No description provided for @noteCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{No notes} =1{1 note} other{{n} notes}}'**
+  /// **'{n, plural, =0{No notes} one{1 note} other{{n} notes}}'**
   String noteCount(int n);
 
   /// No description provided for @noteKindNote.
@@ -1399,7 +1399,7 @@ abstract class AppLocalizations {
   /// No description provided for @noteMonthCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{No notes this month} =1{1 note this month} other{{n} notes this month}}'**
+  /// **'{n, plural, =0{No notes this month} one{1 note this month} other{{n} notes this month}}'**
   String noteMonthCount(int n);
 
   /// No description provided for @measures.
@@ -1417,7 +1417,7 @@ abstract class AppLocalizations {
   /// No description provided for @measureCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{Nothing logged} =1{1 reading} other{{n} readings}}'**
+  /// **'{n, plural, =0{Nothing logged} one{1 reading} other{{n} readings}}'**
   String measureCount(int n);
 
   /// No description provided for @measureNoneYet.
@@ -1513,7 +1513,7 @@ abstract class AppLocalizations {
   /// No description provided for @photoCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{No photos} =1{1 photo} other{{n} photos}}'**
+  /// **'{n, plural, =0{No photos} one{1 photo} other{{n} photos}}'**
   String photoCount(int n);
 
   /// No description provided for @poseFront.
@@ -1567,7 +1567,7 @@ abstract class AppLocalizations {
   /// No description provided for @photoNextIn.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{Next photo tomorrow} other{Next photo in {n} days}}'**
+  /// **'{n, plural, one{Next photo tomorrow} other{Next photo in {n} days}}'**
   String photoNextIn(int n);
 
   /// No description provided for @photoDueNow.
@@ -1609,7 +1609,7 @@ abstract class AppLocalizations {
   /// No description provided for @daysApart.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{Same day} =1{1 day apart} other{{n} days apart}}'**
+  /// **'{n, plural, =0{Same day} one{1 day apart} other{{n} days apart}}'**
   String daysApart(int n);
 
   /// No description provided for @deleteEntryTitle.
@@ -1657,7 +1657,7 @@ abstract class AppLocalizations {
   /// No description provided for @sessionCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{No sessions} =1{1 session} other{{n} sessions}}'**
+  /// **'{n, plural, =0{No sessions} one{1 session} other{{n} sessions}}'**
   String sessionCount(int n);
 
   /// No description provided for @notifPhotoChannel.
@@ -1843,7 +1843,7 @@ abstract class AppLocalizations {
   /// No description provided for @setCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} set} other{{n} sets}}'**
+  /// **'{n, plural, one{{n} set} other{{n} sets}}'**
   String setCount(int n);
 
   /// No description provided for @volumeSuffix.
@@ -2275,7 +2275,7 @@ abstract class AppLocalizations {
   /// No description provided for @importWeights.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{Imported {n} weigh-in} other{Imported {n} weigh-ins}}'**
+  /// **'{n, plural, one{Imported {n} weigh-in} other{Imported {n} weigh-ins}}'**
   String importWeights(int n);
 
   /// No description provided for @importReadFailed.
@@ -2305,7 +2305,7 @@ abstract class AppLocalizations {
   /// No description provided for @importDone.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{Imported {n} session} other{Imported {n} sessions}}'**
+  /// **'{n, plural, one{Imported {n} session} other{Imported {n} sessions}}'**
   String importDone(int n);
 
   /// No description provided for @aboutGymmane.
@@ -3013,7 +3013,7 @@ abstract class AppLocalizations {
   /// No description provided for @daysUnit.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{day} other{days}}'**
+  /// **'{n, plural, one{day} other{days}}'**
   String daysUnit(int n);
 
   /// No description provided for @reset.
@@ -3121,7 +3121,7 @@ abstract class AppLocalizations {
   /// No description provided for @perWeek.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} session a week} other{{n} sessions a week}}'**
+  /// **'{n, plural, one{{n} session a week} other{{n} sessions a week}}'**
   String perWeek(int n);
 
   /// No description provided for @onbUnitsTitle.
@@ -3343,7 +3343,7 @@ abstract class AppLocalizations {
   /// No description provided for @platesOwned.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} size} other{{n} sizes}}'**
+  /// **'{n, plural, one{{n} size} other{{n} sizes}}'**
   String platesOwned(int n);
 
   /// No description provided for @platePairs.
@@ -3619,7 +3619,7 @@ abstract class AppLocalizations {
   /// No description provided for @templateAdded.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} routine added} other{{n} routines added}}'**
+  /// **'{n, plural, one{{n} routine added} other{{n} routines added}}'**
   String templateAdded(int n);
 
   /// No description provided for @tplFullbody.
@@ -3661,7 +3661,7 @@ abstract class AppLocalizations {
   /// No description provided for @dayCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} day} other{{n} days}}'**
+  /// **'{n, plural, one{{n} day} other{{n} days}}'**
   String dayCount(int n);
 
   /// No description provided for @logRpe.
@@ -3709,7 +3709,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiMissing.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 name was not in your library} other{{n} names were not in your library}}'**
+  /// **'{n, plural, one{1 name was not in your library} other{{n} names were not in your library}}'**
   String aiMissing(int n);
 
   /// No description provided for @importApps.
@@ -4249,7 +4249,7 @@ abstract class AppLocalizations {
   /// No description provided for @levelToNext.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 workout to level {next}} other{{n} workouts to level {next}}}'**
+  /// **'{n, plural, one{1 workout to level {next}} other{{n} workouts to level {next}}}'**
   String levelToNext(int n, int next);
 
   /// No description provided for @heightCm.
@@ -4831,7 +4831,7 @@ abstract class AppLocalizations {
   /// No description provided for @routineCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 routine} other{{n} routines}}'**
+  /// **'{n, plural, one{1 routine} other{{n} routines}}'**
   String routineCount(int n);
 
   /// No description provided for @useTheirSchedule.
@@ -4855,7 +4855,7 @@ abstract class AppLocalizations {
   /// No description provided for @routinesAdded.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 routine added} other{{n} routines added}}'**
+  /// **'{n, plural, one{1 routine added} other{{n} routines added}}'**
   String routinesAdded(int n);
 
   /// No description provided for @nothingToImport.
@@ -5209,7 +5209,7 @@ abstract class AppLocalizations {
   /// No description provided for @repCount.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{{n} rep} other{{n} reps}}'**
+  /// **'{n, plural, one{{n} rep} other{{n} reps}}'**
   String repCount(int n);
 
   /// No description provided for @prBestSet.
@@ -5419,7 +5419,7 @@ abstract class AppLocalizations {
   /// No description provided for @lastDoneAgo.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{Done today} =1{Done yesterday} other{{n} days ago}}'**
+  /// **'{n, plural, =0{Done today} one{Done yesterday} other{{n} days ago}}'**
   String lastDoneAgo(int n);
 
   /// No description provided for @archivedFilter.
@@ -5557,7 +5557,7 @@ abstract class AppLocalizations {
   /// No description provided for @planHistory.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 workout logged in the last 30 days.} other{{n} workouts logged in the last 30 days.}}'**
+  /// **'{n, plural, one{1 workout logged in the last 30 days.} other{{n} workouts logged in the last 30 days.}}'**
   String planHistory(int n);
 
   /// No description provided for @planBestLifts.
@@ -5815,7 +5815,7 @@ abstract class AppLocalizations {
   /// No description provided for @goalDaysLeft.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 day left} other{{n} days left}}'**
+  /// **'{n, plural, one{1 day left} other{{n} days left}}'**
   String goalDaysLeft(int n);
 
   /// No description provided for @goalOverdue.
@@ -5875,7 +5875,7 @@ abstract class AppLocalizations {
   /// No description provided for @inRoutines.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =0{Not in any routine yet} =1{In 1 routine} other{In {n} routines}}'**
+  /// **'{n, plural, =0{Not in any routine yet} one{In 1 routine} other{In {n} routines}}'**
   String inRoutines(int n);
 
   /// No description provided for @alreadyInRoutine.
@@ -6733,7 +6733,7 @@ abstract class AppLocalizations {
   /// No description provided for @copiedMealToast.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 food copied} other{{count} foods copied}}'**
+  /// **'{count, plural, one{1 food copied} other{{count} foods copied}}'**
   String copiedMealToast(int count);
 
   /// No description provided for @deleteSavedMealBody.
@@ -6805,43 +6805,43 @@ abstract class AppLocalizations {
   /// No description provided for @portionUnit.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 piece} other{{count} pieces}}'**
+  /// **'{count, plural, one{1 piece} other{{count} pieces}}'**
   String portionUnit(int count);
 
   /// No description provided for @portionSlice.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 slice} other{{count} slices}}'**
+  /// **'{count, plural, one{1 slice} other{{count} slices}}'**
   String portionSlice(int count);
 
   /// No description provided for @portionScoop.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 scoop} other{{count} scoops}}'**
+  /// **'{count, plural, one{1 scoop} other{{count} scoops}}'**
   String portionScoop(int count);
 
   /// No description provided for @portionTbsp.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 tbsp} other{{count} tbsp}}'**
+  /// **'{count, plural, one{1 tbsp} other{{count} tbsp}}'**
   String portionTbsp(int count);
 
   /// No description provided for @portionTsp.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 tsp} other{{count} tsp}}'**
+  /// **'{count, plural, one{1 tsp} other{{count} tsp}}'**
   String portionTsp(int count);
 
   /// No description provided for @portionCup.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 cup} other{{count} cups}}'**
+  /// **'{count, plural, one{1 cup} other{{count} cups}}'**
   String portionCup(int count);
 
   /// No description provided for @portionGlass.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 glass} other{{count} glasses}}'**
+  /// **'{count, plural, one{1 glass} other{{count} glasses}}'**
   String portionGlass(int count);
 
   /// No description provided for @recentFoods.
@@ -6853,7 +6853,7 @@ abstract class AppLocalizations {
   /// No description provided for @recipeItems.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 food} other{{count} foods}}'**
+  /// **'{count, plural, one{1 food} other{{count} foods}}'**
   String recipeItems(int count);
 
   /// No description provided for @renameLabel.
@@ -6991,7 +6991,7 @@ abstract class AppLocalizations {
   /// No description provided for @weekLoggedDays.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 day logged} other{{count} days logged}}'**
+  /// **'{count, plural, one{1 day logged} other{{count} days logged}}'**
   String weekLoggedDays(int count);
 
   /// No description provided for @weekNoData.
@@ -7699,7 +7699,7 @@ abstract class AppLocalizations {
   /// No description provided for @planLogged.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 food logged} other{{n} foods logged}}'**
+  /// **'{n, plural, one{1 food logged} other{{n} foods logged}}'**
   String planLogged(int n);
 
   /// No description provided for @planNoPlan.
@@ -7837,7 +7837,7 @@ abstract class AppLocalizations {
   /// No description provided for @planImported.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{1 plan imported} other{{n} plans imported}}'**
+  /// **'{n, plural, one{1 plan imported} other{{n} plans imported}}'**
   String planImported(int n);
 
   /// No description provided for @planImportNone.
@@ -7921,7 +7921,7 @@ abstract class AppLocalizations {
   /// No description provided for @suppEveryN.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{Every day} other{Every {n} days}}'**
+  /// **'{n, plural, one{Every day} other{Every {n} days}}'**
   String suppEveryN(int n);
 
   /// No description provided for @suppDaily.
@@ -7969,7 +7969,7 @@ abstract class AppLocalizations {
   /// No description provided for @suppEveryTail.
   ///
   /// In en, this message translates to:
-  /// **'{n, plural, =1{day} other{days}}'**
+  /// **'{n, plural, one{day} other{days}}'**
   String suppEveryTail(int n);
 
   /// No description provided for @suppStarts.
@@ -8215,7 +8215,7 @@ abstract class AppLocalizations {
   /// No description provided for @movedMealToast.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 food moved} other{{count} foods moved}}'**
+  /// **'{count, plural, one{1 food moved} other{{count} foods moved}}'**
   String movedMealToast(int count);
 
   /// No description provided for @repeatWholeDay.
@@ -8257,7 +8257,7 @@ abstract class AppLocalizations {
   /// No description provided for @savedMealsCount.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 meal} other{{count} meals}}'**
+  /// **'{count, plural, one{1 meal} other{{count} meals}}'**
   String savedMealsCount(int count);
 
   /// No description provided for @savedMealsEmpty.
