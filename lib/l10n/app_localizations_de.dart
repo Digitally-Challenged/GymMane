@@ -369,10 +369,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get muscleMap => 'MUSKELKARTE';
 
   @override
-  String get days7 => '7D';
+  String get days7 => '7T';
 
   @override
-  String get days30 => '30D';
+  String get days30 => '30T';
 
   @override
   String get days90 => '90T';
@@ -491,7 +491,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get kindCalisthenics => 'Calisthenics';
 
   @override
-  String get kindCardio => 'Cardio';
+  String get kindCardio => 'Kardio';
 
   @override
   String get kindStretch => 'Dehnen';
@@ -1307,7 +1307,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sexLabel => 'GESCHLECHT';
 
   @override
-  String get macroProtein => 'PROTEIN';
+  String get macroProtein => 'EIWEISS';
 
   @override
   String get macroCarbs => 'KOHLENHYDRATE';

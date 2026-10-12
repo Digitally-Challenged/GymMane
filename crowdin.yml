@@ -1,5 +1,6 @@
 files:
   - source: /lib/l10n/app_en.arb
+    skip_untranslated_strings: true
     translation: /lib/l10n/app_%two_letters_code%.arb
     excluded_target_languages:
       - es-ES
