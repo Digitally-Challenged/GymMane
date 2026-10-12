@@ -5,7 +5,6 @@ const int kDefaultRoutineSets = 3;
 mixin RoutinesState on FitCore, LibraryState {
   String? activeRoutineId;
   int _routineSeq = 0;
-  bool _editFromExercise = false;
 
   void goRoutines() => pushRoute('routines');
 
@@ -385,17 +384,14 @@ mixin RoutinesState on FitCore, LibraryState {
   }
 
   void openRoutine(String id) {
-    if (route != 'routine-edit') _editFromExercise = false;
     activeRoutineId = id;
-    route = 'routine-edit';
-    notifyListeners();
+    pushRoute('routine-edit');
   }
 
   void addToRoutineAndEdit(String? routineId, String exId) {
     final id = routineId ?? createRoutine();
     if (!routineHas(id, exId)) toggleRoutineExercise(id, exId);
     activeRoutineId = id;
-    _editFromExercise = true;
     pushRoute('routine-edit');
   }
 
@@ -403,12 +399,5 @@ mixin RoutinesState on FitCore, LibraryState {
 
   String routineTitle(Routine r) => r.name.isEmpty ? t.newRoutineName : r.name;
 
-  void closeRoutineEdit() {
-    if (_editFromExercise) {
-      _editFromExercise = false;
-      return popRoute(fallback: 'routines');
-    }
-    route = 'routines';
-    notifyListeners();
-  }
+  void closeRoutineEdit() => popRoute(fallback: 'routines');
 }
