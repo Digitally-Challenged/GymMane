@@ -1746,7 +1746,7 @@ class _DaySheet extends StatelessWidget {
   }
 
   Widget _loggedRow(BuildContext context, GymColors gc, LoggedSession s, LoggedExercise e) {
-    final detail = e.sets.map((x) => '${fit.weightValue(x.weight)}×${x.reps}').join(' · ');
+    final detail = fit.setsSummary(e.sets);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
