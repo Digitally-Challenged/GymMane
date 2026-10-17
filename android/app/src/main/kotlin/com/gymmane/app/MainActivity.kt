@@ -24,6 +24,7 @@ import java.io.FileOutputStream
 class MainActivity : FlutterActivity() {
     private var incomingChannel: MethodChannel? = null
     private var rotaryChannel: MethodChannel? = null
+    private var openChannel: MethodChannel? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -90,6 +91,16 @@ class MainActivity : FlutterActivity() {
 
         rotaryChannel = MethodChannel(messenger, "gymmane/rotary")
 
+        val open = MethodChannel(messenger, "gymmane/open")
+        open.setMethodCallHandler { call, result ->
+            if (call.method != "take") {
+                result.notImplemented()
+                return@setMethodCallHandler
+            }
+            result.success(takeOpen(intent))
+        }
+        openChannel = open
+
         val live = MethodChannel(messenger, "gymmane/live")
         live.setMethodCallHandler { call, result ->
             when (call.method) {
@@ -142,6 +153,7 @@ class MainActivity : FlutterActivity() {
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
         rotaryChannel = null
+        openChannel = null
         LiveNotifier.dart = null
         HealthBridge.channel = null
         if (isFinishing) LiveNotifier.cancel(this)
@@ -151,12 +163,23 @@ class MainActivity : FlutterActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        val open = takeOpen(intent)
+        if (open != null) {
+            openChannel?.invokeMethod("open", open)
+            return
+        }
         if (HealthBridge.takeUsage(intent)) {
             HealthBridge.channel?.invokeMethod("usage", null)
             return
         }
         val text = takeIncoming(intent) ?: return
         incomingChannel?.invokeMethod("incoming", text)
+    }
+
+    private fun takeOpen(intent: Intent?): String? {
+        val route = intent?.getStringExtra(OPEN_EXTRA) ?: return null
+        intent.removeExtra(OPEN_EXTRA)
+        return route
     }
 
     private fun takeIncoming(intent: Intent?): String? {

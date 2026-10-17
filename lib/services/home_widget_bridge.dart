@@ -8,6 +8,7 @@ import 'package:home_widget/home_widget.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../widgets/home_widget_views.dart';
+import 'nutrition_widgets.dart';
 
 class HomeWidgetBridge {
   HomeWidgetBridge._();
@@ -189,6 +190,9 @@ class HomeWidgetBridge {
           if (path != null) await HomeWidget.saveWidgetData<String>('${key}_night', path);
         }
       }
+      if (!_ios && NutritionWidgets.providers.any(wants)) {
+        await NutritionWidgets.paint(render: _render, wants: wants, day: day, night: night, framed: framed);
+      }
       final now = DateTime.now();
       if (everyone) _allPainted = today;
       await HomeWidget.saveWidgetData<String>('today_stamp', _stamp(now));
@@ -216,6 +220,11 @@ class HomeWidgetBridge {
         ('WeekWidgetProvider', 'WeekWidget'),
       ]) {
         if (wants(android)) await _reload(android, ios);
+      }
+      if (!_ios) {
+        for (final android in NutritionWidgets.providers) {
+          if (wants(android)) await _reload(android, android);
+        }
       }
     } catch (e) {
       debugPrint('HomeWidgetBridge.update falló: $e');

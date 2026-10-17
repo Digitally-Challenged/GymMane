@@ -34,6 +34,7 @@ import '../screens/tools_screen.dart';
 import '../screens/train_screen.dart';
 import '../services/health_steps.dart';
 import '../services/incoming_share.dart';
+import '../services/nutrition_widgets.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -99,13 +100,22 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     fit.addListener(_restOver);
     _queueCelebration();
     IncomingShare.listen(_receive);
+    NutritionWidgets.listenOpen(_openFromWidget);
     HealthSteps.listen(_showStepsInfo);
     fit.refreshSteps();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final text = await IncomingShare.take();
       if (text != null) _receive(text);
+      await NutritionWidgets.takePending();
+      final open = await NutritionWidgets.takeOpen();
+      if (open != null) _openFromWidget(open);
       if (await HealthSteps.takeUsage()) _showStepsInfo();
     });
+  }
+
+  void _openFromWidget(String route) {
+    if (!mounted || !fit.onboarded || route != 'nutrition' || fit.isSessionActive) return;
+    if (fit.route != 'nutrition') fit.goNutrition();
   }
 
   void _showStepsInfo() {
@@ -225,6 +235,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
       fit.persistNow();
     }
     if (state == AppLifecycleState.resumed) {
+      NutritionWidgets.takePending();
       fit.refreshAlarmPermission();
       fit.syncRest();
       fit.refreshWidgets();

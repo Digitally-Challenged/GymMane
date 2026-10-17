@@ -747,15 +747,6 @@ Future<void> showWaterSheet(BuildContext context) => _sheet<void>(context, (cont
       );
     });
 
-Color _shakeColor(FoodItem? shake) {
-  final name = foldText('${shake?.name ?? ''} ${FoodLibrary.byId(shake?.id ?? '')?.names['en'] ?? ''}');
-  bool has(List<String> words) => words.any(name.contains);
-  if (has(['choc', 'cacao', 'cocoa', 'kakao', 'coffee', 'cafe', 'mocha'])) return const Color(0xFF8A5A3C);
-  if (has(['fresa', 'strawberr', 'berry', 'frutos rojos', 'erdbeer', 'fraise'])) return const Color(0xFFE3A7AE);
-  if (has(['platano', 'banana', 'mango'])) return const Color(0xFFE6D08E);
-  return const Color(0xFFE2D5BC);
-}
-
 class _ShakeTile extends StatelessWidget {
   const _ShakeTile();
 
@@ -790,7 +781,7 @@ class _ShakeTile extends StatelessWidget {
           top: 0.407,
           bottom: 0.975,
           curve: 0.066,
-          liquid: _shakeColor(shake),
+          liquid: shakeColor(shake),
           texture: 'assets/img/shake-texture.webp',
         ),
       ),
