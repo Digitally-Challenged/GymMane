@@ -63,7 +63,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final start = _weekStart;
     final end = shiftDays(start, 7);
     return sessions.where((s) {
-      final k = _dayKey(s.date);
+      final k = _dayKey(s.day);
       return !k.isBefore(start) && k.isBefore(end);
     });
   }
@@ -72,7 +72,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final today = _dayKey(DateTime.now());
     final byDay = <DateTime, double>{};
     for (final s in sessions) {
-      final k = _dayKey(s.date);
+      final k = _dayKey(s.day);
       byDay[k] = (byDay[k] ?? 0) + s.volume;
     }
     return List.generate(days, (i) {
@@ -82,7 +82,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   }
 
   double _volumeBetween(DateTime start, DateTime end) => sessions
-      .where((s) => s.date.isAfter(start) && !s.date.isAfter(end))
+      .where((s) => s.day.isAfter(start) && !s.day.isAfter(end))
       .fold(0.0, (a, s) => a + s.volume);
 
   bool get hasData => sessions.isNotEmpty;
@@ -118,13 +118,13 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   List<int> get sessionsByMonth {
     final out = List.filled(12, 0);
     for (final s in sessions) {
-      if (s.date.year == statsYear) out[s.date.month - 1]++;
+      if (s.day.year == statsYear) out[s.day.month - 1]++;
     }
     return out;
   }
 
   double get volumeThisYearKg => sessions
-      .where((s) => s.date.year == statsYear)
+      .where((s) => s.day.year == statsYear)
       .fold(0.0, (a, s) => a + s.volume);
 
   int get sessionsThisYear => sessionsByMonth.fold(0, (a, b) => a + b);
@@ -143,7 +143,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   Map<int, int> get sessionsByWeekday {
     final out = {for (int w = 1; w <= 7; w++) w: 0};
     for (final s in sessions) {
-      out[s.date.weekday] = out[s.date.weekday]! + 1;
+      out[s.day.weekday] = out[s.day.weekday]! + 1;
     }
     return out;
   }
@@ -191,7 +191,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final active = <DateTime>{..._checkinDays};
     final load = <DateTime, double>{};
     for (final s in sessions) {
-      final k = _dayKey(s.date);
+      final k = _dayKey(s.day);
       active.add(k);
       load[k] = (load[k] ?? 0) + s.volume;
     }
@@ -216,7 +216,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   List<LoggedSession> sessionsOn(DateTime day) {
     final k = _dayKey(day);
-    return sessions.where((s) => _dayKey(s.date) == k).toList()
+    return sessions.where((s) => _dayKey(s.day) == k).toList()
       ..sort((a, b) => b.date.compareTo(a.date));
   }
 
@@ -252,7 +252,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final title = sessionTitle(s);
     final out = [
       ?title,
-      s.durationSec > 0 ? '${t.longDate(s.date)} · ${s.durationSec ~/ 60} min' : t.longDate(s.date),
+      s.durationSec > 0 ? '${t.longDate(s.day)} · ${s.durationSec ~/ 60} min' : t.longDate(s.day),
     ];
     var reps = 0;
     for (final e in s.exercises) {
@@ -357,7 +357,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   ({int exercises, int sets, double volume, int durationSec, List<String> names})? daySummary(
       DateTime day) {
     final k = _dayKey(day);
-    final ofDay = sessions.where((s) => _dayKey(s.date) == k).toList();
+    final ofDay = sessions.where((s) => _dayKey(s.day) == k).toList();
     if (ofDay.isEmpty) return null;
     final names = <String>[];
     for (final s in ofDay) {
@@ -385,7 +385,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   }
 
   int get currentStreak {
-    final days = {...sessions.map((s) => _dayKey(s.date)), ..._checkinDays};
+    final days = {...sessions.map((s) => _dayKey(s.day)), ..._checkinDays};
     if (days.isEmpty) return 0;
     final first = days.reduce((a, b) => a.isBefore(b) ? a : b);
     bool rest(DateTime d) => weeklyPlan.isNotEmpty && !weeklyPlan.containsKey(d.weekday);
@@ -405,7 +405,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   List<bool> get weekMask {
     final start = _weekStart;
-    final days = sessions.map((s) => _dayKey(s.date)).toSet();
+    final days = sessions.map((s) => _dayKey(s.day)).toSet();
     return List.generate(7, (i) => days.contains(shiftDays(start, i)));
   }
 
@@ -417,7 +417,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   bool _hasSessionOn(DateTime day) {
     final k = _dayKey(day);
-    return sessions.any((s) => _dayKey(s.date) == k);
+    return sessions.any((s) => _dayKey(s.day) == k);
   }
 
   bool isDayDone(int i) {
@@ -453,7 +453,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   int get setsToday {
     final t = _dayKey(DateTime.now());
-    return sessions.where((s) => _dayKey(s.date) == t).fold(0, (a, s) => a + s.setCount);
+    return sessions.where((s) => _dayKey(s.day) == t).fold(0, (a, s) => a + s.setCount);
   }
 
   int get weeklyTarget => profile.weeklyGoal <= 0 ? 4 : profile.weeklyGoal;
@@ -584,7 +584,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final start = shiftDays(_dayKey(DateTime.now()), -(days - 1));
     final out = <String, double>{};
     for (final s in sessions) {
-      if (_dayKey(s.date).isBefore(start)) continue;
+      if (_dayKey(s.day).isBefore(start)) continue;
       for (final e in s.exercises) {
         final n = e.workingSets.length.toDouble();
         if (n <= 0) continue;
@@ -602,7 +602,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   List<BodyWindow> get bodyWindows {
     if (sessions.isEmpty) return const [];
     final step = bodyWindowDays;
-    final first = _dayKey(sessions.map((s) => s.date).reduce((a, b) => a.isBefore(b) ? a : b));
+    final first = _dayKey(sessions.map((s) => s.day).reduce((a, b) => a.isBefore(b) ? a : b));
     final out = <BodyWindow>[];
     var to = _dayKey(DateTime.now());
 
@@ -611,7 +611,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
       var count = 0;
       var volume = 0.0;
       for (final s in sessions) {
-        final d = _dayKey(s.date);
+        final d = _dayKey(s.day);
         if (d.isBefore(from) || d.isAfter(to)) continue;
         count++;
         volume += s.volume;
@@ -634,7 +634,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final a = _dayKey(from), b = _dayKey(to);
     final out = <String, double>{};
     for (final s in sessions) {
-      final d = _dayKey(s.date);
+      final d = _dayKey(s.day);
       if (d.isBefore(a) || d.isAfter(b)) continue;
       for (final e in s.exercises) {
         final n = e.workingSets.length.toDouble();
@@ -734,6 +734,30 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
     final r = muscleRecovery(now: now);
     final ids = r.keys.where((k) => r[k]! < 0.8).toList()..sort((a, b) => r[a]!.compareTo(r[b]!));
     return ids;
+  }
+
+  Map<String, int?> daysSinceTrained({DateTime? now}) {
+    final today = _dayKey(now ?? DateTime.now());
+    final last = <String, DateTime>{};
+    for (final s in sessions) {
+      final day = _dayKey(s.day);
+      for (final e in s.exercises) {
+        if (e.workingSets.isEmpty) continue;
+        final seen = last[e.primary];
+        if (seen == null || day.isAfter(seen)) last[e.primary] = day;
+      }
+    }
+    return {
+      for (final m in kMuscles)
+        m.id: last[m.id] == null ? null : math.max(0, (today.difference(last[m.id]!).inHours / 24).round()),
+    };
+  }
+
+  List<String> untrainedLongest({DateTime? now, int atLeast = 7}) {
+    final days = daysSinceTrained(now: now);
+    int age(String id) => days[id] ?? 1 << 20;
+    final ids = days.keys.where((id) => age(id) >= atLeast).toList()..sort((a, b) => age(b).compareTo(age(a)));
+    return ids.take(3).toList();
   }
 
   List<String> neglectedMuscles(int days) {
@@ -874,7 +898,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   Map<int, int> get _recentByWeekday {
     final out = <int, int>{};
     for (final s in _recentSessions) {
-      out[s.date.weekday] = (out[s.date.weekday] ?? 0) + 1;
+      out[s.day.weekday] = (out[s.day.weekday] ?? 0) + 1;
     }
     return out;
   }
@@ -903,7 +927,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   bool get hasTrainingHabit => usualWeekdays.isNotEmpty && usualStartMinute != null;
 
   String? familyOnWeekday(int weekday) {
-    final onDay = _recentSessions.where((s) => s.date.weekday == weekday).toList();
+    final onDay = _recentSessions.where((s) => s.day.weekday == weekday).toList();
     if (onDay.length < 2) return null;
     final volume = <String, double>{};
     for (final s in onDay) {
@@ -918,7 +942,7 @@ mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
 
   bool get trainedToday {
     final today = _dayKey(DateTime.now());
-    return sessions.any((s) => _dayKey(s.date) == today);
+    return sessions.any((s) => _dayKey(s.day) == today);
   }
 
   ({String title, String subtitle, List<String> muscles}) get suggestedFocus {

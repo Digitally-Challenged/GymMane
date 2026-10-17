@@ -765,6 +765,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeline => '身材相册';
 
   @override
+  String get hidePhotos => '隐藏照片';
+
+  @override
+  String get showPhotos => '显示照片';
+
+  @override
   String get timelineHint => '同姿态、同机位、同光线。坚持一年，震撼由心而生。';
 
   @override
@@ -1699,6 +1705,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get repsOnlyHint => '纯自重动作，记录时无需输入重量。';
 
   @override
+  String get eachSide => '左右各一次';
+
+  @override
+  String get eachSideHint => '计时器每侧各走一次，两侧都做完后才开始休息。';
+
+  @override
   String get useDefaultArt => '恢复为默认动作图';
 
   @override
@@ -2433,6 +2445,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeCol => '时间';
 
   @override
+  String get timePerSideCol => '时间/每侧';
+
+  @override
   String get timeMinutesTitle => '时间（分钟）';
 
   @override
@@ -2653,7 +2668,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get elapsedCaps => '已用时';
 
   @override
-  String get tapToSkip => '点按跳过';
+  String get tapToChange => '点按更改';
+
+  @override
+  String get swipeToSkipHint => '将计时器向一侧滑动即可跳过休息。';
 
   @override
   String get screenLocked => '屏幕已锁定';
@@ -2707,6 +2725,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get getReady => '准备';
+
+  @override
+  String sideOfTwo(String n) {
+    return '第 $n/2 侧';
+  }
+
+  @override
+  String get switchSides => '换另一侧';
 
   @override
   String get stickerGallery => '相册';
@@ -4532,6 +4558,129 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get vesselMotionHint =>
       'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
+
+  @override
+  String get planFixedWeek => '固定每周';
+
+  @override
+  String get planRotation => '轮换';
+
+  @override
+  String get rotationTitle => '轮换';
+
+  @override
+  String get rotationHint => '不论星期几，下一次就是上次之后的那个。';
+
+  @override
+  String get rotationEmpty => '按你要做的顺序添加计划：A、B、C…';
+
+  @override
+  String rotationProgress(int done, int total) {
+    return '本轮已完成 $done/$total';
+  }
+
+  @override
+  String get rotationNext => '下一个';
+
+  @override
+  String get rotationAdd => '添加计划';
+
+  @override
+  String get rotationPickHint => '按点选的顺序加入。';
+
+  @override
+  String get rotationSkip => '跳到下一个';
+
+  @override
+  String get rotationRestart => '开始新一轮';
+
+  @override
+  String get rotationMakeNext => '设为下一个';
+
+  @override
+  String get rotationRemove => '移出轮换';
+
+  @override
+  String rotationPlace(int n, int total) {
+    return '轮换第 $n/$total 个';
+  }
+
+  @override
+  String get moveToDay => '改到另一天';
+
+  @override
+  String get moveToDayHint => '仅此一次；每周计划不变。';
+
+  @override
+  String get movedToast => '训练已改期';
+
+  @override
+  String get backToPlan => '恢复每周计划';
+
+  @override
+  String get tomorrow => '明天';
+
+  @override
+  String get untrainedTab => '未练';
+
+  @override
+  String get untrainedRecent => '最近';
+
+  @override
+  String get untrainedLong => '很久前';
+
+  @override
+  String untrainedWaiting(String list) {
+    return '最久没练：$list';
+  }
+
+  @override
+  String get untrainedAllRecent => '本周每块肌肉都练到了，不错。';
+
+  @override
+  String trainedAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 天前', one: '昨天练过', zero: '今天练过');
+    return '$_temp0';
+  }
+
+  @override
+  String get neverTrained => '还没练过';
+
+  @override
+  String get layoutSetting => '训练视图';
+
+  @override
+  String get layoutCards => '卡片';
+
+  @override
+  String get layoutList => '列表';
+
+  @override
+  String get layoutHint => '卡片一次显示一个动作；列表把整次训练按组放在一个屏幕上。';
+
+  @override
+  String get layoutRowHint => '一次一个动作，或整次训练列表';
+
+  @override
+  String get previousCol => '上次';
+
+  @override
+  String get usePrevious => '沿用上次的数值';
+
+  @override
+  String get skipShort => '跳过';
+
+  @override
+  String get moveUp => '上移';
+
+  @override
+  String get moveDown => '下移';
+
+  @override
+  String get widgetNutritionOff => 'Turn on Nutrition in Settings › Beta to use this widget.';
+
+  @override
+  String get widgetPickShake => 'Pick your shake';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5293,6 +5442,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get timeline => '時間軸';
+
+  @override
+  String get hidePhotos => '隱藏照片';
+
+  @override
+  String get showPhotos => '顯示照片';
 
   @override
   String get timelineHint => '相同姿勢、相同地點、相同光線。一年後你會難以置信。';
@@ -6229,6 +6384,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get repsOnlyHint => '此動作不記錄重量。';
 
   @override
+  String get eachSide => '左右各一次';
+
+  @override
+  String get eachSideHint => '計時器每側各跑一次，兩側都做完後才開始休息。';
+
+  @override
   String get useDefaultArt => '恢復預設插圖';
 
   @override
@@ -6978,6 +7139,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get timeCol => '時間';
 
   @override
+  String get timePerSideCol => '時間/每側';
+
+  @override
   String get timeMinutesTitle => '時間（分鐘）';
 
   @override
@@ -7200,7 +7364,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get elapsedCaps => '已經過';
 
   @override
-  String get tapToSkip => '點一下略過';
+  String get tapToChange => '點一下更改';
+
+  @override
+  String get swipeToSkipHint => '將計時器往旁邊滑即可略過休息。';
 
   @override
   String get screenLocked => '螢幕已鎖定';
@@ -7254,6 +7421,14 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get getReady => '準備';
+
+  @override
+  String sideOfTwo(String n) {
+    return '第 $n/2 側';
+  }
+
+  @override
+  String get switchSides => '換另一側';
 
   @override
   String get stickerGallery => '相簿';
@@ -8701,4 +8876,121 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get nutritionAboutOk => '知道了';
+
+  @override
+  String get planFixedWeek => '固定每週';
+
+  @override
+  String get planRotation => '輪換';
+
+  @override
+  String get rotationTitle => '輪換';
+
+  @override
+  String get rotationHint => '不論星期幾，下一次就是上次之後的那個。';
+
+  @override
+  String get rotationEmpty => '按你要做的順序加入計畫：A、B、C…';
+
+  @override
+  String rotationProgress(int done, int total) {
+    return '本輪已完成 $done/$total';
+  }
+
+  @override
+  String get rotationNext => '下一個';
+
+  @override
+  String get rotationAdd => '加入計畫';
+
+  @override
+  String get rotationPickHint => '依點選的順序加入。';
+
+  @override
+  String get rotationSkip => '跳到下一個';
+
+  @override
+  String get rotationRestart => '開始新一輪';
+
+  @override
+  String get rotationMakeNext => '設為下一個';
+
+  @override
+  String get rotationRemove => '移出輪換';
+
+  @override
+  String rotationPlace(int n, int total) {
+    return '輪換第 $n/$total 個';
+  }
+
+  @override
+  String get moveToDay => '改到另一天';
+
+  @override
+  String get moveToDayHint => '僅此一次；每週計畫不變。';
+
+  @override
+  String get movedToast => '訓練已改期';
+
+  @override
+  String get backToPlan => '恢復每週計畫';
+
+  @override
+  String get tomorrow => '明天';
+
+  @override
+  String get untrainedTab => '未練';
+
+  @override
+  String get untrainedRecent => '最近';
+
+  @override
+  String get untrainedLong => '很久前';
+
+  @override
+  String untrainedWaiting(String list) {
+    return '最久沒練：$list';
+  }
+
+  @override
+  String get untrainedAllRecent => '本週每塊肌肉都練到了，不錯。';
+
+  @override
+  String trainedAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 天前', one: '昨天練過', zero: '今天練過');
+    return '$_temp0';
+  }
+
+  @override
+  String get neverTrained => '還沒練過';
+
+  @override
+  String get layoutSetting => '訓練檢視';
+
+  @override
+  String get layoutCards => '卡片';
+
+  @override
+  String get layoutList => '清單';
+
+  @override
+  String get layoutHint => '卡片一次顯示一個動作；清單把整次訓練按組放在一個畫面上。';
+
+  @override
+  String get layoutRowHint => '一次一個動作，或整次訓練清單';
+
+  @override
+  String get previousCol => '上次';
+
+  @override
+  String get usePrevious => '沿用上次的數值';
+
+  @override
+  String get skipShort => '略過';
+
+  @override
+  String get moveUp => '上移';
+
+  @override
+  String get moveDown => '下移';
 }

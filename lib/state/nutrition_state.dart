@@ -89,7 +89,7 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
     final key = _dayKey(day);
     if (sessions.any((s) => _dayKey(s.date) == key)) return true;
     if (key != _dayKey(DateTime.now())) return false;
-    return weeklyPlan[key.weekday] != null || (multiPlan && (planExtras[key.weekday]?.isNotEmpty ?? false));
+    return hasPlanOn(key);
   }
 
   NutritionGoals goalsFor(DateTime day) {
@@ -103,7 +103,7 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
 
   int burnedOn(DateTime day) {
     final key = _dayKey(day);
-    final secs = sessions.where((s) => _dayKey(s.date) == key).fold<int>(0, (n, s) => n + s.durationSec);
+    final secs = sessions.where((s) => _dayKey(s.day) == key).fold<int>(0, (n, s) => n + s.durationSec);
     return ((_liftMet - 1) * _nutritionWeight * secs / 3600).round();
   }
 
@@ -497,6 +497,35 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
     waterLog.add(WaterSip(_stampFor(nutritionDay), amount.clamp(1, 5000)));
     _persist();
     notifyListeners();
+  }
+
+  int takeWidgetLog(String pending) {
+    var n = 0;
+    final today = _dayKey(DateTime.now());
+    for (final item in pending.split(';')) {
+      final p = item.split(',');
+      if (p.length != 3) continue;
+      final ms = int.tryParse(p[1]);
+      if (ms == null) continue;
+      final at = DateTime.fromMillisecondsSinceEpoch(ms);
+      if (_dayKey(at) != today) continue;
+      if (p[0] == 'w') {
+        final ml = int.tryParse(p[2]) ?? 0;
+        if (ml <= 0) continue;
+        waterLog.add(WaterSip(at, ml.clamp(1, 5000)));
+        n++;
+      } else if (p[0] == 's') {
+        final food = foodById(p[2]);
+        if (food == null) continue;
+        foodLog.add(entryFor(food, meal: mealForHour(at.hour, mealSlots)).copyWith(at: at));
+        n++;
+      }
+    }
+    if (n > 0) {
+      _persist();
+      notifyListeners();
+    }
+    return n;
   }
 
   List<WaterSip> waterSipsOn(DateTime day) {

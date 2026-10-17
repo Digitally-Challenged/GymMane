@@ -1498,6 +1498,18 @@ abstract class AppLocalizations {
   /// **'TIMELINE'**
   String get timeline;
 
+  /// No description provided for @hidePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide photos'**
+  String get hidePhotos;
+
+  /// No description provided for @showPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Show photos'**
+  String get showPhotos;
+
   /// No description provided for @timelineHint.
   ///
   /// In en, this message translates to:
@@ -3232,6 +3244,18 @@ abstract class AppLocalizations {
   /// **'Log this exercise without weight.'**
   String get repsOnlyHint;
 
+  /// No description provided for @eachSide.
+  ///
+  /// In en, this message translates to:
+  /// **'Each side'**
+  String get eachSide;
+
+  /// No description provided for @eachSideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The timer runs once per side and the rest starts after both.'**
+  String get eachSideHint;
+
   /// No description provided for @useDefaultArt.
   ///
   /// In en, this message translates to:
@@ -4588,6 +4612,12 @@ abstract class AppLocalizations {
   /// **'TIME'**
   String get timeCol;
 
+  /// No description provided for @timePerSideCol.
+  ///
+  /// In en, this message translates to:
+  /// **'TIME / SIDE'**
+  String get timePerSideCol;
+
   /// No description provided for @timeMinutesTitle.
   ///
   /// In en, this message translates to:
@@ -4990,11 +5020,17 @@ abstract class AppLocalizations {
   /// **'ELAPSED'**
   String get elapsedCaps;
 
-  /// No description provided for @tapToSkip.
+  /// No description provided for @tapToChange.
   ///
   /// In en, this message translates to:
-  /// **'Tap to skip'**
-  String get tapToSkip;
+  /// **'Tap to change'**
+  String get tapToChange;
+
+  /// No description provided for @swipeToSkipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe the timer sideways to skip the rest.'**
+  String get swipeToSkipHint;
 
   /// No description provided for @screenLocked.
   ///
@@ -5097,6 +5133,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get ready'**
   String get getReady;
+
+  /// No description provided for @sideOfTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'Side {n} of 2'**
+  String sideOfTwo(String n);
+
+  /// No description provided for @switchSides.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch sides'**
+  String get switchSides;
 
   /// No description provided for @stickerGallery.
   ///
@@ -8313,6 +8361,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.'**
   String get vesselMotionHint;
+
+  /// No description provided for @planFixedWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed week'**
+  String get planFixedWeek;
+
+  /// No description provided for @planRotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotation'**
+  String get planRotation;
+
+  /// No description provided for @rotationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ROTATION'**
+  String get rotationTitle;
+
+  /// No description provided for @rotationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up is whatever follows your last workout, whatever the day.'**
+  String get rotationHint;
+
+  /// No description provided for @rotationEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your routines in the order you’ll do them: A, B, C…'**
+  String get rotationEmpty;
+
+  /// No description provided for @rotationProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done this round'**
+  String rotationProgress(int done, int total);
+
+  /// No description provided for @rotationNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get rotationNext;
+
+  /// No description provided for @rotationAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add routines'**
+  String get rotationAdd;
+
+  /// No description provided for @rotationPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'They go in the order you tap them.'**
+  String get rotationPickHint;
+
+  /// No description provided for @rotationSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip to the next one'**
+  String get rotationSkip;
+
+  /// No description provided for @rotationRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new round'**
+  String get rotationRestart;
+
+  /// No description provided for @rotationMakeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Make it the next one'**
+  String get rotationMakeNext;
+
+  /// No description provided for @rotationRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from rotation'**
+  String get rotationRemove;
+
+  /// No description provided for @rotationPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} of {total} in the rotation'**
+  String rotationPlace(int n, int total);
+
+  /// No description provided for @moveToDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to another day'**
+  String get moveToDay;
+
+  /// No description provided for @moveToDayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Just this once; your weekly plan stays the same.'**
+  String get moveToDayHint;
+
+  /// No description provided for @movedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout moved'**
+  String get movedToast;
+
+  /// No description provided for @backToPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the weekly plan'**
+  String get backToPlan;
+
+  /// No description provided for @tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @untrainedTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Untrained'**
+  String get untrainedTab;
+
+  /// No description provided for @untrainedRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get untrainedRecent;
+
+  /// No description provided for @untrainedLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Long ago'**
+  String get untrainedLong;
+
+  /// No description provided for @untrainedWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting the longest: {list}'**
+  String untrainedWaiting(String list);
+
+  /// No description provided for @untrainedAllRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Every muscle got work this week. Nice.'**
+  String get untrainedAllRecent;
+
+  /// No description provided for @trainedAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{Trained today} =1{Trained yesterday} other{{n} days ago}}'**
+  String trainedAgo(int n);
+
+  /// No description provided for @neverTrained.
+  ///
+  /// In en, this message translates to:
+  /// **'Not trained yet'**
+  String get neverTrained;
+
+  /// No description provided for @layoutSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout layout'**
+  String get layoutSetting;
+
+  /// No description provided for @layoutCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards'**
+  String get layoutCards;
+
+  /// No description provided for @layoutList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get layoutList;
+
+  /// No description provided for @layoutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards show one exercise at a time. List shows the whole workout on one screen, set by set.'**
+  String get layoutHint;
+
+  /// No description provided for @layoutRowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One exercise at a time, or the whole workout as a list'**
+  String get layoutRowHint;
+
+  /// No description provided for @previousCol.
+  ///
+  /// In en, this message translates to:
+  /// **'PREVIOUS'**
+  String get previousCol;
+
+  /// No description provided for @usePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Use last time’s numbers'**
+  String get usePrevious;
+
+  /// No description provided for @skipShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipShort;
+
+  /// No description provided for @moveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get moveUp;
+
+  /// No description provided for @moveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get moveDown;
+
+  /// No description provided for @widgetNutritionOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Nutrition in Settings › Beta to use this widget.'**
+  String get widgetNutritionOff;
+
+  /// No description provided for @widgetPickShake.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your shake'**
+  String get widgetPickShake;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

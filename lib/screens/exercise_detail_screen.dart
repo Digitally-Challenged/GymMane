@@ -295,6 +295,15 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                   _group(gc, [
                     _modeRow(context, gc, ex.id, mode),
                     if (mode != 'cardio') _repsOnlyRow(gc, ex.id, repsOnly),
+                    if (mode == 'time')
+                      _switchRow(
+                        gc,
+                        PhosphorIconsRegular.arrowsLeftRight,
+                        t.eachSide,
+                        t.eachSideHint,
+                        fit.isEachSide(ex.id),
+                        () => fit.toggleEachSide(ex.id),
+                      ),
                     _restRow(gc, ex.id),
                     if (ex.equipment == 'Barbell' || ex.equipment == 'Machine') _barRow(gc, ex),
                     _switchRow(

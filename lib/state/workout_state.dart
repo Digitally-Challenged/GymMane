@@ -514,6 +514,61 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (autoAdvance || sessionLocked) _advanceWhenDone(exIdx);
   }
 
+  void _focusExercise(int exIdx) {
+    final s = session;
+    if (s == null || exIdx < 0 || exIdx >= s.exercises.length || s.currentIndex == exIdx) return;
+    _advanceTimer?.cancel();
+    s.currentIndex = exIdx;
+  }
+
+  void toggleSetAt(int exIdx, int setIdx) {
+    _focusExercise(exIdx);
+    toggleSet(exIdx, setIdx);
+  }
+
+  void startHoldAt(int exIdx, int setIdx) {
+    _focusExercise(exIdx);
+    startHold(exIdx, setIdx);
+  }
+
+  LoggedSet? previousSet(String exId, int setIdx) {
+    final last = lastSetsFor(exId);
+    return setIdx >= 0 && setIdx < last.length ? last[setIdx] : null;
+  }
+
+  void copyPreviousSet(int exIdx, int setIdx) {
+    final s = session;
+    if (s == null || exIdx < 0 || exIdx >= s.exercises.length) return;
+    final sets = s.exercises[exIdx].sets;
+    final prev = previousSet(s.exercises[exIdx].id, setIdx);
+    if (prev == null || setIdx >= sets.length) return;
+    final st = sets[setIdx];
+    st.reps = prev.reps;
+    st.weight = prev.weight;
+    if (prev.sec != null) st.sec = prev.sec;
+    if (prev.km != null) st.km = prev.km;
+    _persist();
+    notifyListeners();
+  }
+
+  void moveSessionExercise(int exIdx, int delta) {
+    final s = session;
+    if (s == null) return;
+    final to = exIdx + delta;
+    if (exIdx < 0 || exIdx >= s.exercises.length || to < 0 || to >= s.exercises.length) return;
+    reorderSessionExercise(exIdx, delta > 0 ? to + 1 : to);
+  }
+
+  double get sessionVolumeKg {
+    var kg = 0.0;
+    for (final e in session?.exercises ?? const <SessionExercise>[]) {
+      for (final st in e.sets) {
+        if (st.done && st.counts) kg += st.reps * st.weight;
+      }
+    }
+    return kg;
+  }
+
   List<int> chainAt(int exIdx) {
     final s = session;
     if (s == null || exIdx < 0 || exIdx >= s.exercises.length) return const [];
@@ -662,15 +717,21 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
         return;
       }
       if (live.restRemaining == null) {
-        live.clearRest();
-        t.cancel();
-        restDoneTick++;
-        RestAlarm.instance.fireNow();
-        notifyListeners();
+        restElapsed();
         return;
       }
       clock.value++;
     });
+  }
+
+  void restElapsed() {
+    final s = session;
+    if (s == null || s.restEndsAt == null || s.restRemaining != null) return;
+    _restTimer?.cancel();
+    s.clearRest();
+    restDoneTick++;
+    RestAlarm.instance.fireNow();
+    notifyListeners();
   }
 
   void syncRest() {
@@ -695,8 +756,28 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     final left = s?.restRemaining;
     if (s == null || left == null) return;
     final next = (left + seconds).clamp(5, 600);
-    restTotal = math.max(next, restTotal + (next - left));
+    restTotal = seconds > 0 ? math.max(next, restTotal + (next - left)) : math.max(restTotal, next);
     _armRest(next);
+    notifyListeners();
+  }
+
+  void setRest(int seconds) {
+    final s = session;
+    if (s == null) return;
+    if (seconds <= 0) {
+      skipRest();
+      return;
+    }
+    final next = seconds.clamp(5, 600);
+    RestAlarm.instance.stopSound();
+    restTotal = next;
+    if (sessionPaused) {
+      s.restEndsAt = null;
+      s.restFrozen = next;
+      _persist();
+    } else {
+      _armRest(next);
+    }
     notifyListeners();
   }
 
@@ -758,6 +839,8 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   DateTime? holdStartsAt;
   int holdEx = -1;
   int holdSet = -1;
+  int holdSide = 0;
+  int holdSides = 1;
   Timer? _holdTimer;
 
   static const holdLeadIn = 5;
@@ -835,6 +918,8 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (s.restRemaining != null) skipRest();
     holdEx = exIdx;
     holdSet = setIdx;
+    holdSide = 0;
+    holdSides = isEachSide(s.exercises[exIdx].id) ? 2 : 1;
     holdTotal = secs;
     final now = DateTime.now();
     holdStartsAt = now.add(const Duration(seconds: holdLeadIn));
@@ -854,7 +939,11 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       final left = holdRemaining;
       if (left == 0) {
         Beeper.instance.go(sound: sound);
-        _finishHold();
+        if (holdSide + 1 < holdSides) {
+          _nextSide();
+        } else {
+          _finishHold();
+        }
         return;
       }
       if (lead != shownLead) {
@@ -873,10 +962,25 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     });
   }
 
+  String holdLength(String exId, int sec) =>
+      isEachSide(exId) ? '${durationLabel(sec)} × 2' : durationLabel(sec);
+
+  bool get switchingSides => holdSide > 0 && holdLead > 0;
+
+  void _nextSide() {
+    holdSide++;
+    holdStartsAt = DateTime.now().add(const Duration(seconds: holdLeadIn));
+    holdEndsAt = holdStartsAt!.add(Duration(seconds: holdTotal));
+    _runHold();
+    notifyListeners();
+  }
+
   void stopHold() {
     _holdTimer?.cancel();
     _holdTimer = null;
     holdPaused = false;
+    holdSide = 0;
+    holdSides = 1;
     holdEndsAt = null;
     holdStartsAt = null;
     holdEx = -1;
@@ -1199,6 +1303,8 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       final entry = LoggedSession(s.loggedAt ?? DateTime.now(), s.summaryDuration ?? 0, logged, routineId: s.routineId, name: s.name);
       sessions.add(entry);
       sessions.sort((a, b) => a.date.compareTo(b.date));
+      _rotationBefore = rotationNextId;
+      _advanceRotation(entry.routineId);
       _filed = entry;
       _computeSummaryHighlights(entry);
       _offerLevelUp(entry);
@@ -1256,10 +1362,25 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   bool get sessionEditedRoutine {
     final r = sessionRoutine;
     return r != null &&
-        _savableForRoutine.map((e) => e.id).join('|') != routineExercises(r).map((e) => e.id).join('|');
+        (_savableForRoutine.map((e) => e.id).join('|') != routineExercises(r).map((e) => e.id).join('|') ||
+            _sessionSetChanges.isNotEmpty);
   }
 
-  ({List<Exercise> added, List<Exercise> removed, bool reordered}) get sessionRoutineChanges {
+  List<({Exercise ex, int from, int to})> get _sessionSetChanges {
+    final r = sessionRoutine;
+    if (r == null) return const [];
+    final out = <({Exercise ex, int from, int to})>[];
+    for (final e in _savableForRoutine) {
+      if (!r.exerciseIds.contains(e.id)) continue;
+      final to = e.sets.where((st) => st.kind != SetKind.warmup).length;
+      final from = routineSets(r, e.id);
+      if (to > 0 && to != from) out.add((ex: exerciseById(e.id)!, from: from, to: to));
+    }
+    return out;
+  }
+
+  ({List<Exercise> added, List<Exercise> removed, bool reordered, List<({Exercise ex, int from, int to})> sets})
+      get sessionRoutineChanges {
     final r = sessionRoutine;
     final before = r == null ? const <Exercise>[] : routineExercises(r);
     final after = [for (final e in _savableForRoutine) exerciseById(e.id)!];
@@ -1269,6 +1390,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       added: after.where((e) => !was.contains(e.id)).toList(),
       removed: before.where((e) => !now.contains(e.id)).toList(),
       reordered: was.where(now.contains).join('|') != now.where(was.contains).join('|'),
+      sets: _sessionSetChanges,
     );
   }
 
@@ -1292,6 +1414,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (r == null) return;
     final swaps = _swaps;
     final exs = [for (final e in _savable) if (!swaps.containsKey(e.id)) e];
+    final counts = _sessionSetChanges;
     for (final swap in swaps.entries) {
       replaceRoutineExercise(r.id, swap.key, swap.value);
     }
@@ -1307,6 +1430,9 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     r.exerciseIds
       ..clear()
       ..addAll(kept);
+    for (final c in counts) {
+      bumpRoutineSets(r.id, c.ex.id, c.to - c.from);
+    }
     persistNow();
     notifyListeners();
   }
@@ -1430,6 +1556,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   }
 
   LoggedSession? _filed;
+  String? _rotationBefore;
 
   LoggedSession? get filedSession => _filed;
 
@@ -1457,8 +1584,13 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       summaryLevelUp = null;
     }
     final filed = _filed;
-    if (filed != null) sessions.remove(filed);
+    if (filed != null) {
+      sessions.remove(filed);
+      final back = _rotationBefore;
+      if (back != null) rotationNextId = back;
+    }
     _filed = null;
+    _rotationBefore = null;
     _elapsedBefore = s.summaryDuration ?? _elapsedBefore;
     s
       ..complete = false

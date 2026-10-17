@@ -800,6 +800,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeline => 'TIMELINE';
 
   @override
+  String get hidePhotos => 'Hide photos';
+
+  @override
+  String get showPhotos => 'Show photos';
+
+  @override
   String get timelineHint => 'Same pose, same spot, same light. In a year you will not believe it.';
 
   @override
@@ -1773,6 +1779,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repsOnlyHint => 'Log this exercise without weight.';
 
   @override
+  String get eachSide => 'Each side';
+
+  @override
+  String get eachSideHint => 'The timer runs once per side and the rest starts after both.';
+
+  @override
   String get useDefaultArt => 'Back to the default art';
 
   @override
@@ -2540,6 +2552,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeCol => 'TIME';
 
   @override
+  String get timePerSideCol => 'TIME / SIDE';
+
+  @override
   String get timeMinutesTitle => 'Time (minutes)';
 
   @override
@@ -2773,7 +2788,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get elapsedCaps => 'ELAPSED';
 
   @override
-  String get tapToSkip => 'Tap to skip';
+  String get tapToChange => 'Tap to change';
+
+  @override
+  String get swipeToSkipHint => 'Swipe the timer sideways to skip the rest.';
 
   @override
   String get screenLocked => 'Screen locked';
@@ -2827,6 +2845,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getReady => 'Get ready';
+
+  @override
+  String sideOfTwo(String n) {
+    return 'Side $n of 2';
+  }
+
+  @override
+  String get switchSides => 'Switch sides';
 
   @override
   String get stickerGallery => 'Gallery';
@@ -4692,4 +4718,134 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get vesselMotionHint =>
       'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
+
+  @override
+  String get planFixedWeek => 'Fixed week';
+
+  @override
+  String get planRotation => 'Rotation';
+
+  @override
+  String get rotationTitle => 'ROTATION';
+
+  @override
+  String get rotationHint => 'Next up is whatever follows your last workout, whatever the day.';
+
+  @override
+  String get rotationEmpty => 'Add your routines in the order you’ll do them: A, B, C…';
+
+  @override
+  String rotationProgress(int done, int total) {
+    return '$done of $total done this round';
+  }
+
+  @override
+  String get rotationNext => 'Next';
+
+  @override
+  String get rotationAdd => 'Add routines';
+
+  @override
+  String get rotationPickHint => 'They go in the order you tap them.';
+
+  @override
+  String get rotationSkip => 'Skip to the next one';
+
+  @override
+  String get rotationRestart => 'Start a new round';
+
+  @override
+  String get rotationMakeNext => 'Make it the next one';
+
+  @override
+  String get rotationRemove => 'Remove from rotation';
+
+  @override
+  String rotationPlace(int n, int total) {
+    return '$n of $total in the rotation';
+  }
+
+  @override
+  String get moveToDay => 'Move to another day';
+
+  @override
+  String get moveToDayHint => 'Just this once; your weekly plan stays the same.';
+
+  @override
+  String get movedToast => 'Workout moved';
+
+  @override
+  String get backToPlan => 'Back to the weekly plan';
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String get untrainedTab => 'Untrained';
+
+  @override
+  String get untrainedRecent => 'Recent';
+
+  @override
+  String get untrainedLong => 'Long ago';
+
+  @override
+  String untrainedWaiting(String list) {
+    return 'Waiting the longest: $list';
+  }
+
+  @override
+  String get untrainedAllRecent => 'Every muscle got work this week. Nice.';
+
+  @override
+  String trainedAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n days ago',
+      one: 'Trained yesterday',
+      zero: 'Trained today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get neverTrained => 'Not trained yet';
+
+  @override
+  String get layoutSetting => 'Workout layout';
+
+  @override
+  String get layoutCards => 'Cards';
+
+  @override
+  String get layoutList => 'List';
+
+  @override
+  String get layoutHint =>
+      'Cards show one exercise at a time. List shows the whole workout on one screen, set by set.';
+
+  @override
+  String get layoutRowHint => 'One exercise at a time, or the whole workout as a list';
+
+  @override
+  String get previousCol => 'PREVIOUS';
+
+  @override
+  String get usePrevious => 'Use last time’s numbers';
+
+  @override
+  String get skipShort => 'Skip';
+
+  @override
+  String get moveUp => 'Move up';
+
+  @override
+  String get moveDown => 'Move down';
+
+  @override
+  String get widgetNutritionOff => 'Turn on Nutrition in Settings › Beta to use this widget.';
+
+  @override
+  String get widgetPickShake => 'Pick your shake';
 }

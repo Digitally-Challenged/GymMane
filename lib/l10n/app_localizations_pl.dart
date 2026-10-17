@@ -800,6 +800,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get timeline => 'OŚ CZASU';
 
   @override
+  String get hidePhotos => 'Ukryj zdjęcia';
+
+  @override
+  String get showPhotos => 'Pokaż zdjęcia';
+
+  @override
   String get timelineHint => 'Ta sama poza, to samo miejsce, to samo światło. Za rok nie uwierzysz.';
 
   @override
@@ -1773,6 +1779,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get repsOnlyHint => 'Zapisuj to ćwiczenie bez ciężaru.';
 
   @override
+  String get eachSide => 'Każda strona';
+
+  @override
+  String get eachSideHint => 'Czas leci raz na każdą stronę, a przerwa zaczyna się po obu.';
+
+  @override
   String get useDefaultArt => 'Przywróć domyślną ilustrację';
 
   @override
@@ -2542,6 +2554,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get timeCol => 'CZAS';
 
   @override
+  String get timePerSideCol => 'CZAS / STRONA';
+
+  @override
   String get timeMinutesTitle => 'Czas (minuty)';
 
   @override
@@ -2783,7 +2798,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get elapsedCaps => 'UPŁYNĘŁO';
 
   @override
-  String get tapToSkip => 'Dotknij, by pominąć';
+  String get tapToChange => 'Dotknij, by zmienić';
+
+  @override
+  String get swipeToSkipHint => 'Przesuń minutnik w bok, by pominąć przerwę.';
 
   @override
   String get screenLocked => 'Ekran zablokowany';
@@ -2837,6 +2855,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get getReady => 'Przygotuj się';
+
+  @override
+  String sideOfTwo(String n) {
+    return 'Strona $n z 2';
+  }
+
+  @override
+  String get switchSides => 'Zmień stronę';
 
   @override
   String get stickerGallery => 'Galeria';
@@ -4758,4 +4784,136 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get vesselMotionHint =>
       'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
+
+  @override
+  String get planFixedWeek => 'Stały tydzień';
+
+  @override
+  String get planRotation => 'Rotacja';
+
+  @override
+  String get rotationTitle => 'ROTACJA';
+
+  @override
+  String get rotationHint => 'Następny jest ten po ostatnim treningu, bez względu na dzień.';
+
+  @override
+  String get rotationEmpty => 'Dodaj rutyny w kolejności, w jakiej je zrobisz: A, B, C…';
+
+  @override
+  String rotationProgress(int done, int total) {
+    return '$done z $total zrobione w tej rundzie';
+  }
+
+  @override
+  String get rotationNext => 'Następny';
+
+  @override
+  String get rotationAdd => 'Dodaj rutyny';
+
+  @override
+  String get rotationPickHint => 'Trafiają w kolejności, w jakiej je dotkniesz.';
+
+  @override
+  String get rotationSkip => 'Przejdź do następnej';
+
+  @override
+  String get rotationRestart => 'Nowa runda';
+
+  @override
+  String get rotationMakeNext => 'Ustaw jako następną';
+
+  @override
+  String get rotationRemove => 'Usuń z rotacji';
+
+  @override
+  String rotationPlace(int n, int total) {
+    return '$n z $total w rotacji';
+  }
+
+  @override
+  String get moveToDay => 'Przenieś na inny dzień';
+
+  @override
+  String get moveToDayHint => 'Tylko tym razem; plan tygodniowy się nie zmienia.';
+
+  @override
+  String get movedToast => 'Trening przeniesiony';
+
+  @override
+  String get backToPlan => 'Wróć do planu tygodnia';
+
+  @override
+  String get tomorrow => 'Jutro';
+
+  @override
+  String get untrainedTab => 'Pominięte';
+
+  @override
+  String get untrainedRecent => 'Niedawno';
+
+  @override
+  String get untrainedLong => 'Dawno';
+
+  @override
+  String untrainedWaiting(String list) {
+    return 'Najdłużej czekają: $list';
+  }
+
+  @override
+  String get untrainedAllRecent => 'Każdy mięsień pracował w tym tygodniu. Super.';
+
+  @override
+  String trainedAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n dnia temu',
+      many: '$n dni temu',
+      few: '$n dni temu',
+      one: 'Trenowany wczoraj',
+      zero: 'Trenowany dziś',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get neverTrained => 'Jeszcze nietrenowany';
+
+  @override
+  String get layoutSetting => 'Widok treningu';
+
+  @override
+  String get layoutCards => 'Karty';
+
+  @override
+  String get layoutList => 'Lista';
+
+  @override
+  String get layoutHint =>
+      'Karty pokazują jedno ćwiczenie naraz. Lista pokazuje cały trening na jednym ekranie, seria po serii.';
+
+  @override
+  String get layoutRowHint => 'Jedno ćwiczenie naraz lub wszystko jako lista';
+
+  @override
+  String get previousCol => 'POPRZ.';
+
+  @override
+  String get usePrevious => 'Użyj wartości z ostatniego razu';
+
+  @override
+  String get skipShort => 'Pomiń';
+
+  @override
+  String get moveUp => 'Przesuń w górę';
+
+  @override
+  String get moveDown => 'Przesuń w dół';
+
+  @override
+  String get widgetNutritionOff => 'Turn on Nutrition in Settings › Beta to use this widget.';
+
+  @override
+  String get widgetPickShake => 'Pick your shake';
 }

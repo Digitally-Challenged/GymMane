@@ -387,6 +387,31 @@ mixin LibraryState on FitCore {
     return false;
   }
 
+  static const _sidedByDefault = {
+    'side-plank-hold',
+    'cable-pallof-hold',
+    'cross-body-shoulder-stretch',
+    'standing-quad-stretch',
+    'kneeling-hip-flexor-stretch',
+    'wall-calf-stretch',
+  };
+
+  bool isEachSide(String id) {
+    if (!isTimed(id)) return false;
+    if (eachSide.contains(id)) return true;
+    if (eachSideOff.contains(id)) return false;
+    return _sidedByDefault.contains(id);
+  }
+
+  void toggleEachSide(String id) {
+    final on = !isEachSide(id);
+    eachSide.remove(id);
+    eachSideOff.remove(id);
+    if (on != _sidedByDefault.contains(id)) (on ? eachSide : eachSideOff).add(id);
+    _persist();
+    notifyListeners();
+  }
+
   void toggleRepsOnly(String id) {
     if (isRepsOnly(id)) {
       repsOnly.remove(id);

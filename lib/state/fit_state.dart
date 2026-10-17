@@ -165,6 +165,7 @@ class FitState extends FitCore
   void _loadToggles(Map<String, dynamic> data) {
     demoSize = data['demo'] as String? ?? 'large';
     demoLoop = data['demoLoop'] as String? ?? 'always';
+    sessionLayout = data['layout'] == 'list' ? 'list' : 'cards';
     alarmStyle = data['alarmStyle'] as String? ?? 'quiet';
     RestAlarm.instance.style = alarmStyle;
     Beeper.instance.loud = alarmStyle == 'loud';
@@ -220,6 +221,7 @@ class FitState extends FitCore
     toastSound = data['toastSound'] as bool? ?? true;
     Beeper.instance.chimeOn = toastSound;
     heatmapLabels = data['heatLabels'] as bool? ?? true;
+    hideShots = data['hideShots'] as bool? ?? false;
     multiPlan = data['multiPlan'] as bool? ?? false;
     final weekStart = data['weekStart'];
     weekStartDay = SettingsState.weekStarts.contains(weekStart) ? weekStart as int : DateTime.monday;
@@ -250,6 +252,15 @@ class FitState extends FitCore
             (v as List).cast<String>().where((id) => id != weeklyPlan[int.parse(k)]).toList(),
           )))
       ..removeWhere((_, v) => v.isEmpty);
+    rotation = data['rotation'] as bool? ?? false;
+    rotationIds
+      ..clear()
+      ..addAll(((data['rotationIds'] as List?) ?? const []).cast<String>());
+    rotationNextId = data['rotationNext'] as String? ?? '';
+    planMoves
+      ..clear()
+      ..addAll(((data['planMoves'] as Map?) ?? const {})
+          .map((k, v) => MapEntry(k as String, (v as List).cast<String>().toList())));
   }
 
   void _restoreLiveSession(Map<String, dynamic> data) {
@@ -302,6 +313,12 @@ class FitState extends FitCore
     repsOnlyOff
       ..clear()
       ..addAll(((data['repsOnlyOff'] as List?) ?? const []).cast<String>());
+    eachSide
+      ..clear()
+      ..addAll(((data['eachSide'] as List?) ?? const []).cast<String>());
+    eachSideOff
+      ..clear()
+      ..addAll(((data['eachSideOff'] as List?) ?? const []).cast<String>());
   }
 
   void _loadShots(Map<String, dynamic> data, {Map<String, String>? restored}) {
@@ -396,6 +413,7 @@ class FitState extends FitCore
         'levelHints': levelHints,
         'toastSound': toastSound,
         'heatLabels': heatmapLabels,
+        if (hideShots) 'hideShots': true,
         'weekStart': weekStartDay,
         'autoAdvance': autoAdvance,
         'keepAwake': keepScreenOn,
@@ -407,6 +425,7 @@ class FitState extends FitCore
         'stepLb': stepLb,
         'demo': demoSize,
         'demoLoop': demoLoop,
+        'layout': sessionLayout,
         'alarmStyle': alarmStyle,
         'noSuggest': noSuggest.toList(),
         'archived': archived.toList(),
@@ -431,6 +450,10 @@ class FitState extends FitCore
         'weeklyPlan': weeklyPlan.map((k, v) => MapEntry(k.toString(), v)),
         'planExtras': planExtras.map((k, v) => MapEntry(k.toString(), v)),
         'multiPlan': multiPlan,
+        if (rotation) 'rotation': rotation,
+        if (rotationIds.isNotEmpty) 'rotationIds': rotationIds,
+        if (rotationNextId.isNotEmpty) 'rotationNext': rotationNextId,
+        if (planMoves.isNotEmpty) 'planMoves': planMoves,
         'custom': customExercises.map((e) => e.toJson()).toList(),
         'media': exerciseMedia,
         'exRest': exerciseRest,
@@ -438,6 +461,8 @@ class FitState extends FitCore
         'warmup': autoWarmup.toList(),
         'repsOnly': repsOnly.toList(),
         'repsOnlyOff': repsOnlyOff.toList(),
+        'eachSide': eachSide.toList(),
+        'eachSideOff': eachSideOff.toList(),
         'sessions': sessions.map((s) => s.toJson()).toList(),
         'bodyweight': bodyweight.map((b) => b.toJson()).toList(),
         'measures': measures.map((m) => m.toJson()).toList(),
@@ -487,10 +512,16 @@ class FitState extends FitCore
     weeklyPlan.clear();
     planExtras.clear();
     multiPlan = false;
+    rotation = false;
+    rotationIds.clear();
+    rotationNextId = '';
+    planMoves.clear();
     customExercises.clear();
     exerciseMedia.clear();
     repsOnly.clear();
     repsOnlyOff.clear();
+    eachSide.clear();
+    eachSideOff.clear();
     exerciseRest.clear();
     progressStep.clear();
     autoWarmup.clear();
@@ -507,6 +538,7 @@ class FitState extends FitCore
     _builtInExercises = null;
     demoSize = 'large';
     demoLoop = 'always';
+    sessionLayout = 'cards';
     MediaStore.clearAll();
     favorites.clear();
     sessionPicks.clear();
@@ -520,6 +552,7 @@ class FitState extends FitCore
     toastSound = true;
     Beeper.instance.chimeOn = true;
     heatmapLabels = true;
+    hideShots = false;
     weekStartDay = DateTime.monday;
     autoAdvance = true;
     startCountdown = true;

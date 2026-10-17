@@ -782,6 +782,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timeline => '타임라인';
 
   @override
+  String get hidePhotos => '사진 숨기기';
+
+  @override
+  String get showPhotos => '사진 보기';
+
+  @override
   String get timelineHint => '같은 포즈, 같은 장소, 같은 조명. 1년 뒤에는 믿기 어려울 거예요.';
 
   @override
@@ -1728,6 +1734,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get repsOnlyHint => '이 운동을 중량 없이 기록합니다.';
 
   @override
+  String get eachSide => '양쪽 각각';
+
+  @override
+  String get eachSideHint => '타이머가 한쪽씩 돌고, 양쪽이 끝나면 휴식이 시작돼요.';
+
+  @override
   String get useDefaultArt => '기본 그림으로 돌아가기';
 
   @override
@@ -2479,6 +2491,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timeCol => '시간';
 
   @override
+  String get timePerSideCol => '시간/한쪽';
+
+  @override
   String get timeMinutesTitle => '시간(분)';
 
   @override
@@ -2701,7 +2716,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get elapsedCaps => '경과';
 
   @override
-  String get tapToSkip => '탭해서 건너뛰기';
+  String get tapToChange => '탭해서 변경';
+
+  @override
+  String get swipeToSkipHint => '타이머를 옆으로 밀면 휴식을 건너뛰어요.';
 
   @override
   String get screenLocked => '화면 잠김';
@@ -2755,6 +2773,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get getReady => '준비';
+
+  @override
+  String sideOfTwo(String n) {
+    return '$n/2쪽';
+  }
+
+  @override
+  String get switchSides => '반대쪽으로';
 
   @override
   String get stickerGallery => '갤러리';
@@ -4589,4 +4615,133 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get vesselMotionHint =>
       'Turn it off if the screen feels slow: the glasses still fill up, they just stop moving.';
+
+  @override
+  String get planFixedWeek => '고정 주간';
+
+  @override
+  String get planRotation => '로테이션';
+
+  @override
+  String get rotationTitle => '로테이션';
+
+  @override
+  String get rotationHint => '요일과 상관없이 마지막 운동 다음 루틴이 차례예요.';
+
+  @override
+  String get rotationEmpty => '할 순서대로 루틴을 추가하세요: A, B, C…';
+
+  @override
+  String rotationProgress(int done, int total) {
+    return '이번 바퀴에서 $total개 중 $done개 완료';
+  }
+
+  @override
+  String get rotationNext => '다음';
+
+  @override
+  String get rotationAdd => '루틴 추가';
+
+  @override
+  String get rotationPickHint => '누른 순서대로 들어가요.';
+
+  @override
+  String get rotationSkip => '다음으로 건너뛰기';
+
+  @override
+  String get rotationRestart => '새 바퀴 시작';
+
+  @override
+  String get rotationMakeNext => '다음으로 지정';
+
+  @override
+  String get rotationRemove => '로테이션에서 빼기';
+
+  @override
+  String rotationPlace(int n, int total) {
+    return '로테이션 $n/$total';
+  }
+
+  @override
+  String get moveToDay => '다른 날로 옮기기';
+
+  @override
+  String get moveToDayHint => '이번만이에요. 주간 계획은 그대로예요.';
+
+  @override
+  String get movedToast => '운동을 옮겼어요';
+
+  @override
+  String get backToPlan => '주간 계획으로 되돌리기';
+
+  @override
+  String get tomorrow => '내일';
+
+  @override
+  String get untrainedTab => '미훈련';
+
+  @override
+  String get untrainedRecent => '최근';
+
+  @override
+  String get untrainedLong => '오래 전';
+
+  @override
+  String untrainedWaiting(String list) {
+    return '가장 오래 쉰 곳: $list';
+  }
+
+  @override
+  String get untrainedAllRecent => '이번 주에 모든 근육을 썼어요. 좋아요.';
+
+  @override
+  String trainedAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n일 전',
+      one: '어제 운동함',
+      zero: '오늘 운동함',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get neverTrained => '아직 안 했어요';
+
+  @override
+  String get layoutSetting => '운동 화면 보기';
+
+  @override
+  String get layoutCards => '카드';
+
+  @override
+  String get layoutList => '목록';
+
+  @override
+  String get layoutHint => '카드는 한 번에 한 운동씩 보여줘요. 목록은 운동 전체를 한 화면에 세트별로 보여줘요.';
+
+  @override
+  String get layoutRowHint => '한 운동씩 또는 전체를 목록으로';
+
+  @override
+  String get previousCol => '이전';
+
+  @override
+  String get usePrevious => '지난번 값 사용';
+
+  @override
+  String get skipShort => '건너뛰기';
+
+  @override
+  String get moveUp => '위로 이동';
+
+  @override
+  String get moveDown => '아래로 이동';
+
+  @override
+  String get widgetNutritionOff => 'Turn on Nutrition in Settings › Beta to use this widget.';
+
+  @override
+  String get widgetPickShake => 'Pick your shake';
 }
