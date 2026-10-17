@@ -48,6 +48,10 @@ abstract class FitCore extends ChangeNotifier {
   final Map<int, String> weeklyPlan = {};
   final Map<int, List<String>> planExtras = {};
   bool multiPlan = false;
+  bool rotation = false;
+  final List<String> rotationIds = [];
+  String rotationNextId = '';
+  final Map<String, List<String>> planMoves = {};
   final List<Exercise> customExercises = [];
   final List<GymPlace> places = [];
 
@@ -62,6 +66,10 @@ abstract class FitCore extends ChangeNotifier {
   final Set<String> repsOnly = {};
 
   final Set<String> repsOnlyOff = {};
+
+  final Set<String> eachSide = {};
+
+  final Set<String> eachSideOff = {};
 
   final Set<String> noSuggest = {};
 
@@ -93,6 +101,8 @@ abstract class FitCore extends ChangeNotifier {
   }
 
   void syncTrainReminder() {}
+
+  bool hasPlanOn(DateTime day) => false;
 
   Map<double, int>? get plateStockKg => null;
 

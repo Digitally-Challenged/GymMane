@@ -237,7 +237,10 @@ class HomeScreen extends StatelessWidget {
         : isRoutine
         ? [
             t.exerciseCount(routine.exerciseIds.length),
-            if (today.length > 1) t.routineOfDay(today.indexOf(routine) + 1, today.length),
+            if (fit.rotating)
+              t.rotationPlace(fit.rotationStep + 1, fit.rotationRoutines.length)
+            else if (today.length > 1)
+              t.routineOfDay(today.indexOf(routine) + 1, today.length),
           ].join(' · ')
         : (fit.hasData
             ? '${focus.subtitle} · ${t.exerciseCount(fit.getFilteredExercises(focus.muscles).length)}'
@@ -324,6 +327,17 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (isRoutine && !done)
+              Positioned(
+                right: 10,
+                top: 10,
+                child: RoundAction(
+                  label: t.moreOptions,
+                  size: 34,
+                  onTap: () => showTodayPlanMenu(context, routine),
+                  child: Icon(PhosphorIconsBold.dotsThree, size: 16, color: gc.textSecondary),
+                ),
+              ),
           ],
         ),
       ),
