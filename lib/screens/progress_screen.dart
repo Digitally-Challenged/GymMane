@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -308,7 +309,7 @@ class ProgressScreen extends StatelessWidget {
     final start = fit.weekStartDate;
     final sets = List<int>.filled(7, 0);
     for (final session in fit.sessions) {
-      final day = DateTime(session.date.year, session.date.month, session.date.day);
+      final day = DateTime(session.day.year, session.day.month, session.day.day);
       final i = day.difference(start).inDays;
       if (i >= 0 && i < 7) sets[i] += session.setCount;
     }
@@ -558,11 +559,13 @@ class ProgressScreen extends StatelessWidget {
                         style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary)),
                   ),
                   Expanded(
-                    child: Text(pair == null ? t.compareNeedTwo : t.photoCount(fit.shotCount),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTheme.s(11, weight: FontWeight.w500, color: gc.textTertiary)),
+                    child: pair == null
+                        ? Text(t.compareNeedTwo,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTheme.s(11, weight: FontWeight.w500, color: gc.textTertiary))
+                        : _hideShotsBtn(gc),
                   ),
                   SizedBox(
                     width: 66,
@@ -608,6 +611,39 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
+  Widget _hideShotsBtn(GymColors gc) {
+    final hidden = fit.hideShots;
+    return Semantics(
+      button: true,
+      toggled: hidden,
+      label: hidden ? t.showPhotos : t.hidePhotos,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          HapticFeedback.selectionClick();
+          fit.toggleHideShots();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(hidden ? PhosphorIconsRegular.eyeSlash : PhosphorIconsRegular.eye,
+                  size: 15, color: hidden ? gc.accent : gc.textTertiary),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(t.photoCount(fit.shotCount),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTheme.s(11, weight: FontWeight.w500, color: gc.textTertiary)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _shotThumb(GymColors gc, ProgressEntry entry) {
     final name = entry.media.isEmpty ? null : entry.media.first;
     final path = name == null ? null : MediaStore.pathFor(name);
@@ -622,9 +658,29 @@ class ProgressScreen extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: path == null
             ? Icon(PhosphorIconsRegular.imageSquare, size: 16, color: gc.textTertiary)
-            : Image.file(File(path), fit: BoxFit.cover, gaplessPlayback: true,
-                errorBuilder: (_, _, _) =>
-                    Icon(PhosphorIconsRegular.imageSquare, size: 16, color: gc.textTertiary)),
+            : TweenAnimationBuilder<double>(
+                tween: Tween(end: fit.hideShots ? 1 : 0),
+                duration: const Duration(milliseconds: 280),
+                curve: Curves.easeOutCubic,
+                builder: (_, v, _) => Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ImageFiltered(
+                      imageFilter: ui.ImageFilter.blur(sigmaX: 14 * v, sigmaY: 14 * v, tileMode: TileMode.clamp),
+                      child: Image.file(File(path), fit: BoxFit.cover, gaplessPlayback: true,
+                          errorBuilder: (_, _, _) =>
+                              Icon(PhosphorIconsRegular.imageSquare, size: 16, color: gc.textTertiary)),
+                    ),
+                    Opacity(
+                      opacity: v,
+                      child: ColoredBox(
+                        color: gc.bgRaised2.withValues(alpha: 0.35),
+                        child: Icon(PhosphorIconsRegular.eyeSlash, size: 18, color: gc.text),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -962,6 +1018,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
   Widget build(BuildContext context) {
     final gc = context.gc;
     if (_days == 0) return _recoveryCard(gc);
+    if (_days < 0) return _untrainedCard(gc);
     final sets = fit.muscleSetsOver(_days);
     final heat = fit.muscleHeatOver(_days);
     final focus = _focus;
@@ -972,19 +1029,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(t.muscleMap,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-              ),
-              const SizedBox(width: 8),
-              _modes(),
-            ],
-          ),
+          _header(gc),
           const SizedBox(height: 16),
           BodyHeatMap(
             intensity: heat,
@@ -1030,16 +1075,102 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
     );
   }
 
-  Widget _modes() => SegToggle(
-        [
-          SegOption(t.days7, _days == 7, () => _setDays(7)),
-          SegOption(t.days30, _days == 30, () => _setDays(30)),
-          SegOption(t.recoveryTab, _days == 0, () => _setDays(0)),
+  Widget _header(GymColors gc) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(t.muscleMap,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+          const SizedBox(height: 10),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: SegToggle(
+                [
+                  SegOption(t.days7, _days == 7, () => _setDays(7)),
+                  SegOption(t.days30, _days == 30, () => _setDays(30)),
+                  SegOption(t.recoveryTab, _days == 0, () => _setDays(0)),
+                  SegOption(t.untrainedTab, _days < 0, () => _setDays(-1)),
+                ],
+                hPad: 10,
+                vPad: 5,
+                fontSize: 11,
+              ),
+            ),
+          ),
         ],
-        hPad: 10,
-        vPad: 5,
-        fontSize: 11,
       );
+
+  Widget _untrainedCard(GymColors gc) {
+    final days = fit.daysSinceTrained();
+    final focus = _focus;
+    final empty = fit.sessions.isEmpty;
+    final waiting = fit.untrainedLongest();
+    return SoftCard(
+      radius: 20,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(gc),
+          const SizedBox(height: 16),
+          BodyUntrainedMap(
+            days: days,
+            focus: focus,
+            onTap: (id) => setState(() => _focus = focus == id ? null : id),
+          ),
+          const SizedBox(height: 16),
+          Row(children: [
+            Text(t.untrainedRecent, style: AppTheme.s(11, color: gc.textTertiary)),
+            const SizedBox(width: 8),
+            for (final (i, d) in const [1, 5, 9, 15].indexed) ...[
+              if (i > 0) const SizedBox(width: 3),
+              Expanded(
+                child: Container(
+                  height: 7,
+                  decoration: BoxDecoration(
+                    color: untrainedColor(gc, d),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(width: 8),
+            Text(t.untrainedLong, style: AppTheme.s(11, color: gc.textTertiary)),
+          ]),
+          const SizedBox(height: 14),
+          Container(
+            constraints: const BoxConstraints(minHeight: 36),
+            alignment: Alignment.centerLeft,
+            child: focus != null
+                ? Row(children: [
+                    Container(
+                      width: 10,
+                      height: 10,
+                      decoration: BoxDecoration(color: untrainedColor(gc, days[focus]), shape: BoxShape.circle),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(t.muscle(focus), style: AppTheme.s(13, weight: FontWeight.w600, color: gc.text)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(days[focus] == null ? t.neverTrained : t.trainedAgo(days[focus]!),
+                          style: AppTheme.s(13, color: gc.textSecondary)),
+                    ),
+                  ])
+                : Text(
+                    empty
+                        ? t.muscleMapEmpty
+                        : waiting.isEmpty
+                            ? t.untrainedAllRecent
+                            : t.untrainedWaiting(waiting.map(t.muscle).join(' · ')),
+                    style: AppTheme.s(13, color: gc.textSecondary),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _recoveryCard(GymColors gc) {
     final recovery = fit.muscleRecovery();
@@ -1051,19 +1182,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(t.muscleMap,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-              ),
-              const SizedBox(width: 8),
-              _modes(),
-            ],
-          ),
+          _header(gc),
           const SizedBox(height: 14),
           Row(children: [
             SizedBox(

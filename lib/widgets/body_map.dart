@@ -222,3 +222,34 @@ class BodyPainter extends CustomPainter {
   bool shouldRepaint(BodyPainter old) =>
       old.gc != gc || old.token != token || old.outline != outline;
 }
+
+Color untrainedColor(GymColors gc, int? days) {
+  final idle = idleMuscle(gc);
+  if (days == null || days >= 14) return gc.danger;
+  if (days >= 7) return Color.lerp(gc.warn, gc.danger, (days - 7) / 7)!;
+  if (days >= 4) return Color.lerp(idle, gc.warn, 0.35 + (days - 4) * 0.2)!;
+  return Color.lerp(idle, gc.sage, 0.35)!;
+}
+
+class BodyUntrainedMap extends StatelessWidget {
+  const BodyUntrainedMap({super.key, required this.days, this.focus, this.onTap});
+
+  final Map<String, int?> days;
+  final String? focus;
+  final ValueChanged<String>? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    final keys = days.keys.toList()..sort();
+    return _BodyCanvas(
+      onTap: onTap,
+      painter: BodyPainter(
+        gc: gc,
+        token: 'u${keys.map((k) => '$k${days[k] ?? 'n'}').join(',')}',
+        color: (id) => untrainedColor(gc, days[id]),
+        outline: focus,
+      ),
+    );
+  }
+}
