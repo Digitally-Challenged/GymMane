@@ -19,6 +19,7 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   String demoSize = 'large';
   String demoLoop = 'always';
+  String sessionLayout = 'cards';
   String alarmStyle = 'quiet';
   int restSeconds = 90;
   String? alarmSound;
@@ -35,6 +36,7 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
   bool levelHints = true;
   bool toastSound = true;
   bool heatmapLabels = true;
+  bool hideShots = false;
   bool autoAdvance = true;
   bool keepScreenOn = true;
   bool startCountdown = true;
@@ -79,6 +81,15 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
   void setDemoSize(String size) {
     if (!const ['large', 'small', 'off'].contains(size)) return;
     demoSize = size;
+    _persist();
+    notifyListeners();
+  }
+
+  bool get listLayout => sessionLayout == 'list';
+
+  void setSessionLayout(String layout) {
+    if (!const ['cards', 'list'].contains(layout)) return;
+    sessionLayout = layout;
     _persist();
     notifyListeners();
   }
@@ -373,6 +384,12 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   void toggleHeatmapLabels() {
     heatmapLabels = !heatmapLabels;
+    _persist();
+    notifyListeners();
+  }
+
+  void toggleHideShots() {
+    hideShots = !hideShots;
     _persist();
     notifyListeners();
   }

@@ -34,6 +34,7 @@ class SessionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
+    if (fit.listLayout && !fit.isSessionComplete && fit.session != null) return _listScreen(context, gc);
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
@@ -111,7 +112,7 @@ class SessionScreen extends StatelessWidget {
           child: fit.holding && fit.holdEx == exIdx
               ? Padding(padding: const EdgeInsets.only(bottom: 16), child: _holdCard(gc))
               : s.restRemaining != null
-                  ? Padding(padding: const EdgeInsets.only(bottom: 16), child: _restCard(gc, s))
+                  ? Padding(padding: const EdgeInsets.only(bottom: 16), child: _restCard(context, gc, s))
                   : const SizedBox(width: double.infinity),
         ),
         _ExerciseStage(
@@ -126,7 +127,7 @@ class SessionScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(_rowPad, 0, _rowPad, 10),
-                  child: _setsHeader(gc, mode, repsOnly),
+                  child: _setsHeader(gc, mode, repsOnly, ex != null && fit.isEachSide(ex.id)),
                 ),
                 for (int j = 0; j < (ex?.sets.length ?? 0); j++) ...[
                   _swipeToDelete(context, gc, exIdx, j, ex!.sets[j], locked,
@@ -210,6 +211,538 @@ class SessionScreen extends StatelessWidget {
           ]),
         ),
       ],
+    );
+  }
+
+  Widget _listScreen(BuildContext context, GymColors gc) {
+    final s = fit.session!;
+    final docked = (fit.holding && fit.holdEx >= 0) || s.restRemaining != null;
+    final bottom = MediaQuery.viewPaddingOf(context).bottom;
+    final locked = fit.sessionLocked && !s.manual;
+    return SafeArea(
+      bottom: false,
+      child: Stack(children: [
+        Positioned.fill(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
+              child: s.manual ? _manualBar(context, gc, s) : _liveBar(gc, locked),
+            ),
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (_) => true,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(16, 4, 16, 32 + bottom + (docked ? 84 : 0)),
+                  child: _listActive(context, gc, s),
+                ),
+              ),
+            ),
+          ]),
+        ),
+        Positioned(
+          left: 12,
+          right: 12,
+          bottom: 12 + bottom,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 260),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            transitionBuilder: (child, a) => SlideTransition(
+              position: Tween(begin: const Offset(0, 1.4), end: Offset.zero).animate(a),
+              child: FadeTransition(opacity: a, child: child),
+            ),
+            child: fit.holding && fit.holdEx >= 0
+                ? KeyedSubtree(key: const ValueKey('hold'), child: _ticking(() => _holdDock(gc)))
+                : s.restRemaining != null
+                    ? KeyedSubtree(key: const ValueKey('rest'), child: _restDock(context, gc, s))
+                    : const SizedBox(key: ValueKey('none'), width: double.infinity),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget _listActive(BuildContext context, GymColors gc, WorkoutSession s) {
+    final locked = fit.sessionLocked && !s.manual;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _listStats(gc, s),
+        const SizedBox(height: 16),
+        for (var i = 0; i < s.exercises.length; i++) ...[
+          _listExercise(context, gc, s, i, locked),
+          SizedBox(height: s.exercises[i].linkedNext && i < s.exercises.length - 1 ? 4 : 12),
+        ],
+        const SizedBox(height: 6),
+        _guard(
+          locked,
+          GhostButton(
+            label: t.addExercise,
+            icon: PhosphorIconsRegular.plus,
+            onTap: () => showAddToSessionSheet(context),
+          ),
+        ),
+        const SizedBox(height: 12),
+        _guard(locked, PrimaryButton(label: t.finishSession, onTap: fit.finishSession, height: 54)),
+      ],
+    );
+  }
+
+  Widget _listStats(GymColors gc, WorkoutSession s) {
+    final count = fit.sessionSetCount;
+    Widget stat(String label, Widget value) => Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            FitText(label, style: AppTheme.f(10, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1)),
+            const SizedBox(height: 3),
+            value,
+          ]),
+        );
+    final style = AppTheme.f(17, weight: FontWeight.w800, color: gc.text);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      decoration: BoxDecoration(color: gc.bgRaised, borderRadius: BorderRadius.circular(18)),
+      child: Row(children: [
+        stat(t.duration, _ticking(() => RollingText(fit.elapsedLabel, style: style))),
+        stat(t.volume, FitText('${fit.weightValue(fit.sessionVolumeKg)} ${fit.units}', style: style)),
+        stat(t.setsCaps, RollingText('${count.done}/${count.total}', style: style)),
+      ]),
+    );
+  }
+
+  Widget _listExercise(BuildContext context, GymColors gc, WorkoutSession s, int i, bool locked) {
+    final ex = s.exercises[i];
+    final def = fit.exerciseById(ex.id);
+    final mode = fit.modeOf(ex.id);
+    final repsOnly = fit.isRepsOnly(ex.id);
+    final prev = fit.lastSetsFor(ex.id);
+    final linkedIn = i > 0 && s.exercises[i - 1].linkedNext;
+    final linked = linkedIn || (ex.linkedNext && i < s.exercises.length - 1);
+    final done = ex.sets.isNotEmpty && ex.sets.every((st) => st.done);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(6, 12, 6, 8),
+      decoration: BoxDecoration(
+        color: gc.bgRaised,
+        borderRadius: BorderRadius.circular(20),
+        border: linked ? Border(left: BorderSide(color: gc.brass, width: 3)) : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(children: [
+              _guard(
+                locked,
+                GestureDetector(
+                  onTap: def == null ? null : () => showExercisePreview(context, def),
+                  child: SizedBox(
+                    width: 46,
+                    height: 46,
+                    child: def == null
+                        ? const SizedBox.shrink()
+                        : ExerciseMedia(ex: def, height: 46, radius: 12, live: false),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(t.catalogName(ex.id, ex.name),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTheme.f(16, weight: FontWeight.w800, color: done ? gc.sage : gc.text, height: 1.15)),
+                  const SizedBox(height: 3),
+                  Row(children: [
+                    if (linked) ...[
+                      Icon(PhosphorIconsRegular.link, size: 11, color: gc.brass),
+                      const SizedBox(width: 4),
+                      Text(t.superset,
+                          style: AppTheme.f(11, weight: FontWeight.w700, color: gc.brass, letterSpacing: 0.3)),
+                      Text('  ·  ', style: AppTheme.f(11, weight: FontWeight.w500, color: gc.textTertiary)),
+                    ],
+                    Flexible(
+                      child: Text(muscleLabel(ex.primary),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTheme.f(11.5, weight: FontWeight.w600, color: gc.textTertiary)),
+                    ),
+                  ]),
+                ]),
+              ),
+              _guard(
+                locked,
+                Semantics(
+                  button: true,
+                  label: t.moreOptions,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => _listExerciseMenu(context, i),
+                    child: SizedBox(
+                      width: 40,
+                      height: 44,
+                      child: Icon(PhosphorIconsBold.dotsThree, size: 20, color: gc.textSecondary),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+            child: _setsHeader(gc, mode, repsOnly, fit.isEachSide(ex.id), list: true),
+          ),
+          for (var j = 0; j < ex.sets.length; j++)
+            _swipeToDelete(context, gc, i, j, ex.sets[j], locked,
+                _setRow(gc, i, j, ex.sets[j], repsOnly, locked, list: true, prev: j < prev.length ? prev[j] : null)),
+          const SizedBox(height: 6),
+          _guard(
+            locked,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Pressable(
+                scale: 0.98,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  fit.addSet(i);
+                },
+                child: Container(
+                  height: 38,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(12)),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(t.addSet,
+                        maxLines: 1,
+                        style: AppTheme.f(12.5, weight: FontWeight.w700, color: gc.textSecondary, letterSpacing: 0.4)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _listExerciseMenu(BuildContext context, int i) {
+    final gc = context.gc;
+    final s = fit.session;
+    if (s == null || i >= s.exercises.length) return;
+    final ex = s.exercises[i];
+    final mode = fit.modeOf(ex.id);
+    final repsOnly = fit.isRepsOnly(ex.id);
+    final name = t.catalogName(ex.id, ex.name);
+    showAppSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (sheet) => Container(
+        padding: sheetPad(sheet),
+        constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(sheet).height * 0.85),
+        decoration: BoxDecoration(
+          color: gc.bgRaised,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SheetHandle(),
+              const SizedBox(height: 16),
+              SheetTitle(name, subtitle: muscleLabel(ex.primary)),
+              const SizedBox(height: 14),
+              OptionGroup([
+                if (!fit.sessionPaused && !s.manual)
+                  OptionItem(t.swapExercise, icon: PhosphorIconsRegular.arrowsLeftRight, onTap: () {
+                    Navigator.pop(sheet);
+                    showSwapExerciseSheet(context, i);
+                  }),
+                if (fit.lastSummaryFor(ex.id) != null)
+                  OptionItem(sentenceCase(t.history), icon: PhosphorIconsRegular.clockCounterClockwise, onTap: () {
+                    Navigator.pop(sheet);
+                    showExerciseHistorySheet(context, ex.id);
+                  }),
+                if (mode != 'cardio' && repsOnly)
+                  OptionItem(sentenceCase(t.addWeightAction), icon: PhosphorIconsRegular.barbell, onTap: () {
+                    Navigator.pop(sheet);
+                    fit.toggleRepsOnly(ex.id);
+                  })
+                else if (mode.isEmpty && fit.hasWarmup(i))
+                  OptionItem(t.removeWarmup, icon: PhosphorIconsRegular.fire, onTap: () {
+                    Navigator.pop(sheet);
+                    fit.removeWarmupSets(i);
+                  })
+                else if (mode.isEmpty)
+                  OptionItem(sentenceCase(t.addWarmup), icon: PhosphorIconsRegular.fire, onTap: () {
+                    Navigator.pop(sheet);
+                    fit.addWarmupSets(i);
+                  }),
+                OptionItem(t.addNote, icon: PhosphorIconsRegular.notePencil, onTap: () {
+                  Navigator.pop(sheet);
+                  fit.openNoteEditor(exerciseId: ex.id);
+                }),
+                if (i > 0)
+                  OptionItem(t.moveUp, icon: PhosphorIconsRegular.arrowUp, onTap: () {
+                    Navigator.pop(sheet);
+                    fit.moveSessionExercise(i, -1);
+                  }),
+                if (i < s.exercises.length - 1)
+                  OptionItem(t.moveDown, icon: PhosphorIconsRegular.arrowDown, onTap: () {
+                    Navigator.pop(sheet);
+                    fit.moveSessionExercise(i, 1);
+                  }),
+                if (s.exercises.length > 1)
+                  OptionItem(t.dropExerciseAction, icon: PhosphorIconsRegular.trash, danger: true, onTap: () {
+                    Navigator.pop(sheet);
+                    _confirmDrop(context, i, name);
+                  }),
+              ]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _pillCell(
+    GymColors gc,
+    String value,
+    VoidCallback dec,
+    VoidCallback inc,
+    double minW, {
+    required void Function(BuildContext) onEdit,
+  }) =>
+      Builder(
+        builder: (context) => GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onEdit(context),
+          child: SizedBox(
+            height: 44,
+            child: Center(
+              child: Container(
+                height: 34,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(10)),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: RollingText(value, style: AppTheme.f(15, weight: FontWeight.w700, color: gc.text)),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+  String _prevLabel(LoggedSet p) {
+    if ((p.km ?? 0) > 0 || p.sec != null) return fit.loggedSetLabel(p);
+    return p.weight > 0 ? fit.loggedSetLabel(p) : '×${p.reps}';
+  }
+
+  Widget _prevCell(GymColors gc, int exIdx, int j, LoggedSet? prev, bool locked) {
+    final text = Text(
+      prev == null ? '—' : _prevLabel(prev),
+      maxLines: 1,
+      textAlign: TextAlign.center,
+      style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textTertiary),
+    );
+    if (prev == null || locked) return Center(child: FittedBox(fit: BoxFit.scaleDown, child: text));
+    return Semantics(
+      button: true,
+      label: t.usePrevious,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          HapticFeedback.selectionClick();
+          fit.copyPreviousSet(exIdx, j);
+        },
+        child: SizedBox(
+          height: 44,
+          child: Center(
+            child: Container(
+              height: 28,
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: gc.border),
+              ),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  Icon(PhosphorIconsBold.arrowBendDownRight, size: 10, color: gc.textSecondary),
+                  const SizedBox(width: 3),
+                  Text(_prevLabel(prev),
+                      maxLines: 1, style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary)),
+                ]),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool _holdable(int exIdx, SessionSet st) {
+    final ex = fit.session?.exercises[exIdx];
+    return ex != null && fit.runsClock(ex.id) && (st.sec ?? 30) > 0;
+  }
+
+  Widget _holdCell(GymColors gc, int exIdx, int j) {
+    final live = fit.holding && fit.holdEx == exIdx && fit.holdSet == j;
+    return Semantics(
+      button: true,
+      label: live ? t.stopLabel : t.holdLabel,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: live ? fit.stopHold : () => fit.startHoldAt(exIdx, j),
+        child: SizedBox(
+          width: 44,
+          height: 44,
+          child: Center(
+            child: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(color: live ? gc.bgRaised2 : gc.ember, shape: BoxShape.circle),
+              child: Icon(live ? PhosphorIconsFill.stop : PhosphorIconsFill.play,
+                  size: 13, color: live ? gc.text : gc.onEmber),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _dockFrame(GymColors gc, {required double progress, required Color tint, required Widget child}) => Container(
+        height: 72,
+        decoration: BoxDecoration(
+          color: gc.bgRaised2,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: gc.border),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.28), blurRadius: 24, offset: const Offset(0, 8))],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(21),
+          child: Stack(children: [
+            Positioned.fill(
+              child: AnimatedFractionallySizedBox(
+                duration: const Duration(milliseconds: 320),
+                curve: Curves.easeOutCubic,
+                alignment: AlignmentDirectional.centerStart,
+                widthFactor: progress.clamp(0.0, 1.0),
+                child: ColoredBox(color: tint.withValues(alpha: 0.16)),
+              ),
+            ),
+            Positioned.fill(child: child),
+          ]),
+        ),
+      );
+
+  Widget _dockButton(GymColors gc, String label, VoidCallback onTap,
+          {bool strong = false, String? semantic, IconData? icon}) =>
+      Semantics(
+        button: true,
+        label: semantic ?? label,
+        child: Pressable(
+          scale: 0.94,
+          onTap: onTap,
+          child: Container(
+            height: 44,
+            constraints: const BoxConstraints(minWidth: 44),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: strong ? gc.ember : gc.bgRaised,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: icon != null
+                ? Icon(icon, size: 16, color: strong ? gc.onEmber : gc.text)
+                : Text(label,
+                    maxLines: 1,
+                    style: AppTheme.f(13, weight: FontWeight.w800, color: strong ? gc.onEmber : gc.text)),
+          ),
+        ),
+      );
+
+  Widget _restDock(BuildContext context, GymColors gc, WorkoutSession s) => Dismissible(
+        key: const ValueKey('rest-dock'),
+        resizeDuration: null,
+        onDismissed: (_) {
+          HapticFeedback.lightImpact();
+          fit.skipRest();
+        },
+        child: _ticking(() {
+          final left = s.restRemaining ?? 0;
+          final total = fit.restTotal <= 0 ? 1 : fit.restTotal;
+          return _dockFrame(
+            gc,
+            progress: left / total,
+            tint: gc.accent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(children: [
+                _dockButton(gc, '−15', () => fit.nudgeRest(-15), semantic: t.decrease),
+                Expanded(
+                  child: Semantics(
+                    button: true,
+                    label: t.restTimer,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => _editRest(context, s),
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        FitText(t.liveResting.toUpperCase(),
+                            style: AppTheme.f(9.5, weight: FontWeight.w800, color: gc.accent, letterSpacing: 1.2)),
+                        RollingText(clockLabel(left),
+                            style: AppTheme.f(24, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+                      ]),
+                    ),
+                  ),
+                ),
+                _dockButton(gc, '+15', () => fit.nudgeRest(15), semantic: t.increase),
+                const SizedBox(width: 8),
+                _dockButton(gc, t.skipShort, fit.skipRest, strong: true),
+              ]),
+            ),
+          );
+        }),
+      );
+
+  Widget _holdDock(GymColors gc) {
+    final lead = fit.holdLead;
+    final left = lead > 0 ? lead : fit.holdRemaining ?? 0;
+    final total = lead > 0 ? WorkoutState.holdLeadIn : (fit.holdTotal <= 0 ? 1 : fit.holdTotal);
+    final ex = fit.session?.exercises[fit.holdEx];
+    final label = lead > 0
+        ? (fit.switchingSides ? t.switchSides : t.getReady)
+        : fit.holdSides > 1
+            ? t.sideOfTwo('${fit.holdSide + 1}')
+            : t.holdLabel;
+    return _dockFrame(
+      gc,
+      progress: 1 - left / total,
+      tint: gc.ember,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(children: [
+          _dockButton(gc, '', fit.toggleHoldPause,
+              semantic: fit.holdPaused ? t.resumeWorkout : t.pauseWorkout,
+              icon: fit.holdPaused ? PhosphorIconsFill.play : PhosphorIconsFill.pause),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+              FitText(
+                  [label.toUpperCase(), if (ex != null) t.catalogName(ex.id, ex.name)].join(' · '),
+                  style: AppTheme.f(9.5, weight: FontWeight.w800, color: gc.ember, letterSpacing: 1)),
+              RollingText(clockLabel(left), style: AppTheme.f(24, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+            ]),
+          ),
+          _dockButton(gc, fit.holdPaused ? t.finishHoldNow : t.stopLabel,
+              fit.holdPaused ? fit.completeHold : fit.stopHold,
+              strong: true),
+        ]),
+      ),
     );
   }
 
@@ -460,8 +993,10 @@ class SessionScreen extends StatelessWidget {
   static const _effortCol = 36.0;
   static const _cardPad = 8.0;
   static const _rowPad = 14.0;
+  static const _prevFlex = 6;
+  static const _cellFlex = 5;
 
-  Widget _setsHeader(GymColors gc, String mode, bool repsOnly) {
+  Widget _setsHeader(GymColors gc, String mode, bool repsOnly, bool sided, {bool list = false}) {
     final s = AppTheme.f(11, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4);
 
     Widget label(String t) => FittedBox(
@@ -473,9 +1008,13 @@ class SessionScreen extends StatelessWidget {
     final gap = effort ? _tightGap : _gap;
     return Row(children: [
       SizedBox(width: _numCol, child: label(t.setCol)),
-      for (final h in _headers(mode, repsOnly)) ...[
+      if (list) ...[
         SizedBox(width: gap),
-        Expanded(child: label(h)),
+        Expanded(flex: _prevFlex, child: label(t.previousCol)),
+      ],
+      for (final h in _headers(mode, repsOnly, sided)) ...[
+        SizedBox(width: gap),
+        Expanded(flex: _cellFlex, child: label(h)),
       ],
       if (effort) ...[
         SizedBox(width: gap),
@@ -674,9 +1213,17 @@ class SessionScreen extends StatelessWidget {
         ),
       );
 
-  List<Widget> _cells(GymColors gc, int exIdx, int j, SessionSet st, String mode, bool repsOnly) {
+  List<Widget> _cells(GymColors gc, int exIdx, int j, SessionSet st, String mode, bool repsOnly, {bool list = false}) {
     final cardio = mode == 'cardio';
-    Widget reps() => _miniStepper(
+    Widget Function(
+      GymColors gc,
+      String value,
+      VoidCallback dec,
+      VoidCallback inc,
+      double minW, {
+      required void Function(BuildContext) onEdit,
+    }) step = list ? _pillCell : _miniStepper;
+    Widget reps() => step(
           gc,
           '${st.reps}',
           () => fit.bumpSessionReps(exIdx, j, -1),
@@ -692,7 +1239,7 @@ class SessionScreen extends StatelessWidget {
             onSave: (v) => fit.setSessionReps(exIdx, j, v.round()),
           ),
         );
-    Widget weight() => _miniStepper(
+    Widget weight() => step(
           gc,
           fit.weightValue(st.weight),
           () => fit.bumpSessionWeight(exIdx, j, -1),
@@ -709,7 +1256,7 @@ class SessionScreen extends StatelessWidget {
             onSave: (v) => fit.setSessionWeightShown(exIdx, j, v),
           ),
         );
-    Widget time() => _miniStepper(
+    Widget time() => step(
           gc,
           durationLabel(st.sec ?? 0),
           () => fit.bumpSessionSeconds(exIdx, j, cardio ? -60 : -15),
@@ -737,7 +1284,7 @@ class SessionScreen extends StatelessWidget {
                   onSave: (v) => fit.setSessionSeconds(exIdx, j, v.round()),
                 ),
         );
-    Widget distance() => _miniStepper(
+    Widget distance() => step(
           gc,
           fit.distanceValue(st.km ?? 0),
           () => fit.bumpSessionDistance(exIdx, j, -1),
@@ -761,13 +1308,14 @@ class SessionScreen extends StatelessWidget {
     };
   }
 
-  List<String> _headers(String mode, bool repsOnly) => switch (mode) {
+  List<String> _headers(String mode, bool repsOnly, bool sided) => switch (mode) {
         'cardio' => [t.distanceCol(fit.distanceUnit.toUpperCase()), t.timeCol],
-        'time' => [t.timeCol, if (!repsOnly) t.weightCol(fit.units.toUpperCase())],
+        'time' => [sided ? t.timePerSideCol : t.timeCol, if (!repsOnly) t.weightCol(fit.units.toUpperCase())],
         _ => [t.repsCol, if (!repsOnly) t.weightCol(fit.units.toUpperCase())],
       };
 
-  Widget _setRow(GymColors gc, int exIdx, int j, SessionSet st, bool repsOnly, bool locked) {
+  Widget _setRow(GymColors gc, int exIdx, int j, SessionSet st, bool repsOnly, bool locked,
+      {bool list = false, LoggedSet? prev}) {
     final mode = fit.modeOf(fit.session?.exercises[exIdx].id ?? '');
     return Builder(
       builder: (ctx) => GestureDetector(
@@ -778,17 +1326,18 @@ class SessionScreen extends StatelessWidget {
                 HapticFeedback.mediumImpact();
                 _kindSheet(ctx, exIdx, j, st.kind);
               },
-        child: _setRowBody(gc, exIdx, j, st, repsOnly, locked, mode),
+        child: _setRowBody(gc, exIdx, j, st, repsOnly, locked, mode, list: list, prev: prev),
       ),
     );
   }
 
-  Widget _setRowBody(GymColors gc, int exIdx, int j, SessionSet st, bool repsOnly, bool locked, String mode) {
+  Widget _setRowBody(GymColors gc, int exIdx, int j, SessionSet st, bool repsOnly, bool locked, String mode,
+      {bool list = false, LoggedSet? prev}) {
     final effort = _showsEffort(mode);
     final gap = effort ? _tightGap : _gap;
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
-      padding: const EdgeInsets.symmetric(horizontal: _rowPad, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: list ? 8 : _rowPad, vertical: list ? 4 : 10),
       decoration: BoxDecoration(
         color: st.done ? gc.sageSoft : Colors.transparent,
         borderRadius: BorderRadius.circular(14),
@@ -808,22 +1357,29 @@ class SessionScreen extends StatelessWidget {
             ),
           ),
         ),
-        for (final cell in _cells(gc, exIdx, j, st, mode, repsOnly)) ...[
+        if (list) ...[
           SizedBox(width: gap),
-          Expanded(child: cell),
+          Expanded(flex: _prevFlex, child: _prevCell(gc, exIdx, j, prev, locked)),
+        ],
+        for (final cell in _cells(gc, exIdx, j, st, mode, repsOnly, list: list)) ...[
+          SizedBox(width: gap),
+          Expanded(flex: list ? _cellFlex : 1, child: cell),
         ],
         if (effort) ...[
           SizedBox(width: gap),
           SizedBox(width: _effortCol, child: _effortCell(gc, exIdx, j, st, mode, locked)),
         ],
         SizedBox(width: gap),
+        if (list && !st.done && _holdable(exIdx, st))
+          _holdCell(gc, exIdx, j)
+        else
         Semantics(
           button: true,
           checked: st.done,
           label: t.markSet(j + 1),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => fit.toggleSet(exIdx, j),
+            onTap: () => list ? fit.toggleSetAt(exIdx, j) : fit.toggleSet(exIdx, j),
             child: SizedBox(
               width: 44,
               height: 44,
@@ -1139,10 +1695,12 @@ class SessionScreen extends StatelessWidget {
     final lead = fit.holdLead;
     return TimerPanel(
       label: lead > 0
-          ? t.getReady
+          ? (fit.switchingSides ? t.switchSides : t.getReady)
           : fit.modeOf(fit.session?.exercises[fit.holdEx].id ?? '') == 'cardio'
               ? t.kindCardio
-              : t.holdLabel,
+              : fit.holdSides > 1
+                  ? t.sideOfTwo('${fit.holdSide + 1}')
+                  : t.holdLabel,
       remaining: lead > 0 ? lead : fit.holdRemaining ?? 0,
       total: lead > 0 ? WorkoutState.holdLeadIn : fit.holdTotal,
       elapsed: fit.elapsedLabel,
@@ -1155,9 +1713,37 @@ class SessionScreen extends StatelessWidget {
     );
   }
 
-  Widget _restCard(GymColors gc, WorkoutSession s) => _ticking(() => _restPanel(gc, s));
+  Widget _restCard(BuildContext context, GymColors gc, WorkoutSession s) => Dismissible(
+        key: ValueKey(s.restEndsAt ?? s.restFrozen),
+        resizeDuration: null,
+        onDismissed: (_) {
+          HapticFeedback.lightImpact();
+          fit.skipRest();
+        },
+        child: _ticking(() => _restPanel(context, gc, s)),
+      );
 
-  Widget _restPanel(GymColors gc, WorkoutSession s) {
+  Future<void> _editRest(BuildContext context, WorkoutSession s) async {
+    final v = await askRuler(context,
+        title: t.restTimer,
+        value: (((s.restRemaining ?? fit.restTotal) / 5).round() * 5).toDouble(),
+        min: 5,
+        max: 600,
+        step: 5,
+        majorEvery: 6,
+        format: (v) => clockLabel(v.round()),
+        tickLabel: (v) => clockLabel(v.round()),
+        hint: t.swipeToSkipHint,
+        clearLabel: t.liveSkipRest);
+    if (v == null || fit.session != s) return;
+    if (v.isNaN) {
+      fit.skipRest();
+    } else {
+      fit.setRest(v.round());
+    }
+  }
+
+  Widget _restPanel(BuildContext context, GymColors gc, WorkoutSession s) {
     final count = fit.sessionSetCount;
     return TimerPanel(
       label: t.liveResting,
@@ -1167,8 +1753,8 @@ class SessionScreen extends StatelessWidget {
       elapsedLabel: t.elapsedCaps,
       sets: '${count.done}/${count.total}',
       setsLabel: t.setsCaps,
-      hint: t.tapToSkip,
-      onTap: fit.skipRest,
+      hint: t.tapToChange,
+      onTap: () => _editRest(context, s),
       onMinus: () => fit.nudgeRest(-15),
       onPlus: () => fit.nudgeRest(15),
     );
@@ -1187,7 +1773,7 @@ class SessionScreen extends StatelessWidget {
             ));
       }
       return PrimaryButton(
-        label: t.startHold(durationLabel(ex.sets[pending].sec ?? 30)),
+        label: t.startHold(fit.holdLength(ex.id, ex.sets[pending].sec ?? 30)),
         icon: Ic.play,
         onTap: () => fit.startHold(exIdx, pending),
         height: 56,
@@ -1441,6 +2027,9 @@ class SessionScreen extends StatelessWidget {
                 for (final e in changes.added) row(PhosphorIconsBold.plus, gc.sage, exerciseName(e)),
                 for (final e in changes.removed) row(PhosphorIconsBold.minus, gc.danger, exerciseName(e)),
                 if (changes.reordered) row(PhosphorIconsBold.arrowsDownUp, gc.brass, t.routineOrderChanged),
+                for (final c in changes.sets)
+                  row(c.to > c.from ? PhosphorIconsBold.plus : PhosphorIconsBold.minus, gc.brass,
+                      '${exerciseName(c.ex)} · ${c.from} → ${c.to} ${t.statSets.toLowerCase()}'),
               ],
             ),
           ),

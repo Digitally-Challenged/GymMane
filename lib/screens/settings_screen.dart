@@ -216,6 +216,20 @@ class SettingsScreen extends StatelessWidget {
               _choiceRow(
                 context,
                 gc,
+                PhosphorIconsRegular.rows,
+                t.layoutSetting,
+                [
+                  ('cards', t.layoutCards, PhosphorIconsRegular.cards),
+                  ('list', t.layoutList, PhosphorIconsRegular.listBullets),
+                ],
+                () => fit.sessionLayout,
+                fit.setSessionLayout,
+                hint: t.layoutHint,
+                rowHint: t.layoutRowHint,
+              ),
+              _choiceRow(
+                context,
+                gc,
                 PhosphorIconsRegular.filmStrip,
                 t.demoSizeTitle,
                 [
