@@ -405,6 +405,7 @@ const Map<String, String> kExerciseNameIt = {
   'single-arm-dumbbell-bench-press': 'Panca piana a un braccio con manubrio',
   'smith-incline-bench-press': 'Panca inclinata al multipower',
   'decline-chest-press-machine': 'Chest press declinata alla macchina',
+  'incline-chest-press-machine': 'Chest press inclinata alla macchina',
   'reverse-grip-lat-pulldown': 'Lat machine presa inversa',
   'barbell-lunge': 'Affondi con bilanciere',
   'barbell-reverse-lunge': 'Affondi indietro con bilanciere',

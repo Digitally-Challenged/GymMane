@@ -418,6 +418,7 @@ const Map<String, String> kExerciseNameZh = {
   'single-arm-dumbbell-bench-press': '单臂哑铃卧推',
   'smith-incline-bench-press': '史密斯机上斜卧推',
   'decline-chest-press-machine': '器械下斜推胸',
+  'incline-chest-press-machine': '器械上斜推胸',
   'reverse-grip-lat-pulldown': '反握高位下拉',
   'barbell-lunge': '杠铃弓步',
   'barbell-reverse-lunge': '杠铃后撤弓步',

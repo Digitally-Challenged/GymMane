@@ -7136,6 +7136,22 @@ const List<Exercise> kExercises = [
     ],
   ),
   Exercise(
+    id: 'incline-chest-press-machine',
+    name: 'Incline Chest Press Machine',
+    primary: 'chest',
+    secondary: ['triceps', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Beginner',
+    art: 'incline-chest-press-machine',
+    steps: [
+      'Adjust the seat so the handles line up with your upper chest.',
+      'Sit with your back against the pad and grab both handles.',
+      'Press the handles forward and up until your arms are almost straight.',
+      'Stop just short of locking your elbows.',
+      'Let the handles come back slowly to your upper chest.',
+    ],
+  ),
+  Exercise(
     id: 'reverse-grip-bench-press',
     name: 'Barbell Reverse-Grip Bench Press',
     primary: 'chest',

@@ -418,6 +418,7 @@ const Map<String, String> kExerciseNameEs = {
   'single-arm-dumbbell-bench-press': 'Press de banca a una mano con mancuerna',
   'smith-incline-bench-press': 'Press inclinado en multipower',
   'decline-chest-press-machine': 'Press declinado en máquina',
+  'incline-chest-press-machine': 'Press inclinado en máquina',
   'reverse-grip-lat-pulldown': 'Jalón al pecho con agarre supino',
   'barbell-lunge': 'Zancada con barra',
   'barbell-reverse-lunge': 'Zancada atrás con barra',
@@ -3364,6 +3365,13 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Empuja las asas hacia delante y abajo hasta casi estirar los brazos.',
     'Para justo antes de bloquear los codos.',
     'Deja volver las asas despacio hasta el pecho.',
+  ],
+  'incline-chest-press-machine': [
+    'Ajusta el asiento para que los agarres queden a la altura de la parte alta del pecho.',
+    'Siéntate con la espalda pegada al respaldo y agarra las dos asas.',
+    'Empuja las asas hacia delante y arriba hasta casi estirar los brazos.',
+    'Para justo antes de bloquear los codos.',
+    'Deja volver las asas despacio hasta la parte alta del pecho.',
   ],
   'reverse-grip-lat-pulldown': [
     'Siéntate en el jalón con los muslos bajo la almohadilla.',
