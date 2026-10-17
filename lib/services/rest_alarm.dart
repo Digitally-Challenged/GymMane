@@ -212,8 +212,13 @@ class RestAlarm {
   }
 
   Future<void> fireNow() async {
-    await cancel();
     final visible = WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed;
+    final custom = customSoundPath?.isNotEmpty ?? false;
+    if (_ready && !visible && !custom && Platform.isAndroid) {
+      _generation++;
+      return;
+    }
+    await cancel();
 
     if (_ready && !visible) {
       try {
