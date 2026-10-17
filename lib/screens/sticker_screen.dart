@@ -572,7 +572,7 @@ class _Sticker extends StatelessWidget {
     final start = fit.weekStartDate;
     final trained = <int>{};
     for (final s in fit.sessions) {
-      final d = DateTime(s.date.year, s.date.month, s.date.day).difference(start).inDays;
+      final d = DateTime(s.day.year, s.day.month, s.day.day).difference(start).inDays;
       if (d >= 0 && d < 7) trained.add(d);
     }
     final now = DateTime.now();
@@ -671,7 +671,7 @@ class _Sticker extends StatelessWidget {
             _mark(size: 11),
             if (showDate) ...[
               const SizedBox(width: 10),
-              Flexible(child: Text(t.longDate(session.date), maxLines: 1, overflow: TextOverflow.ellipsis,
+              Flexible(child: Text(t.longDate(session.day), maxLines: 1, overflow: TextOverflow.ellipsis,
                   style: _s(11, FontWeight.w600, alpha: 0.7))),
             ],
           ]),

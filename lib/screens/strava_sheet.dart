@@ -42,9 +42,9 @@ class _StravaSheetState extends State<_StravaSheet> {
     super.initState();
     final list = [...fit.sessions]..sort((a, b) => b.date.compareTo(a.date));
     for (final s in list) {
-      (_byDay[_key(s.date)] ??= []).add(s);
+      (_byDay[_key(s.day)] ??= []).add(s);
     }
-    _day = list.isEmpty ? null : _key(list.first.date);
+    _day = list.isEmpty ? null : _key(list.first.day);
     final base = _day ?? DateTime.now();
     _month = DateTime(base.year, base.month);
   }
@@ -199,7 +199,7 @@ class _StravaSheetState extends State<_StravaSheet> {
         child: Row(children: [
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(t.longDate(s.date),
+              Text(t.longDate(s.day),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTheme.f(14.5, weight: FontWeight.w700, color: gc.text)),

@@ -110,6 +110,7 @@ class LoggedSession {
   final String? routineId;
   String? name;
 
+  DateTime get day => date.subtract(Duration(seconds: durationSec));
   double get volume => exercises.fold(0.0, (s, e) => s + e.volume);
   int get setCount => exercises.fold(0, (s, e) => s + e.workingSets.length);
 
