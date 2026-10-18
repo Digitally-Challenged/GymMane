@@ -23,7 +23,7 @@ void main() {
   ) async {
     final day = DateTime(2026, 10, 12);
     fit.sessions.add(
-      LoggedSession(day, 1800, [
+      LoggedSession(DateTime(2026, 10, 12, 18), 1800, [
         LoggedExercise('plank', 'Plank', 'abdomen', [
           LoggedSet(0, 0, sec: 45),
           LoggedSet(0, 0, sec: 70),
