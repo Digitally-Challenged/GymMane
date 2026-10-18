@@ -55,6 +55,22 @@ class ProgressScreen extends StatelessWidget {
                   child: Text(t.progressTitle,
                       style: AppTheme.f(27, weight: FontWeight.w800, color: gc.text)),
                 ),
+                if (fit.sessions.isNotEmpty) ...[
+                  Semantics(
+                    button: true,
+                    label: sentenceCase(t.historyTitle),
+                    child: GestureDetector(
+                      onTap: fit.goHistory,
+                      child: Container(
+                        width: 38,
+                        height: 38,
+                        decoration: BoxDecoration(color: gc.bgRaised, shape: BoxShape.circle),
+                        child: Icon(PhosphorIconsRegular.clockCounterClockwise, size: 17, color: gc.text),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
                 Semantics(
                   button: true,
                   label: t.share,
@@ -260,12 +276,20 @@ class ProgressScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          Heatmap(
-            levels: fit.heatmapWeeks,
-            firstDay: fit.heatmapWeekDate(0),
-            labels: fit.heatmapLabels,
-            onTapDay: (i) => _showDay(context, i),
-          ),
+          if (fit.heatmapYear)
+            HeatmapYear(
+              levels: fit.heatmapShown,
+              firstDay: fit.heatmapShownDate(0),
+              weekdays: fit.heatmapLabels,
+              onTapDay: (i) => _showDay(context, i),
+            )
+          else
+            Heatmap(
+              levels: fit.heatmapWeeks,
+              firstDay: fit.heatmapWeekDate(0),
+              labels: fit.heatmapLabels,
+              onTapDay: (i) => _showDay(context, i),
+            ),
           const SizedBox(height: 14),
           Row(children: [
             Icon(PhosphorIconsFill.fire, size: 14, color: gc.accent),
@@ -493,14 +517,23 @@ class ProgressScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 11),
                 Expanded(
-                  child: Text(t.timeline,
-                      style: AppTheme.d(14, weight: FontWeight.w600, color: gc.text, letterSpacing: 1)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(t.timeline,
+                          style: AppTheme.d(14, weight: FontWeight.w600, color: gc.text, letterSpacing: 1)),
+                      if (last != null && left != null) ...[
+                        const SizedBox(height: 3),
+                        Text(fit.photoDue ? t.photoDueNow : t.photoNextIn(left),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTheme.s(11.5,
+                                weight: FontWeight.w600,
+                                color: fit.photoDue ? gc.accent : gc.textTertiary)),
+                      ],
+                    ],
+                  ),
                 ),
-                if (last != null && left != null)
-                  Text(fit.photoDue ? t.photoDueNow : t.photoNextIn(left),
-                      style: AppTheme.s(11.5,
-                          weight: FontWeight.w600,
-                          color: fit.photoDue ? gc.accent : gc.textTertiary)),
                 const SizedBox(width: 8),
                 Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
               ],
@@ -560,11 +593,15 @@ class ProgressScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: pair == null
-                        ? Text(t.compareNeedTwo,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTheme.s(11, weight: FontWeight.w500, color: gc.textTertiary))
+                        ? Column(mainAxisSize: MainAxisSize.min, children: [
+                            Text(t.compareNeedTwo,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTheme.s(11, weight: FontWeight.w500, color: gc.textTertiary)),
+                            const SizedBox(height: 4),
+                            _hideShotsBtn(gc),
+                          ])
                         : _hideShotsBtn(gc),
                   ),
                   SizedBox(
@@ -653,6 +690,9 @@ class ProgressScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: gc.bgRaised2,
           borderRadius: BorderRadius.circular(12),
+        ),
+        foregroundDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: gc.border),
         ),
         clipBehavior: Clip.antiAlias,
@@ -664,12 +704,22 @@ class ProgressScreen extends StatelessWidget {
                 curve: Curves.easeOutCubic,
                 builder: (_, v, _) => Stack(
                   fit: StackFit.expand,
+                  clipBehavior: Clip.none,
                   children: [
-                    ImageFiltered(
-                      imageFilter: ui.ImageFilter.blur(sigmaX: 14 * v, sigmaY: 14 * v, tileMode: TileMode.clamp),
-                      child: Image.file(File(path), fit: BoxFit.cover, gaplessPlayback: true,
-                          errorBuilder: (_, _, _) =>
-                              Icon(PhosphorIconsRegular.imageSquare, size: 16, color: gc.textTertiary)),
+                    Positioned.fill(
+                      left: -28 * v,
+                      top: -28 * v,
+                      right: -28 * v,
+                      bottom: -28 * v,
+                      child: ImageFiltered(
+                        imageFilter: ui.ImageFilter.blur(sigmaX: 14 * v, sigmaY: 14 * v, tileMode: TileMode.mirror),
+                        child: Transform.scale(
+                          scale: 1 + 0.8 * v,
+                          child: Image.file(File(path), fit: BoxFit.cover, gaplessPlayback: true,
+                              errorBuilder: (_, _, _) =>
+                                  Icon(PhosphorIconsRegular.imageSquare, size: 16, color: gc.textTertiary)),
+                        ),
+                      ),
                     ),
                     Opacity(
                       opacity: v,
@@ -743,7 +793,7 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  void _showDay(BuildContext context, int index) => showDaySheet(context, fit.heatmapWeekDate(index));
+  void _showDay(BuildContext context, int index) => showDaySheet(context, fit.heatmapShownDate(index));
 
   void _logBodyweight(BuildContext context) => showLogBodyweightSheet(context);
 }
@@ -2089,6 +2139,33 @@ void showEditLoggedSheet(BuildContext context, LoggedSession s, LoggedExercise e
 
 Widget _editSetRow(GymColors gc, LoggedSession s, LoggedExercise e, int i, bool repsOnly) {
   final set = e.sets[i];
+  final distance = fit.loggedDistance(e);
+  final timed = !distance && fit.loggedTimed(e);
+  Widget cell(String label, String value, VoidCallback onDec, VoidCallback onInc, {double minWidth = 30}) => Expanded(
+        child: Column(
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(label,
+                  maxLines: 1,
+                  style: AppTheme.s(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 1)),
+            ),
+            const SizedBox(height: 2),
+            StepperControl(
+              value: value,
+              onDec: onDec,
+              onInc: onInc,
+              minWidth: minWidth,
+              btnSize: 26,
+              gap: 8,
+              fontSize: 14,
+            ),
+          ],
+        ),
+      );
+  final time = cell(t.timeCol, durationLabel(set.sec ?? 0), () => fit.bumpLoggedSec(e, i, -1),
+      () => fit.bumpLoggedSec(e, i, 1),
+      minWidth: 40);
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
     decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(14)),
@@ -2098,44 +2175,21 @@ Widget _editSetRow(GymColors gc, LoggedSession s, LoggedExercise e, int i, bool 
           width: 22,
           child: Text('${i + 1}', style: AppTheme.d(15, weight: FontWeight.w700, color: gc.text)),
         ),
-        Expanded(
-          child: Column(
-            children: [
-              Text(t.repsCol,
-                  style: AppTheme.s(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 1)),
-              const SizedBox(height: 2),
-              StepperControl(
-                value: '${set.reps}',
-                onDec: () => fit.bumpLoggedReps(e, i, -1),
-                onInc: () => fit.bumpLoggedReps(e, i, 1),
-                minWidth: 30,
-                btnSize: 26,
-                gap: 8,
-                fontSize: 14,
-              ),
-            ],
-          ),
-        ),
-        if (!repsOnly)
-          Expanded(
-            child: Column(
-              children: [
-                Text(t.weightCol(fit.units.toUpperCase()),
-                    style:
-                        AppTheme.s(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 1)),
-                const SizedBox(height: 2),
-                StepperControl(
-                  value: fit.weightValue(set.weight),
-                  onDec: () => fit.bumpLoggedWeight(e, i, -1),
-                  onInc: () => fit.bumpLoggedWeight(e, i, 1),
-                  minWidth: 34,
-                  btnSize: 26,
-                  gap: 8,
-                  fontSize: 14,
-                ),
-              ],
-            ),
-          ),
+        if (distance) ...[
+          cell(t.distanceCol(fit.distanceUnit).replaceAll(RegExp(r'\s*\(.*\)'), ''), fit.distanceValue(set.km ?? 0),
+              () => fit.bumpLoggedKm(e, i, -1), () => fit.bumpLoggedKm(e, i, 1),
+              minWidth: 36),
+          time,
+        ] else ...[
+          if (timed)
+            time
+          else
+            cell(t.repsCol, '${set.reps}', () => fit.bumpLoggedReps(e, i, -1), () => fit.bumpLoggedReps(e, i, 1)),
+          if (!repsOnly && (!timed || set.weight > 0))
+            cell(t.weightCol(fit.units.toUpperCase()), fit.weightValue(set.weight), () => fit.bumpLoggedWeight(e, i, -1),
+                () => fit.bumpLoggedWeight(e, i, 1),
+                minWidth: 34),
+        ],
         Semantics(
           button: true,
           label: t.removeSet,

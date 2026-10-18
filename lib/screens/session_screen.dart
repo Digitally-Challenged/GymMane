@@ -23,6 +23,7 @@ import '../widgets/ruler_picker.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/timer_panel.dart';
 import '../widgets/ui_kit.dart';
+import '../widgets/workout_notes.dart';
 import 'exercises_screen.dart';
 import 'tool_detail_screen.dart';
 import 'share_sheet.dart';
@@ -172,7 +173,7 @@ class SessionScreen extends StatelessWidget {
               label: t.addNote,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => fit.openNoteEditor(exerciseId: ex?.id ?? ''),
+                onTap: () => ex == null ? fit.openNoteEditor() : showWorkoutNoteEditor(context, ex.id),
                 child: Container(
                   width: 46,
                   height: 46,
@@ -387,6 +388,11 @@ class SessionScreen extends StatelessWidget {
               ),
             ]),
           ),
+          if (fit.workoutNotesFor(ex.id).isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+              child: _guard(locked, WorkoutNoteStrip(exerciseId: ex.id, onDark: true)),
+            ),
           const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
@@ -481,7 +487,7 @@ class SessionScreen extends StatelessWidget {
                   }),
                 OptionItem(t.addNote, icon: PhosphorIconsRegular.notePencil, onTap: () {
                   Navigator.pop(sheet);
-                  fit.openNoteEditor(exerciseId: ex.id);
+                  showWorkoutNoteEditor(context, ex.id);
                 }),
                 if (i > 0)
                   OptionItem(t.moveUp, icon: PhosphorIconsRegular.arrowUp, onTap: () {
@@ -809,6 +815,10 @@ class SessionScreen extends StatelessWidget {
             ),
           ],
         ]),
+        if (ex != null && fit.workoutNotesFor(ex.id).isNotEmpty) ...[
+          const SizedBox(height: 12),
+          WorkoutNoteStrip(exerciseId: ex.id, onDark: true),
+        ],
         if (ex != null && fit.lastSummaryFor(ex.id) != null) ...[
           const SizedBox(height: 10),
           GestureDetector(
@@ -860,17 +870,7 @@ class SessionScreen extends StatelessWidget {
             Row(children: [
               for (var i = 0; i < n; i++) ...[
                 if (i > 0) SizedBox(width: n > 12 ? 2 : 4),
-                Expanded(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 320),
-                    curve: Curves.easeOutCubic,
-                    height: i == s.currentIndex ? 6 : 4,
-                    decoration: BoxDecoration(
-                      color: _stripColor(gc, s, i),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
+                Expanded(child: _stripSegment(gc, s, i)),
               ],
             ]),
           ],
@@ -879,13 +879,31 @@ class SessionScreen extends StatelessWidget {
     );
   }
 
-  Color _stripColor(GymColors gc, WorkoutSession s, int i) {
+  Widget _stripSegment(GymColors gc, WorkoutSession s, int i) {
     final sets = s.exercises[i].sets;
-    final done = sets.isNotEmpty && sets.every((st) => st.done);
-    if (i == s.currentIndex) return done ? gc.sage : gc.ember;
-    if (done) return gc.sage;
-    if (sets.any((st) => st.done)) return Color.lerp(gc.bgRaised2, gc.sage, 0.45)!;
-    return gc.bgRaised2;
+    final count = sets.where((st) => st.done).length;
+    final part = sets.isEmpty ? 0.0 : count / sets.length;
+    final current = i == s.currentIndex;
+    final fill = gc.sage;
+    final track = current || count > 0 ? Color.lerp(gc.bgRaised2, gc.sage, 0.3)! : gc.bgRaised2;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+      height: current ? 6 : 4,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(color: track, borderRadius: BorderRadius.circular(3)),
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(end: part),
+        duration: const Duration(milliseconds: 380),
+        curve: Curves.easeOutCubic,
+        builder: (_, v, _) => FractionallySizedBox(
+          alignment: AlignmentDirectional.centerStart,
+          widthFactor: v.clamp(0.0, 1.0),
+          heightFactor: 1,
+          child: ColoredBox(color: fill),
+        ),
+      ),
+    );
   }
 
   Widget _swipeToDelete(BuildContext context, GymColors gc, int exIdx, int j, SessionSet st,
@@ -951,7 +969,8 @@ class SessionScreen extends StatelessWidget {
               );
               if (target.up) return Text.rich(main);
               final holdStyle = AppTheme.f(11.5, weight: FontWeight.w400, color: gc.textTertiary);
-              final both = TextSpan(children: [main, TextSpan(text: ' · ${t.nextHold}', style: holdStyle)]);
+              final why = target.deload ? t.nextDeload(fit.stallStreak(id)) : t.nextHold;
+              final both = TextSpan(children: [main, TextSpan(text: ' · $why', style: holdStyle)]);
               final painter = TextPainter(
                 text: both,
                 textDirection: Directionality.of(context),
@@ -966,7 +985,7 @@ class SessionScreen extends StatelessWidget {
                 children: [
                   Text.rich(main),
                   const SizedBox(height: 2),
-                  Text(t.nextHold, style: holdStyle),
+                  Text(why, style: holdStyle),
                 ],
               );
             }),
