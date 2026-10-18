@@ -5,6 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import '../catalog/program_templates.dart';
 import '../l10n/l10n.dart';
 import '../models/workout.dart';
+import '../services/plan_pdf.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -158,6 +159,13 @@ class RoutinesScreen extends StatelessWidget {
                   ...planned,
                   ...fit.routines.where((r) => !planned.contains(r)),
                 ], title: t.weeklyPlan);
+              }),
+              _shareOption(gc, PhosphorIconsRegular.filePdf, t.pdfPlan, t.pdfPlanHint, () {
+                Navigator.pop(sheet);
+                sharePlanPdf(planned.isEmpty ? fit.routines : [
+                  ...planned,
+                  ...fit.routines.where((r) => !planned.contains(r)),
+                ], week: true);
               }),
               const SizedBox(height: 14),
               Text(t.shareRoutine.toUpperCase(),
@@ -944,6 +952,11 @@ void showRoutineMenu(BuildContext context, Routine r) {
               Navigator.pop(sheet);
               sharePlan([r]);
             }),
+            if (r.exerciseIds.isNotEmpty)
+              OptionItem(t.pdfExport, icon: PhosphorIconsRegular.filePdf, onTap: () {
+                Navigator.pop(sheet);
+                sharePlanPdf([r]);
+              }),
             OptionItem(t.duplicateRoutine, icon: PhosphorIconsRegular.copy, onTap: () {
               Navigator.pop(sheet);
               fit.duplicateRoutine(r.id);
