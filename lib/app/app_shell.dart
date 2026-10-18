@@ -11,6 +11,7 @@ import '../screens/ai_plan_screen.dart';
 import '../screens/compare_screen.dart';
 import '../screens/exercise_detail_screen.dart';
 import '../screens/exercises_screen.dart';
+import '../screens/history_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/measures_screen.dart';
 import '../screens/note_edit_screen.dart';
@@ -298,7 +299,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
                                   (parked ? _pillSpace : 0)),
                           child: NotificationListener<ScrollNotification>(
                             onNotification: _onScroll,
-                            child: _animatedScreen(),
+                            child: RepaintBoundary(child: _animatedScreen()),
                           ),
                         ),
                       ),
@@ -328,7 +329,9 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
                     left: 18,
                     right: 18,
                     bottom: 18 + MediaQuery.viewPaddingOf(context).bottom,
-                    child: Directionality(textDirection: TextDirection.ltr, child: _NavBar()),
+                    child: RepaintBoundary(
+                      child: Directionality(textDirection: TextDirection.ltr, child: _NavBar()),
+                    ),
                   ),
                   Positioned(
                     left: 18,
@@ -407,7 +410,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
             final shift = sideways
                 ? Offset((incoming ? 26 : -18) * dir * away, 0)
                 : Offset(0, incoming ? 22 * dir * away : -8 * dir * away);
-            final blur = 10 * away;
+            final blur = incoming ? 6 * away : 0.0;
             return Opacity(
               opacity: v,
               child: ImageFiltered(
@@ -415,7 +418,10 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
                 imageFilter: ImageFilter.blur(sigmaX: blur, sigmaY: blur, tileMode: TileMode.decal),
                 child: Transform.translate(
                   offset: shift,
-                  child: Transform.scale(scale: incoming ? 1 + 0.03 * away : 1 - 0.04 * away, child: inner),
+                  child: Transform.scale(
+                    scale: incoming ? 1 + 0.03 * away : 1 - 0.04 * away,
+                    child: RepaintBoundary(child: inner),
+                  ),
                 ),
               ),
             );
@@ -474,6 +480,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
         return CompareScreen();
       case 'notes':
         return NotesScreen();
+      case 'history':
+        return HistoryScreen();
       case 'nutrition':
         return NutritionScreen();
       case 'note-edit':
