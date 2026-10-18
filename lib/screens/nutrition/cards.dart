@@ -794,29 +794,73 @@ class _ShakeTile extends StatelessWidget {
 }
 
 Future<void> showShakePicker(BuildContext context) => _sheet<void>(context, (context) {
-      final foods = fit.foodsByUse;
+      final gc = context.gc;
+      final shakes = fit.shakeFoodItems;
+      final others = [for (final f in fit.foodsByUse) if (!fit.isShakeFood(f.id)) f];
       return _sheetFrame(context, [
         SheetTitle(t.shakePick, subtitle: t.shakePickHint),
         const SizedBox(height: 16),
-        if (foods.isNotEmpty) ...[
+        if (shakes.isNotEmpty)
           OptionGroup([
-            for (final f in foods)
+            for (final f in shakes)
               OptionItem(
                 f.name,
                 leading: FoodSticker(photo: f.photo, name: f.name, size: 32, tilt: false),
                 detail: '${_g(f.macros.protein)} g',
                 selected: f.id == fit.shakeFoodId,
+                trailing: Semantics(
+                  button: true,
+                  label: t.shakeUntag,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      fit.setShakeTag(f.id, false);
+                    },
+                    child: SizedBox(
+                      width: 34,
+                      height: 34,
+                      child: Icon(PhosphorIconsBold.x, size: 14, color: gc.textTertiary),
+                    ),
+                  ),
+                ),
                 onTap: () {
                   fit.setShakeFood(f.id);
                   Navigator.of(context).pop();
                 },
               ),
-          ]),
-          const SizedBox(height: 12),
+          ])
+        else
+          Container(
+            padding: const EdgeInsets.fromLTRB(14, 14, 16, 14),
+            decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(18)),
+            child: Row(children: [
+              Image.asset('assets/img/peek-shake.webp', width: 34, height: 40, fit: BoxFit.contain),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(t.shakeNone, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary, height: 1.35)),
+              ),
+            ]),
+          ),
+        if (others.isNotEmpty) ...[
+          const SizedBox(height: 18),
+          Text(t.shakeMarkLabel,
+              style: AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.1)),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 44,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: others.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              itemBuilder: (_, i) => _ShakeChip(others[i]),
+            ),
+          ),
         ],
+        const SizedBox(height: 16),
         GhostButton(
-          label: t.newFood,
-          icon: PhosphorIconsBold.camera,
+          label: t.shakeNew,
+          icon: PhosphorIconsBold.plus,
           onTap: () {
             Navigator.of(context).pop();
             showFoodEditor(context, asShake: true);
@@ -824,6 +868,45 @@ Future<void> showShakePicker(BuildContext context) => _sheet<void>(context, (con
         ),
       ]);
     });
+
+class _ShakeChip extends StatelessWidget {
+  const _ShakeChip(this.food);
+
+  final FoodItem food;
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    return Pressable(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        fit.setShakeTag(food.id, true);
+      },
+      scale: 0.95,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
+        decoration: BoxDecoration(
+          color: gc.bgRaised2,
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(color: gc.border),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          FoodSticker(photo: food.photo, name: food.name, size: 30, tilt: false, shadow: false),
+          const SizedBox(width: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 140),
+            child: Text(food.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.f(13, weight: FontWeight.w700, color: gc.text)),
+          ),
+          const SizedBox(width: 6),
+          Icon(PhosphorIconsBold.plus, size: 13, color: gc.protein),
+        ]),
+      ),
+    );
+  }
+}
 
 const _suppPresets = [
   'asset:assets/img/peek-protein.webp',

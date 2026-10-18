@@ -276,6 +276,7 @@ class OptionItem {
     this.detail,
     this.selected = false,
     this.danger = false,
+    this.trailing,
   });
 
   final String label;
@@ -285,6 +286,7 @@ class OptionItem {
   final String? detail;
   final bool selected;
   final bool danger;
+  final Widget? trailing;
 }
 
 class OptionGroup extends StatelessWidget {
@@ -367,6 +369,10 @@ class _OptionRow extends StatelessWidget {
               if (o.selected) ...[
                 const SizedBox(width: 10),
                 Icon(PhosphorIconsFill.checkCircle, size: 18, color: gc.ember),
+              ],
+              if (o.trailing != null) ...[
+                const SizedBox(width: 6),
+                o.trailing!,
               ],
             ]),
           ),

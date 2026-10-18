@@ -1667,6 +1667,7 @@ class _FoodEditorState extends State<_FoodEditor> with _StickerDrafts {
   late final _su = TextEditingController(text: _seed(_base?.macros.sugar ?? 0));
   late final _na = TextEditingController(text: _seed(_base?.macros.sodium ?? 0));
   late bool _extras = _base?.macros.hasExtras ?? false;
+  late bool _shake = widget.asShake || (widget.food != null && fit.isShakeFood(widget.food!.id));
   late final _p = TextEditingController(text: _seed(_base?.macros.protein ?? 0));
   late final _c = TextEditingController(text: _seed(_base?.macros.carbs ?? 0));
   late final _f = TextEditingController(text: _seed(_base?.macros.fat ?? 0));
@@ -1705,6 +1706,7 @@ class _FoodEditorState extends State<_FoodEditor> with _StickerDrafts {
       cookedYield: _base?.cookedYield ?? 0,
       macros: _keepDetail(_macrosOf(_kcal, _p, _c, _f, fiber: _fi, sugar: _su, sodium: _na)),
     );
+    fit.setShakeTag(saved.id, _shake);
     if (widget.asShake) fit.setShakeFood(saved.id);
     _dropDrafts(keep: _photo);
     _photo = widget.food?.photo ?? '';
@@ -1836,6 +1838,8 @@ class _FoodEditorState extends State<_FoodEditor> with _StickerDrafts {
             child: Text(t.moreNutrients, style: AppTheme.f(12.5, weight: FontWeight.w700, color: gc.accent)),
           ),
         ),
+      const SizedBox(height: 10),
+      _ShakeToggle(on: _shake, onTap: () => setState(() => _shake = !_shake)),
       const SizedBox(height: 18),
       PrimaryButton(label: t.save, onTap: _working ? () {} : _save),
       if (widget.food != null) ...[
@@ -1848,5 +1852,50 @@ class _FoodEditorState extends State<_FoodEditor> with _StickerDrafts {
         ),
       ],
     ]);
+  }
+}
+
+class _ShakeToggle extends StatelessWidget {
+  const _ShakeToggle({required this.on, required this.onTap});
+
+  final bool on;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    return Semantics(
+      toggled: on,
+      button: true,
+      child: Pressable(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        scale: 0.98,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.fromLTRB(12, 10, 14, 10),
+          decoration: BoxDecoration(
+            color: on ? gc.protein.withValues(alpha: 0.1) : gc.bgRaised2,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: on ? gc.protein.withValues(alpha: 0.45) : gc.border),
+          ),
+          child: Row(children: [
+            Image.asset('assets/img/peek-shake.webp', width: 30, height: 36, fit: BoxFit.contain),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(t.shakeTag, style: AppTheme.f(14, weight: FontWeight.w700, color: gc.text)),
+                const SizedBox(height: 2),
+                Text(t.shakeTagHint, style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary)),
+              ]),
+            ),
+            const SizedBox(width: 10),
+            TinySwitch(on: on),
+          ]),
+        ),
+      ),
+    );
   }
 }

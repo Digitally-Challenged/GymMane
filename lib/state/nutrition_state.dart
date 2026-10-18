@@ -23,6 +23,7 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
   double weightGoalKg = 0;
   int? supplementReminderMin;
   String shakeFoodId = '';
+  final List<String> shakeFoods = [];
   DateTime nutritionDay = _dayKey(DateTime.now());
   int _foodSeq = 0;
 
@@ -1073,6 +1074,27 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
 
   void setShakeFood(String id) {
     shakeFoodId = foodById(id) == null ? '' : id;
+    if (shakeFoodId.isNotEmpty && !shakeFoods.contains(id)) shakeFoods.add(id);
+    _persist();
+    notifyListeners();
+  }
+
+  bool isShakeFood(String id) => shakeFoods.contains(id);
+
+  List<FoodItem> get shakeFoodItems => [for (final f in foodsByUse) if (shakeFoods.contains(f.id)) f];
+
+  void setShakeTag(String id, bool on) {
+    if (on) {
+      if (foodById(id) == null || shakeFoods.contains(id)) return;
+      shakeFoods.add(id);
+      if (shakeFood == null) shakeFoodId = id;
+    } else {
+      if (!shakeFoods.remove(id)) return;
+      if (shakeFoodId == id) {
+        final rest = shakeFoodItems;
+        shakeFoodId = rest.isEmpty ? '' : rest.first.id;
+      }
+    }
     _persist();
     notifyListeners();
   }
@@ -1081,6 +1103,7 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
     final i = foods.indexWhere((f) => f.id == id);
     if (i < 0) return;
     if (shakeFoodId == id) shakeFoodId = '';
+    shakeFoods.remove(id);
     favoriteFoods.remove(id);
     final gone = foods.removeAt(i);
     if (gone.photo.isNotEmpty && !isAssetPhoto(gone.photo)) MediaStore.delete(gone.photo);
@@ -1285,6 +1308,7 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
         'trkKnown': [for (final t in Tracker.values) t.name],
         'trackers': [for (final t in Tracker.values) if (trackers.contains(t)) t.name],
         if (shakeFoodId.isNotEmpty) 'shake': shakeFoodId,
+        'shakes': shakeFoods,
       };
 
   void loadNutrition(Map<String, dynamic>? j, {Map<String, String>? restored}) {
@@ -1373,6 +1397,13 @@ mixin NutritionState on FitCore, ToolsState, StatsState {
     }
     final shake = j?['shake'] as String? ?? '';
     shakeFoodId = foods.any((f) => f.id == shake) ? shake : '';
+    final tagged = j?['shakes'];
+    shakeFoods
+      ..clear()
+      ..addAll(tagged is List
+          ? {...tagged.whereType<String>().where((id) => foods.any((f) => f.id == id))}
+          : [if (shakeFoodId.isNotEmpty) shakeFoodId]);
+    if (!shakeFoods.contains(shakeFoodId)) shakeFoodId = shakeFoods.isEmpty ? '' : shakeFoods.first;
     nutritionDay = _dayKey(DateTime.now());
     syncSupplementReminder();
   }
