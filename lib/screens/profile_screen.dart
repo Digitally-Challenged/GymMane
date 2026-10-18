@@ -7,6 +7,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../l10n/l10n.dart';
 import '../models/profile.dart';
+import '../models/workout.dart';
 import '../services/media_store.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
@@ -16,6 +17,7 @@ import '../widgets/medal_shelf.dart';
 import '../widgets/photo_source_sheet.dart';
 import '../widgets/profile_avatar.dart';
 import '../widgets/ui_kit.dart';
+import 'history_screen.dart';
 import 'settings_screen.dart';
 import 'share_sheet.dart';
 
@@ -128,9 +130,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _photoCards(gc),
                   ]),
                 ),
+                if (fit.sessions.isNotEmpty) ...[
+                  const SizedBox(height: 30),
+                  Rise(
+                    index: 3,
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      _heading(gc, t.historyTitle, count: '${fit.sessions.length}', onMore: fit.goHistory),
+                      const SizedBox(height: 16),
+                      for (final s in _latest) ...[
+                        WorkoutHistoryCard(session: s),
+                        const SizedBox(height: 10),
+                      ],
+                    ]),
+                  ),
+                ],
                 const SizedBox(height: 30),
                 Rise(
-                  index: 3,
+                  index: 4,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                     _heading(gc, t.yearTitle),
                     const SizedBox(height: 16),
@@ -145,6 +161,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  List<LoggedSession> get _latest => ([...fit.sessions]..sort((a, b) => b.day.compareTo(a.day))).take(2).toList();
 
   Widget _year(GymColors gc) {
     final months = fit.sessionsByMonth;
@@ -178,7 +196,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 for (var m = 1; m <= 12; m++) ...[
                   if (m > 1) const SizedBox(width: 5),
                   Expanded(
-                    child: TweenAnimationBuilder<double>(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: months[m - 1] > 0 ? () => fit.goHistory(month: DateTime(DateTime.now().year, m)) : null,
+                      child: TweenAnimationBuilder<double>(
                       tween: Tween(begin: 0, end: months[m - 1] / peak),
                       duration: Duration(milliseconds: 650 + m * 35),
                       curve: Curves.easeOutCubic,
@@ -191,6 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
+                    ),
                     ),
                   ),
                 ],
