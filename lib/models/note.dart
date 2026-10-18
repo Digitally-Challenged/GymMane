@@ -9,6 +9,7 @@ class GymNote {
     required this.text,
     this.media = const [],
     required this.createdAt,
+    this.pinned = false,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class GymNote {
   final String text;
   final List<String> media;
   final DateTime createdAt;
+  final bool pinned;
 
   bool get isGeneral => exerciseId.isEmpty;
 
@@ -34,6 +36,7 @@ class GymNote {
     NoteKind? kind,
     String? text,
     List<String>? media,
+    bool? pinned,
   }) =>
       GymNote(
         id: id,
@@ -43,6 +46,7 @@ class GymNote {
         text: text ?? this.text,
         media: media ?? this.media,
         createdAt: createdAt,
+        pinned: pinned ?? this.pinned,
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,6 +57,7 @@ class GymNote {
         't': text,
         if (media.isNotEmpty) 'm': media,
         'c': createdAt.toIso8601String(),
+        if (pinned) 'p': true,
       };
 
   factory GymNote.fromJson(Map<String, dynamic> j) {
@@ -65,6 +70,7 @@ class GymNote {
       text: (j['t'] ?? '') as String,
       media: ((j['m'] as List?) ?? const []).cast<String>(),
       createdAt: created,
+      pinned: j['p'] == true,
     );
   }
 }

@@ -106,6 +106,7 @@ mixin NotesState on FitCore, LibraryState {
     required NoteKind kind,
     required String text,
     List<String> media = const [],
+    bool? pinned,
   }) {
     final body = text.trim();
     if (body.isEmpty) return;
@@ -121,6 +122,7 @@ mixin NotesState on FitCore, LibraryState {
         text: body,
         media: [...media],
         createdAt: DateTime.now(),
+        pinned: (pinned ?? false) && exerciseId.isNotEmpty,
       ));
     } else {
       final old = notes[index];
@@ -133,12 +135,37 @@ mixin NotesState on FitCore, LibraryState {
         kind: kind,
         text: body,
         media: [...media],
+        pinned: exerciseId.isEmpty ? false : pinned,
       );
     }
     noteDay = day;
     noteMonth = DateTime(day.year, day.month);
     _persist();
     notifyListeners();
+  }
+
+  void setNotePinned(String id, bool on) {
+    final index = notes.indexWhere((n) => n.id == id);
+    if (index < 0 || notes[index].pinned == on || notes[index].exerciseId.isEmpty) return;
+    notes[index] = notes[index].copyWith(pinned: on);
+    _persist();
+    notifyListeners();
+  }
+
+  List<GymNote> workoutNotesFor(String exerciseId) {
+    if (exerciseId.isEmpty) return const [];
+    final today = _dayKey(DateTime.now());
+    final mine = notesFor(exerciseId);
+    DateTime? lastDone;
+    for (final s in sessions) {
+      final day = _dayKey(s.day);
+      if (!day.isBefore(today) || !s.exercises.any((e) => e.id == exerciseId)) continue;
+      if (lastDone == null || day.isAfter(lastDone)) lastDone = day;
+    }
+    final since = lastDone ?? today.subtract(const Duration(days: 30));
+    final next = mine.where((n) =>
+        !n.pinned && n.kind == NoteKind.plan && !n.date.isBefore(since));
+    return [...mine.where((n) => n.pinned), ...next.take(1)];
   }
 
   void deleteNote(String id) {

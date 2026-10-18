@@ -418,6 +418,13 @@ class NoteCard extends StatelessWidget {
                   Row(
                     children: [
                       NoteKindBadge(kind: note.kind, compact: true),
+                      if (note.pinned) ...[
+                        const SizedBox(width: 6),
+                        Semantics(
+                          label: t.workoutNoteEvery,
+                          child: Icon(PhosphorIconsFill.pushPin, size: 13, color: gc.accent),
+                        ),
+                      ],
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(

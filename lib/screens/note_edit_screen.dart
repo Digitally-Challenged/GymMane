@@ -31,6 +31,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   late DateTime _date = _note?.date ?? fit.noteDraftDate;
   late String _exerciseId = _note?.exerciseId ?? fit.noteDraftExercise;
   late final List<String> _media = [...?_note?.media];
+  late bool _pinned = _note?.pinned ?? false;
   final List<String> _added = [];
   bool _saved = false;
 
@@ -55,6 +56,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       kind: _kind,
       text: _text.text,
       media: _media,
+      pinned: _pinned,
     );
     fit.closeNoteEditor();
   }
@@ -192,6 +194,17 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                                 ),
                           onTap: _pickExercise,
                         ),
+                        if (exercise != null) ...[
+                          Divider(height: 1, thickness: 1, indent: 16, endIndent: 16, color: gc.border),
+                          _row(
+                            gc,
+                            icon: PhosphorIconsRegular.pushPin,
+                            label: t.notePinWorkout,
+                            value: '',
+                            trailing: TinySwitch(on: _pinned),
+                            onTap: () => setState(() => _pinned = !_pinned),
+                          ),
+                        ],
                       ]),
                     ),
                   ),
