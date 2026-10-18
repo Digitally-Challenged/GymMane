@@ -67,7 +67,7 @@ Future<T?> showAppSheet<T>({
 }) {
   final nav = Navigator.of(context);
   return nav.push(_GlassSheetRoute<T>(
-    builder: builder,
+    builder: enableDrag && isDismissible ? (c) => _PullToClose(child: builder(c)) : builder,
     isScrollControlled: isScrollControlled,
     backgroundColor: backgroundColor,
     shape: shape,
@@ -96,6 +96,59 @@ class _GlassSheetRoute<T> extends ModalBottomSheetRoute<T> with _GlassCount<T> {
 
   @override
   Widget buildModalBarrier() => _BlurBarrier(route: this, animation: animation!, child: super.buildModalBarrier());
+}
+
+class _PullToClose extends StatefulWidget {
+  const _PullToClose({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_PullToClose> createState() => _PullToCloseState();
+}
+
+class _PullToCloseState extends State<_PullToClose> {
+  static const _limit = 72.0;
+  double _pull = 0;
+  bool _closing = false;
+
+  void _set(double v) {
+    if (v == _pull || _closing) return;
+    setState(() => _pull = v);
+  }
+
+  void _close() {
+    if (_closing) return;
+    _closing = true;
+    Navigator.of(context).maybePop();
+  }
+
+  bool _onScroll(ScrollNotification n) {
+    if (n.metrics.axis != Axis.vertical) return false;
+    if (n is OverscrollNotification && n.dragDetails != null && n.overscroll < 0 && n.metrics.extentBefore == 0) {
+      final next = _pull - n.overscroll;
+      if (next > _limit) {
+        _close();
+      } else {
+        _set(next);
+      }
+    } else if (n is ScrollUpdateNotification && n.dragDetails != null) {
+      if (n.metrics.pixels < -_limit) {
+        _close();
+      } else if ((n.scrollDelta ?? 0) > 0) {
+        _set(0);
+      }
+    } else if (n is ScrollEndNotification) {
+      _set(0);
+    }
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) => NotificationListener<ScrollNotification>(
+        onNotification: _onScroll,
+        child: Transform.translate(offset: Offset(0, _pull * 0.5), child: widget.child),
+      );
 }
 
 Future<T?> showAppDialog<T>({required BuildContext context, required WidgetBuilder builder}) {
