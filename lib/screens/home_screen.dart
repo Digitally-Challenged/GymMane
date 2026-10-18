@@ -89,12 +89,19 @@ class HomeScreen extends StatelessWidget {
             SoftCard(
               radius: 22,
               padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
-              child: Heatmap(
-                levels: fit.heatmapWeeks,
-                firstDay: fit.heatmapWeekDate(0),
-                labels: fit.heatmapLabels,
-                onTapDay: (i) => showDaySheet(context, fit.heatmapWeekDate(i)),
-              ),
+              child: fit.heatmapYear
+                  ? HeatmapYear(
+                      levels: fit.heatmapShown,
+                      firstDay: fit.heatmapShownDate(0),
+                      weekdays: fit.heatmapLabels,
+                      onTapDay: (i) => showDaySheet(context, fit.heatmapShownDate(i)),
+                    )
+                  : Heatmap(
+                      levels: fit.heatmapWeeks,
+                      firstDay: fit.heatmapWeekDate(0),
+                      labels: fit.heatmapLabels,
+                      onTapDay: (i) => showDaySheet(context, fit.heatmapWeekDate(i)),
+                    ),
             ),
             if (fit.showRecommended && recommended.isNotEmpty) ...[
               const SizedBox(height: 30),
