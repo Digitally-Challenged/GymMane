@@ -107,6 +107,19 @@ class SettingsScreen extends StatelessWidget {
                 () => '${fit.weekStartDay}',
                 (v) => fit.setWeekStart(int.parse(v)),
               ),
+              _choiceRow(
+                context,
+                gc,
+                PhosphorIconsRegular.calendarDots,
+                t.heatRangeSetting,
+                [
+                  ('weeks', t.heatRangeWeeks, PhosphorIconsRegular.squaresFour),
+                  ('year', t.heatRangeYear, PhosphorIconsRegular.calendarDots),
+                ],
+                () => fit.heatmapRange,
+                fit.setHeatmapRange,
+                hint: t.heatRangeHint,
+              ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: fit.toggleHeatmapLabels,
@@ -988,8 +1001,10 @@ class SettingsScreen extends StatelessWidget {
     final gc = context.gc;
     var minutes = fit.trainReminderMin ?? 19 * 60;
     var smart = fit.smartReminder;
+    var again = fit.trainAgainMin;
     showAppSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheet) => StatefulBuilder(
         builder: (sheet, setSheet) => Container(
@@ -1085,11 +1100,30 @@ class SettingsScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary, height: 1.4)),
               ],
+              const SizedBox(height: 20),
+              Container(height: 1, color: gc.border),
+              const SizedBox(height: 16),
+              Text(t.trainAgainLabel,
+                  textAlign: TextAlign.center,
+                  style: AppTheme.f(13, weight: FontWeight.w700, color: gc.text)),
+              const SizedBox(height: 10),
+              Center(
+                child: SegToggle([
+                  for (final m in SettingsState.trainAgainOptions)
+                    SegOption(m == 0 ? t.trainAgainOff : t.trainAgainAfter(m ~/ 60), again == m,
+                        () => setSheet(() => again = m)),
+                ]),
+              ),
+              const SizedBox(height: 8),
+              Text(t.trainAgainHint,
+                  textAlign: TextAlign.center,
+                  style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary, height: 1.4)),
               const SizedBox(height: 18),
               PrimaryButton(
                 label: t.save,
                 onTap: () {
                   fit.setSmartReminder(smart);
+                  fit.setTrainAgain(again);
                   fit.setTrainReminder(minutes);
                   fit.askAlarmPermission(force: true);
                   Navigator.of(sheet).pop();

@@ -20,6 +20,7 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
   String demoSize = 'large';
   String demoLoop = 'always';
   String sessionLayout = 'cards';
+  String heatmapRange = 'weeks';
   String alarmStyle = 'quiet';
   int restSeconds = 90;
   String? alarmSound;
@@ -44,6 +45,7 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
   bool logRpe = false;
   String effortScale = 'rpe';
   int? trainReminderMin;
+  int trainAgainMin = 0;
   bool smartReminder = false;
   bool onboarded = false;
   bool alarmAllowed = true;
@@ -86,6 +88,15 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
   }
 
   bool get listLayout => sessionLayout == 'list';
+
+  bool get heatmapYear => heatmapRange == 'year';
+
+  void setHeatmapRange(String range) {
+    if (!const ['weeks', 'year'].contains(range)) return;
+    heatmapRange = range;
+    _persist();
+    notifyListeners();
+  }
 
   void setSessionLayout(String layout) {
     if (!const ['cards', 'list'].contains(layout)) return;
@@ -285,6 +296,16 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   void setTrainReminder(int? minuteOfDay) {
     trainReminderMin = minuteOfDay?.clamp(0, 24 * 60 - 1);
+    _persist();
+    syncTrainReminder();
+    notifyListeners();
+  }
+
+  static const trainAgainOptions = [0, 60, 120, 180];
+
+  void setTrainAgain(int minutes) {
+    if (!trainAgainOptions.contains(minutes)) return;
+    trainAgainMin = minutes;
     _persist();
     syncTrainReminder();
     notifyListeners();
