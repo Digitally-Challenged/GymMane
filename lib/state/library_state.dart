@@ -412,6 +412,36 @@ mixin LibraryState on FitCore {
     notifyListeners();
   }
 
+  static const _assistedByDefault = {'kiJ4Z2K', '7OeHptV', 'PAgTVaK'};
+
+  bool _assistedName(String id) {
+    for (final e in customExercises) {
+      if (e.id == id) {
+        final n = e.name.toLowerCase();
+        return n.contains('assist') || n.contains('asistid');
+      }
+    }
+    return false;
+  }
+
+  bool _assistedDefault(String id) => _assistedByDefault.contains(id) || _assistedName(id);
+
+  bool isAssisted(String id) {
+    if (modeOf(id).isNotEmpty || isRepsOnly(id)) return false;
+    if (assistedOn.contains(id)) return true;
+    if (assistedOff.contains(id)) return false;
+    return _assistedDefault(id);
+  }
+
+  void toggleAssisted(String id) {
+    final on = !isAssisted(id);
+    assistedOn.remove(id);
+    assistedOff.remove(id);
+    if (on != _assistedDefault(id)) (on ? assistedOn : assistedOff).add(id);
+    _persist();
+    notifyListeners();
+  }
+
   void toggleRepsOnly(String id) {
     if (isRepsOnly(id)) {
       repsOnly.remove(id);

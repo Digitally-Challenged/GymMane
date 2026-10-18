@@ -70,6 +70,8 @@ abstract class FitCore extends ChangeNotifier {
   final Set<String> eachSide = {};
 
   final Set<String> eachSideOff = {};
+  final Set<String> assistedOn = {};
+  final Set<String> assistedOff = {};
 
   final Set<String> noSuggest = {};
 

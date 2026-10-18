@@ -315,6 +315,14 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                       () => fit.toggleSuggest(ex.id),
                     ),
                     if (!repsOnly && mode.isEmpty) ...[
+                      _switchRow(
+                        gc,
+                        PhosphorIconsRegular.arrowFatLinesDown,
+                        t.assistedSetting,
+                        t.assistedSettingHint,
+                        fit.isAssisted(ex.id),
+                        () => fit.toggleAssisted(ex.id),
+                      ),
                       _progressRow(gc, ex.id),
                       _switchRow(
                         gc,
@@ -457,7 +465,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(fit.weightLabel(e.topWeight),
+              Text(fit.weightLabel(fit.headlineWeight(e)),
                   style: AppTheme.f(17, weight: FontWeight.w700, color: gc.text)),
               const SizedBox(height: 3),
               Text(t.volumeSuffix(fit.volumeLabel(e.volume)),
@@ -811,8 +819,9 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         ]),
       );
 
-  Widget _bests(GymColors gc, String id, PrKind kind) {
-    final set = kind == PrKind.weight ? fit.bestSet(id) : null;
+  Widget _bests(GymColors gc, String id, PrKind record) {
+    final set = record == PrKind.weight ? fit.bestSet(id) : null;
+    final kind = record == PrKind.weight && fit.isAssisted(id) ? PrKind.reps : record;
     final work = fit.bestWorkout(id, kind);
     if (work == null) return const SizedBox.shrink();
     Widget cell(String label, String value, DateTime date) => Expanded(
@@ -1215,7 +1224,8 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                     style: AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.3)),
                 if (!target.up) ...[
                   const SizedBox(height: 2),
-                  Text(t.nextHold, style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
+                  Text(target.deload ? t.nextDeload(fit.stallStreak(id)) : t.nextHold,
+                      style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
                 ],
               ],
             ),

@@ -265,8 +265,12 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (mode.isNotEmpty) {
       base = _modeOpeners(mode, last);
     } else if (last.isNotEmpty) {
-      final bump = _progressBump(id, last);
-      base = last.map((l) => SessionSet(l.reps, l.weight + bump, false)).toList();
+      if (needsDeload(id)) {
+        base = last.map((l) => SessionSet(l.reps, deloadWeight(id, l.weight), false)).toList();
+      } else {
+        final bump = _progressBump(id, last) * (isAssisted(id) ? -1 : 1);
+        base = last.map((l) => SessionSet(l.reps, math.max(0.0, l.weight + bump), false)).toList();
+      }
     } else {
       final w = isRepsOnly(id) ? 0.0 : 20.0;
       base = [for (var i = 0; i < kDefaultRoutineSets; i++) SessionSet(10, w, false)];
@@ -280,17 +284,50 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     ];
   }
 
-  ({double weightKg, int reps, bool up})? nextTarget(String id) {
+  static const deloadAfter = 3;
+
+  int stallStreak(String id) {
+    final h = exerciseHistory(id);
+    if (h.isEmpty) return 0;
+    final load = headlineWeight(h.first.ex);
+    var n = 0;
+    for (final r in h) {
+      final sets = r.ex.workingSets;
+      if (sets.isEmpty || (headlineWeight(r.ex) - load).abs() > 0.01) break;
+      final target = sets.first.reps;
+      if (target <= 0 || sets.every((s) => s.reps >= target)) break;
+      n++;
+    }
+    return n;
+  }
+
+  bool needsDeload(String id) =>
+      hasProgress(id) && modeOf(id).isEmpty && !isRepsOnly(id) && stallStreak(id) >= deloadAfter;
+
+  double deloadWeight(String id, double from) {
+    final step = progressStep[id] ?? fromDisplayWeight(weightStep);
+    if (isAssisted(id)) return from + step;
+    final grid = weightStep;
+    final shown = toDisplayWeight(from);
+    var next = (shown * 0.9 / grid).round() * grid;
+    if (next >= shown) next = shown - grid;
+    return _round3(fromDisplayWeight(math.max(0.0, next)));
+  }
+
+  ({double weightKg, int reps, bool up, bool deload})? nextTarget(String id) {
     if (modeOf(id).isNotEmpty) return null;
     final last = lastSetsFor(id).where((l) => l.counts).toList();
     if (last.isEmpty) return null;
     final reps = last.first.reps;
     if (reps <= 0) return null;
     final hit = last.every((l) => l.reps >= reps);
-    if (isRepsOnly(id)) return (weightKg: 0, reps: hit ? reps + 1 : reps, up: hit);
-    final top = last.map((l) => l.weight).reduce(math.max);
+    if (isRepsOnly(id)) return (weightKg: 0, reps: hit ? reps + 1 : reps, up: hit, deload: false);
     final step = progressStep[id] ?? fromDisplayWeight(weightStep);
-    return (weightKg: hit ? top + step : top, reps: reps, up: hit);
+    final assisted = isAssisted(id);
+    final load = assisted ? last.map((l) => l.weight).reduce(math.min) : last.map((l) => l.weight).reduce(math.max);
+    if (!hit && needsDeload(id)) return (weightKg: deloadWeight(id, load), reps: reps, up: false, deload: true);
+    if (assisted) return (weightKg: hit ? math.max(0.0, load - step) : load, reps: reps, up: hit, deload: false);
+    return (weightKg: hit ? load + step : load, reps: reps, up: hit, deload: false);
   }
 
   String? nextTargetLabel(String id) {
