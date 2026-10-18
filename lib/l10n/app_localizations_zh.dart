@@ -4681,6 +4681,139 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetPickShake => 'Pick your shake';
+
+  @override
+  String get heatRangeSetting => '活动日历';
+
+  @override
+  String get heatRangeWeeks => '12 周';
+
+  @override
+  String get heatRangeYear => '12 个月';
+
+  @override
+  String get heatRangeHint => '12 个月显示一整年。左右滑动可一直回看到你的第一次训练。';
+
+  @override
+  String get pdfPlan => '计划导出为 PDF';
+
+  @override
+  String get pdfPlanHint => '一页清爽的周计划和所有训练，可直接打印或发送。';
+
+  @override
+  String get pdfExport => '导出为 PDF';
+
+  @override
+  String get pdfFooter => '免费、开源、离线可用';
+
+  @override
+  String get shakeTag => 'It’s a shake';
+
+  @override
+  String get shakeTagHint => 'It shows up in Your shake';
+
+  @override
+  String get shakeNone => 'Mark your shakes and only those show up here.';
+
+  @override
+  String get shakeMarkLabel => 'MARK AS A SHAKE';
+
+  @override
+  String get shakeNew => 'New shake';
+
+  @override
+  String get shakeUntag => 'Not a shake';
+
+  @override
+  String get pdfKicker => '训练计划';
+
+  @override
+  String get pdfStatDays => '天 / 周';
+
+  @override
+  String get pdfStatMinutes => '分钟 / 次';
+
+  @override
+  String pdfMinutes(int n) {
+    return '约 $n 分钟';
+  }
+
+  @override
+  String get workoutNotesTitle => '动作备注';
+
+  @override
+  String get workoutNoteEvery => '每次';
+
+  @override
+  String get workoutNoteNext => '下一次';
+
+  @override
+  String get workoutNoteEveryHint => '每次做这个动作都会显示，适合记座椅或滑轮的设置。';
+
+  @override
+  String get workoutNoteNextHint => '只在下一次显示，之后自动消失。';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return '上次留下 · $date';
+  }
+
+  @override
+  String get workoutNoteHint => '座椅第 2 孔，滑轮 19…';
+
+  @override
+  String get notePinWorkout => '训练时显示';
+
+  @override
+  String get assistedSetting => '助力器械';
+
+  @override
+  String get assistedSettingHint => '配重在帮你，所以越少越好：纪录和建议会往下走。';
+
+  @override
+  String get assistedRecordHint => '最少助力';
+
+  @override
+  String get trainAgainLabel => '还没练？再提醒一次';
+
+  @override
+  String get trainAgainOff => '不用';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n 小时';
+  }
+
+  @override
+  String get trainAgainHint => '只提醒一次，且仅在当天还没记录训练时。';
+
+  @override
+  String get notifTrainAgainBody => '今天还来得及练。';
+
+  @override
+  String nextDeload(int n) {
+    return '减轻：连续 $n 次没做满次数';
+  }
+
+  @override
+  String get historyTitle => '历史';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 次训练');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => '本月没有训练';
+
+  @override
+  String get historyEmptyHint => '左右滑动或点箭头查看其他月份。';
+
+  @override
+  String historyMore(int n) {
+    return '另外 $n 个';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -8993,4 +9126,119 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get moveDown => '下移';
+
+  @override
+  String get heatRangeSetting => '活動日曆';
+
+  @override
+  String get heatRangeWeeks => '12 週';
+
+  @override
+  String get heatRangeYear => '12 個月';
+
+  @override
+  String get heatRangeHint => '12 個月顯示一整年。左右滑動可一路回看到你的第一次訓練。';
+
+  @override
+  String get pdfPlan => '計畫匯出為 PDF';
+
+  @override
+  String get pdfPlanHint => '一頁清爽的週計畫和所有訓練，可直接列印或傳送。';
+
+  @override
+  String get pdfExport => '匯出為 PDF';
+
+  @override
+  String get pdfFooter => '免費、開源、離線可用';
+
+  @override
+  String get pdfKicker => '訓練計畫';
+
+  @override
+  String get pdfStatDays => '天 / 週';
+
+  @override
+  String get pdfStatMinutes => '分鐘 / 次';
+
+  @override
+  String pdfMinutes(int n) {
+    return '約 $n 分鐘';
+  }
+
+  @override
+  String get workoutNotesTitle => '動作備註';
+
+  @override
+  String get workoutNoteEvery => '每次';
+
+  @override
+  String get workoutNoteNext => '下一次';
+
+  @override
+  String get workoutNoteEveryHint => '每次做這個動作都會顯示，適合記座椅或滑輪的設定。';
+
+  @override
+  String get workoutNoteNextHint => '只在下一次顯示，之後自動消失。';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return '上次留下 · $date';
+  }
+
+  @override
+  String get workoutNoteHint => '座椅第 2 孔，滑輪 19…';
+
+  @override
+  String get notePinWorkout => '訓練時顯示';
+
+  @override
+  String get assistedSetting => '助力器械';
+
+  @override
+  String get assistedSettingHint => '配重在幫你，所以越少越好：紀錄和建議會往下走。';
+
+  @override
+  String get assistedRecordHint => '最少助力';
+
+  @override
+  String get trainAgainLabel => '還沒練？再提醒一次';
+
+  @override
+  String get trainAgainOff => '不用';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n 小時';
+  }
+
+  @override
+  String get trainAgainHint => '只提醒一次，且僅在當天還沒記錄訓練時。';
+
+  @override
+  String get notifTrainAgainBody => '今天還來得及練。';
+
+  @override
+  String nextDeload(int n) {
+    return '減輕：連續 $n 次沒做滿次數';
+  }
+
+  @override
+  String get historyTitle => '歷史';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 次訓練');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => '本月沒有訓練';
+
+  @override
+  String get historyEmptyHint => '左右滑動或點箭頭查看其他月份。';
+
+  @override
+  String historyMore(int n) {
+    return '另外 $n 個';
+  }
 }

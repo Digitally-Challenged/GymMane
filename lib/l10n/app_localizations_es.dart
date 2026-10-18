@@ -875,7 +875,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get compare => 'COMPARAR';
 
   @override
-  String get compareNeedTwo => 'Haz la misma pose en dos días distintos y aquí las comparas.';
+  String get compareNeedTwo => 'Con tu próxima foto verás aquí el antes y el después.';
 
   @override
   String dayNumber(int n) {
@@ -4886,4 +4886,140 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get widgetPickShake => 'Elige tu batido';
+
+  @override
+  String get heatRangeSetting => 'Calendario de actividad';
+
+  @override
+  String get heatRangeWeeks => '12 semanas';
+
+  @override
+  String get heatRangeYear => '12 meses';
+
+  @override
+  String get heatRangeHint =>
+      '12 meses enseña el año entero. Deslízalo de lado para ir hacia atrás, hasta tu primer entreno.';
+
+  @override
+  String get pdfPlan => 'Plan en PDF';
+
+  @override
+  String get pdfPlanHint => 'Una hoja limpia con tu semana y cada rutina, lista para imprimir o enviar.';
+
+  @override
+  String get pdfExport => 'Exportar en PDF';
+
+  @override
+  String get pdfFooter => 'Gratis, de código abierto y sin conexión';
+
+  @override
+  String get shakeTag => 'Es un batido';
+
+  @override
+  String get shakeTagHint => 'Sale en «Tu batido»';
+
+  @override
+  String get shakeNone => 'Marca tus batidos y aquí saldrán solo esos.';
+
+  @override
+  String get shakeMarkLabel => 'MARCAR COMO BATIDO';
+
+  @override
+  String get shakeNew => 'Nuevo batido';
+
+  @override
+  String get shakeUntag => 'No es un batido';
+
+  @override
+  String get pdfKicker => 'PLAN DE ENTRENAMIENTO';
+
+  @override
+  String get pdfStatDays => 'DÍAS / SEMANA';
+
+  @override
+  String get pdfStatMinutes => 'MIN / ENTRENO';
+
+  @override
+  String pdfMinutes(int n) {
+    return '≈ $n min';
+  }
+
+  @override
+  String get workoutNotesTitle => 'Notas del ejercicio';
+
+  @override
+  String get workoutNoteEvery => 'Siempre';
+
+  @override
+  String get workoutNoteNext => 'La próxima vez';
+
+  @override
+  String get workoutNoteEveryHint =>
+      'Sale cada vez que haces este ejercicio. Ideal para la altura del asiento o la polea.';
+
+  @override
+  String get workoutNoteNextHint => 'Sale solo la próxima vez y luego desaparece.';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return 'De la última vez · $date';
+  }
+
+  @override
+  String get workoutNoteHint => 'Asiento en el agujero 2, polea a 19…';
+
+  @override
+  String get notePinWorkout => 'Ver durante el entreno';
+
+  @override
+  String get assistedSetting => 'Máquina asistida';
+
+  @override
+  String get assistedSettingHint =>
+      'El peso te ayuda, así que menos es mejor: tus récords y sugerencias van a la baja.';
+
+  @override
+  String get assistedRecordHint => 'Menos ayuda';
+
+  @override
+  String get trainAgainLabel => '¿Aún no has entrenado? Recordar otra vez';
+
+  @override
+  String get trainAgainOff => 'No';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n h';
+  }
+
+  @override
+  String get trainAgainHint => 'Solo una vez, y solo si ese día no has apuntado ningún entreno.';
+
+  @override
+  String get notifTrainAgainBody => 'Todavía estás a tiempo de entrenar hoy.';
+
+  @override
+  String nextDeload(int n) {
+    return 'más ligero: $n entrenos seguidos sin todas las repes';
+  }
+
+  @override
+  String get historyTitle => 'Historial';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n ENTRENOS', one: '1 ENTRENO');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => 'Ningún entreno este mes';
+
+  @override
+  String get historyEmptyHint => 'Desliza de lado o usa las flechas para ver otros meses.';
+
+  @override
+  String historyMore(int n) {
+    return '+$n más';
+  }
 }

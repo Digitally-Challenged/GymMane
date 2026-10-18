@@ -4842,4 +4842,139 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get widgetPickShake => 'Pick your shake';
+
+  @override
+  String get heatRangeSetting => 'تقویم فعالیت';
+
+  @override
+  String get heatRangeWeeks => '۱۲ هفته';
+
+  @override
+  String get heatRangeYear => '۱۲ ماه';
+
+  @override
+  String get heatRangeHint => '۱۲ ماه کل سال را نشان می‌دهد. برای برگشتن تا اولین تمرینت، آن را به پهلو بکش.';
+
+  @override
+  String get pdfPlan => 'برنامه به صورت PDF';
+
+  @override
+  String get pdfPlanHint => 'یک برگه مرتب با هفته‌ات و همه روال‌ها، آماده چاپ یا ارسال.';
+
+  @override
+  String get pdfExport => 'خروجی PDF';
+
+  @override
+  String get pdfFooter => 'رایگان، متن‌باز و آفلاین';
+
+  @override
+  String get shakeTag => 'It’s a shake';
+
+  @override
+  String get shakeTagHint => 'It shows up in Your shake';
+
+  @override
+  String get shakeNone => 'Mark your shakes and only those show up here.';
+
+  @override
+  String get shakeMarkLabel => 'MARK AS A SHAKE';
+
+  @override
+  String get shakeNew => 'New shake';
+
+  @override
+  String get shakeUntag => 'Not a shake';
+
+  @override
+  String get pdfKicker => 'برنامه تمرینی';
+
+  @override
+  String get pdfStatDays => 'روز / هفته';
+
+  @override
+  String get pdfStatMinutes => 'دقیقه / تمرین';
+
+  @override
+  String pdfMinutes(int n) {
+    return '≈ $n دقیقه';
+  }
+
+  @override
+  String get workoutNotesTitle => 'یادداشت‌های حرکت';
+
+  @override
+  String get workoutNoteEvery => 'هر بار';
+
+  @override
+  String get workoutNoteNext => 'دفعه بعد';
+
+  @override
+  String get workoutNoteEveryHint =>
+      'هر بار که این حرکت را انجام می‌دهی نمایش داده می‌شود. برای تنظیم صندلی یا قرقره عالی است.';
+
+  @override
+  String get workoutNoteNextHint => 'فقط دفعه بعد نمایش داده می‌شود و بعد محو می‌شود.';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return 'از دفعه قبل · $date';
+  }
+
+  @override
+  String get workoutNoteHint => 'صندلی روی سوراخ ۲، قرقره روی ۱۹…';
+
+  @override
+  String get notePinWorkout => 'نمایش هنگام تمرین';
+
+  @override
+  String get assistedSetting => 'دستگاه کمکی';
+
+  @override
+  String get assistedSettingHint =>
+      'وزنه به تو کمک می‌کند، پس کمتر بهتر است: رکوردها و پیشنهادها پایین می‌آیند.';
+
+  @override
+  String get assistedRecordHint => 'کمترین کمک';
+
+  @override
+  String get trainAgainLabel => 'هنوز تمرین نکرده‌ای؟ دوباره یادآوری کن';
+
+  @override
+  String get trainAgainOff => 'نه';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n ساعت';
+  }
+
+  @override
+  String get trainAgainHint => 'فقط یک بار، و فقط اگر آن روز تمرینی ثبت نکرده باشی.';
+
+  @override
+  String get notifTrainAgainBody => 'هنوز برای تمرین امروز وقت داری.';
+
+  @override
+  String nextDeload(int n) {
+    return 'سبک‌تر: $n تمرین پشت سر هم بدون همه تکرارها';
+  }
+
+  @override
+  String get historyTitle => 'تاریخچه';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n تمرین');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => 'این ماه تمرینی نیست';
+
+  @override
+  String get historyEmptyHint => 'برای دیدن ماه‌های دیگر به پهلو بکش یا از فلش‌ها استفاده کن.';
+
+  @override
+  String historyMore(int n) {
+    return '+$n بیشتر';
+  }
 }

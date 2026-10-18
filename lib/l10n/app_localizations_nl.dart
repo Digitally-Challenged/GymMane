@@ -4883,4 +4883,140 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get widgetPickShake => 'Pick your shake';
+
+  @override
+  String get heatRangeSetting => 'Activiteitskalender';
+
+  @override
+  String get heatRangeWeeks => '12 weken';
+
+  @override
+  String get heatRangeYear => '12 maanden';
+
+  @override
+  String get heatRangeHint =>
+      '12 maanden toont het hele jaar. Veeg opzij om terug te gaan, tot aan je eerste training.';
+
+  @override
+  String get pdfPlan => 'Plan als pdf';
+
+  @override
+  String get pdfPlanHint =>
+      'Een strak overzicht van je week en elke routine, klaar om te printen of te sturen.';
+
+  @override
+  String get pdfExport => 'Exporteren als pdf';
+
+  @override
+  String get pdfFooter => 'Gratis, open source en offline';
+
+  @override
+  String get shakeTag => 'It’s a shake';
+
+  @override
+  String get shakeTagHint => 'It shows up in Your shake';
+
+  @override
+  String get shakeNone => 'Mark your shakes and only those show up here.';
+
+  @override
+  String get shakeMarkLabel => 'MARK AS A SHAKE';
+
+  @override
+  String get shakeNew => 'New shake';
+
+  @override
+  String get shakeUntag => 'Not a shake';
+
+  @override
+  String get pdfKicker => 'TRAININGSSCHEMA';
+
+  @override
+  String get pdfStatDays => 'DAGEN / WEEK';
+
+  @override
+  String get pdfStatMinutes => 'MIN / TRAINING';
+
+  @override
+  String pdfMinutes(int n) {
+    return '≈ $n min';
+  }
+
+  @override
+  String get workoutNotesTitle => 'Oefeningnotities';
+
+  @override
+  String get workoutNoteEvery => 'Elke keer';
+
+  @override
+  String get workoutNoteNext => 'Volgende keer';
+
+  @override
+  String get workoutNoteEveryHint => 'Verschijnt elke keer. Handig voor de stand van stoel of kabel.';
+
+  @override
+  String get workoutNoteNextHint => 'Verschijnt alleen de volgende keer en verdwijnt dan.';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return 'Van vorige keer · $date';
+  }
+
+  @override
+  String get workoutNoteHint => 'Stoel op gat 2, kabel op 19…';
+
+  @override
+  String get notePinWorkout => 'Tonen tijdens training';
+
+  @override
+  String get assistedSetting => 'Machine met ondersteuning';
+
+  @override
+  String get assistedSettingHint =>
+      'Het gewicht helpt je, dus minder is beter: records en suggesties gaan omlaag.';
+
+  @override
+  String get assistedRecordHint => 'Minste hulp';
+
+  @override
+  String get trainAgainLabel => 'Nog niet getraind? Nog eens herinneren';
+
+  @override
+  String get trainAgainOff => 'Nee';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n u';
+  }
+
+  @override
+  String get trainAgainHint => 'Eén keer, en alleen als je die dag nog geen training hebt gelogd.';
+
+  @override
+  String get notifTrainAgainBody => 'Je kunt vandaag nog trainen.';
+
+  @override
+  String nextDeload(int n) {
+    return 'lichter: $n trainingen op rij zonder alle herhalingen';
+  }
+
+  @override
+  String get historyTitle => 'Geschiedenis';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n TRAININGEN', one: '1 TRAINING');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => 'Geen trainingen deze maand';
+
+  @override
+  String get historyEmptyHint => 'Veeg opzij of gebruik de pijlen voor andere maanden.';
+
+  @override
+  String historyMore(int n) {
+    return '+$n meer';
+  }
 }

@@ -107,3 +107,9 @@ waterOptions
 weightLastLine
 widgetNutritionOff
 widgetPickShake
+shakeTag
+shakeTagHint
+shakeNone
+shakeMarkLabel
+shakeNew
+shakeUntag

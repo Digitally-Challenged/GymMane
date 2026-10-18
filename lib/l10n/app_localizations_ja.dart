@@ -4733,4 +4733,137 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get widgetPickShake => 'Pick your shake';
+
+  @override
+  String get heatRangeSetting => 'アクティビティカレンダー';
+
+  @override
+  String get heatRangeWeeks => '12週間';
+
+  @override
+  String get heatRangeYear => '12か月';
+
+  @override
+  String get heatRangeHint => '12か月は1年分を表示します。横にスワイプすると最初のトレーニングまでさかのぼれます。';
+
+  @override
+  String get pdfPlan => 'プランをPDFで';
+
+  @override
+  String get pdfPlanHint => '1週間と全ルーティンをまとめたシート。印刷や送信にそのまま使えます。';
+
+  @override
+  String get pdfExport => 'PDFで書き出す';
+
+  @override
+  String get pdfFooter => '無料・オープンソース・オフライン';
+
+  @override
+  String get shakeTag => 'It’s a shake';
+
+  @override
+  String get shakeTagHint => 'It shows up in Your shake';
+
+  @override
+  String get shakeNone => 'Mark your shakes and only those show up here.';
+
+  @override
+  String get shakeMarkLabel => 'MARK AS A SHAKE';
+
+  @override
+  String get shakeNew => 'New shake';
+
+  @override
+  String get shakeUntag => 'Not a shake';
+
+  @override
+  String get pdfKicker => 'トレーニングプラン';
+
+  @override
+  String get pdfStatDays => '日 / 週';
+
+  @override
+  String get pdfStatMinutes => '分 / 回';
+
+  @override
+  String pdfMinutes(int n) {
+    return '約 $n 分';
+  }
+
+  @override
+  String get workoutNotesTitle => '種目のメモ';
+
+  @override
+  String get workoutNoteEvery => '毎回';
+
+  @override
+  String get workoutNoteNext => '次回';
+
+  @override
+  String get workoutNoteEveryHint => 'この種目をするたびに表示。シートやケーブルの設定に便利。';
+
+  @override
+  String get workoutNoteNextHint => '次回だけ表示され、その後は消えます。';
+
+  @override
+  String workoutNoteFromLast(String date) {
+    return '前回のメモ · $date';
+  }
+
+  @override
+  String get workoutNoteHint => 'シートは穴2、ケーブルは19…';
+
+  @override
+  String get notePinWorkout => 'トレーニング中に表示';
+
+  @override
+  String get assistedSetting => 'アシストマシン';
+
+  @override
+  String get assistedSettingHint => '重りが補助するので少ないほど上達。記録と提案は下がっていきます。';
+
+  @override
+  String get assistedRecordHint => '最小アシスト';
+
+  @override
+  String get trainAgainLabel => 'まだトレーニングしていない? もう一度通知';
+
+  @override
+  String get trainAgainOff => 'なし';
+
+  @override
+  String trainAgainAfter(int n) {
+    return '+$n時間';
+  }
+
+  @override
+  String get trainAgainHint => '1回だけ、その日にまだ記録がない場合のみ。';
+
+  @override
+  String get notifTrainAgainBody => '今日のトレーニングにまだ間に合います。';
+
+  @override
+  String nextDeload(int n) {
+    return '軽めに: $n回続けて全レップ未達';
+  }
+
+  @override
+  String get historyTitle => '履歴';
+
+  @override
+  String historyWorkouts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 回のトレーニング');
+    return '$_temp0';
+  }
+
+  @override
+  String get historyEmpty => '今月のトレーニングはありません';
+
+  @override
+  String get historyEmptyHint => '横にスワイプするか矢印で他の月を表示。';
+
+  @override
+  String historyMore(int n) {
+    return 'ほか$n件';
+  }
 }
