@@ -21,45 +21,45 @@ class RestAlarm {
   String style = 'loud';
 
   AndroidNotificationDetails get _android => switch (style) {
-        'quiet' => AndroidNotificationDetails(
-            'rest_timer_quiet',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.reminder,
-            playSound: true,
-            enableVibration: true,
-            vibrationPattern: _pattern,
-            audioAttributesUsage: AudioAttributesUsage.notification,
-            visibility: NotificationVisibility.public,
-          ),
-        'vibrate' => AndroidNotificationDetails(
-            'rest_timer_vibrate',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.reminder,
-            playSound: false,
-            enableVibration: true,
-            vibrationPattern: _pattern,
-            visibility: NotificationVisibility.public,
-          ),
-        _ => AndroidNotificationDetails(
-            'rest_timer',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.alarm,
-            playSound: true,
-            enableVibration: true,
-            audioAttributesUsage: AudioAttributesUsage.alarm,
-            fullScreenIntent: true,
-            visibility: NotificationVisibility.public,
-          ),
-      };
+    'quiet' => AndroidNotificationDetails(
+      'rest_timer_quiet',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      playSound: true,
+      enableVibration: true,
+      vibrationPattern: _pattern,
+      audioAttributesUsage: AudioAttributesUsage.notification,
+      visibility: NotificationVisibility.public,
+    ),
+    'vibrate' => AndroidNotificationDetails(
+      'rest_timer_vibrate',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      playSound: false,
+      enableVibration: true,
+      vibrationPattern: _pattern,
+      visibility: NotificationVisibility.public,
+    ),
+    _ => AndroidNotificationDetails(
+      'rest_timer',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.alarm,
+      playSound: true,
+      enableVibration: true,
+      audioAttributesUsage: AudioAttributesUsage.alarm,
+      fullScreenIntent: true,
+      visibility: NotificationVisibility.public,
+    ),
+  };
 
   AndroidNotificationDetails get _androidAlert => AndroidNotificationDetails(
     'rest_timer_alert',
@@ -99,28 +99,31 @@ class RestAlarm {
     if (p != null && p.isNotEmpty) return DeviceFileSource(p);
     return AssetSource('audio/rest_over.wav');
   }
+
   bool _ready = false;
   bool _permissionAsked = false;
   int _generation = 0;
 
   Future<void> init() async {
-    if (_ready) return;
+    if (_ready || (kIsWeb && _player != null)) return;
 
-    try {
-      tzdata.initializeTimeZones();
-      await _plugin.initialize(
-        settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@drawable/ic_stat_gymmane'),
-          iOS: DarwinInitializationSettings(
-            requestAlertPermission: false,
-            requestSoundPermission: false,
-            requestBadgePermission: false,
+    if (!kIsWeb) {
+      try {
+        tzdata.initializeTimeZones();
+        await _plugin.initialize(
+          settings: const InitializationSettings(
+            android: AndroidInitializationSettings('@drawable/ic_stat_gymmane'),
+            iOS: DarwinInitializationSettings(
+              requestAlertPermission: false,
+              requestSoundPermission: false,
+              requestBadgePermission: false,
+            ),
           ),
-        ),
-      );
-      _ready = true;
-    } catch (e) {
-      debugPrint('RestAlarm (notificaciones) no disponible: $e');
+        );
+        _ready = true;
+      } catch (e) {
+        debugPrint('RestAlarm (notificaciones) no disponible: $e');
+      }
     }
     try {
       final player = AudioPlayer();

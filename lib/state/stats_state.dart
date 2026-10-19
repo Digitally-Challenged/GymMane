@@ -921,6 +921,15 @@ mixin StatsState on FitCore, ToolsState, LibraryState, SettingsState, TimelineSt
     return h.isEmpty ? const [] : h.first.ex.sets;
   }
 
+  String? lastEffortSummaryFor(String id) {
+    final sets = lastSetsFor(id);
+    if (sets.isEmpty) return null;
+    return sets.map((s) {
+      final label = loggedSetLabel(s);
+      return s.rpe == null ? label : '$label (${effortLabel(s.rpe!)})';
+    }).join(' · ');
+  }
+
   String? lastSummaryFor(String id) {
     final sets = lastSetsFor(id);
     if (sets.isEmpty) return null;

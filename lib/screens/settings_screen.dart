@@ -3,10 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -405,7 +405,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ]),
             const SizedBox(height: 18),
-            if (Platform.isAndroid || Platform.isIOS) ...[
+            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) ...[
               _sectionLabel(gc, t.sectionWidgets),
               const SizedBox(height: 8),
               _linkGroup(gc, [
@@ -661,14 +661,9 @@ class SettingsScreen extends StatelessWidget {
       _snack(context, t.nothingToExport);
       return;
     }
-    final dir = await getTemporaryDirectory();
     final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/gymmane-workouts-$stamp.csv');
-    await file.writeAsString(fit.exportCsv());
-    if (!context.mounted) return;
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'GymMane workouts'),
-    );
+    await _shareExport(context, utf8.encode(fit.exportCsv()),
+        'gymmane-workouts-$stamp.csv', 'text/csv');
   }
 
   Future<void> _resetAll(BuildContext context) async {
@@ -684,14 +679,27 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Future<void> _exportBackup(BuildContext context) async {
-    final dir = await getTemporaryDirectory();
-    final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/gymmane-backup-$stamp.zip');
-    await file.writeAsBytes(await buildBackupZip(), flush: true);
-    if (!context.mounted) return;
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'GymMane backup'),
-    );
+    try {
+      final stamp = DateTime.now().toIso8601String().split('T').first;
+      final bytes = await buildBackupZip();
+      if (!context.mounted) return;
+      await _shareExport(context, bytes, 'gymmane-backup-$stamp.zip', 'application/zip');
+    } catch (_) {
+      if (context.mounted) _snack(context, t.exportFailed);
+    }
+  }
+
+  Future<void> _shareExport(BuildContext context, Uint8List bytes, String name, String mime) async {
+    try {
+      final box = context.findRenderObject() as RenderBox?;
+      await SharePlus.instance.share(ShareParams(
+        files: [XFile.fromData(bytes, mimeType: mime)],
+        fileNameOverrides: [name],
+        sharePositionOrigin: box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+      ));
+    } catch (_) {
+      if (context.mounted) _snack(context, t.exportFailed);
+    }
   }
 
   Future<void> _importBackup(BuildContext context) async {

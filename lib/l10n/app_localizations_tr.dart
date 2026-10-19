@@ -5011,4 +5011,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String historyMore(int n) {
     return '+$n daha';
   }
+
+  @override
+  String get localSaveFailed =>
+      'Değişiklikler bu cihaza kaydedilemedi. Uygulamayı açık tutun ve Ayarlar\'dan yedek dışa aktarın.';
+
+  @override
+  String get exportFailed => 'Dışa aktarılamadı. Lütfen tekrar deneyin.';
+
+  @override
+  String get nextIncrease => 'Tüm tekrarlar tamamlandı';
+
+  @override
+  String get nextAdvice => 'Önerilen hedef; başlangıç setleri farklı olabilir.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

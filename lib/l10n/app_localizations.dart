@@ -8829,6 +8829,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'+{n} more'**
   String historyMore(int n);
+
+  /// No description provided for @localSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes could not be saved on this device. Keep the app open and export a backup from Settings.'**
+  String get localSaveFailed;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export. Please try again.'**
+  String get exportFailed;
+
+  /// No description provided for @nextIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'All reps completed'**
+  String get nextIncrease;
+
+  /// No description provided for @nextAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested target; starting sets may differ.'**
+  String get nextAdvice;
+
+  /// No description provided for @derivedAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on GymMane by InlitX'**
+  String get derivedAttribution;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

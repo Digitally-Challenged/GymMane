@@ -5052,4 +5052,20 @@ class AppLocalizationsUk extends AppLocalizations {
   String historyMore(int n) {
     return 'ще $n';
   }
+
+  @override
+  String get localSaveFailed =>
+      'Не вдалося зберегти зміни на цьому пристрої. Не закривайте застосунок і експортуйте резервну копію в налаштуваннях.';
+
+  @override
+  String get exportFailed => 'Не вдалося експортувати. Спробуйте ще раз.';
+
+  @override
+  String get nextIncrease => 'Усі повторення виконано';
+
+  @override
+  String get nextAdvice => 'Рекомендована ціль; початкові підходи можуть відрізнятися.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

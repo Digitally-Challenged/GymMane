@@ -1707,5 +1707,10 @@
   "historyEmpty": "No workouts this month",
   "historyEmptyHint": "Swipe sideways or use the arrows to see other months.",
   "historyMore": "+{n} more",
-  "@historyMore": {"placeholders": {"n": {"type": "int"}}}
+  "@historyMore": {"placeholders": {"n": {"type": "int"}}},
+  "localSaveFailed": "Changes could not be saved on this device. Keep the app open and export a backup from Settings.",
+  "exportFailed": "Could not export. Please try again.",
+  "nextIncrease": "All reps completed",
+  "nextAdvice": "Suggested target; starting sets may differ.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

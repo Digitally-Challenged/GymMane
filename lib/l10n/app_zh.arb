@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, other{{n} 次训练}}",
   "historyEmpty": "本月没有训练",
   "historyEmptyHint": "左右滑动或点箭头查看其他月份。",
-  "historyMore": "另外 {n} 个"
+  "historyMore": "另外 {n} 个",
+  "localSaveFailed": "无法在此设备上保存更改。请保持应用打开，并从设置中导出备份。",
+  "exportFailed": "无法导出，请重试。",
+  "nextIncrease": "已完成所有次数",
+  "nextAdvice": "建议目标；起始组可能不同。",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

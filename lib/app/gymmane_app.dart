@@ -5,6 +5,7 @@ import '../l10n/l10n.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/save_status.dart';
 import 'app_shell.dart';
 
 class GymManeApp extends StatefulWidget {
@@ -56,7 +57,7 @@ class _GymManeAppState extends State<GymManeApp> {
           maxScaleFactor: GymManeApp.maxTextScale,
           child: _ButtonNavScrim(child: child!),
         ),
-        home: const AppShell(),
+        home: const SaveStatus(child: AppShell()),
     );
   }
 }

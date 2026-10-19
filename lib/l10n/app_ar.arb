@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, one{تمرين واحد} two{تمرينان} few{{n} تمارين} many{{n} تمرينًا} other{{n} تمرين}}",
   "historyEmpty": "لا تمارين هذا الشهر",
   "historyEmptyHint": "اسحب جانبيًا أو استخدم الأسهم لرؤية أشهر أخرى.",
-  "historyMore": "+{n} أخرى"
+  "historyMore": "+{n} أخرى",
+  "localSaveFailed": "تعذّر حفظ التغييرات على هذا الجهاز. أبقِ التطبيق مفتوحًا وصدّر نسخة احتياطية من الإعدادات.",
+  "exportFailed": "تعذّر التصدير. حاول مرة أخرى.",
+  "nextIncrease": "اكتملت جميع التكرارات",
+  "nextAdvice": "هدف مقترح؛ قد تختلف مجموعات البداية.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

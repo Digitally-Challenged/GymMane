@@ -4977,4 +4977,20 @@ class AppLocalizationsFa extends AppLocalizations {
   String historyMore(int n) {
     return '+$n بیشتر';
   }
+
+  @override
+  String get localSaveFailed =>
+      'تغییرات در این دستگاه ذخیره نشد. برنامه را باز نگه دارید و از تنظیمات یک نسخه پشتیبان صادر کنید.';
+
+  @override
+  String get exportFailed => 'صدور ناموفق بود. دوباره تلاش کنید.';
+
+  @override
+  String get nextIncrease => 'همه تکرارها انجام شد';
+
+  @override
+  String get nextAdvice => 'هدف پیشنهادی؛ ست‌های آغازین ممکن است متفاوت باشند.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

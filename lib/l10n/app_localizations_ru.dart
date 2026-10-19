@@ -5134,4 +5134,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String historyMore(int n) {
     return 'ещё $n';
   }
+
+  @override
+  String get localSaveFailed =>
+      'Не удалось сохранить изменения на этом устройстве. Не закрывайте приложение и экспортируйте резервную копию в настройках.';
+
+  @override
+  String get exportFailed => 'Не удалось экспортировать. Повторите попытку.';
+
+  @override
+  String get nextIncrease => 'Все повторения выполнены';
+
+  @override
+  String get nextAdvice => 'Рекомендуемая цель; начальные подходы могут отличаться.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

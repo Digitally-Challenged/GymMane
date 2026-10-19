@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, one{1 SÉANCE} other{{n} SÉANCES}}",
   "historyEmpty": "Aucune séance ce mois-ci",
   "historyEmptyHint": "Fais glisser sur le côté ou utilise les flèches pour voir d’autres mois.",
-  "historyMore": "+{n} de plus"
+  "historyMore": "+{n} de plus",
+  "localSaveFailed": "Impossible d’enregistrer les modifications sur cet appareil. Gardez l’application ouverte et exportez une sauvegarde depuis les paramètres.",
+  "exportFailed": "Échec de l’exportation. Réessayez.",
+  "nextIncrease": "Toutes les répétitions terminées",
+  "nextAdvice": "Objectif suggéré ; les séries initiales peuvent différer.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

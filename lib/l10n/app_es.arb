@@ -1450,5 +1450,10 @@
   "historyWorkouts": "{n, plural, one{1 ENTRENO} other{{n} ENTRENOS}}",
   "historyEmpty": "Ningún entreno este mes",
   "historyEmptyHint": "Desliza de lado o usa las flechas para ver otros meses.",
-  "historyMore": "+{n} más"
+  "historyMore": "+{n} más",
+  "localSaveFailed": "No se pudieron guardar los cambios en este dispositivo. Mantén la app abierta y exporta una copia desde Ajustes.",
+  "exportFailed": "No se pudo exportar. Inténtalo de nuevo.",
+  "nextIncrease": "Todas las repeticiones completadas",
+  "nextAdvice": "Objetivo sugerido; las series iniciales pueden variar.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

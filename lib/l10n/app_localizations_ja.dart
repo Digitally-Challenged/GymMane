@@ -4866,4 +4866,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String historyMore(int n) {
     return 'ほか$n件';
   }
+
+  @override
+  String get localSaveFailed => 'この端末に変更を保存できませんでした。アプリを開いたまま、設定からバックアップを書き出してください。';
+
+  @override
+  String get exportFailed => '書き出せませんでした。もう一度お試しください。';
+
+  @override
+  String get nextIncrease => 'すべての回数を達成';
+
+  @override
+  String get nextAdvice => '推奨目標です。開始時のセットは異なる場合があります。';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

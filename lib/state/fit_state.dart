@@ -666,6 +666,8 @@ class FitState extends FitCore
     loadNutrition((map['nutrition'] as Map?)?.cast<String, dynamic>(), restored: restoredFoods);
     loadSteps((map['steps'] as Map?)?.cast<String, dynamic>());
     _seedCalculatorsFromProfile();
+    saveAndExit();
+    _restoreLiveSession(map);
     _loading = false;
     _persist();
     syncTrainReminder();

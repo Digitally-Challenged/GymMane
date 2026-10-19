@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, other{{n} ANTRENMAN}}",
   "historyEmpty": "Bu ay antrenman yok",
   "historyEmptyHint": "Diğer ayları görmek için yana kaydır ya da okları kullan.",
-  "historyMore": "+{n} daha"
+  "historyMore": "+{n} daha",
+  "localSaveFailed": "Değişiklikler bu cihaza kaydedilemedi. Uygulamayı açık tutun ve Ayarlar'dan yedek dışa aktarın.",
+  "exportFailed": "Dışa aktarılamadı. Lütfen tekrar deneyin.",
+  "nextIncrease": "Tüm tekrarlar tamamlandı",
+  "nextAdvice": "Önerilen hedef; başlangıç setleri farklı olabilir.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

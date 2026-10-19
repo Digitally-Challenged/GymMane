@@ -14,6 +14,7 @@ import '../widgets/dialogs.dart';
 import '../widgets/entrance.dart';
 import '../widgets/exercise_media.dart';
 import '../widgets/exercise_preview.dart';
+import '../widgets/exercise_context.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/set_kind.dart';
@@ -819,25 +820,11 @@ class SessionScreen extends StatelessWidget {
           const SizedBox(height: 12),
           WorkoutNoteStrip(exerciseId: ex.id, onDark: true),
         ],
-        if (ex != null && fit.lastSummaryFor(ex.id) != null) ...[
-          const SizedBox(height: 10),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => showExerciseHistorySheet(context, ex.id),
-            child: Row(children: [
-              Text(t.last,
-                  style: AppTheme.f(11, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.4)),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(fit.lastSummaryFor(ex.id)!,
-                    style: AppTheme.f(12, weight: FontWeight.w600, color: gc.textSecondary)),
-              ),
-              const SizedBox(width: 4),
-              Icon(PhosphorIconsRegular.caretRight, size: 11, color: gc.textTertiary),
-            ]),
+        if (ex != null)
+          ExerciseContext(
+            exerciseId: ex.id,
+            onHistory: () => showExerciseHistorySheet(context, ex.id),
           ),
-          if (fit.nextTargetLabel(ex.id) != null) _nextRow(gc, ex.id),
-        ],
       ],
     );
   }
@@ -948,51 +935,6 @@ class SessionScreen extends StatelessWidget {
     if (fit.sessionLocked == on) return;
     HapticFeedback.mediumImpact();
     fit.toggleSessionLock();
-  }
-
-  Widget _nextRow(GymColors gc, String id) {
-    final target = fit.nextTarget(id)!;
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(t.nextTime,
-              style: AppTheme.f(11, weight: FontWeight.w600, color: gc.brass, letterSpacing: 0.4)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: LayoutBuilder(builder: (context, box) {
-              final main = TextSpan(
-                text: fit.nextTargetLabel(id),
-                style: AppTheme.f(12,
-                    weight: FontWeight.w600, color: target.up ? gc.ember : gc.textSecondary),
-              );
-              if (target.up) return Text.rich(main);
-              final holdStyle = AppTheme.f(11.5, weight: FontWeight.w400, color: gc.textTertiary);
-              final why = target.deload ? t.nextDeload(fit.stallStreak(id)) : t.nextHold;
-              final both = TextSpan(children: [main, TextSpan(text: ' · $why', style: holdStyle)]);
-              final painter = TextPainter(
-                text: both,
-                textDirection: Directionality.of(context),
-                textScaler: MediaQuery.textScalerOf(context),
-                maxLines: 1,
-              )..layout(maxWidth: box.maxWidth);
-              final fits = !painter.didExceedMaxLines;
-              painter.dispose();
-              if (fits) return Text.rich(both);
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text.rich(main),
-                  const SizedBox(height: 2),
-                  Text(why, style: holdStyle),
-                ],
-              );
-            }),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _confirmDrop(BuildContext context, int exIdx, String name) async {

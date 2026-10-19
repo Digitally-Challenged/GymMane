@@ -202,6 +202,27 @@ flutter pub get
 flutter build apk --release
 ```
 
+## Browser trial (this fork)
+
+Use Flutter 3.41.9 and Python 3:
+
+```bash
+scripts/build-web-trial.sh
+python3 -m http.server 8091 --bind 127.0.0.1 --directory build/web
+```
+
+Open `http://localhost:8091`. The script prepares a versioned offline cache and bundles
+the renderer locally. A plain `flutter build web` does not prepare that cache. For
+hosting, serve the complete `build/web` directory over HTTPS at a stable origin.
+Allow the initial cache download to finish before testing offline reload.
+
+This is a disposable-data trial pending physical-phone validation. Workouts stay in
+that browser's local storage; hosting the files does not sync or back up workouts.
+Use Settings to export a ZIP backup and verify importing it before relying on this
+version. Browser clearing, storage limits, or changing the origin can affect access
+to data. Background rest alerts, native keep-awake, and media capture are not part
+of this trial. No openGym catalogue or media has been added.
+
 ## Support
 
 GymMane is free and will stay that way. A star, a translation or a clear bug

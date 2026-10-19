@@ -4814,6 +4814,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String historyMore(int n) {
     return '另外 $n 个';
   }
+
+  @override
+  String get localSaveFailed => '无法在此设备上保存更改。请保持应用打开，并从设置中导出备份。';
+
+  @override
+  String get exportFailed => '无法导出，请重试。';
+
+  @override
+  String get nextIncrease => '已完成所有次数';
+
+  @override
+  String get nextAdvice => '建议目标；起始组可能不同。';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -9241,4 +9256,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String historyMore(int n) {
     return '另外 $n 個';
   }
+
+  @override
+  String get localSaveFailed => '無法在此裝置上儲存變更。請保持應用程式開啟，並從設定中匯出備份。';
+
+  @override
+  String get exportFailed => '無法匯出，請重試。';
+
+  @override
+  String get nextIncrease => '已完成所有次數';
+
+  @override
+  String get nextAdvice => '建議目標；起始組可能不同。';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

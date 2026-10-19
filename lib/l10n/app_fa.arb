@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, other{{n} تمرین}}",
   "historyEmpty": "این ماه تمرینی نیست",
   "historyEmptyHint": "برای دیدن ماه‌های دیگر به پهلو بکش یا از فلش‌ها استفاده کن.",
-  "historyMore": "+{n} بیشتر"
+  "historyMore": "+{n} بیشتر",
+  "localSaveFailed": "تغییرات در این دستگاه ذخیره نشد. برنامه را باز نگه دارید و از تنظیمات یک نسخه پشتیبان صادر کنید.",
+  "exportFailed": "صدور ناموفق بود. دوباره تلاش کنید.",
+  "nextIncrease": "همه تکرارها انجام شد",
+  "nextAdvice": "هدف پیشنهادی؛ ست‌های آغازین ممکن است متفاوت باشند.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

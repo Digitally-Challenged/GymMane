@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, other{{n} 回のトレーニング}}",
   "historyEmpty": "今月のトレーニングはありません",
   "historyEmptyHint": "横にスワイプするか矢印で他の月を表示。",
-  "historyMore": "ほか{n}件"
+  "historyMore": "ほか{n}件",
+  "localSaveFailed": "この端末に変更を保存できませんでした。アプリを開いたまま、設定からバックアップを書き出してください。",
+  "exportFailed": "書き出せませんでした。もう一度お試しください。",
+  "nextIncrease": "すべての回数を達成",
+  "nextAdvice": "推奨目標です。開始時のセットは異なる場合があります。",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

@@ -1335,5 +1335,10 @@
   "historyWorkouts": "{n, plural, one{1 TRAINING} other{{n} TRAININGEN}}",
   "historyEmpty": "Geen trainingen deze maand",
   "historyEmptyHint": "Veeg opzij of gebruik de pijlen voor andere maanden.",
-  "historyMore": "+{n} meer"
+  "historyMore": "+{n} meer",
+  "localSaveFailed": "Wijzigingen konden niet op dit apparaat worden opgeslagen. Houd de app open en exporteer een back-up via Instellingen.",
+  "exportFailed": "Exporteren mislukt. Probeer het opnieuw.",
+  "nextIncrease": "Alle herhalingen voltooid",
+  "nextAdvice": "Voorgesteld doel; de beginsets kunnen afwijken.",
+  "derivedAttribution": "Based on GymMane by InlitX"
 }

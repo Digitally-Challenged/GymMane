@@ -4877,4 +4877,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String historyMore(int n) {
     return '+$n개 더';
   }
+
+  @override
+  String get localSaveFailed => '이 기기에 변경 사항을 저장하지 못했습니다. 앱을 열어 둔 채 설정에서 백업을 내보내세요.';
+
+  @override
+  String get exportFailed => '내보내지 못했습니다. 다시 시도하세요.';
+
+  @override
+  String get nextIncrease => '모든 반복 완료';
+
+  @override
+  String get nextAdvice => '권장 목표이며 시작 세트는 다를 수 있습니다.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }

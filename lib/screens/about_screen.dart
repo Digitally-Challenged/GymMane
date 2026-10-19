@@ -61,6 +61,8 @@ class AboutScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textTertiary, height: 1.6)),
             const SizedBox(height: 20),
+            Text(t.derivedAttribution, textAlign: TextAlign.center),
+            const SizedBox(height: 12),
             _credits(gc),
           ]),
         ),

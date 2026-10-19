@@ -5002,4 +5002,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String historyMore(int n) {
     return '+$n أخرى';
   }
+
+  @override
+  String get localSaveFailed =>
+      'تعذّر حفظ التغييرات على هذا الجهاز. أبقِ التطبيق مفتوحًا وصدّر نسخة احتياطية من الإعدادات.';
+
+  @override
+  String get exportFailed => 'تعذّر التصدير. حاول مرة أخرى.';
+
+  @override
+  String get nextIncrease => 'اكتملت جميع التكرارات';
+
+  @override
+  String get nextAdvice => 'هدف مقترح؛ قد تختلف مجموعات البداية.';
+
+  @override
+  String get derivedAttribution => 'Based on GymMane by InlitX';
 }
