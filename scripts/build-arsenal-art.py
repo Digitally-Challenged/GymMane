@@ -13,7 +13,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = {
+SOURCE_DIR = ROOT / "docs/artwork/arsenal"
+SPECIAL_SLUGS = {
     "leg-extension": "arsenal-reloaded-leg-extension",
     "pendulum-squat": "arsenal-reloaded-pendulum-squat",
 }
@@ -61,7 +62,7 @@ def flatten(path, height, scale):
 
 
 def build(name, slug, work):
-    source = ROOT / "docs/artwork/arsenal" / f"{name}-source.png"
+    source = SOURCE_DIR / f"{name}-source.png"
     width, height = map(int, run("magick", "identify", "-format", "%w %h", str(source)).split())
     if width != 2 * height:
         raise ValueError(f"{source}: expected two square panels")
@@ -87,5 +88,6 @@ def build(name, slug, work):
 
 if __name__ == "__main__":
     with tempfile.TemporaryDirectory(prefix="gymmane-art-") as directory:
-        for source_name, art_slug in SOURCES.items():
-            build(source_name, art_slug, Path(directory))
+        for source in sorted(SOURCE_DIR.glob("*-source.png")):
+            name = source.name.removesuffix("-source.png")
+            build(name, SPECIAL_SLUGS.get(name, f"arsenal-{name}"), Path(directory))

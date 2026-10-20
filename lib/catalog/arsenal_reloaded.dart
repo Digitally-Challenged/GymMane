@@ -12,7 +12,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-seated-calf-raise',
     aliases: ['RELOADED SEATED CALF RAISE'],
     steps: [
       'Set the support pads and place the balls of your feet securely on the platform.',
@@ -28,7 +28,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-viking-press',
     aliases: ['RELOADED VIKING PRESS'],
     steps: [
       'Adjust your position so the handles begin near shoulder height and brace your torso.',
@@ -44,7 +44,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 't-bar-row',
     aliases: ['RELOADED T BAR ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -60,7 +60,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-row',
     aliases: ['RELOADED VERTICAL ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -76,7 +76,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-lever-pulldown',
     aliases: ['RELOADED ISO LAT PULLDOWN'],
     steps: [
       'Adjust the seat and thigh support, then take a comfortable grip overhead.',
@@ -92,7 +92,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-vertical-leg-press',
     aliases: ['RELOADED VERTICAL LEG PRESS'],
     steps: [
       'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
@@ -108,7 +108,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-chest-press',
     aliases: ['RELOADED ISO FLAT PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -124,7 +124,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-shoulder-press',
     aliases: ['RELOADED ISO CONV SHOULDER PRESS'],
     steps: [
       'Adjust your position so the handles begin near shoulder height and brace your torso.',
@@ -140,7 +140,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-row',
     aliases: ['RELOADED ISO MULTI ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -156,7 +156,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-linear-smith-row',
     aliases: ['RELOADED LINEAR SMITH ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -172,7 +172,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-power-squat',
     aliases: ['RELOADED POWER SQUAT'],
     steps: [
       'Adjust the pads and safety stops, then stand securely on the platform.',
@@ -188,7 +188,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-linear-smith-shoulder-press',
     aliases: ['RELOADED LINEAR SMITH SHOULDER PRESS'],
     steps: [
       'Adjust your position so the handles begin near shoulder height and brace your torso.',
@@ -204,7 +204,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes', 'lowerback'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-posterior-chain-developer',
     aliases: ['RELOADED POSTERIOR CHAIN DEVELOPER'],
     steps: [
       'Set the hip and back supports and range limits for your height before loading.',
@@ -220,7 +220,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'hack-squat',
     aliases: ['RELOADED LINEAR HACK SQUAT'],
     steps: [
       'Adjust the pads and safety stops, then stand securely on the platform.',
@@ -236,7 +236,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['hamstrings'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-glute-bridge',
     aliases: ['RELOADED GLUTE BRIDGE'],
     steps: [
       'Adjust the hip pad or belt and place your feet securely on the platform.',
@@ -252,7 +252,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-incline-fly',
     aliases: ['RELOADED INCLINE FLY'],
     steps: [
       'Adjust your position and range stops so your arms start in a comfortable open position.',
@@ -268,7 +268,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'belt-squat',
     aliases: ['RELOADED BELT SQUAT'],
     steps: [
       'Fasten the lifting belt to the machine and set the starting height and safety stop.',
@@ -284,7 +284,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'incline-chest-press-machine',
     aliases: ['RELOADED ISO INCLINE PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -300,7 +300,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'leg-press',
     aliases: ['RELOADED LINEAR LEG PRESS'],
     steps: [
       'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
@@ -332,7 +332,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-standing-chest-press',
     aliases: ['ARSENAL RELOADED STANDING CHEST PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -348,7 +348,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'leg-press',
     aliases: ['RELOADED BILATERAL LEG PRESS'],
     steps: [
       'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
@@ -364,7 +364,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-chest-press',
     aliases: ['RELOADED VERTICAL CHEST PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -380,7 +380,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-horizontal-leg-press',
     aliases: ['RELOADED HORIZONTAL LEG PRESS'],
     steps: [
       'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
@@ -396,7 +396,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 't-bar-row',
     aliases: ['RELOADED LEVER ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -412,7 +412,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-hip-hack-press',
     aliases: ['RELOADED HIP HACK PRESS'],
     steps: [
       'Adjust the pads and safety stops, then stand securely on the platform.',
@@ -444,7 +444,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'seated-leg-curl',
     aliases: ['Reloaded Seated Leg Curl'],
     steps: [
       'Align your knees with the pivot and secure the thigh pad with the roller behind your lower legs.',
@@ -460,7 +460,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-triceps-kickback',
     aliases: ['Reloaded Triceps Kickback'],
     steps: [
       'Adjust your support and hold the handles with your upper arms positioned beside your torso.',
@@ -476,7 +476,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['chest', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-seated-dip',
     aliases: ['Reloaded Seated Dip'],
     steps: [
       'Set the seat and handles so your shoulders remain comfortable at the start.',
@@ -492,7 +492,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-lever-pulldown',
     aliases: ['Reloaded Multi Grip Pulldown'],
     steps: [
       'Adjust the seat and thigh support, then take a comfortable grip overhead.',
@@ -508,7 +508,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-high-row',
     aliases: ['Reloaded Multi Grip High Row'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -524,7 +524,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes', 'lowerback'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-multi-flex-rdl',
     aliases: ['Reloaded Multi Flex Romanian Deadlift'],
     steps: [
       'Set the handles at an accessible starting height and stand with soft knees.',
@@ -540,7 +540,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-multi-flex-split-squat',
     aliases: ['Reloaded Multi Flex Split Squat'],
     steps: [
       'Adjust the rear foot support and handles for a stable split stance.',
@@ -556,7 +556,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['forearm'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-multi-flex-shrug',
     aliases: ['Reloaded Multi Flex Shrug'],
     steps: [
       'Stand tall with a secure grip on the handles and your arms straight.',

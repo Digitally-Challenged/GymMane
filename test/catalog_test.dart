@@ -16,7 +16,8 @@ void main() {
         continue;
       }
       final frames = file.readAsLinesSync().where((l) => l.trim().isNotEmpty).toList();
-      if (frames.length < 2 || frames.length > 3) broken.add('${e.name}: ${frames.length} frames, esperaba 2 o 3');
+      if (frames.length < 2 || frames.length > 3)
+        broken.add('${e.name}: ${frames.length} frames, esperaba 2 o 3');
       for (final d in frames) {
         try {
           parseSvgPathData(d);
@@ -29,11 +30,13 @@ void main() {
   });
 
   test('almost every original exercise ships an illustration', () {
-    // Expansion entries deliberately use the existing placeholder instead of
-    // showing an unrelated machine or importing unlicensed media.
+    // Original catalogue coverage is independent of expansion coverage.
     final sinArte = kCoreExercises.where((e) => e.art.isEmpty).map((e) => e.name).toList();
-    expect(sinArte.length, lessThan(kCoreExercises.length ~/ 20),
-        reason: 'demasiados ejercicios sin ilustración: $sinArte');
+    expect(
+      sinArte.length,
+      lessThan(kCoreExercises.length ~/ 20),
+      reason: 'demasiados ejercicios sin ilustración: $sinArte',
+    );
   });
 
   test('no orphan art sitting unused in assets', () {
