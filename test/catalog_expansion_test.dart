@@ -37,7 +37,17 @@ void main() {
   test('Arsenal machine histories have distinct IDs and combo movements', () {
     final arsenal = [...kArsenalMachines, ...kArsenalReloaded];
     expect(arsenal, hasLength(73));
-    expect(arsenal.every((e) => e.id.startsWith('arsenal-') && e.art.isEmpty), isTrue);
+    expect(arsenal.every((e) => e.id.startsWith('arsenal-')), isTrue);
+    expect(
+      {
+        for (final e in arsenal)
+          if (e.art.isNotEmpty) e.id: e.art,
+      },
+      {
+        'arsenal-reloaded-leg-extension': 'arsenal-reloaded-leg-extension',
+        'arsenal-reloaded-pendulum-squat': 'arsenal-reloaded-pendulum-squat',
+      },
+    );
     for (final query in [
       'Arsenal Reloaded Pendulum Squat',
       'Arsenal Reloaded Leg Extension',

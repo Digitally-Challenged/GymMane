@@ -316,7 +316,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-reloaded-pendulum-squat',
     aliases: ['RELOADED PENDULUM SQUAT'],
     steps: [
       'Adjust the pads and safety stops, then stand securely on the platform.',
@@ -428,7 +428,7 @@ const kArsenalReloaded = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-reloaded-leg-extension',
     aliases: ['Reloaded Leg Extension'],
     steps: [
       'Align your knees with the machine pivot and position the roller above your ankles.',

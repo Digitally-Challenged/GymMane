@@ -227,7 +227,12 @@ The personal catalogue adds 73 Arsenal Strength movements and 28 cable, dumbbell
 and barbell variations. Search `Arsenal`, `Reloaded`, `M1`, or `FORGE-X`; general
 bench, rack, Smith-machine, and cable-station aliases also find existing movements.
 Combination machines have separate exercise entries. Existing exercise IDs remain
-unchanged. New entries currently use English text and placeholder artwork.
+unchanged. New entries currently use English text. The Reloaded leg extension
+and pendulum squat have original two-pose monochrome illustrations; other new
+entries use placeholder artwork. These are simplified movement illustrations,
+not exact manufacturer diagrams. Regenerate their native vector paths with
+`python3 scripts/build-arsenal-art.py` (requires ImageMagick and Potrace); source
+sheets are in `docs/artwork/arsenal/`.
 Manufacturer source links accompany the Arsenal entries in `lib/catalog/arsenal_*.dart`;
 instructions are original, with no manufacturer images or videos bundled.
 
