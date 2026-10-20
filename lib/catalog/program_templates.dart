@@ -1,3 +1,5 @@
+import '../models/training_method.dart';
+
 class ProgramDay {
   const ProgramDay(this.name, this.exercises, {this.weekday});
 
@@ -7,11 +9,23 @@ class ProgramDay {
 }
 
 class ProgramTemplate {
-  const ProgramTemplate(this.id, this.name, this.days);
+  const ProgramTemplate(
+    this.id,
+    this.name,
+    this.days, {
+    this.targetReps = const [],
+    this.method = TrainingMethod.standard,
+    this.description,
+    this.restSeconds,
+  });
 
   final String id;
   final String name;
   final List<ProgramDay> days;
+  final List<int> targetReps;
+  final TrainingMethod method;
+  final String? description;
+  final int? restSeconds;
 }
 
 const List<ProgramTemplate> kProgramTemplates = [
@@ -159,29 +173,64 @@ const List<ProgramTemplate> kProgramTemplates = [
       ('Triceps Pushdown', 3),
     ], weekday: 5),
   ]),
-  ProgramTemplate('stronglifts', 'StrongLifts 5×5', [
-    ProgramDay('Workout A', [
-      ('Barbell Squat', 5),
-      ('Barbell Bench Press', 5),
-      ('Barbell Row', 5),
-    ], weekday: 1),
-    ProgramDay('Workout B', [
-      ('Barbell Squat', 5),
-      ('Overhead Press', 5),
-      ('Deadlift', 1),
-    ], weekday: 3),
-  ]),
+  ProgramTemplate(
+    'stronglifts',
+    'StrongLifts 5×5',
+    [
+      ProgramDay('Workout A', [
+        ('Barbell Squat', 5),
+        ('Barbell Bench Press', 5),
+        ('Barbell Row', 5),
+      ], weekday: 1),
+      ProgramDay('Workout B', [('Barbell Squat', 5), ('Overhead Press', 5), ('Deadlift', 1)], weekday: 3),
+    ],
+    targetReps: [5],
+    method: TrainingMethod.linear,
+    restSeconds: 180,
+    description:
+        'A/B workouts: 5×5, deadlift 1×5. Rest 3 minutes. Add weight only when every prescribed set reaches five reps. Edit the schedule or use routine rotation to alternate A/B.',
+  ),
+  ProgramTemplate(
+    'linear',
+    'Linear Progression · 3×5',
+    [
+      ProgramDay('Linear A', [
+        ('Barbell Squat', 3),
+        ('Barbell Bench Press', 3),
+        ('Barbell Row', 3),
+      ], weekday: 1),
+      ProgramDay('Linear B', [('Barbell Squat', 3), ('Overhead Press', 3), ('Deadlift', 1)], weekday: 3),
+    ],
+    targetReps: [5],
+    method: TrainingMethod.linear,
+    restSeconds: 180,
+    description:
+        'A/B workouts: 3×5, deadlift 1×5. Rest 3 minutes. Increase after all targets are met; repeat the load after missed reps. Schedule and weights are editable.',
+  ),
+  ProgramTemplate(
+    'reverse-pyramid',
+    'Reverse Pyramid · 6/8/10',
+    [
+      ProgramDay('Reverse Pyramid Upper', [
+        ('Barbell Bench Press', 3),
+        ('Barbell Row', 3),
+        ('Overhead Press', 3),
+      ], weekday: 2),
+      ProgramDay('Reverse Pyramid Lower', [
+        ('Barbell Squat', 3),
+        ('Romanian Deadlift', 3),
+        ('Standing Calf Raise', 3),
+      ], weekday: 5),
+    ],
+    targetReps: [6, 8, 10],
+    method: TrainingMethod.reversePyramid,
+    restSeconds: 180,
+    description:
+        'Upper/lower workouts: 6, 8, then 10 reps at 100%, 90%, and 80% load, rounded down to your weight step. Rest 3 minutes. Increase only after all three targets are met.',
+  ),
   ProgramTemplate('startingstrength', 'Starting Strength', [
-    ProgramDay('Workout A', [
-      ('Barbell Squat', 3),
-      ('Barbell Bench Press', 3),
-      ('Deadlift', 1),
-    ], weekday: 1),
-    ProgramDay('Workout B', [
-      ('Barbell Squat', 3),
-      ('Overhead Press', 3),
-      ('Barbell Row', 3),
-    ], weekday: 3),
+    ProgramDay('Workout A', [('Barbell Squat', 3), ('Barbell Bench Press', 3), ('Deadlift', 1)], weekday: 1),
+    ProgramDay('Workout B', [('Barbell Squat', 3), ('Overhead Press', 3), ('Barbell Row', 3)], weekday: 3),
   ]),
   ProgramTemplate('rr', 'Recommended Routine', [
     ProgramDay('Recommended Routine', [
@@ -219,12 +268,7 @@ const List<ProgramTemplate> kProgramTemplates = [
     ], weekday: 5),
   ]),
   ProgramTemplate('home', 'No Kit', [
-    ProgramDay('Home A', [
-      ('Push Up', 3),
-      ('Pull Up', 3),
-      ('Bodyweight Squat', 3),
-      ('Plank', 3),
-    ], weekday: 2),
+    ProgramDay('Home A', [('Push Up', 3), ('Pull Up', 3), ('Bodyweight Squat', 3), ('Plank', 3)], weekday: 2),
     ProgramDay('Home B', [
       ('Triceps Dip', 3),
       ('Chin Up', 3),

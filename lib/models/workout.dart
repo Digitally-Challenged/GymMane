@@ -1,3 +1,5 @@
+import 'training_method.dart';
+
 enum SetKind { normal, warmup, drop, failure, restPause }
 
 SetKind setKindFrom(Object? raw) {
@@ -187,6 +189,7 @@ class Routine {
       Map<String, List<PlannedSet>>? plan,
       Map<String, int>? rest,
       this.group = '',
+      this.method = TrainingMethod.standard,
       this.color = -1})
       : sets = sets ?? {},
         chained = chained ?? {},
@@ -195,6 +198,7 @@ class Routine {
   final String id;
   String name;
   String group;
+  TrainingMethod method;
   int color;
   final List<String> exerciseIds;
   final Map<String, int> sets;
@@ -210,6 +214,7 @@ class Routine {
         if (sets.isNotEmpty) 's': sets,
         if (chained.isNotEmpty) 'c': chained.toList(),
         if (group.isNotEmpty) 'g': group,
+        if (method != TrainingMethod.standard) 'method': method.name,
         if (color >= 0) 'k': color,
         if (plan.isNotEmpty)
           'p': plan.map((k, v) => MapEntry(k, v.map((s) => s.toJson()).toList())),
@@ -228,6 +233,7 @@ class Routine {
         rest: ((j['r'] as Map?) ?? const {})
             .map((k, v) => MapEntry(k as String, ((v as num).toInt()).clamp(0, 600))),
         group: (j['g'] as String?) ?? '',
+        method: TrainingMethod.fromJson(j['method']),
         color: (j['k'] as num?)?.toInt() ?? -1,
       );
 }

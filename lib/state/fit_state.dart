@@ -19,6 +19,8 @@ import '../models/place.dart';
 import '../models/profile.dart';
 import '../models/progress_shot.dart';
 import '../models/workout.dart';
+import '../models/training_method.dart';
+import '../services/training_program.dart';
 import '../services/alarm_store.dart';
 import '../services/beeper.dart';
 import '../services/exercise_match.dart';
@@ -760,10 +762,18 @@ class FitState extends FitCore
       }
       final id = createRoutine(day.name);
       sameDay[key] = id;
+      _routine(id)!.method = template.method;
       setRoutineGroup(id, template.name);
       for (final entry in ids.entries) {
         toggleRoutineExercise(id, entry.key);
+        if (template.restSeconds != null) setRoutineRest(id, entry.key, template.restSeconds);
         bumpRoutineSets(id, entry.key, entry.value - kDefaultRoutineSets);
+        if (template.targetReps.isNotEmpty) {
+          setPlannedSets(id, entry.key, [
+            for (var i = 0; i < entry.value; i++)
+              PlannedSet(reps: template.targetReps[i.clamp(0, template.targetReps.length - 1)]),
+          ]);
+        }
       }
       if (planWasEmpty && day.weekday != null) weeklyPlan[day.weekday!] = id;
       made++;
@@ -900,6 +910,7 @@ class FitState extends FitCore
       final id = existing?.id ?? createRoutine(name);
       if (existing == null) {
         setRoutineGroup(id, plan.group);
+        _routine(id)!.method = plan.method;
         for (final (ex, item) in picked) {
           toggleRoutineExercise(id, ex.id);
           final sets = _plannedFrom(item);
@@ -962,6 +973,7 @@ class FitState extends FitCore
           {
             'name': routineTitle(r),
             if (r.group.isNotEmpty) 'group': r.group,
+            if (r.method != TrainingMethod.standard) 'method': r.method.name,
             if (withSchedule)
               'days': [for (var d = 1; d <= 7; d++) if (plannedOn(d, r.id)) d],
             'exercises': [

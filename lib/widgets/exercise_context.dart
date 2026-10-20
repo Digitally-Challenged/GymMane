@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../l10n/l10n.dart';
+import '../models/training_method.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -17,7 +18,8 @@ class ExerciseContext extends StatelessWidget {
     final last = fit.lastEffortSummaryFor(exerciseId);
     if (last == null) return const SizedBox.shrink();
     final gc = context.gc;
-    final target = fit.nextTarget(exerciseId);
+    final method = fit.sessionTrainingMethod;
+    final target = method == TrainingMethod.standard ? fit.nextTarget(exerciseId) : null;
     final why = target == null
         ? null
         : target.deload
@@ -54,6 +56,8 @@ class ExerciseContext extends StatelessWidget {
               ),
             ),
           ),
+          if (method != TrainingMethod.standard)
+            Text('${method.label}: ${method.description}', style: AppTheme.f(11.5, color: gc.textTertiary)),
           if (target != null) ...[
             Text(
               '${t.nextTime}  ${fit.nextTargetLabel(exerciseId)}',

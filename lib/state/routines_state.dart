@@ -317,6 +317,7 @@ mixin RoutinesState on FitCore, LibraryState {
     made.plan.addAll({for (final e in source.plan.entries) e.key: [...e.value]});
     made.rest.addAll(source.rest);
     made.group = source.group;
+    made.method = source.method;
     made.color = source.color;
     _persist();
     notifyListeners();

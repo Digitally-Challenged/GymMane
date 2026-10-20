@@ -239,6 +239,17 @@ sheets are in `docs/artwork/arsenal/`.
 Manufacturer source links accompany the Arsenal entries in `lib/catalog/arsenal_*.dart`;
 instructions are original, with no manufacturer images or videos bundled.
 
+Routines → Ready-made plans includes 5×5, Linear Progression (3×5), and Reverse Pyramid
+(6/8/10 at 100%/90%/80% load), with three-minute rests and editable schedules.
+These are working-set prescriptions; add warm-up sets from the workout controls.
+Automatic loads advance only after every prescribed working set meets its rep and
+load target, using the exercise increment or the default weight step. A/B days in
+the same program share progress. Missed or incomplete work repeats the load.
+Reverse-pyramid back-offs round down to the weight step and follow top-set edits
+while preserving manually adjusted, fixed, or completed sets. Fixed routine
+weights override automatic progression. Methods survive backups, duplication,
+and JSON plan sharing; existing routines retain their current settings.
+
 ## Support
 
 GymMane is free and will stay that way. A star, a translation or a clear bug

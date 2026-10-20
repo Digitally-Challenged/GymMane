@@ -1,3 +1,4 @@
+import '../models/training_method.dart';
 import 'dart:convert';
 
 class PlanSet {
@@ -43,11 +44,12 @@ class PlanItem {
 }
 
 class PlanRoutine {
-  const PlanRoutine(this.name, this.items, {this.group = '', this.days = const []});
+  const PlanRoutine(this.name, this.items, {this.group = '', this.days = const [], this.method = TrainingMethod.standard});
   final String name;
   final List<PlanItem> items;
   final String group;
   final List<int> days;
+  final TrainingMethod method;
 }
 
 const _nameKeys = ['name', 'routine', 'title', 'nombre', 'rutina', 'workout', 'day', 'dia'];
@@ -89,6 +91,7 @@ List<PlanRoutine> parsePlan(String raw) {
       items,
       group: own.isNotEmpty ? own : group,
       days: _days(_value(map, _dayKeys)),
+      method: TrainingMethod.fromJson(_value(map, ['method'])),
     ));
   }
 

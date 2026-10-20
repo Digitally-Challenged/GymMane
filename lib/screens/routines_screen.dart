@@ -252,7 +252,10 @@ class RoutinesScreen extends StatelessWidget {
               const SizedBox(height: 16),
               SheetTitle(t.templates, subtitle: t.templatesHint),
               const SizedBox(height: 16),
-              for (final template in kProgramTemplates)
+              for (final template in [
+                ...kProgramTemplates.where((p) => p.targetReps.isNotEmpty),
+                ...kProgramTemplates.where((p) => p.targetReps.isEmpty),
+              ])
                 _templateCard(context, gc, sheet, template),
             ],
           ),
@@ -295,7 +298,7 @@ class RoutinesScreen extends StatelessWidget {
                   Text(template.name,
                       style: AppTheme.f(15, weight: FontWeight.w700, color: gc.text, letterSpacing: 0.5)),
                   const SizedBox(height: 2),
-                  Text(t.templateBlurb(template.id),
+                  Text(template.description ?? t.templateBlurb(template.id),
                       style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary, height: 1.35)),
                   const SizedBox(height: 4),
                   Text(t.dayCount(template.days.length),
