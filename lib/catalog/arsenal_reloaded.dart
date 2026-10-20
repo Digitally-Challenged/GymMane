@@ -1,0 +1,567 @@
+import '../models/exercise.dart';
+
+// Equipment names verified against manufacturer pages on 2026-10-19.
+// Original movement cues; no manufacturer artwork, videos or descriptions copied.
+// Multi-purpose stations are represented by individual movements.
+const kArsenalReloaded = <Exercise>[
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-seated-calf-raise/
+  Exercise(
+    id: 'arsenal-reloaded-seated-calf-raise',
+    name: 'Arsenal Reloaded Seated Calf Raise',
+    primary: 'calves',
+    secondary: [],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED SEATED CALF RAISE'],
+    steps: [
+      'Set the support pads and place the balls of your feet securely on the platform.',
+      'Raise your heels through a controlled range without bouncing.',
+      'Lower your heels slowly while keeping the balls of your feet in contact.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/arsenal-reloaded-viking-press
+  Exercise(
+    id: 'arsenal-reloaded-viking-press',
+    name: 'Arsenal Reloaded Viking Press',
+    primary: 'shoulders',
+    secondary: ['triceps'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED VIKING PRESS'],
+    steps: [
+      'Adjust your position so the handles begin near shoulder height and brace your torso.',
+      'Press upward smoothly without leaning back to finish the repetition.',
+      'Lower the handles under control to the starting position.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-t-bar-row
+  Exercise(
+    id: 'arsenal-reloaded-t-bar-row',
+    name: 'Arsenal Reloaded T-Bar Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED T BAR ROW'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-vertical-row
+  Exercise(
+    id: 'arsenal-reloaded-vertical-row',
+    name: 'Arsenal Reloaded Vertical Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED VERTICAL ROW'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-iso-lat-pulldown
+  Exercise(
+    id: 'arsenal-reloaded-iso-lat-pulldown',
+    name: 'Arsenal Reloaded ISO Lat Pulldown',
+    primary: 'back',
+    secondary: ['biceps'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED ISO LAT PULLDOWN'],
+    steps: [
+      'Adjust the seat and thigh support, then take a comfortable grip overhead.',
+      'Pull your elbows down toward your sides without jerking your torso.',
+      'Let the handles rise under control as your arms extend.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-vertical-leg-press
+  Exercise(
+    id: 'arsenal-reloaded-vertical-leg-press',
+    name: 'Arsenal Reloaded Vertical Leg Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED VERTICAL LEG PRESS'],
+    steps: [
+      'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
+      'Bend your knees within a range that keeps your pelvis and back supported.',
+      'Press the platform away smoothly without snapping your knees straight.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-iso-flat-press
+  Exercise(
+    id: 'arsenal-reloaded-iso-flat-press',
+    name: 'Arsenal Reloaded ISO Flat Press',
+    primary: 'chest',
+    secondary: ['triceps', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED ISO FLAT PRESS'],
+    steps: [
+      'Adjust your support and handle position so the press starts near chest level.',
+      'Press the handles forward while keeping your torso supported and wrists aligned.',
+      'Return slowly to a comfortable depth without forcing your shoulders backward.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-shoulder-press
+  Exercise(
+    id: 'arsenal-reloaded-iso-converging-shoulder-press',
+    name: 'Arsenal Reloaded ISO Converging Shoulder Press',
+    primary: 'shoulders',
+    secondary: ['triceps'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED ISO CONV SHOULDER PRESS'],
+    steps: [
+      'Adjust your position so the handles begin near shoulder height and brace your torso.',
+      'Press upward smoothly without leaning back to finish the repetition.',
+      'Lower the handles under control to the starting position.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-multi-row
+  Exercise(
+    id: 'arsenal-reloaded-iso-multi-row',
+    name: 'Arsenal Reloaded ISO Multi Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED ISO MULTI ROW'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-linear-smith-row-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-linear-smith-row',
+    name: 'Arsenal Reloaded Linear Smith Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED LINEAR SMITH ROW'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-power-squat/
+  Exercise(
+    id: 'arsenal-reloaded-power-squat',
+    name: 'Arsenal Reloaded Power Squat',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED POWER SQUAT'],
+    steps: [
+      'Adjust the pads and safety stops, then stand securely on the platform.',
+      'Bend your hips and knees together while keeping your feet planted.',
+      'Drive through your feet to stand, then engage the stops before stepping away.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-linear-smith-shoulder-press-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-linear-smith-shoulder-press',
+    name: 'Arsenal Reloaded Linear Smith Shoulder Press',
+    primary: 'shoulders',
+    secondary: ['triceps'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED LINEAR SMITH SHOULDER PRESS'],
+    steps: [
+      'Adjust your position so the handles begin near shoulder height and brace your torso.',
+      'Press upward smoothly without leaning back to finish the repetition.',
+      'Lower the handles under control to the starting position.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-posterior-chain-developer
+  Exercise(
+    id: 'arsenal-reloaded-posterior-chain-developer',
+    name: 'Arsenal Reloaded Posterior Chain Developer',
+    primary: 'hamstrings',
+    secondary: ['glutes', 'lowerback'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED POSTERIOR CHAIN DEVELOPER'],
+    steps: [
+      'Set the hip and back supports and range limits for your height before loading.',
+      'Hinge at your hips with a braced trunk and slightly bent knees.',
+      'Extend your hips to stand tall without leaning backward at the top.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-linear-hack-squat
+  Exercise(
+    id: 'arsenal-reloaded-linear-hack-squat',
+    name: 'Arsenal Reloaded Linear Hack Squat',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED LINEAR HACK SQUAT'],
+    steps: [
+      'Adjust the pads and safety stops, then stand securely on the platform.',
+      'Bend your hips and knees together while keeping your feet planted.',
+      'Drive through your feet to stand, then engage the stops before stepping away.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-glute-bridge
+  Exercise(
+    id: 'arsenal-reloaded-glute-bridge',
+    name: 'Arsenal Reloaded Glute Bridge',
+    primary: 'glutes',
+    secondary: ['hamstrings'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED GLUTE BRIDGE'],
+    steps: [
+      'Adjust the hip pad or belt and place your feet securely on the platform.',
+      'Extend your hips until your torso and thighs align without arching your lower back.',
+      'Lower your hips under control and secure the machine before getting out.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-incline-fly/
+  Exercise(
+    id: 'arsenal-reloaded-incline-fly',
+    name: 'Arsenal Reloaded Incline Fly',
+    primary: 'chest',
+    secondary: ['shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED INCLINE FLY'],
+    steps: [
+      'Adjust your position and range stops so your arms start in a comfortable open position.',
+      'Bring the handles together in an arc while keeping a slight elbow bend.',
+      'Open your arms slowly without forcing a deep shoulder stretch.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-belt-squat/
+  Exercise(
+    id: 'arsenal-reloaded-belt-squat',
+    name: 'Arsenal Reloaded Belt Squat',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED BELT SQUAT'],
+    steps: [
+      'Fasten the lifting belt to the machine and set the starting height and safety stop.',
+      'Lower into a squat while keeping your feet planted and torso controlled.',
+      'Stand smoothly through your legs, then secure the machine before releasing the belt.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-incline-press
+  Exercise(
+    id: 'arsenal-reloaded-iso-incline-press',
+    name: 'Arsenal Reloaded ISO Incline Press',
+    primary: 'chest',
+    secondary: ['triceps', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED ISO INCLINE PRESS'],
+    steps: [
+      'Adjust your support and handle position so the press starts near chest level.',
+      'Press the handles forward while keeping your torso supported and wrists aligned.',
+      'Return slowly to a comfortable depth without forcing your shoulders backward.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-linear-leg-press
+  Exercise(
+    id: 'arsenal-reloaded-linear-leg-press',
+    name: 'Arsenal Reloaded Linear Leg Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED LINEAR LEG PRESS'],
+    steps: [
+      'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
+      'Bend your knees within a range that keeps your pelvis and back supported.',
+      'Press the platform away smoothly without snapping your knees straight.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-pendulum-squat
+  Exercise(
+    id: 'arsenal-reloaded-pendulum-squat',
+    name: 'Arsenal Reloaded Pendulum Squat',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED PENDULUM SQUAT'],
+    steps: [
+      'Adjust the pads and safety stops, then stand securely on the platform.',
+      'Bend your hips and knees together while keeping your feet planted.',
+      'Drive through your feet to stand, then engage the stops before stepping away.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded/featured-reloaded/reloaded-standing-chest-press
+  Exercise(
+    id: 'arsenal-reloaded-standing-chest-press',
+    name: 'Arsenal Reloaded Standing Chest Press',
+    primary: 'chest',
+    secondary: ['triceps', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['ARSENAL RELOADED STANDING CHEST PRESS'],
+    steps: [
+      'Adjust your support and handle position so the press starts near chest level.',
+      'Press the handles forward while keeping your torso supported and wrists aligned.',
+      'Return slowly to a comfortable depth without forcing your shoulders backward.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/lower-body-reloaded/reloaded-bilateral-leg-press
+  Exercise(
+    id: 'arsenal-reloaded-bilateral-leg-press',
+    name: 'Arsenal Reloaded Bilateral Leg Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED BILATERAL LEG PRESS'],
+    steps: [
+      'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
+      'Bend your knees within a range that keeps your pelvis and back supported.',
+      'Press the platform away smoothly without snapping your knees straight.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-vertical-chest-press
+  Exercise(
+    id: 'arsenal-reloaded-vertical-chest-press',
+    name: 'Arsenal Reloaded Vertical Chest Press',
+    primary: 'chest',
+    secondary: ['triceps', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED VERTICAL CHEST PRESS'],
+    steps: [
+      'Adjust your support and handle position so the press starts near chest level.',
+      'Press the handles forward while keeping your torso supported and wrists aligned.',
+      'Return slowly to a comfortable depth without forcing your shoulders backward.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-horizontal-leg-press-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-horizontal-leg-press',
+    name: 'Arsenal Reloaded Horizontal Leg Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED HORIZONTAL LEG PRESS'],
+    steps: [
+      'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
+      'Bend your knees within a range that keeps your pelvis and back supported.',
+      'Press the platform away smoothly without snapping your knees straight.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-lever-row
+  Exercise(
+    id: 'arsenal-reloaded-lever-row',
+    name: 'Arsenal Reloaded Lever Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED LEVER ROW'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-hip-hack-press-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-hip-hack-press',
+    name: 'Arsenal Reloaded Hip Hack Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['RELOADED HIP HACK PRESS'],
+    steps: [
+      'Adjust the pads and safety stops, then stand securely on the platform.',
+      'Bend your hips and knees together while keeping your feet planted.',
+      'Drive through your feet to stand, then engage the stops before stepping away.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/ar-le-slc
+  Exercise(
+    id: 'arsenal-reloaded-leg-extension',
+    name: 'Arsenal Reloaded Leg Extension',
+    primary: 'quads',
+    secondary: [],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Leg Extension'],
+    steps: [
+      'Align your knees with the machine pivot and position the roller above your ankles.',
+      'Straighten your knees smoothly while keeping your hips against the seat.',
+      'Bend your knees slowly to return without dropping the resistance.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/ar-le-slc
+  Exercise(
+    id: 'arsenal-reloaded-seated-leg-curl',
+    name: 'Arsenal Reloaded Seated Leg Curl',
+    primary: 'hamstrings',
+    secondary: [],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Seated Leg Curl'],
+    steps: [
+      'Align your knees with the pivot and secure the thigh pad with the roller behind your lower legs.',
+      'Bend your knees to pull the roller down and back without lifting your hips.',
+      'Extend your knees slowly back to the selected starting range.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-tricep-kickback-dip/
+  Exercise(
+    id: 'arsenal-reloaded-triceps-kickback',
+    name: 'Arsenal Reloaded Triceps Kickback',
+    primary: 'triceps',
+    secondary: [],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Triceps Kickback'],
+    steps: [
+      'Adjust your support and hold the handles with your upper arms positioned beside your torso.',
+      'Extend your elbows to move the handles backward while keeping your upper arms steady.',
+      'Bend your elbows slowly to return without swinging your shoulders.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/upper-body-reloaded/reloaded-tricep-kickback-dip/
+  Exercise(
+    id: 'arsenal-reloaded-seated-dip',
+    name: 'Arsenal Reloaded Seated Dip',
+    primary: 'triceps',
+    secondary: ['chest', 'shoulders'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Seated Dip'],
+    steps: [
+      'Set the seat and handles so your shoulders remain comfortable at the start.',
+      'Press the handles downward by extending your elbows with your torso stable.',
+      'Bend your elbows slowly and avoid letting your shoulders roll forward.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-multi-grip-pulldown/high-row-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-multi-grip-pulldown',
+    name: 'Arsenal Reloaded Multi Grip Pulldown',
+    primary: 'back',
+    secondary: ['biceps'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Multi Grip Pulldown'],
+    steps: [
+      'Adjust the seat and thigh support, then take a comfortable grip overhead.',
+      'Pull your elbows down toward your sides without jerking your torso.',
+      'Let the handles rise under control as your arms extend.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/reloaded-multi-grip-pulldown/high-row-arsenal-strength-equipment
+  Exercise(
+    id: 'arsenal-reloaded-multi-grip-high-row',
+    name: 'Arsenal Reloaded Multi Grip High Row',
+    primary: 'back',
+    secondary: ['biceps', 'trapezius'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Multi Grip High Row'],
+    steps: [
+      'Set the seat or support to reach the handles with a stable torso.',
+      'Pull the handles toward your ribs while keeping your shoulders away from your ears.',
+      'Return the handles slowly without rounding your lower back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-multi-flex/
+  Exercise(
+    id: 'arsenal-reloaded-multi-flex-romanian-deadlift',
+    name: 'Arsenal Reloaded Multi Flex Romanian Deadlift',
+    primary: 'hamstrings',
+    secondary: ['glutes', 'lowerback'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Multi Flex Romanian Deadlift'],
+    steps: [
+      'Set the handles at an accessible starting height and stand with soft knees.',
+      'Push your hips back while keeping the handles close and your trunk braced.',
+      'Drive your hips forward to stand without leaning back.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-multi-flex/
+  Exercise(
+    id: 'arsenal-reloaded-multi-flex-split-squat',
+    name: 'Arsenal Reloaded Multi Flex Split Squat',
+    primary: 'quads',
+    secondary: ['glutes'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Multi Flex Split Squat'],
+    steps: [
+      'Adjust the rear foot support and handles for a stable split stance.',
+      'Bend the front knee and lower your hips while keeping the front foot planted.',
+      'Push through the front foot to rise, then repeat on the opposite side.',
+    ],
+  ),
+  // https://www.myarsenalstrength.com/strength-equipment/reloaded/featured-reloaded/reloaded-multi-flex/
+  Exercise(
+    id: 'arsenal-reloaded-multi-flex-shrug',
+    name: 'Arsenal Reloaded Multi Flex Shrug',
+    primary: 'trapezius',
+    secondary: ['forearm'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: '',
+    aliases: ['Reloaded Multi Flex Shrug'],
+    steps: [
+      'Stand tall with a secure grip on the handles and your arms straight.',
+      'Raise your shoulders upward without rolling them or bending your elbows.',
+      'Lower your shoulders slowly while keeping your torso still.',
+    ],
+  ),
+];
