@@ -39,15 +39,13 @@ void main() {
     expect(arsenal, hasLength(73));
     expect(arsenal.every((e) => e.id.startsWith('arsenal-')), isTrue);
     expect(
-      {
-        for (final e in arsenal)
-          if (e.art.isNotEmpty) e.id: e.art,
-      },
-      {
-        'arsenal-reloaded-leg-extension': 'arsenal-reloaded-leg-extension',
-        'arsenal-reloaded-pendulum-squat': 'arsenal-reloaded-pendulum-squat',
-      },
+      arsenal.where((e) => e.art.isEmpty).map((e) => e.name),
+      isEmpty,
+      reason: 'Every Arsenal movement must have matching artwork, not a placeholder.',
     );
+    for (final id in ['arsenal-reloaded-leg-extension', 'arsenal-reloaded-pendulum-squat']) {
+      expect(arsenal.singleWhere((e) => e.id == id).art, id);
+    }
     for (final query in [
       'Arsenal Reloaded Pendulum Squat',
       'Arsenal Reloaded Leg Extension',

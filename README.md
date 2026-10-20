@@ -215,6 +215,9 @@ Open `http://localhost:8091`. The script prepares a versioned offline cache and 
 the renderer locally. A plain `flutter build web` does not prepare that cache. For
 hosting, serve the complete `build/web` directory over HTTPS at a stable origin.
 Allow the initial cache download to finish before testing offline reload.
+Later releases show an update notice with a Reload button. For an older installed
+trial without that notice, open the same address with `?update=1` to refresh after
+the new cache is ready. This keeps the origin and stored workout data intact.
 
 This is a disposable-data trial pending physical-phone validation. Workouts stay in
 that browser's local storage; hosting the files does not sync or back up workouts.
@@ -227,10 +230,10 @@ The personal catalogue adds 73 Arsenal Strength movements and 28 cable, dumbbell
 and barbell variations. Search `Arsenal`, `Reloaded`, `M1`, or `FORGE-X`; general
 bench, rack, Smith-machine, and cable-station aliases also find existing movements.
 Combination machines have separate exercise entries. Existing exercise IDs remain
-unchanged. New entries currently use English text. The Reloaded leg extension
-and pendulum squat have original two-pose monochrome illustrations; other new
-entries use placeholder artwork. These are simplified movement illustrations,
-not exact manufacturer diagrams. Regenerate their native vector paths with
+unchanged. New entries currently use English text. All 73 Arsenal entries have
+monochrome movement artwork, using 34 original two-pose illustrations and matching
+existing GymMane illustrations. These are simplified movement illustrations,
+not exact manufacturer diagrams. Regenerate the original native vector paths with
 `python3 scripts/build-arsenal-art.py` (requires ImageMagick and Potrace); source
 sheets are in `docs/artwork/arsenal/`.
 Manufacturer source links accompany the Arsenal entries in `lib/catalog/arsenal_*.dart`;

@@ -12,7 +12,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-chest-press',
     aliases: ['FORGEX WIDE CHEST PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -28,7 +28,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-high-row',
     aliases: ['FORGEX SCORPION HIGH ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -44,7 +44,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['chest', 'triceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-lat-pullover',
     aliases: ['M1 SELECTORIZED LAT PULLOVER'],
     steps: [
       'Adjust the seat and pads so the overhead starting position is comfortable.',
@@ -60,7 +60,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 't-bar-row',
     aliases: ['ALPHA BENT-OVER ROW BENCH (WITH SPECIAL BAR)'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -76,7 +76,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['glutes', 'hamstrings'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'back-extension',
     aliases: ['ALPHA 45 DEGREE BACK EXTENSION'],
     steps: [
       'Adjust the hip pad so you can hinge freely and secure your feet.',
@@ -92,7 +92,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['glutes'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-pivot-leg-press',
     aliases: ['FORGEX PIVOT LEG PRESS'],
     steps: [
       'Set the seat, platform and safety stops before loading, keeping your feet fully supported.',
@@ -108,7 +108,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-standing-leg-curl',
     aliases: ['M1 SELECTORIZED STANDING LEG CURL'],
     steps: [
       'Align the working knee with the pivot and place the lower leg against the roller.',
@@ -124,7 +124,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-chest-press',
     aliases: ['FORGEX CONVERGING CHEST PRESS'],
     steps: [
       'Adjust your support and handle position so the press starts near chest level.',
@@ -140,7 +140,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['triceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-shoulder-press',
     aliases: ['FORGEX SHOULDER PRESS'],
     steps: [
       'Adjust your position so the handles begin near shoulder height and brace your torso.',
@@ -156,7 +156,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'leg-curl',
     aliases: ['M1 SELECTORIZED LYING LEG CURL'],
     steps: [
       'Lie face down with your knees aligned to the pivot and the roller above your heels.',
@@ -172,7 +172,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-row',
     aliases: ['FORGEX SEATED ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -188,7 +188,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'leg-curl',
     aliases: ['FORGEX LYING LEG CURL'],
     steps: [
       'Lie face down with your knees aligned to the pivot and the roller above your heels.',
@@ -204,7 +204,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-seated-triceps-extension',
     aliases: ['FORGEX SEATED TRICEP EXTENSION'],
     steps: [
       'Adjust the seat and arm support so your elbows align with the extension movement.',
@@ -220,7 +220,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['hamstrings'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-glute-isolator',
     aliases: ['M1 SELECTORIZED GLUTE ISOLATOR'],
     steps: [
       'Adjust the torso support and position the working foot on the moving platform.',
@@ -236,7 +236,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['glutes', 'calves'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-glute-ham-raise',
     aliases: ['ALPHA GLUTE/HAM DEVELOPER'],
     steps: [
       'Adjust the footplate and pads so your knees are supported and your feet are secured.',
@@ -252,7 +252,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['forearm'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-biceps-curl',
     aliases: ['M1 SELECTORIZED BICEP CURL'],
     steps: [
       'Adjust the seat or support to align your elbows with the curl movement.',
@@ -268,7 +268,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-upright-decline-fly',
     aliases: ['FORGEX UPRIGHT DECLINE FLY'],
     steps: [
       'Adjust your position and range stops so your arms start in a comfortable open position.',
@@ -284,7 +284,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-triceps-extension',
     aliases: ['M1 SELECTORIZED OVERHEAD TRICEP EXTENSION'],
     steps: [
       'Set the seat and handles for the overhead position and brace your torso.',
@@ -300,7 +300,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-standing-lateral-raise',
     aliases: ['M-1 SELECTORIZED STANDING LATERAL RAISE'],
     steps: [
       'Adjust the arm pads or handles and stand with a stable torso.',
@@ -316,7 +316,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-donkey-calf-raise',
     aliases: ['M1 SELECTORIZED DONKEY CALF RAISE'],
     steps: [
       'Set the support pads and place the balls of your feet securely on the platform.',
@@ -332,7 +332,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'leg-extension',
     aliases: ['M1 SELECTORIZED SEATED LEG EXTENSION MACHINE'],
     steps: [
       'Align your knees with the machine pivot and position the roller above your ankles.',
@@ -348,7 +348,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['forearm'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-standing-preacher-curl',
     aliases: ['ALPHA STANDING PREACHER CURL BENCH'],
     steps: [
       'Adjust the seat or support to align your elbows with the curl movement.',
@@ -364,7 +364,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['forearm'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-biceps-curl',
     aliases: ['FORGEX SEATED ISO BICEP CURL'],
     steps: [
       'Adjust the seat or support to align your elbows with the curl movement.',
@@ -380,7 +380,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'lat-pulldown',
     aliases: ['M1 SELECTORIZED LAT PULLDOWN'],
     steps: [
       'Adjust the seat and thigh support, then take a comfortable grip overhead.',
@@ -396,7 +396,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-reloaded-leg-extension',
     aliases: ['FORGEX LEG EXTENSION'],
     steps: [
       'Align your knees with the machine pivot and position the roller above your ankles.',
@@ -412,7 +412,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'sissy-squat',
     aliases: ['ALPHA SISSY SQUAT STAND'],
     steps: [
       'Secure your feet and calves in the stand and hold a stable support if needed.',
@@ -428,7 +428,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'standing-calf-raise',
     aliases: ['M1 SELECTORIZED STANDING CALF RAISE'],
     steps: [
       'Set the support pads and place the balls of your feet securely on the platform.',
@@ -444,7 +444,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'machine-row',
     aliases: ['FORGEX DIVERGING ROW'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -460,7 +460,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'hip-adduction-machine',
     aliases: ['M1 Hip Adduction'],
     steps: [
       'Adjust the seat and range so the pads support your inner thighs comfortably.',
@@ -476,7 +476,7 @@ const kArsenalMachines = <Exercise>[
     secondary: [],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'hip-abduction-machine',
     aliases: ['M1 Hip Abduction'],
     steps: [
       'Adjust the seat and place your outer thighs against the pads.',
@@ -492,7 +492,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'pec-deck',
     aliases: ['M1 Pec Fly'],
     steps: [
       'Adjust your position and range stops so your arms start in a comfortable open position.',
@@ -508,7 +508,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['back', 'trapezius'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'reverse-pec-deck',
     aliases: ['M1 Rear Delt Fly'],
     steps: [
       'Face the support and set the handles at approximately shoulder height.',
@@ -524,7 +524,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['obliques'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'captains-chair-knee-raise',
     aliases: ['Alpha Vertical Knee Raise'],
     steps: [
       'Support your forearms on the pads and keep your shoulders away from your ears.',
@@ -540,7 +540,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['chest', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-parallel-bar-dip',
     aliases: ['Alpha Parallel Bar Dip'],
     steps: [
       'Hold the parallel handles and support your body with your shoulders controlled.',
@@ -556,7 +556,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['glutes', 'calves'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-sled-push',
     aliases: ['Alpha Sled Push'],
     steps: [
       'Load the sled appropriately for the surface and grip the push handles.',
@@ -572,7 +572,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'quads'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'arsenal-sled-pull',
     aliases: ['Alpha Sled Pull'],
     steps: [
       'Attach a suitable pulling strap and take up the slack with a stable stance.',
@@ -588,7 +588,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps', 'trapezius'],
     equipment: 'Cable',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'seated-row',
     aliases: ['M1 Basic Trainer Seated Row'],
     steps: [
       'Set the seat or support to reach the handles with a stable torso.',
@@ -604,7 +604,7 @@ const kArsenalMachines = <Exercise>[
     secondary: ['biceps'],
     equipment: 'Cable',
     difficulty: 'Intermediate',
-    art: '',
+    art: 'lat-pulldown',
     aliases: ['M1 Basic Trainer Lat Pulldown'],
     steps: [
       'Adjust the seat and thigh support, then take a comfortable grip overhead.',
