@@ -6,6 +6,7 @@ import '../catalog/exercise_catalog.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
+import '../models/training_method.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -233,6 +234,18 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
         ]),
         const SizedBox(height: 18),
         _colors(gc, routine),
+        if (routine.method != TrainingMethod.standard) ...[
+          const SizedBox(height: 16),
+          Text(
+            routine.method.label,
+            style: AppTheme.f(14, weight: FontWeight.w700, color: gc.text),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${routine.method.description} Automatic loads use your exercise increment or default weight step. Set a fixed weight to override it.',
+            style: AppTheme.f(12, color: gc.textSecondary, height: 1.4),
+          ),
+        ],
         const SizedBox(height: 22),
         Text(t.schedule, style: AppTheme.f(12, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 1.5)),
         const SizedBox(height: 10),

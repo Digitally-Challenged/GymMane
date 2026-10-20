@@ -199,13 +199,54 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     popRoute();
   }
 
+  TrainingMethod get sessionTrainingMethod =>
+      _routine(session?.routineId ?? '')?.method ?? TrainingMethod.standard;
+
+  List<PlannedSet> _programPlan(Routine routine, String id) {
+    final plan = plannedSets(routine, id);
+    if (routine.method == TrainingMethod.standard ||
+        isRepsOnly(id) ||
+        isAssisted(id) ||
+        modeOf(id).isNotEmpty) {
+      return plan;
+    }
+    // A/B days in the same program share exercise progress.
+    final programIds = {
+      routine.id,
+      if (routine.group.isNotEmpty)
+        for (final r in routines)
+          if (r.group == routine.group && r.method == routine.method) r.id,
+    };
+    final history =
+        sessions
+            .where(
+              (s) =>
+                  programIds.contains(s.routineId) &&
+                  s.exercises.any((e) => e.id == id && e.workingSets.isNotEmpty),
+            )
+            .toList()
+          ..sort((a, b) => b.date.compareTo(a.date));
+    final previous = history.isEmpty
+        ? <LoggedSet>[]
+        : history.first.exercises.firstWhere((e) => e.id == id).workingSets;
+    final fallback = lastSetsFor(id).where((s) => s.counts).firstOrNull?.weight ?? 20.0;
+    return programOpeningPlan(
+      method: routine.method,
+      plan: plan,
+      previous: previous,
+      fallbackWeightKg: fallback,
+      incrementKg: progressStep[id] ?? fromDisplayWeight(weightStep),
+      roundingKg: fromDisplayWeight(weightStep),
+    );
+  }
+
   void startRoutine(Routine r, {DateTime? on}) {
     if (_backToParked()) return;
     final exs = routineExercises(r);
     if (exs.isEmpty) return;
     _beginSession(exs,
         plan: {for (final ex in exs) ex.id: routineSets(r, ex.id)},
-        planned: {for (final ex in exs) if (hasPlan(r, ex.id)) ex.id: plannedSets(r, ex.id)},
+        planned: {for (final ex in exs) if (hasPlan(r, ex.id)) ex.id: _programPlan(r, ex.id)},
         chained: {for (final ex in exs) if (chainsToNext(r, ex.id)) ex.id},
         routineId: r.id,
         on: on);
@@ -1166,9 +1207,34 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   }
 
   void setSessionWeight(int exIdx, int setIdx, double kg) {
-    _carry(exIdx, setIdx, (st) => st.weight, (st, v) => st.weight = v, _round3(kg.clamp(0, 1000)));
+    final sets = session!.exercises[exIdx].sets;
+    final before = sets[setIdx].weight;
+    final next = _round3(kg.clamp(0, 1000));
+    final id = session!.exercises[exIdx].id;
+    if (sessionTrainingMethod == TrainingMethod.reversePyramid &&
+        !isRepsOnly(id) && !isAssisted(id) && modeOf(id).isEmpty) {
+      sets[setIdx].weight = next;
+      _adjustPyramidBackoffs(exIdx, setIdx, before, next);
+    } else {
+      _carry(exIdx, setIdx, (st) => st.weight, (st, v) => st.weight = v, next);
+    }
     _persist();
     notifyListeners();
+  }
+
+  void _adjustPyramidBackoffs(int exIdx, int setIdx, double before, double next) {
+    if (sessionTrainingMethod != TrainingMethod.reversePyramid) return;
+    final ex = session!.exercises[exIdx];
+    final work = ex.sets.where((s) => s.counts).toList();
+    if (work.isEmpty || ex.sets[setIdx] != work.first) return;
+    final plan = _routine(session!.routineId!)!.plan[ex.id]?.where((s) => s.kind != SetKind.warmup).toList();
+    if (plan == null || plan.length != work.length) return;
+    final grid = fromDisplayWeight(weightStep);
+    for (var i = 1; i < work.length; i++) {
+      if (work[i].done || plan[i].weightKg != null) continue;
+      if ((work[i].weight - pyramidWeight(before, i, grid)).abs() > 0.001) continue;
+      work[i].weight = pyramidWeight(next, i, grid);
+    }
   }
 
   void _carry<T>(int exIdx, int setIdx, T Function(SessionSet) read, void Function(SessionSet, T) write, T value) {
