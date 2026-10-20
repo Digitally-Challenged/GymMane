@@ -223,6 +223,14 @@ version. Browser clearing, storage limits, or changing the origin can affect acc
 to data. Background rest alerts, native keep-awake, and media capture are not part
 of this trial. No openGym catalogue or media has been added.
 
+The personal catalogue adds 73 Arsenal Strength movements and 28 cable, dumbbell,
+and barbell variations. Search `Arsenal`, `Reloaded`, `M1`, or `FORGE-X`; general
+bench, rack, Smith-machine, and cable-station aliases also find existing movements.
+Combination machines have separate exercise entries. Existing exercise IDs remain
+unchanged. New entries currently use English text and placeholder artwork.
+Manufacturer source links accompany the Arsenal entries in `lib/catalog/arsenal_*.dart`;
+instructions are original, with no manufacturer images or videos bundled.
+
 ## Support
 
 GymMane is free and will stay that way. A star, a translation or a clear bug

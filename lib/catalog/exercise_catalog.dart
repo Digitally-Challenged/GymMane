@@ -1,6 +1,18 @@
 import '../models/exercise.dart';
+import 'arsenal_machines.dart';
+import 'arsenal_reloaded.dart';
+import 'equipment_aliases.dart';
+import 'free_weight_expansion.dart';
 
-const List<Exercise> kExercises = [
+final List<Exercise> kExercises = List.unmodifiable([
+  ...kCoreExercises.map(withEquipmentAliases),
+  ...kArsenalMachines,
+  ...kArsenalReloaded,
+  ...kFreeWeightExpansion.map(withEquipmentAliases),
+]);
+
+// Preserve the original catalogue and its IDs when adding optional artwork-free entries.
+const List<Exercise> kCoreExercises = [
   Exercise(
     id: 'EIeI8Vf',
     name: 'Barbell Bench Press',
