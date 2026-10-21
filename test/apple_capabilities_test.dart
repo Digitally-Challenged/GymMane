@@ -13,6 +13,7 @@ void main() {
     final result = await AppleCapabilities.query();
     expect(result.homeWidgets, isFalse);
     expect(result.liveActivities, isFalse);
+    expect(result.isPhone, isFalse);
   });
 
   test('only explicit native capability grants enable extensions', () async {
@@ -27,5 +28,12 @@ void main() {
     final result = await AppleCapabilities.query();
     expect(result.homeWidgets, isFalse);
     expect(result.liveActivities, isFalse);
+  });
+
+  test('tablet and unknown devices cannot claim the phone export role', () async {
+    for (final deviceClass in ['tablet', 'unknown', 'phone']) {
+      messenger.setMockMethodCallHandler(channel, (_) async => {'deviceClass': deviceClass});
+      expect((await AppleCapabilities.query()).isPhone, deviceClass == 'phone');
+    }
   });
 }
