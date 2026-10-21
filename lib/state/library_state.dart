@@ -16,7 +16,13 @@ mixin LibraryState on FitCore {
             if (secondaryOverride[e.id] case final s?) e.copyWith(secondary: _cleanSecondary(e.primary, s)) else e,
         ]),
         ...customExercises,
+        ..._routineDefinitions.values.where((e) => !customExercises.any((c) => c.id == e.id)),
       ];
+
+  Map<String, Exercise> get _routineDefinitions => {
+    for (final routine in routines)
+      for (final id in routine.exerciseIds) id: ?routine.exerciseDefinitions[id],
+  };
 
   bool hasSecondaryOverride(String id) => secondaryOverride.containsKey(id);
 
@@ -24,9 +30,10 @@ mixin LibraryState on FitCore {
     final ex = exerciseById(id);
     if (ex == null) return;
     final clean = _cleanSecondary(ex.primary, muscles);
-    final i = customExercises.indexWhere((e) => e.id == id);
+    final i = _editableCustomIndex(id);
     if (i >= 0) {
       customExercises[i] = customExercises[i].copyWith(secondary: clean);
+      _updateRoutineDefinitions(customExercises[i]);
     } else {
       final base = kExercises.firstWhere((e) => e.id == id);
       if (_sameMuscles(clean, _cleanSecondary(base.primary, base.secondary))) {
@@ -214,6 +221,23 @@ mixin LibraryState on FitCore {
     return id;
   }
 
+  // Editing a carried dependency promotes it only into this account's custom
+  // library. Merely resolving or viewing a routine does not copy catalog state.
+  int _editableCustomIndex(String id) {
+    final index = customExercises.indexWhere((e) => e.id == id);
+    if (index >= 0) return index;
+    final carried = _routineDefinitions[id];
+    if (carried == null) return -1;
+    customExercises.add(carried);
+    return customExercises.length - 1;
+  }
+
+  void _updateRoutineDefinitions(Exercise exercise) {
+    for (final routine in routines) {
+      if (routine.exerciseIds.contains(exercise.id)) routine.exerciseDefinitions[exercise.id] = exercise;
+    }
+  }
+
   void updateCustomExercise(
     String id, {
     required String name,
@@ -226,8 +250,9 @@ mixin LibraryState on FitCore {
     List<String>? aliases,
     String? kind,
   }) {
-    final i = customExercises.indexWhere((e) => e.id == id);
-    if (i < 0 || name.trim().isEmpty) return;
+    if (name.trim().isEmpty) return;
+    final i = _editableCustomIndex(id);
+    if (i < 0) return;
     customExercises[i] = customExercises[i].copyWith(
       name: name.trim(),
       primary: primary,
@@ -239,6 +264,7 @@ mixin LibraryState on FitCore {
       aliases: _cleanAliases(name, aliases ?? customExercises[i].aliases),
       kind: kind == null ? null : (kExerciseKinds.contains(kind) ? kind : ''),
     );
+    _updateRoutineDefinitions(customExercises[i]);
     modeOverride.remove(id);
     _persist();
     notifyListeners();
@@ -270,7 +296,7 @@ mixin LibraryState on FitCore {
     for (final e in customExercises) {
       if (e.id == id) return e.mode;
     }
-    return kExerciseModes[id] ?? '';
+    return _routineDefinitions[id]?.mode ?? kExerciseModes[id] ?? '';
   }
 
   bool isCardio(String id) => modeOf(id) == 'cardio';
@@ -281,6 +307,7 @@ mixin LibraryState on FitCore {
 
   void setExerciseMode(String id, String mode) {
     final base = customExercises.where((e) => e.id == id).map((e) => e.mode).firstOrNull ??
+        _routineDefinitions[id]?.mode ??
         kExerciseModes[id] ??
         '';
     final wanted = mode == 'weight' ? '' : mode;
@@ -299,6 +326,7 @@ mixin LibraryState on FitCore {
     modeOverride.remove(id);
     for (final r in routines) {
       r.exerciseIds.remove(id);
+      r.exerciseDefinitions.remove(id);
     }
     favorites.remove(id);
     _persist();
@@ -454,5 +482,5 @@ mixin LibraryState on FitCore {
     notifyListeners();
   }
 
-  bool isCustom(String id) => customExercises.any((e) => e.id == id);
+  bool isCustom(String id) => customExercises.any((e) => e.id == id) || _routineDefinitions.containsKey(id);
 }

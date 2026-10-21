@@ -3,6 +3,7 @@ import '../../models/identity.dart';
 import '../migration/identity_migration.dart';
 import 'storage_backend.dart';
 import 'health_delivery_registry.dart';
+import 'routine_dependencies.dart';
 
 Map<String, dynamic> _copy(Map<String, dynamic> value) =>
     jsonDecode(jsonEncode(value)) as Map<String, dynamic>;
@@ -25,11 +26,18 @@ class SyncRepository {
       if (saved['version'] != 1 || saved['namespaces'] is! Map || saved['active'] is! String) {
         throw const FormatException('Unsupported or corrupt local repository');
       }
-      _root = _copy(saved);
-      // Eagerly validate documents; never replace a corrupt repository with empty data.
-      for (final value in (_root['namespaces'] as Map).values) {
-        migrateIdentities(Map<String, dynamic>.from(value['document'] as Map));
+      final validated = _copy(saved);
+      // Eagerly validate and upgrade all documents before publishing any state.
+      // Existing account routines also need a new operation carrying dependencies.
+      for (final entry in (validated['namespaces'] as Map).entries) {
+        final ns = (entry.value as Map).cast<String, dynamic>();
+        final before = Map<String, dynamic>.from(ns['document'] as Map);
+        final after = migrateIdentities(before);
+        _recordChanges(ns, before, after, enqueue: entry.key != 'guest');
+        ns['document'] = after;
       }
+      if (jsonEncode(validated) != jsonEncode(saved)) await backend.write(validated);
+      _root = validated;
       return;
     }
     final migrated = migrateIdentities(legacy);
@@ -102,7 +110,9 @@ class SyncRepository {
   }
 
   Map<String, dynamic> deliveryLedger(String account, String destination) {
-    final ledger = _copy(((_space(_root, account)['deliveries'] as Map?)?[destination] as Map<String, dynamic>?) ?? {});
+    final ledger = _copy(
+      ((_space(_root, account)['deliveries'] as Map?)?[destination] as Map<String, dynamic>?) ?? {},
+    );
     return destination == 'healthkit' ? readHealthDelivery(_root, account, ledger) : ledger;
   }
 
@@ -173,6 +183,7 @@ class SyncRepository {
           (ns['conflicts'] as Map)[key] = _copy(remote);
         }
       }
+      hydrateRoutineDependencies(merged);
       _recordChanges(ns, current, merged, enqueue: account != 'guest');
       ns['document'] = merged;
     }).then((_) {
@@ -233,6 +244,7 @@ class SyncRepository {
           if (ids.add(row['id'])) row,
       ];
     }
+    hydrateRoutineDependencies(document);
     _recordChanges(ns, ns['document'] as Map<String, dynamic>, document, enqueue: true);
     ns['document'] = document;
     transferGuestHealthDelivery(root, account, {
@@ -286,6 +298,7 @@ class SyncRepository {
       final rows = (document[field] ??= <dynamic>[]) as List;
       rows.removeWhere((row) => row['id'] == entityId);
       if (remote['deleted'] != true) rows.add(remote['payload']);
+      hydrateRoutineDependencies(document.cast<String, dynamic>());
     }
   });
 
@@ -418,6 +431,7 @@ class SyncRepository {
         rows.removeWhere((row) => row['id'] == entity['entityId']);
         if (entity['deleted'] != true) rows.add(entity['payload']);
       }
+      hydrateRoutineDependencies((ns['document'] as Map).cast<String, dynamic>());
       ns['cursor'] = nextCursor;
     });
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import '../../models/identity.dart';
 import '../../models/workout.dart';
+import '../persistence/routine_dependencies.dart';
 
 /// Pure and repeatable: preserve old backups and never alter catalog IDs.
 Map<String, dynamic> migrateIdentities(Map<String, dynamic> source) {
@@ -46,5 +47,6 @@ Map<String, dynamic> migrateIdentities(Map<String, dynamic> source) {
   if (data['live'] case final Map live) {
     if (live['r'] case final String id) live['r'] = routineId(id);
   }
+  hydrateRoutineDependencies(data);
   return data;
 }

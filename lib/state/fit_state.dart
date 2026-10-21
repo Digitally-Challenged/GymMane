@@ -89,6 +89,7 @@ class FitState extends FitCore
   }
 
   void loadFromStore() {
+    routineStartError = null;
     final data = withMergedExercises(Store.instance.load());
     _loading = true;
     saveAndExit();
@@ -440,6 +441,31 @@ class FitState extends FitCore
     }
   }
 
+  Map<String, dynamic> _portableRoutineJson(Routine routine) {
+    final json = routine.toJson();
+    final definitions = <String, dynamic>{
+      for (final id in routine.exerciseIds)
+        if (!kExercises.any((e) => e.id == id))
+          if (exerciseById(id) case final exercise?) id: exercise.toJson(),
+    };
+    if (definitions.isNotEmpty) json['exerciseDefinitions'] = definitions;
+    return json;
+  }
+
+  /// Inspect this before starting to offer repair/removal of missing movements.
+  MissingRoutineExercises? routineStartError;
+
+  @override
+  void startRoutine(Routine r, {DateTime? on}) {
+    final missing = missingRoutineExerciseIds(r);
+    routineStartError = missing.isEmpty ? null : MissingRoutineExercises(r.id, missing);
+    if (routineStartError != null) {
+      notifyListeners();
+      return;
+    }
+    super.startRoutine(r, on: on);
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         'profile': profile.toJson(),
@@ -495,7 +521,7 @@ class FitState extends FitCore
         'places': places.map((p) => p.toJson()).toList(),
         'place': activePlaceId,
         'checkins': checkins.toList(),
-        'routines': routines.map((r) => r.toJson()).toList(),
+        'routines': routines.map(_portableRoutineJson).toList(),
         'weeklyPlan': weeklyPlan.map((k, v) => MapEntry(k.toString(), v)),
         'planExtras': planExtras.map((k, v) => MapEntry(k.toString(), v)),
         'multiPlan': multiPlan,
@@ -535,6 +561,7 @@ class FitState extends FitCore
       };
 
   void resetAllData() {
+    routineStartError = null;
     _saveDebounce?.cancel();
     _sessionTimer?.cancel();
     _restTimer?.cancel();
