@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - home_widget (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - home_widget (from `.symlinks/plugins/home_widget/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  home_widget:
+    :path: ".symlinks/plugins/home_widget/ios"
+
+SPEC CHECKSUMS:
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  home_widget: f169fc41fd807b4d46ab6615dc44d62adbf9f64f
+
+PODFILE CHECKSUM: 2230f4076ac3be1a6cd2e8c36440cc749ee5ac27
+
+COCOAPODS: 1.17.0
