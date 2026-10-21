@@ -143,13 +143,16 @@ class LoggedSession {
     this.routineId,
     this.name,
     this.origin = 'gymmane',
+    DateTime? startedAt,
     int? utcOffsetSeconds,
-  }) : id = id ?? newEntityId(),
+  }) : startedAt = startedAt?.toUtc(),
+       id = id ?? newEntityId(),
        utcOffsetSeconds = utcOffsetSeconds ?? date.timeZoneOffset.inSeconds;
   final String id;
   final String origin;
   final int utcOffsetSeconds;
   final DateTime date;
+  final DateTime? startedAt;
   int durationSec;
   final List<LoggedExercise> exercises;
   final String? routineId;
@@ -165,6 +168,7 @@ class LoggedSession {
     'utcOffsetSeconds': utcOffsetSeconds,
     'd': date.toUtc().toIso8601String(),
     'dur': durationSec,
+    if (startedAt != null) 'startedAt': startedAt!.toUtc().toIso8601String(),
     'ex': exercises.map((e) => e.toJson()).toList(),
     if (routineId != null) 'r': routineId,
     if (name != null) 'n': name,
@@ -175,6 +179,7 @@ class LoggedSession {
     (j['ex'] as List).map((e) => LoggedExercise.fromJson(e as Map<String, dynamic>)).toList(),
     id: j['id'] as String? ?? legacyEntityId('workout', j),
     origin: j['origin'] as String? ?? 'unknown',
+    startedAt: DateTime.tryParse(j['startedAt'] as String? ?? '')?.toUtc(),
     utcOffsetSeconds: (j['utcOffsetSeconds'] as num?)?.toInt(),
     routineId: j['r'] as String?,
     name: j['n'] as String?,

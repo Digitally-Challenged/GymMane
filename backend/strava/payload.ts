@@ -1,5 +1,5 @@
 import { coreMovements } from "./core-movements.js";
-import { object } from "../src/protocol.js";
+import { object, workoutElapsedSeconds } from "../src/protocol.js";
 // Exact identifiers from https://developers.strava.com/docs/uploads/ (2026-10-20).
 // IDs, not user-editable names, determine movement. Unmapped exercises reject the
 // whole export so that neither invented exercises nor silently incomplete sets ship.
@@ -134,6 +134,7 @@ export interface StrengthPayload {
   start_time: string;
   utc_offset: number;
   elapsed_time: number;
+  active_time: number;
   creator: { name: string };
   sets: StrengthSet[];
 }
@@ -143,12 +144,8 @@ export function strengthPayload(raw: unknown): StrengthPayload {
   };
   if (!object(raw) || raw.origin !== "gymmane")
     return fail("Only GymMane-origin workouts can be exported");
-  if (
-    typeof raw.d !== "string" ||
-    !/(Z|[+-]\d{2}:\d{2})$/.test(raw.d) ||
-    !Number.isFinite(Date.parse(raw.d))
-  )
-    return fail("Workout timestamp needs an explicit timezone");
+  const elapsed = workoutElapsedSeconds(raw);
+  if (elapsed === null) return fail("Actual workout start timing is required");
   if (
     !Number.isSafeInteger(raw.dur) ||
     (raw.dur as number) <= 0 ||
@@ -197,11 +194,13 @@ export function strengthPayload(raw: unknown): StrengthPayload {
     return fail("Export requires between 1 and 1000 sets");
   return {
     version: "1.0",
-    start_time: new Date(
-      Date.parse(raw.d) - (raw.dur as number) * 1000,
-    ).toISOString(),
+    start_time: raw.startedAt as string,
     utc_offset: offset as number,
-    elapsed_time: raw.dur as number,
+    // Strava JSON documents elapsed_time and optional active_time separately:
+    // https://developers.strava.com/docs/uploads/#json---strength-training-limited
+    // Integer seconds round up, including the validation tolerance of one second.
+    elapsed_time: Math.max(Math.ceil(elapsed), raw.dur as number),
+    active_time: raw.dur as number,
     creator: { name: "GymMane" },
     sets,
   };

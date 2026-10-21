@@ -20,6 +20,7 @@ const env = {
 const fixture = () => ({
   origin: "gymmane",
   d: "2026-10-20T17:30:00Z",
+  startedAt: "2026-10-20T17:00:00Z",
   dur: 1800,
   utcOffsetSeconds: -18000,
   n: "Strength",
@@ -136,6 +137,26 @@ async function due() {
   );
 }
 
+test("paused workouts retain actual start, elapsed and active time", () => {
+  const p = strengthPayload({ ...fixture(), dur: 600 });
+  assert.equal(p.start_time, "2026-10-20T17:00:00Z");
+  assert.equal(p.elapsed_time, 1800);
+  assert.equal(p.active_time, 600);
+  for (const startedAt of [
+    undefined,
+    null,
+    "2026-02-30T17:00:00Z",
+    "2026-10-20T17:00:00",
+    "2026-10-20T17:31:00Z",
+    "2026-10-20T17:29:59Z",
+  ]) {
+    assert.throws(
+      () => strengthPayload({ ...fixture(), startedAt }),
+      /start|timing/i,
+    );
+  }
+});
+
 test("AES-GCM protects tokens and binds ciphertext to account", () => {
   const c = new TokenCipher(key),
     t = tokens(),
@@ -149,7 +170,7 @@ test("AES-GCM protects tokens and binds ciphertext to account", () => {
 test("documented strength JSON uses recorded duration, kg and no invented metrics", () => {
   const p = strengthPayload(fixture());
   assert.equal(p.version, "1.0");
-  assert.equal(p.start_time, "2026-10-20T17:00:00.000Z");
+  assert.equal(p.start_time, "2026-10-20T17:00:00Z");
   assert.equal(p.elapsed_time, 1800);
   assert.equal(p.utc_offset, -18000);
   assert.deepEqual(p.sets[0], {
@@ -263,6 +284,45 @@ integration(
     assert.equal((await job(id)).payload.sets[0].weight, 40);
   },
 );
+integration(
+  "legacy start is unsupported and paused timing survives worker restart",
+  async () => {
+    const uploads: unknown[] = [];
+    const fetch: Transport = async (url, init) => {
+      if (url.endsWith("/oauth/token")) return json(tokens());
+      const file = (init.body as FormData).get("file") as Blob;
+      uploads.push(JSON.parse(await file.text()));
+      return json({ id: 990, activity_id: 991 });
+    };
+    const a = await account(),
+      m = moduleFor(fetch);
+    await connect(m, a);
+    const legacy = await workout(a);
+    await pool.query(
+      "UPDATE sync_entities SET payload=payload-'startedAt' WHERE entity_id=$1",
+      [legacy],
+    );
+    await m.call("POST", "/v1/strava/export", a, {
+      workoutId: legacy,
+      revision: 1,
+    });
+    assert.equal((await job(legacy)).status, "unsupported");
+    const paused = await workout(a);
+    await pool.query(
+      "UPDATE sync_entities SET payload=jsonb_set(payload,'{dur}','600') WHERE entity_id=$1",
+      [paused],
+    );
+    await m.call("POST", "/v1/strava/export", a, {
+      workoutId: paused,
+      revision: 1,
+    });
+    await moduleFor(fetch).tick();
+    assert.equal((await job(paused)).status, "confirmed");
+    assert.equal(uploads.length, 1);
+    assert.deepEqual(uploads[0], strengthPayload({ ...fixture(), dur: 600 }));
+  },
+);
+
 integration(
   "refresh is serialized across replicas and latest token persists atomically",
   async () => {

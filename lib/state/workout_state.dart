@@ -398,6 +398,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (on != null) {
       s.loggedAt = DateTime(on.year, on.month, on.day, 12);
       s.manual = true;
+      s.startedAt = s.loggedAt!.toUtc();
     }
     logDay = null;
     s.exercises = exs
@@ -415,6 +416,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     sessionLocked = false;
     countdownUntil = startCountdown && !s.manual ? DateTime.now().add(countdownLength) : null;
     _startTicking(from: countdownUntil);
+    if (!s.manual) s.startedAt = _runningSince!.toUtc();
     session = s;
     route = 'session';
     persistNow();
@@ -445,12 +447,16 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     if (until == null) return;
     countdownUntil = null;
     final now = DateTime.now();
-    if (!sessionPaused && _runningSince != null && _runningSince!.isAfter(now)) _runningSince = now;
+    if (!sessionPaused && _runningSince != null && _runningSince!.isAfter(now)) {
+      _runningSince = now;
+      session?.startedAt = now.toUtc();
+    }
     persistNow();
     notifyListeners();
   }
 
   void toggleSessionPause() {
+    if (countingDown) endCountdown();
     final s = session;
     if (holding && !holdPaused) toggleHoldPause();
     if (sessionPaused) {
@@ -530,7 +536,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     final s = session;
     final at = s?.loggedAt;
     if (s == null || !s.manual || at == null) return null;
-    return at.subtract(Duration(seconds: _elapsedBefore));
+    return s.startedAt?.toLocal() ?? at.subtract(Duration(seconds: _elapsedBefore));
   }
 
   int get manualMinutes => _elapsedBefore ~/ 60;
@@ -539,6 +545,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     final start = manualStart;
     if (start == null) return;
     final next = DateTime(start.year, start.month, start.day, minuteOfDay ~/ 60, minuteOfDay % 60);
+    session!.startedAt = next.toUtc();
     session!.loggedAt = next.add(Duration(seconds: _elapsedBefore));
     persistNow();
     notifyListeners();
@@ -1415,7 +1422,17 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
           logged.add(LoggedExercise(e.id, e.name, e.primary, doneSets));
         }
       }
-      final entry = LoggedSession(s.loggedAt ?? DateTime.now(), s.summaryDuration ?? 0, logged, id: s.workoutId, origin: s.origin, utcOffsetSeconds: s.utcOffsetSeconds, routineId: s.routineId, name: s.name);
+      final entry = LoggedSession(
+        s.loggedAt ?? DateTime.now(),
+        s.summaryDuration ?? 0,
+        logged,
+        id: s.workoutId,
+        origin: s.origin,
+        startedAt: s.startedAt,
+        utcOffsetSeconds: s.utcOffsetSeconds,
+        routineId: s.routineId,
+        name: s.name,
+      );
       s.workoutId = entry.id;
       sessions.removeWhere((old) => old.id == entry.id);
       sessions.add(entry);
@@ -1750,6 +1767,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       ..origin = ls.origin
       ..utcOffsetSeconds = ls.utcOffsetSeconds
       ..loggedAt = ls.date
+      ..startedAt = ls.startedAt
       ..manual = _dayKey(ls.date) != _dayKey(DateTime.now())
       ..routineId = ls.routineId
       ..name = ls.name

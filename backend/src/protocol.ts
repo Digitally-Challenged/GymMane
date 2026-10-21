@@ -53,13 +53,13 @@ function set(value: unknown, planned = false) {
 }
 // Dart emits three or six fractional digits, and no suffix for legacy local
 // dates. Never use Date.parse: it accepts prose and normalizes invalid days.
-function workoutDate(value: unknown): boolean {
-  if (typeof value !== "string") return false;
+function workoutDate(value: unknown): bigint | null {
+  if (typeof value !== "string") return null;
   const match =
     /^([0-9]{4}|-[0-9]{4}|[+-][0-9]{6})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,6}))?(Z)?$/.exec(
       value,
     );
-  if (!match || match[0] !== value) return false;
+  if (!match || match[0] !== value) return null;
   const [, year, month, day, hour, minute, second, fraction = ""] = match;
   const y = Number(year),
     m = Number(month),
@@ -75,17 +75,43 @@ function workoutDate(value: unknown): boolean {
     Number(minute) > 59 ||
     Number(second) > 59
   )
-    return false;
+    return null;
   // Check the shared DateTime range without losing microseconds or interpreting
   // timezone-less legacy values using the server's local timezone.
   const date = new Date(0);
   date.setUTCFullYear(y, m - 1, d);
   date.setUTCHours(Number(hour), Number(minute), Number(second), 0);
   const micros = BigInt(fraction.padEnd(6, "0"));
-  return (
-    Number.isFinite(date.getTime()) &&
-    BigInt(date.getTime()) * 1000n + micros <= 8640000000000000000n
-  );
+  if (!Number.isFinite(date.getTime())) return null;
+  const timestamp = BigInt(date.getTime()) * 1000n + micros;
+  return timestamp <= 8640000000000000000n ? timestamp : null;
+}
+
+// Actual timing requires unambiguous UTC instants. Legacy local dates remain
+// accepted for sync when startedAt is absent, but cannot support export.
+export function workoutElapsedSeconds(value: JsonObject): number | null {
+  if (
+    typeof value.startedAt !== "string" ||
+    !value.startedAt.endsWith("Z") ||
+    typeof value.d !== "string" ||
+    !value.d.endsWith("Z")
+  )
+    return null;
+  const start = workoutDate(value.startedAt),
+    end = workoutDate(value.d);
+  if (
+    start === null ||
+    end === null ||
+    start > end ||
+    !Number.isSafeInteger(value.dur) ||
+    (value.dur as number) < 0
+  )
+    return null;
+  const elapsed = end - start;
+  // Allow one second for integer active-duration rounding at client boundaries.
+  // Compare microseconds so even a sub-millisecond start after end is rejected.
+  if (BigInt(value.dur as number) * 1000000n > elapsed + 1000000n) return null;
+  return Number(elapsed) / 1000000;
 }
 function payload(value: JsonObject, type: Operation["entityType"], id: string) {
   assert(typeof value.id === "string" && value.id.toLowerCase() === id);
@@ -94,8 +120,13 @@ function payload(value: JsonObject, type: Operation["entityType"], id: string) {
     value.n === undefined || value.n === null || typeof value.n === "string",
   );
   if (type === "workout") {
-    assert(workoutDate(value.d), "Invalid workout ISO timestamp");
+    assert(workoutDate(value.d) !== null, "Invalid workout ISO timestamp");
     assert(Number.isSafeInteger(value.dur) && (value.dur as number) >= 0);
+    if (value.startedAt !== undefined && value.startedAt !== null)
+      assert(
+        workoutElapsedSeconds(value) !== null,
+        "Invalid workout start timing",
+      );
     assert(
       value.r === undefined || value.r === null || typeof value.r === "string",
     );

@@ -95,6 +95,35 @@ after(async () => {
       );
   if (pool) await pool.end();
 });
+test("optional actual start validates strict UTC and timing consistency", () => {
+  const op = operation();
+  const parse = (extra: object) =>
+    parsePush({
+      schemaVersion: 1,
+      operations: [{ ...op, payload: { ...op.payload, ...extra } }],
+    });
+  for (const startedAt of [
+    undefined,
+    null,
+    "2026-10-20T11:30:00.123456Z",
+    "2026-10-20T11:59:00.999999Z",
+  ]) {
+    assert.doesNotThrow(() => parse({ startedAt }));
+  }
+  for (const startedAt of [
+    42,
+    "2026-02-30T11:00:00Z",
+    "2026-10-20T11:30:00",
+    "2026-10-20T12:00:00.000001Z",
+    "2026-10-20T11:59:02Z",
+  ]) {
+    assert.throws(() => parse({ startedAt }));
+  }
+  assert.throws(() =>
+    parse({ startedAt: "2026-10-20T11:30:00Z", d: "2026-10-20T12:00:00" }),
+  );
+});
+
 test("validation rejects invalid envelopes, payloads, and cursor bounds", () => {
   assert.throws(() => parsePush({ schemaVersion: 2, operations: [] }));
   assert.throws(() =>

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/services/local_store.dart';
+import 'package:gymmane/models/workout.dart';
 import 'package:gymmane/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,6 +37,94 @@ void main() {
     fit.loadFromStore();
   }
 
+  test('actual start survives pauses, restart, finish and editing', () async {
+    startAndLog();
+    fit.endCountdown();
+    final start = DateTime.now().subtract(const Duration(minutes: 30)).toUtc();
+    fit.session!.startedAt = start;
+    fit.toggleSessionPause();
+    await fit.persistNow();
+    final raw = Store.instance.load();
+    raw['liveElapsed'] = 600;
+    await Store.instance.save(raw);
+    fit.session = null;
+    fit.loadFromStore();
+    expect(fit.session!.startedAt, start);
+    expect(fit.sessionElapsed, 600);
+    fit.toggleSessionPause();
+    fit.toggleSessionPause();
+    expect(fit.session!.startedAt, start);
+    expect(await fit.finishSession(), isTrue);
+    final logged = fit.sessions.single;
+    expect(logged.startedAt, start);
+    expect(logged.durationSec, 600);
+    expect(logged.date.difference(start).inSeconds, greaterThanOrEqualTo(1800));
+    expect(LoggedSession.fromJson(logged.toJson()).startedAt, start);
+    fit.saveAndExit();
+    fit.resumeLoggedSession(logged);
+    expect(fit.session!.startedAt, start);
+    expect(await fit.finishSession(), isTrue);
+    expect(fit.sessions.single.startedAt, start);
+    expect(fit.sessions.single.id, logged.id);
+  });
+
+  test('legacy live and completed workouts never acquire an inferred start', () async {
+    startAndLog();
+    fit.endCountdown();
+    await fit.persistNow();
+    final raw = Store.instance.load();
+    (raw['live'] as Map).remove('startedAt');
+    await Store.instance.save(raw);
+    fit.session = null;
+    fit.loadFromStore();
+    expect(fit.session!.startedAt, isNull);
+    fit.toggleSessionPause();
+    fit.toggleSessionPause();
+    expect(await fit.finishSession(), isTrue);
+    final logged = fit.sessions.single;
+    expect(logged.startedAt, isNull);
+    expect(logged.toJson().containsKey('startedAt'), isFalse);
+    fit.saveAndExit();
+    fit.resumeLoggedSession(LoggedSession.fromJson(logged.toJson()));
+    expect(await fit.finishSession(), isTrue);
+    expect(fit.sessions.single.startedAt, isNull);
+  });
+
+  test('manual start is the selected time and survives duration edits', () async {
+    fit.startWorkout(null, DateTime(2026, 1, 2));
+    fit.toggleMuscle('chest');
+    fit.trainContinue();
+    fit.startSession();
+    fit.setManualStart(9 * 60 + 15);
+    final start = DateTime(2026, 1, 2, 9, 15).toUtc();
+    fit.setManualMinutes(30);
+    expect(fit.session!.startedAt, start);
+    fit.toggleSet(0, 0);
+    await killAndReopen();
+    expect(fit.session!.startedAt, start);
+    expect(await fit.finishSession(), isTrue);
+    final logged = fit.sessions.single;
+    expect(logged.startedAt, start);
+    expect(logged.date.toUtc(), start.add(const Duration(minutes: 30)));
+    fit.saveAndExit();
+    fit.resumeLoggedSession(logged);
+    fit.setManualMinutes(45);
+    expect(await fit.finishSession(), isTrue);
+    expect(fit.sessions.single.startedAt, start);
+    expect(fit.sessions.single.durationSec, 2700);
+  });
+
+  test('countdown start survives restart and skipping updates actual start', () async {
+    startAndLog();
+    final planned = fit.countdownUntil!;
+    expect(fit.session!.startedAt, planned.toUtc());
+    await killAndReopen();
+    expect(fit.countdownUntil, planned);
+    fit.endCountdown();
+    expect(fit.session!.startedAt!.isBefore(planned), isTrue);
+    expect(fit.session!.startedAt!.isUtc, isTrue);
+  });
+
   test('a workout in progress survives the app being killed', () async {
     startAndLog();
     await killAndReopen();
@@ -61,8 +150,11 @@ void main() {
     fit.session = null;
     fit.loadFromStore();
 
-    expect(fit.sessionElapsed, greaterThanOrEqualTo(600),
-        reason: 'los 10 minutos pasaron aunque la app estuviera muerta');
+    expect(
+      fit.sessionElapsed,
+      greaterThanOrEqualTo(600),
+      reason: 'los 10 minutos pasaron aunque la app estuviera muerta',
+    );
     expect(fit.sessionPaused, false);
   });
 
@@ -84,10 +176,16 @@ void main() {
 
     await killAndReopen();
 
-    expect(fit.session!.restRemaining, isNotNull,
-        reason: 'la alarma sigue programada, así que la cuenta tiene que seguir en pantalla');
-    expect(fit.session!.restRemaining, lessThanOrEqualTo(left),
-        reason: 'el descanso cuenta por reloj, no se reinicia');
+    expect(
+      fit.session!.restRemaining,
+      isNotNull,
+      reason: 'la alarma sigue programada, así que la cuenta tiene que seguir en pantalla',
+    );
+    expect(
+      fit.session!.restRemaining,
+      lessThanOrEqualTo(left),
+      reason: 'el descanso cuenta por reloj, no se reinicia',
+    );
   });
 
   test('a rest whose time already passed is not resurrected', () async {
@@ -122,7 +220,10 @@ void main() {
     startAndLog();
     fit.finishSession();
     await fit.persistNow();
-    expect(Store.instance.load().containsKey('live'), false,
-        reason: 'la sesión completa ya está en el historial');
+    expect(
+      Store.instance.load().containsKey('live'),
+      false,
+      reason: 'la sesión completa ya está en el historial',
+    );
   });
 }

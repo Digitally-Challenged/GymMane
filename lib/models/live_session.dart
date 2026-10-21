@@ -79,6 +79,7 @@ class WorkoutSession {
   String? routineId;
   String? name;
   DateTime? loggedAt;
+  DateTime? startedAt;
   DateTime? restEndsAt;
   int? restFrozen;
   int? summaryVolume;
@@ -110,6 +111,7 @@ class WorkoutSession {
     if (routineId != null) 'r': routineId,
     if (name != null) 'n': name,
     'at': loggedAt?.toIso8601String(),
+    if (startedAt != null) 'startedAt': startedAt!.toUtc().toIso8601String(),
     if (restEndsAt != null) 're': restEndsAt!.toIso8601String(),
     if (restFrozen != null) 'rf': restFrozen,
     'sv': summaryVolume,
@@ -130,6 +132,7 @@ class WorkoutSession {
     ..routineId = j['r'] as String?
     ..name = j['n'] as String?
     ..loggedAt = DateTime.tryParse((j['at'] as String?) ?? '')
+    ..startedAt = DateTime.tryParse(j['startedAt'] as String? ?? '')?.toUtc()
     ..restEndsAt = DateTime.tryParse((j['re'] as String?) ?? '')
     ..restFrozen = (j['rf'] as num?)?.toInt()
     ..summaryVolume = (j['sv'] as num?)?.toInt()

@@ -309,6 +309,7 @@ class FitState extends FitCore
     session = WorkoutSession.fromJson(live.cast<String, dynamic>());
     _elapsedBefore = (data['liveElapsed'] as num?)?.toInt() ?? 0;
     sessionPaused = data['livePaused'] as bool? ?? false;
+    countdownUntil = DateTime.tryParse(data['liveCountdown'] as String? ?? '');
     final started = data['liveStart'] as String?;
     if (sessionPaused || started == null) {
       _runningSince = null;
@@ -527,6 +528,7 @@ class FitState extends FitCore
         if (session != null && !session!.complete) ...{
           'live': session!.toJson(),
           'liveStart': _runningSince?.toIso8601String(),
+          if (countdownUntil != null) 'liveCountdown': countdownUntil!.toIso8601String(),
           'liveElapsed': _elapsedBefore,
           'livePaused': sessionPaused,
         },
