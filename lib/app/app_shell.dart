@@ -36,6 +36,7 @@ import '../screens/train_screen.dart';
 import '../services/health_steps.dart';
 import '../services/incoming_share.dart';
 import '../services/nutrition_widgets.dart';
+import '../services/sync/sync_runtime.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -236,6 +237,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
       fit.persistNow();
     }
     if (state == AppLifecycleState.resumed) {
+      SyncRuntime.controller?.requestSync();
       NutritionWidgets.takePending();
       fit.refreshAlarmPermission();
       fit.syncRest();
