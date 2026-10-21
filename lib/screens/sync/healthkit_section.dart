@@ -1,3 +1,4 @@
+import 'sync_status_label.dart';
 import '../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../../services/integrations/healthkit/healthkit_adapter.dart';
@@ -99,7 +100,7 @@ class _HealthKitSectionState extends State<HealthKitSection> {
           ],
           for (final entry in delivery.records.entries)
             ListTile(
-              title: Text('${jsonObject(entry.value)['status']} · ${entry.key}'),
+              title: Text('${syncStatusLabel(jsonObject(entry.value)['status'])} · ${entry.key}'),
               trailing: ['sending', 'unknown'].contains(jsonObject(entry.value)['status'])
                   ? TextButton(
                       onPressed: delivery.busy || !delivery.enabled

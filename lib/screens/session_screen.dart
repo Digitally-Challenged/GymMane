@@ -35,6 +35,24 @@ class SessionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final saving = fit.isSessionFinishing;
+    return PopScope(
+      canPop: !saving,
+      child: Stack(children: [
+        AbsorbPointer(absorbing: saving, child: _body(context)),
+        if (saving) Positioned.fill(child: ColoredBox(
+          color: context.gc.bg.withValues(alpha: 0.85),
+          child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Semantics(liveRegion: true, child: Text(t.syncSavingWorkout)),
+          ])),
+        )),
+      ]),
+    );
+  }
+
+  Widget _body(BuildContext context) {
     final gc = context.gc;
     if (fit.listLayout && !fit.isSessionComplete && fit.session != null) return _listScreen(context, gc);
     return SafeArea(

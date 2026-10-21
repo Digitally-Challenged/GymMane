@@ -100,7 +100,10 @@ class SyncTransport {
         bytes.addAll(chunk);
       }
       if (response.statusCode < 200 || response.statusCode >= 300) {
-        throw SyncFailure('Sync request failed (${response.statusCode}).', status: response.statusCode);
+        throw SyncFailure(
+          '${t.syncSyncRequestFailed} (${response.statusCode}).',
+          status: response.statusCode,
+        );
       }
       return jsonObject(jsonDecode(utf8.decode(bytes)));
     } on TimeoutException {

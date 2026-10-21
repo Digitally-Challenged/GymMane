@@ -749,9 +749,7 @@ class SettingsScreen extends StatelessWidget {
     }
     var success = false;
     try {
-      success = looksLikeZip(bytes)
-          ? await restoreBackupZip(bytes)
-          : await fit.importJson(utf8.decode(bytes));
+      success = looksLikeZip(bytes) ? await restoreBackupZip(bytes) : await fit.importJson(utf8.decode(bytes));
     } catch (_) {
       success = false;
     }

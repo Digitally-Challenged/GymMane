@@ -2971,7 +2971,7 @@ abstract class AppLocalizations {
   /// No description provided for @yoursToTakeWhy.
   ///
   /// In en, this message translates to:
-  /// **'Export it to CSV whenever you like, and delete it all in one tap.'**
+  /// **'Export your local data to CSV and delete it from this device. Manage copies in connected services separately.'**
   String get yoursToTakeWhy;
 
   /// No description provided for @whatsInside.
@@ -9469,14 +9469,122 @@ abstract class AppLocalizations {
   /// No description provided for @syncCloudSyncUnavailableThisBuildNeedsAn.
   ///
   /// In en, this message translates to:
-  /// **'Cloud sync unavailable: this build needs an HTTPS sync server, auth provider URL and public API key.'**
+  /// **'Cloud sync is not configured for this build. Your workouts remain available on this device.'**
   String get syncCloudSyncUnavailableThisBuildNeedsAn;
 
   /// No description provided for @syncCloudSyncUnavailableEmailSignInIs.
   ///
   /// In en, this message translates to:
-  /// **'Cloud sync unavailable: email sign-in is not enabled for this build.'**
+  /// **'Cloud sync is not configured for this build. Your workouts remain available on this device.'**
   String get syncCloudSyncUnavailableEmailSignInIs;
+
+  /// No description provided for @syncAccountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Account: {account}'**
+  String syncAccountLabel(String account);
+
+  /// No description provided for @syncPendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{pending} pending changes · {conflicts} conflicts'**
+  String syncPendingLabel(int pending, int conflicts);
+
+  /// No description provided for @syncLastCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last completed sync: {time}'**
+  String syncLastCompletedLabel(String time);
+
+  /// No description provided for @syncGuestUploadPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{workouts} workouts\n{routines} routines\n\nThese records will be added to the signed-in account and uploaded. Existing remote edits are retained as conflicts for review.'**
+  String syncGuestUploadPreview(int workouts, int routines);
+
+  /// No description provided for @syncConflictLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Conflict: {type} {id}'**
+  String syncConflictLabel(String type, String id);
+
+  /// No description provided for @syncDeviceVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'This device: {version}'**
+  String syncDeviceVersionLabel(String version);
+
+  /// No description provided for @syncServerVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Server: {version}'**
+  String syncServerVersionLabel(String version);
+
+  /// No description provided for @syncSecondsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} seconds'**
+  String syncSecondsLabel(int seconds);
+
+  /// No description provided for @syncRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Routine'**
+  String get syncRoutine;
+
+  /// No description provided for @syncQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued'**
+  String get syncQueued;
+
+  /// No description provided for @syncSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending'**
+  String get syncSending;
+
+  /// No description provided for @syncProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get syncProcessing;
+
+  /// No description provided for @syncConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get syncConfirmed;
+
+  /// No description provided for @syncUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs reconciliation'**
+  String get syncUnknown;
+
+  /// No description provided for @syncNeedsAuthorization.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorization required'**
+  String get syncNeedsAuthorization;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get syncFailed;
+
+  /// No description provided for @syncUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported'**
+  String get syncUnsupported;
+
+  /// No description provided for @syncSavingWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving workout…'**
+  String get syncSavingWorkout;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

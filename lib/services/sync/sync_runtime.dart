@@ -17,6 +17,11 @@ class SyncRuntime {
   static SyncController? controller;
   static HealthKitDelivery? health;
   static Future<void> initialize() async {
+    if (controller != null) {
+      fit.removeListener(controller!.localChanged);
+      controller!.dispose();
+    }
+    health?.dispose();
     health = HealthKitDelivery(StoreHealthDelivery(Store.instance));
     const config = SyncConfig.environment();
     final client = http.Client();

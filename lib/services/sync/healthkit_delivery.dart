@@ -134,6 +134,7 @@ class HealthKitDelivery extends ChangeNotifier {
       if (entry['status'] != 'confirmed') {
         throw SyncFailure(t.syncReconcileTheCurrentExportBeforeDeleting);
       }
+      entry['revision'] = (entry['revision'] as int) + 1;
       entry['operation'] = 'delete';
       entry['status'] = 'sending';
       await store.write(namespace, ledger);

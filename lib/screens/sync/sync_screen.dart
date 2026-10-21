@@ -73,9 +73,9 @@ class _SyncScreenState extends State<SyncScreen> {
             ],
             if (sync.account != null) ...[
               const SizedBox(height: 12),
-              Text('Account: ${sync.account}'),
-              Text('${sync.pendingCount} pending changes · ${sync.conflicts.length} conflicts'),
-              if (sync.lastSynced != null) Text('Last completed sync: ${sync.lastSynced!.toLocal()}'),
+              Text(t.syncAccountLabel(sync.account!)),
+              Text(t.syncPendingLabel(sync.pendingCount, sync.conflicts.length)),
+              if (sync.lastSynced != null) Text(t.syncLastCompletedLabel('${sync.lastSynced!.toLocal()}')),
               FilledButton(onPressed: sync.busy ? null : sync.sync, child: Text(t.syncSyncNow)),
               OutlinedButton(
                 onPressed: sync.busy ? null : _adoptGuest,
@@ -112,9 +112,7 @@ class _SyncScreenState extends State<SyncScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.syncUploadGuestHistory),
-          content: Text(
-            '${preview.entries.map((entry) => '${entry.value} ${entry.key}').join('\n')}\n\nThese records will be added to the signed-in account and uploaded. Existing remote edits are retained as conflicts for review.',
-          ),
+          content: Text(t.syncGuestUploadPreview(preview['workouts'] ?? 0, preview['routines'] ?? 0)),
           actions: [
             TextButton(onPressed: () => Navigator.pop(context, false), child: Text(t.syncCancel)),
             FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(t.syncConfirmUpload)),
@@ -139,9 +137,14 @@ class _SyncScreenState extends State<SyncScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Conflict: ${conflict['entityType'] ?? 'record'} ${conflict['entityId'] ?? ''}'),
-          Text('This device: ${_version(conflict['local'])}'),
-          Text('Server: ${_version(conflict)}'),
+          Text(
+            t.syncConflictLabel(
+              conflict['entityType'] == 'workout' ? t.syncWorkout : t.syncRoutine,
+              '${conflict['entityId']}',
+            ),
+          ),
+          Text(t.syncDeviceVersionLabel(_version(conflict['local']))),
+          Text(t.syncServerVersionLabel(_version(conflict))),
           Text(t.syncBothVersionsAreRetainedUntilYouChoose),
           Wrap(
             spacing: 8,
@@ -169,8 +172,8 @@ class _SyncScreenState extends State<SyncScreen> {
     return [
       payload['n'] ?? payload['name'] ?? t.syncUntitled,
       if (payload['d'] != null) payload['d'],
-      if (payload['dur'] != null) '${payload['dur']} seconds',
-      if (payload['ex'] is List) '${(payload['ex'] as List).length} exercises',
+      if (payload['dur'] != null) t.syncSecondsLabel(payload['dur'] as int),
+      if (payload['ex'] is List) t.exerciseCount((payload['ex'] as List).length),
     ].join(' · ');
   }
 

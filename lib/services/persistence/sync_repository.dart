@@ -2,6 +2,7 @@ import 'dart:convert';
 import '../../models/identity.dart';
 import '../migration/identity_migration.dart';
 import 'storage_backend.dart';
+import 'health_delivery_registry.dart';
 
 Map<String, dynamic> _copy(Map<String, dynamic> value) =>
     jsonDecode(jsonEncode(value)) as Map<String, dynamic>;
@@ -100,14 +101,20 @@ class SyncRepository {
     return names;
   }
 
-  Map<String, dynamic> deliveryLedger(String account, String destination) =>
-      _copy(((_space(_root, account)['deliveries'] as Map?)?[destination] as Map<String, dynamic>?) ?? {});
+  Map<String, dynamic> deliveryLedger(String account, String destination) {
+    final ledger = _copy(((_space(_root, account)['deliveries'] as Map?)?[destination] as Map<String, dynamic>?) ?? {});
+    return destination == 'healthkit' ? readHealthDelivery(_root, account, ledger) : ledger;
+  }
 
   Future<void> saveDeliveryLedger(String account, String destination, Map<String, dynamic> ledger) {
     final snapshot = _copy(ledger);
     return _transaction((root) {
       final ns = _space(root, account);
-      (ns['deliveries'] ??= <String, dynamic>{})[destination] = snapshot;
+      if (destination == 'healthkit') {
+        writeHealthDelivery(root, account, snapshot);
+      } else {
+        (ns['deliveries'] ??= <String, dynamic>{})[destination] = snapshot;
+      }
     });
   }
 
@@ -228,6 +235,9 @@ class SyncRepository {
     }
     _recordChanges(ns, ns['document'] as Map<String, dynamic>, document, enqueue: true);
     ns['document'] = document;
+    transferGuestHealthDelivery(root, account, {
+      for (final row in (guest['sessions'] as List?) ?? []) row['id'] as String,
+    });
   });
 
   /// Includes queued operations blocked by an unresolved conflict.

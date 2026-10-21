@@ -35,11 +35,11 @@ Future<void> main() async {
     await AlarmStore.init();
     await RestAlarm.instance.init();
     fit.loadFromStore();
+    await SyncRuntime.initialize();
   } catch (_) {
     runApp(StartupRecovery(retry: main));
     return;
   }
-  await SyncRuntime.initialize();
   fit.syncPhotoReminder();
   fit.syncTrainReminder();
 

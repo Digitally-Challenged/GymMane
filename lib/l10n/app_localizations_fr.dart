@@ -1628,7 +1628,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get yoursToTake => 'Tes données t’appartiennent';
 
   @override
-  String get yoursToTakeWhy => 'Exporte-les en CSV quand tu veux et supprime tout en un geste.';
+  String get yoursToTakeWhy =>
+      'Export your local data to CSV and delete it from this device. Manage copies in connected services separately.';
 
   @override
   String get whatsInside => 'CONTENU';
@@ -5387,9 +5388,79 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncCloudSyncUnavailableThisBuildNeedsAn =>
-      'Cloud sync unavailable: this build needs an HTTPS sync server, auth provider URL and public API key.';
+      'Cloud sync is not configured for this build. Your workouts remain available on this device.';
 
   @override
   String get syncCloudSyncUnavailableEmailSignInIs =>
-      'Cloud sync unavailable: email sign-in is not enabled for this build.';
+      'Cloud sync is not configured for this build. Your workouts remain available on this device.';
+
+  @override
+  String syncAccountLabel(String account) {
+    return 'Account: $account';
+  }
+
+  @override
+  String syncPendingLabel(int pending, int conflicts) {
+    return '$pending pending changes · $conflicts conflicts';
+  }
+
+  @override
+  String syncLastCompletedLabel(String time) {
+    return 'Last completed sync: $time';
+  }
+
+  @override
+  String syncGuestUploadPreview(int workouts, int routines) {
+    return '$workouts workouts\n$routines routines\n\nThese records will be added to the signed-in account and uploaded. Existing remote edits are retained as conflicts for review.';
+  }
+
+  @override
+  String syncConflictLabel(String type, String id) {
+    return 'Conflict: $type $id';
+  }
+
+  @override
+  String syncDeviceVersionLabel(String version) {
+    return 'This device: $version';
+  }
+
+  @override
+  String syncServerVersionLabel(String version) {
+    return 'Server: $version';
+  }
+
+  @override
+  String syncSecondsLabel(int seconds) {
+    return '$seconds seconds';
+  }
+
+  @override
+  String get syncRoutine => 'Routine';
+
+  @override
+  String get syncQueued => 'Queued';
+
+  @override
+  String get syncSending => 'Sending';
+
+  @override
+  String get syncProcessing => 'Processing';
+
+  @override
+  String get syncConfirmed => 'Confirmed';
+
+  @override
+  String get syncUnknown => 'Needs reconciliation';
+
+  @override
+  String get syncNeedsAuthorization => 'Authorization required';
+
+  @override
+  String get syncFailed => 'Failed';
+
+  @override
+  String get syncUnsupported => 'Unsupported';
+
+  @override
+  String get syncSavingWorkout => 'Saving workout…';
 }

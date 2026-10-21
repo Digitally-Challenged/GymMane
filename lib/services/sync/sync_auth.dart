@@ -47,12 +47,23 @@ class AuthSession {
     'refresh': refreshToken,
     'expires': expiresAt.toIso8601String(),
   };
-  static AuthSession stored(SyncJson value) => AuthSession(
-    value['account'] as String,
-    value['access'] as String,
-    value['refresh'] as String,
-    DateTime.parse(value['expires'] as String),
-  );
+  static AuthSession stored(SyncJson value) {
+    final account = value['account'];
+    if (account is! String ||
+        !validAuthAccount(account) ||
+        value['access'] is! String ||
+        (value['access'] as String).isEmpty ||
+        value['refresh'] is! String ||
+        (value['refresh'] as String).isEmpty) {
+      throw const FormatException('Invalid stored session');
+    }
+    return AuthSession(
+      account.toLowerCase(),
+      value['access'] as String,
+      value['refresh'] as String,
+      DateTime.parse(value['expires'] as String),
+    );
+  }
 }
 
 abstract interface class SyncAuth {
@@ -72,22 +83,45 @@ class SupabaseSyncAuth implements SyncAuth {
   AuthSession? _session;
   Future<String>? _refresh;
   int _generation = 0;
+  Future<void> _vaultTail = Future.value();
+
+  Future<void> _withVault(Future<void> Function() action) {
+    final operation = _vaultTail.then((_) => action());
+    _vaultTail = operation.catchError((Object _) {});
+    return operation;
+  }
+
+  Future<void> _commit(AuthSession next, int generation) => _withVault(() async {
+    if (generation != _generation) throw SyncFailure(t.syncAccountChangedSignInAgain, status: 401);
+    await vault.write(jsonEncode(next.toJson()));
+    if (generation != _generation) {
+      // The queue guarantees no newer account's write can have committed yet.
+      await vault.clear();
+      throw SyncFailure(t.syncAccountChangedSignInAgain, status: 401);
+    }
+    _session = next;
+  });
   @override
   AuthSession? get session => _session;
   @override
   Future<void> restore() async {
-    final saved = await vault.read();
-    if (saved != null) _session = AuthSession.stored(jsonObject(jsonDecode(saved)));
+    final generation = _generation;
+    await _withVault(() async {
+      final saved = await vault.read();
+      if (generation == _generation && saved != null) {
+        _session = AuthSession.stored(jsonObject(jsonDecode(saved)));
+      }
+    });
   }
 
   @override
   Future<void> signIn(String email, String password) async {
     if (config.unavailableReason != null) throw SyncFailure(config.unavailableReason!);
     final generation = ++_generation;
+    _session = null;
+    _refresh = null;
     final next = await _exchange('password', {'email': email.trim(), 'password': password});
-    if (generation != _generation) throw SyncFailure(t.syncSignInCancelled);
-    await vault.write(jsonEncode(next.toJson()));
-    _session = next;
+    await _commit(next, generation);
   }
 
   @override
@@ -101,7 +135,7 @@ class SupabaseSyncAuth implements SyncAuth {
     try {
       return await future;
     } finally {
-      _refresh = null;
+      if (identical(_refresh, future)) _refresh = null;
     }
   }
 
@@ -110,8 +144,7 @@ class SupabaseSyncAuth implements SyncAuth {
     if (generation != _generation || next.account != old.account) {
       throw SyncFailure(t.syncAccountChangedSignInAgain, status: 401);
     }
-    await vault.write(jsonEncode(next.toJson()));
-    _session = next;
+    await _commit(next, generation);
     return next.accessToken;
   }
 
@@ -140,7 +173,7 @@ class SupabaseSyncAuth implements SyncAuth {
       final refresh = data['refresh_token'];
       final seconds = data['expires_in'];
       if (account is! String ||
-          account.isEmpty ||
+          !validAuthAccount(account) ||
           access is! String ||
           access.isEmpty ||
           refresh is! String ||
@@ -149,7 +182,12 @@ class SupabaseSyncAuth implements SyncAuth {
           seconds <= 0) {
         throw const FormatException('Invalid auth session');
       }
-      return AuthSession(account, access, refresh, DateTime.now().add(Duration(seconds: seconds)));
+      return AuthSession(
+        account.toLowerCase(),
+        access,
+        refresh,
+        DateTime.now().add(Duration(seconds: seconds)),
+      );
     } on TimeoutException {
       throw SyncFailure(t.syncSignInServerTimedOutTryAgain);
     } on http.ClientException {
@@ -161,6 +199,11 @@ class SupabaseSyncAuth implements SyncAuth {
   Future<void> signOut() async {
     ++_generation;
     _session = null;
-    await vault.clear();
+    _refresh = null;
+    await _withVault(vault.clear);
   }
 }
+
+bool validAuthAccount(String account) => RegExp(
+  r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+).hasMatch(account);

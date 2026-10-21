@@ -1622,7 +1622,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get yoursToTake => 'Tus datos son tuyos';
 
   @override
-  String get yoursToTakeWhy => 'Expórtalos a CSV cuando quieras, y bórralos todos de un toque.';
+  String get yoursToTakeWhy =>
+      'Exporta tus datos locales a CSV y elimínalos de este dispositivo. Gestiona por separado las copias de los servicios conectados.';
 
   @override
   String get whatsInside => 'QUÉ LLEVA DENTRO';
@@ -5384,9 +5385,79 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncCloudSyncUnavailableThisBuildNeedsAn =>
-      'Sincronización no disponible: esta versión necesita un servidor HTTPS, la URL del proveedor de autenticación y una clave pública de API.';
+      'La sincronización en la nube no está configurada en esta versión. Tus entrenamientos siguen disponibles en este dispositivo.';
 
   @override
   String get syncCloudSyncUnavailableEmailSignInIs =>
-      'Sincronización no disponible: esta versión no tiene habilitado el inicio de sesión con correo electrónico.';
+      'La sincronización en la nube no está configurada en esta versión. Tus entrenamientos siguen disponibles en este dispositivo.';
+
+  @override
+  String syncAccountLabel(String account) {
+    return 'Cuenta: $account';
+  }
+
+  @override
+  String syncPendingLabel(int pending, int conflicts) {
+    return '$pending cambios pendientes · $conflicts conflictos';
+  }
+
+  @override
+  String syncLastCompletedLabel(String time) {
+    return 'Última sincronización completada: $time';
+  }
+
+  @override
+  String syncGuestUploadPreview(int workouts, int routines) {
+    return '$workouts entrenamientos\n$routines rutinas\n\nEstos registros se añadirán a la cuenta y se subirán. Los cambios remotos existentes se conservan como conflictos para revisarlos.';
+  }
+
+  @override
+  String syncConflictLabel(String type, String id) {
+    return 'Conflicto: $type $id';
+  }
+
+  @override
+  String syncDeviceVersionLabel(String version) {
+    return 'Este dispositivo: $version';
+  }
+
+  @override
+  String syncServerVersionLabel(String version) {
+    return 'Servidor: $version';
+  }
+
+  @override
+  String syncSecondsLabel(int seconds) {
+    return '$seconds segundos';
+  }
+
+  @override
+  String get syncRoutine => 'Rutina';
+
+  @override
+  String get syncQueued => 'En cola';
+
+  @override
+  String get syncSending => 'Enviando';
+
+  @override
+  String get syncProcessing => 'Procesando';
+
+  @override
+  String get syncConfirmed => 'Confirmado';
+
+  @override
+  String get syncUnknown => 'Requiere conciliación';
+
+  @override
+  String get syncNeedsAuthorization => 'Requiere autorización';
+
+  @override
+  String get syncFailed => 'Ha fallado';
+
+  @override
+  String get syncUnsupported => 'No compatible';
+
+  @override
+  String get syncSavingWorkout => 'Guardando entrenamiento…';
 }

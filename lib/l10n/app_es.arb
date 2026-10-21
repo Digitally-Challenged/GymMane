@@ -474,7 +474,7 @@
   "fullyOffline": "Totalmente sin conexión",
   "fullyOfflineWhy": "Funciona sin conexión y sin cuenta. La sincronización en la nube y los servicios conectados son opcionales.",
   "yoursToTake": "Tus datos son tuyos",
-  "yoursToTakeWhy": "Expórtalos a CSV cuando quieras, y bórralos todos de un toque.",
+  "yoursToTakeWhy": "Exporta tus datos locales a CSV y elimínalos de este dispositivo. Gestiona por separado las copias de los servicios conectados.",
   "whatsInside": "QUÉ LLEVA DENTRO",
   "exercisesInside": "{n} ejercicios",
   "exercisesInsideWhy": "Cada uno con su animación y sus instrucciones paso a paso.",
@@ -1557,6 +1557,89 @@
   "syncSignInOrSessionRefreshFailedCheck": "Ha fallado el inicio de sesión o la renovación. Comprueba tus credenciales y la configuración del proveedor.",
   "syncSignInServerTimedOutTryAgain": "El servidor de inicio de sesión ha agotado el tiempo de espera. Inténtalo cuando tengas conexión.",
   "syncSignInServerUnreachableTryAgainWhen": "No se puede acceder al servidor de inicio de sesión. Inténtalo cuando tengas conexión.",
-  "syncCloudSyncUnavailableThisBuildNeedsAn": "Sincronización no disponible: esta versión necesita un servidor HTTPS, la URL del proveedor de autenticación y una clave pública de API.",
-  "syncCloudSyncUnavailableEmailSignInIs": "Sincronización no disponible: esta versión no tiene habilitado el inicio de sesión con correo electrónico."
+  "syncCloudSyncUnavailableThisBuildNeedsAn": "La sincronización en la nube no está configurada en esta versión. Tus entrenamientos siguen disponibles en este dispositivo.",
+  "syncCloudSyncUnavailableEmailSignInIs": "La sincronización en la nube no está configurada en esta versión. Tus entrenamientos siguen disponibles en este dispositivo.",
+  "syncAccountLabel": "Cuenta: {account}",
+  "@syncAccountLabel": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "syncPendingLabel": "{pending} cambios pendientes · {conflicts} conflictos",
+  "@syncPendingLabel": {
+    "placeholders": {
+      "pending": {
+        "type": "int"
+      },
+      "conflicts": {
+        "type": "int"
+      }
+    }
+  },
+  "syncLastCompletedLabel": "Última sincronización completada: {time}",
+  "@syncLastCompletedLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncGuestUploadPreview": "{workouts} entrenamientos\n{routines} rutinas\n\nEstos registros se añadirán a la cuenta y se subirán. Los cambios remotos existentes se conservan como conflictos para revisarlos.",
+  "@syncGuestUploadPreview": {
+    "placeholders": {
+      "workouts": {
+        "type": "int"
+      },
+      "routines": {
+        "type": "int"
+      }
+    }
+  },
+  "syncConflictLabel": "Conflicto: {type} {id}",
+  "@syncConflictLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "syncDeviceVersionLabel": "Este dispositivo: {version}",
+  "@syncDeviceVersionLabel": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "syncServerVersionLabel": "Servidor: {version}",
+  "@syncServerVersionLabel": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "syncSecondsLabel": "{seconds} segundos",
+  "@syncSecondsLabel": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "syncRoutine": "Rutina",
+  "syncQueued": "En cola",
+  "syncSending": "Enviando",
+  "syncProcessing": "Procesando",
+  "syncConfirmed": "Confirmado",
+  "syncUnknown": "Requiere conciliación",
+  "syncNeedsAuthorization": "Requiere autorización",
+  "syncFailed": "Ha fallado",
+  "syncUnsupported": "No compatible",
+  "syncSavingWorkout": "Guardando entrenamiento…"
 }

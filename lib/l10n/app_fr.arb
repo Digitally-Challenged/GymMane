@@ -474,7 +474,7 @@
   "fullyOffline": "100 % hors ligne",
   "fullyOfflineWhy": "Fonctionne hors ligne sans compte. La synchronisation cloud et les services connectés sont facultatifs.",
   "yoursToTake": "Tes données t’appartiennent",
-  "yoursToTakeWhy": "Exporte-les en CSV quand tu veux et supprime tout en un geste.",
+  "yoursToTakeWhy": "Export your local data to CSV and delete it from this device. Manage copies in connected services separately.",
   "whatsInside": "CONTENU",
   "exercisesInside": "{n} exercices",
   "exercisesInsideWhy": "Chacun avec une animation et des instructions étape par étape.",
@@ -1442,6 +1442,89 @@
   "syncSignInOrSessionRefreshFailedCheck": "Sign-in or session refresh failed. Check your credentials and provider configuration.",
   "syncSignInServerTimedOutTryAgain": "Sign-in server timed out. Try again when connected.",
   "syncSignInServerUnreachableTryAgainWhen": "Sign-in server unreachable. Try again when connected.",
-  "syncCloudSyncUnavailableThisBuildNeedsAn": "Cloud sync unavailable: this build needs an HTTPS sync server, auth provider URL and public API key.",
-  "syncCloudSyncUnavailableEmailSignInIs": "Cloud sync unavailable: email sign-in is not enabled for this build."
+  "syncCloudSyncUnavailableThisBuildNeedsAn": "Cloud sync is not configured for this build. Your workouts remain available on this device.",
+  "syncCloudSyncUnavailableEmailSignInIs": "Cloud sync is not configured for this build. Your workouts remain available on this device.",
+  "syncAccountLabel": "Account: {account}",
+  "@syncAccountLabel": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "syncPendingLabel": "{pending} pending changes · {conflicts} conflicts",
+  "@syncPendingLabel": {
+    "placeholders": {
+      "pending": {
+        "type": "int"
+      },
+      "conflicts": {
+        "type": "int"
+      }
+    }
+  },
+  "syncLastCompletedLabel": "Last completed sync: {time}",
+  "@syncLastCompletedLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncGuestUploadPreview": "{workouts} workouts\n{routines} routines\n\nThese records will be added to the signed-in account and uploaded. Existing remote edits are retained as conflicts for review.",
+  "@syncGuestUploadPreview": {
+    "placeholders": {
+      "workouts": {
+        "type": "int"
+      },
+      "routines": {
+        "type": "int"
+      }
+    }
+  },
+  "syncConflictLabel": "Conflict: {type} {id}",
+  "@syncConflictLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "syncDeviceVersionLabel": "This device: {version}",
+  "@syncDeviceVersionLabel": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "syncServerVersionLabel": "Server: {version}",
+  "@syncServerVersionLabel": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "syncSecondsLabel": "{seconds} seconds",
+  "@syncSecondsLabel": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "syncRoutine": "Routine",
+  "syncQueued": "Queued",
+  "syncSending": "Sending",
+  "syncProcessing": "Processing",
+  "syncConfirmed": "Confirmed",
+  "syncUnknown": "Needs reconciliation",
+  "syncNeedsAuthorization": "Authorization required",
+  "syncFailed": "Failed",
+  "syncUnsupported": "Unsupported",
+  "syncSavingWorkout": "Saving workout…"
 }

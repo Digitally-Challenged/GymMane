@@ -89,7 +89,7 @@ void main() {
     await delivery.export(workout);
     expect(native.saves.length, 2);
     await delivery.remove(workoutId);
-    expect(native.deletions, ['$workoutId:1']);
+    expect(native.deletions, ['$workoutId:2']);
     expect(delivery.records[workoutId]['status'], 'deleted');
   });
 }

@@ -34,22 +34,31 @@ class SyncController extends ChangeNotifier {
 
   Future<void> initialize() async {
     if (config.unavailableReason != null) {
-      try {
-        await repository.selectNamespace('guest');
-      } catch (_) {
-        message = t.syncLocalAccountCouldNotBeSwitchedSafely;
-        phase = SyncPhase.error;
-        _notify();
-        return;
-      }
+      await repository.selectNamespace('guest');
       phase = SyncPhase.unavailable;
       message = config.unavailableReason;
       _notify();
       return;
     }
-    await _action(() async {
+    try {
       await auth.restore();
-      await repository.selectNamespace(account ?? 'guest');
+    } catch (_) {
+      // A bad/locked vault must not expose the previously active account.
+      try {
+        await auth.signOut();
+      } catch (_) {
+        /* Guest isolation still proceeds. */
+      }
+      await repository.selectNamespace('guest');
+      phase = SyncPhase.needsAuthorization;
+      message = t.syncSignInToSync;
+      _notify();
+      return;
+    }
+    // Failure to establish a safe namespace is fatal to startup, not a sync
+    // warning. main routes it to retry-only recovery before rendering app data.
+    await repository.selectNamespace(account ?? 'guest');
+    await _action(() async {
       phase = account == null ? SyncPhase.signedOut : SyncPhase.ready;
       await _counts();
     });

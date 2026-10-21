@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'sync_status_label.dart';
 import '../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,6 +20,8 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
   String? _message;
   String? _account;
   bool _busy = false;
+  int _generation = 0;
+  bool _refreshAfterBusy = false;
   bool _revocationUnconfirmed = false;
   @override
   void initState() {
@@ -38,13 +42,18 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
   void _accountChanged() {
     if (_account == widget.sync.account) return;
     _account = widget.sync.account;
+    ++_generation;
     _revocationUnconfirmed = false;
     setState(() {
       _status = null;
       _workouts = [];
       _message = null;
     });
-    if (!_busy) _refresh();
+    if (_busy) {
+      _refreshAfterBusy = true;
+    } else {
+      unawaited(_refresh());
+    }
   }
 
   @override
@@ -53,17 +62,23 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
   }
 
   Future<SyncJson> _request(String method, String path, {SyncJson? body}) async {
+    final generation = _generation;
     final account = widget.sync.account;
     if (account == null) throw SyncFailure(t.syncSignInToConnectStrava);
     final token = await widget.sync.auth.accessToken();
-    if (account != widget.sync.account) throw SyncFailure(t.syncAccountChangedRefreshConnections);
+    if (account != widget.sync.account || generation != _generation) {
+      throw SyncFailure(t.syncAccountChangedRefreshConnections);
+    }
     final result = await widget.sync.transport.request(method, path, token, body: body);
-    if (account != widget.sync.account) throw SyncFailure(t.syncAccountChangedRefreshConnections);
+    if (account != widget.sync.account || generation != _generation) {
+      throw SyncFailure(t.syncAccountChangedRefreshConnections);
+    }
     return result;
   }
 
   Future<void> _refresh() => _run(() async {
     if (widget.sync.account == null) return;
+    final generation = _generation;
     final status = await _request('GET', '/v1/strava/status');
     if (status['configured'] is! bool || status['connected'] is! bool) {
       throw const FormatException('Invalid Strava status');
@@ -74,6 +89,7 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
       }
     }
     final workouts = await widget.workouts();
+    if (generation != _generation) return;
     if (mounted) {
       setState(() {
         _status = status;
@@ -119,6 +135,7 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
 
   Future<void> _run(Future<void> Function() action) async {
     if (_busy) return;
+    final generation = _generation;
     setState(() {
       _busy = true;
       _message = null;
@@ -126,13 +143,19 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
     try {
       await action();
     } on SyncFailure catch (error) {
-      if (mounted) setState(() => _message = error.message);
+      if (mounted && generation == _generation) setState(() => _message = error.message);
     } catch (_) {
-      if (mounted) {
+      if (mounted && generation == _generation) {
         setState(() => _message = t.syncStravaCouldNotCompleteThisRequestRefresh);
       }
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) {
+        setState(() => _busy = false);
+        if (_refreshAfterBusy) {
+          _refreshAfterBusy = false;
+          unawaited(_refresh());
+        }
+      }
     }
   }
 
@@ -188,7 +211,7 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
           ],
           for (final job in jobs)
             ListTile(
-              title: Text('${job['status']} · ${job['workoutId']}'),
+              title: Text('${syncStatusLabel(job['status'])} · ${job['workoutId']}'),
               subtitle: Text(
                 job['status'] == 'unknown'
                     ? t.syncCheckStravaManuallyDoNotRetryThis

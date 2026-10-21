@@ -91,7 +91,7 @@ void main() {
       expect(fit.sessions.map((s) => s.id).toSet(), {guest.id, remote.id});
       expect(await adapter.pendingCount(accountId), 0);
       final exports = await exportableWorkouts(Store.instance, syncedOnly: true);
-      expect(exports.map((e) => e['entityId']), [guest.id]);
+      expect(exports.map((e) => e['entityId']).toSet(), {guest.id, remote.id});
       await adapter.selectNamespace('guest');
       expect(fit.sessions.map((s) => s.id), [guest.id]);
       await adapter.selectNamespace(accountId);
