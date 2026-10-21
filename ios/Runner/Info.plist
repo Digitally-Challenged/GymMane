@@ -26,6 +26,18 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Take progress photos or food photos in GymMane.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>GymMane uses Health access to manage workouts you choose to export.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Save completed GymMane strength workouts to Apple Health when you enable export.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record audio when capturing video in GymMane.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save workout summary images to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose progress photos and food photos for your log.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -66,17 +78,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSHealthShareUsageDescription</key>
-	<string>GymMane uses Health access to manage workouts you choose to export.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Save completed GymMane strength workouts to Apple Health when you enable export.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Take progress photos or food photos in GymMane.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Choose progress photos and food photos for your log.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Save workout summary images to your photo library.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Record audio when capturing video in GymMane.</string>
 </dict>
 </plist>
