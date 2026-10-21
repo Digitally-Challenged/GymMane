@@ -32,8 +32,11 @@ export function createApp(
   pool: Pool,
   auth: AuthConfig,
   modules: BackendModule[] = [],
-  options: { allowedOrigins?: string[] } = {},
+  options: { allowedOrigins?: string[]; release?: string } = {},
 ) {
+  const release = options.release ?? "development";
+  if (release !== "development" && !/^[a-f0-9]{40}$/.test(release))
+    throw new Error("Invalid release identifier");
   const allowedOrigins = new Set(options.allowedOrigins ?? []);
   for (const origin of allowedOrigins) {
     const parsed = new URL(origin);
@@ -91,6 +94,17 @@ export function createApp(
           response.end();
           return;
         }
+      }
+      if (request.method === "GET" && url.pathname === "/health") {
+        let status = "ok";
+        try {
+          await pool.query("SELECT 1 FROM backend_migrations LIMIT 1");
+        } catch {
+          response.statusCode = 503;
+          status = "unavailable";
+        }
+        response.end(JSON.stringify({ status, release }));
+        return;
       }
       const handler = registry.get(request.method ?? "", url.pathname);
       if (!handler) throw new HttpError(404, "Route not found");
