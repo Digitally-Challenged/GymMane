@@ -9,6 +9,7 @@ import {
 import { Provider } from "./provider.js";
 import { ProviderError, providerId } from "./transport.js";
 const MAX_ATTEMPTS = 30;
+class SubmissionCancelled extends Error {}
 export class UploadWorker {
   constructor(
     private pool: Pool,
@@ -85,7 +86,7 @@ export class UploadWorker {
     }
     // Mark sending durably before fetch. No automatic retry of ambiguous POSTs.
     await db.query(
-      "UPDATE strava_jobs SET status=$4,attempts=attempts+1 WHERE account_id=$1 AND workout_id=$2 AND revision=$3",
+      "UPDATE strava_jobs SET status=$4,attempts=attempts+1,post_intent_at=CASE WHEN upload_id IS NULL THEN COALESCE(post_intent_at,now()) ELSE post_intent_at END WHERE account_id=$1 AND workout_id=$2 AND revision=$3",
       [
         j.account_id,
         j.workout_id,
@@ -112,8 +113,8 @@ export class UploadWorker {
     }
     const c = await connection(db, account);
     await db.query(
-      "UPDATE strava_jobs SET status='needsAuthorization',message='Connection changed; no automatic resend' WHERE account_id=$1 AND status IN ('queued','processing') AND generation<>$2",
-      [account, c.generation],
+      "UPDATE strava_jobs SET status='needsAuthorization',message='Connection changed; no automatic resend' WHERE account_id=$1 AND status IN ('queued','processing') AND (generation<>$2 OR athlete_id IS DISTINCT FROM $3)",
+      [account, c.generation, c.athlete_id],
     );
     const j = (
       await db.query<Job>(
@@ -156,10 +157,12 @@ export class UploadWorker {
       );
       return;
     }
-    // Commit the intent before the network request, while retaining the Strava
-    // session lock/generation fence. Later sync edits/deletions cannot cancel an
-    // already committed submission; ambiguous outcomes still must not resend.
-    if (!(await transaction(db, () => this.recordIntent(db, j)))) return;
+    // Provider-local rate gates run first. Commit intent immediately before fetch,
+    // retaining the session lock and SyncStore's account row lock through COMMIT.
+    const beforeFetch = async () => {
+      if (!(await transaction(db, () => this.recordIntent(db, j))))
+        throw new SubmissionCancelled();
+    };
     try {
       let result: Record<string, unknown>;
       if (j.upload_id)
@@ -167,6 +170,7 @@ export class UploadWorker {
           db,
           `/api/v3/uploads/${j.upload_id}`,
           { method: "GET", headers: { Authorization: `Bearer ${token}` } },
+          beforeFetch,
         );
       else {
         const body = new FormData();
@@ -182,11 +186,16 @@ export class UploadWorker {
           "external_id",
           `gymmane-${account}-${j.workout_id}-r${j.revision}`,
         );
-        result = await this.provider.request(db, "/api/v3/uploads", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body,
-        });
+        result = await this.provider.request(
+          db,
+          "/api/v3/uploads",
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body,
+          },
+          beforeFetch,
+        );
       }
       const upload =
         providerId(result.id_str) ?? providerId(result.id) ?? j.upload_id;
@@ -221,6 +230,7 @@ export class UploadWorker {
         activity,
       );
     } catch (error) {
+      if (error instanceof SubmissionCancelled) return;
       if (error instanceof ProviderError && error.status === 429) {
         await this.update(
           db,
