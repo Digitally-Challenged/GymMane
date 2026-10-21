@@ -18,6 +18,7 @@ import '../services/backup_zip.dart';
 import '../services/fitnotes_backup.dart';
 import '../services/home_widget_bridge.dart';
 import '../services/rest_alarm.dart';
+import '../services/local_store.dart';
 import '../services/sqlite_reader.dart';
 import '../services/workout_import.dart';
 import '../state/fit_state.dart';
@@ -33,6 +34,11 @@ import '../widgets/profile_avatar.dart';
 import '../widgets/ruler_picker.dart';
 import '../widgets/timer_panel.dart';
 import 'profile_screen.dart';
+import 'sync/sync_screen.dart';
+import 'sync/healthkit_section.dart';
+import 'sync/strava_section.dart';
+import '../services/sync/store_health_delivery.dart';
+import '../services/sync/sync_runtime.dart';
 import 'strava_sheet.dart';
 import '../widgets/steps_card.dart';
 import '../widgets/ui_kit.dart';
@@ -61,6 +67,17 @@ class SettingsScreen extends StatelessWidget {
           children: riseAll([
             ScreenHeader(title: t.settings, onBack: fit.backFromPreferences),
             const SizedBox(height: 20),
+            if (SyncRuntime.controller != null)
+              ListTile(
+                leading: const Icon(Icons.cloud_sync_outlined),
+                title: Text(t.syncConnectionsSync),
+                subtitle: Text(t.syncAccountPendingChangesAndAppleHealth),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => SyncScreen(controller: SyncRuntime.controller!, healthSection: HealthKitSection(delivery: SyncRuntime.health!),
+                    stravaSection: StravaSection(sync: SyncRuntime.controller!, workouts: () => exportableWorkouts(Store.instance, syncedOnly: true))),
+                )),
+              ),
             _group(gc, t.sectionGeneral, [
               _choiceRow(
                 context,
@@ -730,9 +747,12 @@ class SettingsScreen extends StatelessWidget {
       _snack(context, t.backupFailed);
       return;
     }
-    final success = looksLikeZip(bytes)
-        ? await restoreBackupZip(bytes)
-        : fit.importJson(utf8.decode(bytes, allowMalformed: true));
+    var success = false;
+    try {
+      success = looksLikeZip(bytes) ? await restoreBackupZip(bytes) : await _restoreJson(bytes);
+    } catch (_) {
+      success = false;
+    }
     if (context.mounted) {
       _snack(context, success ? t.backupImported : t.backupFailed);
     }
@@ -1266,6 +1286,13 @@ class SettingsScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<bool> _restoreJson(Uint8List bytes) async {
+    final parsed = Store.instance.tryParse(utf8.decode(bytes));
+    if (parsed == null) return false;
+    await fit.restoreBackup(parsed);
+    return true;
   }
 
   Future<void> _pickBackground() async {

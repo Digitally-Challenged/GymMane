@@ -8859,6 +8859,624 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Based on GymMane by InlitX'**
   String get derivedAttribution;
+
+  /// No description provided for @syncConnectionsSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections & sync'**
+  String get syncConnectionsSync;
+
+  /// No description provided for @syncAccountPendingChangesAndAppleHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Account, pending changes and Apple Health'**
+  String get syncAccountPendingChangesAndAppleHealth;
+
+  /// No description provided for @syncCloudSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud sync'**
+  String get syncCloudSync;
+
+  /// No description provided for @syncSyncCompletedWorkoutsAndRoutinesOfflineGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync completed workouts and routines. Offline guest use remains available. Photos, nutrition and device settings stay on this device.'**
+  String get syncSyncCompletedWorkoutsAndRoutinesOfflineGuest;
+
+  /// No description provided for @syncEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get syncEmail;
+
+  /// No description provided for @syncPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get syncPassword;
+
+  /// No description provided for @syncSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get syncSignIn;
+
+  /// No description provided for @syncUseAnExistingAccountFromYourConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an existing account from your configured provider. Signing in opens a separate account library; guest history is not uploaded automatically.'**
+  String get syncUseAnExistingAccountFromYourConfigured;
+
+  /// No description provided for @syncWebSignInLastsForThisTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Web sign-in lasts for this tab only. Tokens are not saved in browser storage.'**
+  String get syncWebSignInLastsForThisTab;
+
+  /// No description provided for @syncSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncSyncNow;
+
+  /// No description provided for @syncReviewGuestHistoryForUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Review guest history for upload'**
+  String get syncReviewGuestHistoryForUpload;
+
+  /// No description provided for @syncSignOutOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out on this device'**
+  String get syncSignOutOnThisDevice;
+
+  /// No description provided for @syncSigningOutRetainsLocalAccountDataAnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out retains local account data and pending changes for the next sign-in to that account.'**
+  String get syncSigningOutRetainsLocalAccountDataAnd;
+
+  /// No description provided for @syncUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get syncUnavailable;
+
+  /// No description provided for @syncGuestCloudSyncOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest · cloud sync off'**
+  String get syncGuestCloudSyncOff;
+
+  /// No description provided for @syncConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get syncConnected;
+
+  /// No description provided for @syncConnectedConflictsNeedReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected · conflicts need review'**
+  String get syncConnectedConflictsNeedReview;
+
+  /// No description provided for @syncSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get syncSyncing;
+
+  /// No description provided for @syncOfflineChangesWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline · changes waiting'**
+  String get syncOfflineChangesWaiting;
+
+  /// No description provided for @syncSessionExpiredSignOutAndSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Session expired · sign out and sign in again'**
+  String get syncSessionExpiredSignOutAndSignIn;
+
+  /// No description provided for @syncSyncNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync needs attention'**
+  String get syncSyncNeedsAttention;
+
+  /// No description provided for @syncUploadGuestHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload guest history?'**
+  String get syncUploadGuestHistory;
+
+  /// No description provided for @syncCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get syncCancel;
+
+  /// No description provided for @syncConfirmUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm upload'**
+  String get syncConfirmUpload;
+
+  /// No description provided for @syncCouldNotReadGuestHistoryNothingWas.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read guest history. Nothing was uploaded.'**
+  String get syncCouldNotReadGuestHistoryNothingWas;
+
+  /// No description provided for @syncBothVersionsAreRetainedUntilYouChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Both versions are retained until you choose. Keeping this device’s version creates a new change against the server revision.'**
+  String get syncBothVersionsAreRetainedUntilYouChoose;
+
+  /// No description provided for @syncKeepThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this device'**
+  String get syncKeepThisDevice;
+
+  /// No description provided for @syncUseServerVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Use server version'**
+  String get syncUseServerVersion;
+
+  /// No description provided for @syncLocalVersionRetained.
+  ///
+  /// In en, this message translates to:
+  /// **'Local version retained'**
+  String get syncLocalVersionRetained;
+
+  /// No description provided for @syncDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get syncDeleted;
+
+  /// No description provided for @syncNoDetailsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No details available'**
+  String get syncNoDetailsAvailable;
+
+  /// No description provided for @syncUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled'**
+  String get syncUntitled;
+
+  /// No description provided for @syncKeepThisDeviceSVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this device’s version?'**
+  String get syncKeepThisDeviceSVersion;
+
+  /// No description provided for @syncUseServerVersionQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Use server version?'**
+  String get syncUseServerVersionQuestion;
+
+  /// No description provided for @syncThisWillSubmitYourLocalVersionAgainst.
+  ///
+  /// In en, this message translates to:
+  /// **'This will submit your local version against the latest known server revision.'**
+  String get syncThisWillSubmitYourLocalVersionAgainst;
+
+  /// No description provided for @syncThisReplacesTheConflictingLocalVersionWith.
+  ///
+  /// In en, this message translates to:
+  /// **'This replaces the conflicting local version with the server version, including any deletion.'**
+  String get syncThisReplacesTheConflictingLocalVersionWith;
+
+  /// No description provided for @syncConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get syncConfirm;
+
+  /// No description provided for @syncSignInToConnectStrava.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to connect Strava.'**
+  String get syncSignInToConnectStrava;
+
+  /// No description provided for @syncAccountChangedRefreshConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Account changed. Refresh connections.'**
+  String get syncAccountChangedRefreshConnections;
+
+  /// No description provided for @syncCouldNotOpenStravaAuthorization.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Strava authorization.'**
+  String get syncCouldNotOpenStravaAuthorization;
+
+  /// No description provided for @syncExportThisWorkoutToStrava.
+  ///
+  /// In en, this message translates to:
+  /// **'Export this workout to Strava?'**
+  String get syncExportThisWorkoutToStrava;
+
+  /// No description provided for @syncOnlyThisCompletedWorkoutWillBeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Only this completed workout will be sent. If Strava also writes to Apple Health, exporting here and directly to Apple Health can create duplicates. Edits and deletions may require manual changes in Strava.'**
+  String get syncOnlyThisCompletedWorkoutWillBeSent;
+
+  /// No description provided for @syncExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get syncExport;
+
+  /// No description provided for @syncStravaCouldNotCompleteThisRequestRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Strava could not complete this request. Refresh status before trying again.'**
+  String get syncStravaCouldNotCompleteThisRequestRefresh;
+
+  /// No description provided for @syncStrava.
+  ///
+  /// In en, this message translates to:
+  /// **'Strava'**
+  String get syncStrava;
+
+  /// No description provided for @syncStatusNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Status not loaded.'**
+  String get syncStatusNotLoaded;
+
+  /// No description provided for @syncUnavailableServerStravaConfigurationIsIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable: server Strava configuration is incomplete.'**
+  String get syncUnavailableServerStravaConfigurationIsIncomplete;
+
+  /// No description provided for @syncNotConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get syncNotConnected;
+
+  /// No description provided for @syncDisconnectedLocallyButStravaRevocationIsUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected locally, but Strava revocation is unconfirmed. Remove GymMane from Strava’s authorized applications.'**
+  String get syncDisconnectedLocallyButStravaRevocationIsUnconfirmed;
+
+  /// No description provided for @syncConnectStrava.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect Strava'**
+  String get syncConnectStrava;
+
+  /// No description provided for @syncRefreshStravaStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Strava status'**
+  String get syncRefreshStravaStatus;
+
+  /// No description provided for @syncDisconnectStrava.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect Strava'**
+  String get syncDisconnectStrava;
+
+  /// No description provided for @syncChooseASyncedGymManeWorkoutToExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a synced GymMane workout to export. Remote imports and unresolved conflicts are excluded.'**
+  String get syncChooseASyncedGymManeWorkoutToExport;
+
+  /// No description provided for @syncCheckStravaManuallyDoNotRetryThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Strava manually. Do not retry this upload.'**
+  String get syncCheckStravaManuallyDoNotRetryThis;
+
+  /// No description provided for @syncEditOrDeleteThisActivityManuallyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit or delete this activity manually in Strava.'**
+  String get syncEditOrDeleteThisActivityManuallyIn;
+
+  /// No description provided for @syncRefreshToCheckDeliveryStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh to check delivery status.'**
+  String get syncRefreshToCheckDeliveryStatus;
+
+  /// No description provided for @syncWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout'**
+  String get syncWorkout;
+
+  /// No description provided for @syncAppleHealthCouldNotBeReachedCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health could not be reached. Check permissions in Settings.'**
+  String get syncAppleHealthCouldNotBeReachedCheck;
+
+  /// No description provided for @syncAppleHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health'**
+  String get syncAppleHealth;
+
+  /// No description provided for @syncCheckingAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking availability…'**
+  String get syncCheckingAvailability;
+
+  /// No description provided for @syncUnavailableOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable on this device.'**
+  String get syncUnavailableOnThisDevice;
+
+  /// No description provided for @syncWorkoutWritePermissionHasNotBeenRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout write permission has not been requested.'**
+  String get syncWorkoutWritePermissionHasNotBeenRequested;
+
+  /// No description provided for @syncWorkoutWritePermissionDeniedChangeAccessIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout write permission denied. Change access in Apple Health settings.'**
+  String get syncWorkoutWritePermissionDeniedChangeAccessIn;
+
+  /// No description provided for @syncWorkoutWritePermissionGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout write permission granted.'**
+  String get syncWorkoutWritePermissionGranted;
+
+  /// No description provided for @syncOnlyWorkoutWritePermissionIsRequestedThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Only workout write permission is requested. This does not upload existing history or read health data.'**
+  String get syncOnlyWorkoutWritePermissionIsRequestedThis;
+
+  /// No description provided for @syncAllowAppleHealthAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Apple Health access'**
+  String get syncAllowAppleHealthAccess;
+
+  /// No description provided for @syncRefreshPermissionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh permission status'**
+  String get syncRefreshPermissionStatus;
+
+  /// No description provided for @syncUseThisIPhoneForAppleHealthExports.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this iPhone for Apple Health exports'**
+  String get syncUseThisIPhoneForAppleHealthExports;
+
+  /// No description provided for @syncChooseOnlyOneDeviceEachWorkoutStill.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose only one device. Each workout still requires an explicit export. Avoid exporting both here and through Strava to Apple Health.'**
+  String get syncChooseOnlyOneDeviceEachWorkoutStill;
+
+  /// No description provided for @syncSelectAGymManeOriginWorkoutImportedHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a GymMane-origin workout. Imported history is excluded.'**
+  String get syncSelectAGymManeOriginWorkoutImportedHistory;
+
+  /// No description provided for @syncReconcile.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconcile'**
+  String get syncReconcile;
+
+  /// No description provided for @syncRemoveFromHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Health'**
+  String get syncRemoveFromHealth;
+
+  /// No description provided for @syncRemoveThisExportFromAppleHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this export from Apple Health?'**
+  String get syncRemoveThisExportFromAppleHealth;
+
+  /// No description provided for @syncOnlyThisGymManeExportIsRemovedThe.
+  ///
+  /// In en, this message translates to:
+  /// **'Only this GymMane export is removed. The workout in GymMane is retained.'**
+  String get syncOnlyThisGymManeExportIsRemovedThe;
+
+  /// No description provided for @syncRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get syncRemove;
+
+  /// No description provided for @syncExportThisWorkoutToAppleHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Export this workout to Apple Health?'**
+  String get syncExportThisWorkoutToAppleHealth;
+
+  /// No description provided for @syncThisSendsOnlyTheSelectedWorkoutFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'This sends only the selected workout from this device. Check that Strava or another device has not already exported the same workout.'**
+  String get syncThisSendsOnlyTheSelectedWorkoutFrom;
+
+  /// No description provided for @syncLocalDataCouldNotBeOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data could not be opened'**
+  String get syncLocalDataCouldNotBeOpened;
+
+  /// No description provided for @syncYourSavedDataHasNotBeenReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Your saved data has not been reset. Retry after checking available storage, or restore access to this device’s storage.'**
+  String get syncYourSavedDataHasNotBeenReset;
+
+  /// No description provided for @syncRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get syncRetry;
+
+  /// No description provided for @syncSyncCouldNotCompleteSafelyLocalChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync could not complete safely. Local changes are retained; retry or reconnect.'**
+  String get syncSyncCouldNotCompleteSafelyLocalChanges;
+
+  /// No description provided for @syncLocalAccountCouldNotBeSwitchedSafely.
+  ///
+  /// In en, this message translates to:
+  /// **'Local account could not be switched safely.'**
+  String get syncLocalAccountCouldNotBeSwitchedSafely;
+
+  /// No description provided for @syncAllowAppleHealthWorkoutAccessFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Apple Health workout access first.'**
+  String get syncAllowAppleHealthWorkoutAccessFirst;
+
+  /// No description provided for @syncDesignateThisIPhoneForAppleHealthExports.
+  ///
+  /// In en, this message translates to:
+  /// **'Designate this iPhone for Apple Health exports first.'**
+  String get syncDesignateThisIPhoneForAppleHealthExports;
+
+  /// No description provided for @syncWorkoutChangedOrIsNotEligibleRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout changed or is not eligible. Refresh before exporting.'**
+  String get syncWorkoutChangedOrIsNotEligibleRefresh;
+
+  /// No description provided for @syncReconcileThePreviousAttemptBeforeExportingA.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconcile the previous attempt before exporting a new version.'**
+  String get syncReconcileThePreviousAttemptBeforeExportingA;
+
+  /// No description provided for @syncAppleHealthExportIsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health export is disabled.'**
+  String get syncAppleHealthExportIsDisabled;
+
+  /// No description provided for @syncAccountChangedRefreshExports.
+  ///
+  /// In en, this message translates to:
+  /// **'Account changed. Refresh exports.'**
+  String get syncAccountChangedRefreshExports;
+
+  /// No description provided for @syncReconcileTheCurrentExportBeforeDeleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconcile the current export before deleting.'**
+  String get syncReconcileTheCurrentExportBeforeDeleting;
+
+  /// No description provided for @syncAppleHealthOperationDidNotCompleteAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health operation did not complete. Any interrupted export is retained for reconciliation.'**
+  String get syncAppleHealthOperationDidNotCompleteAny;
+
+  /// No description provided for @syncExportFromYourDesignatedIPhoneThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Export from your designated iPhone. This device can sync workouts to that phone.'**
+  String get syncExportFromYourDesignatedIPhoneThisDevice;
+
+  /// No description provided for @syncThisConflictChangedRefreshAndReviewBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'This conflict changed. Refresh and review both versions again.'**
+  String get syncThisConflictChangedRefreshAndReviewBoth;
+
+  /// No description provided for @syncSyncRequestFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync request failed'**
+  String get syncSyncRequestFailed;
+
+  /// No description provided for @syncConnectionTimedOutYourChangesRemainOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out. Your changes remain on this device.'**
+  String get syncConnectionTimedOutYourChangesRemainOn;
+
+  /// No description provided for @syncOfflineOrServerUnreachableYourChangesRemain.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline or server unreachable. Your changes remain on this device.'**
+  String get syncOfflineOrServerUnreachableYourChangesRemain;
+
+  /// No description provided for @syncSignInCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in cancelled.'**
+  String get syncSignInCancelled;
+
+  /// No description provided for @syncSignInToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync.'**
+  String get syncSignInToSync;
+
+  /// No description provided for @syncAccountChangedSignInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Account changed. Sign in again.'**
+  String get syncAccountChangedSignInAgain;
+
+  /// No description provided for @syncSignInOrSessionRefreshFailedCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in or session refresh failed. Check your credentials and provider configuration.'**
+  String get syncSignInOrSessionRefreshFailedCheck;
+
+  /// No description provided for @syncSignInServerTimedOutTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in server timed out. Try again when connected.'**
+  String get syncSignInServerTimedOutTryAgain;
+
+  /// No description provided for @syncSignInServerUnreachableTryAgainWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in server unreachable. Try again when connected.'**
+  String get syncSignInServerUnreachableTryAgainWhen;
+
+  /// No description provided for @syncCloudSyncUnavailableThisBuildNeedsAn.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud sync unavailable: this build needs an HTTPS sync server, auth provider URL and public API key.'**
+  String get syncCloudSyncUnavailableThisBuildNeedsAn;
+
+  /// No description provided for @syncCloudSyncUnavailableEmailSignInIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud sync unavailable: email sign-in is not enabled for this build.'**
+  String get syncCloudSyncUnavailableEmailSignInIs;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

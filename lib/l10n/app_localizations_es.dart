@@ -5040,4 +5040,353 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get derivedAttribution => 'Based on GymMane by InlitX';
+
+  @override
+  String get syncConnectionsSync => 'Conexiones y sincronización';
+
+  @override
+  String get syncAccountPendingChangesAndAppleHealth => 'Cuenta, cambios pendientes y Apple Health';
+
+  @override
+  String get syncCloudSync => 'Sincronización en la nube';
+
+  @override
+  String get syncSyncCompletedWorkoutsAndRoutinesOfflineGuest =>
+      'Sincroniza entrenamientos completados y rutinas. Puedes seguir usando la app sin conexión como invitado. Las fotos, la nutrición y los ajustes se quedan en este dispositivo.';
+
+  @override
+  String get syncEmail => 'Correo electrónico';
+
+  @override
+  String get syncPassword => 'Contraseña';
+
+  @override
+  String get syncSignIn => 'Iniciar sesión';
+
+  @override
+  String get syncUseAnExistingAccountFromYourConfigured =>
+      'Usa una cuenta existente del proveedor configurado. Al iniciar sesión se abre una biblioteca separada; el historial de invitado no se sube automáticamente.';
+
+  @override
+  String get syncWebSignInLastsForThisTab =>
+      'La sesión web dura solo mientras esta pestaña siga abierta. Las credenciales no se guardan en el navegador.';
+
+  @override
+  String get syncSyncNow => 'Sincronizar ahora';
+
+  @override
+  String get syncReviewGuestHistoryForUpload => 'Revisar el historial de invitado antes de subirlo';
+
+  @override
+  String get syncSignOutOnThisDevice => 'Cerrar sesión en este dispositivo';
+
+  @override
+  String get syncSigningOutRetainsLocalAccountDataAnd =>
+      'Al cerrar sesión se conservan los datos locales y los cambios pendientes para la próxima vez que accedas a esta cuenta.';
+
+  @override
+  String get syncUnavailable => 'No disponible';
+
+  @override
+  String get syncGuestCloudSyncOff => 'Invitado · sincronización desactivada';
+
+  @override
+  String get syncConnected => 'Conectado';
+
+  @override
+  String get syncConnectedConflictsNeedReview => 'Conectado · hay conflictos que revisar';
+
+  @override
+  String get syncSyncing => 'Sincronizando…';
+
+  @override
+  String get syncOfflineChangesWaiting => 'Sin conexión · cambios pendientes';
+
+  @override
+  String get syncSessionExpiredSignOutAndSignIn => 'Sesión caducada · cierra sesión y vuelve a entrar';
+
+  @override
+  String get syncSyncNeedsAttention => 'La sincronización requiere atención';
+
+  @override
+  String get syncUploadGuestHistory => '¿Subir el historial de invitado?';
+
+  @override
+  String get syncCancel => 'Cancelar';
+
+  @override
+  String get syncConfirmUpload => 'Confirmar subida';
+
+  @override
+  String get syncCouldNotReadGuestHistoryNothingWas =>
+      'No se pudo leer el historial de invitado. No se ha subido nada.';
+
+  @override
+  String get syncBothVersionsAreRetainedUntilYouChoose =>
+      'Se conservan ambas versiones hasta que elijas. Mantener la versión de este dispositivo crea un nuevo cambio basado en la revisión del servidor.';
+
+  @override
+  String get syncKeepThisDevice => 'Mantener la de este dispositivo';
+
+  @override
+  String get syncUseServerVersion => 'Usar la versión del servidor';
+
+  @override
+  String get syncLocalVersionRetained => 'Versión local conservada';
+
+  @override
+  String get syncDeleted => 'Eliminado';
+
+  @override
+  String get syncNoDetailsAvailable => 'No hay detalles disponibles';
+
+  @override
+  String get syncUntitled => 'Sin título';
+
+  @override
+  String get syncKeepThisDeviceSVersion => '¿Mantener la versión de este dispositivo?';
+
+  @override
+  String get syncUseServerVersionQuestion => '¿Usar la versión del servidor?';
+
+  @override
+  String get syncThisWillSubmitYourLocalVersionAgainst =>
+      'Se enviará tu versión local basándose en la última revisión conocida del servidor.';
+
+  @override
+  String get syncThisReplacesTheConflictingLocalVersionWith =>
+      'Se sustituirá la versión local en conflicto por la versión del servidor, incluidas las eliminaciones.';
+
+  @override
+  String get syncConfirm => 'Confirmar';
+
+  @override
+  String get syncSignInToConnectStrava => 'Inicia sesión para conectar Strava.';
+
+  @override
+  String get syncAccountChangedRefreshConnections => 'La cuenta ha cambiado. Actualiza las conexiones.';
+
+  @override
+  String get syncCouldNotOpenStravaAuthorization => 'No se pudo abrir la autorización de Strava.';
+
+  @override
+  String get syncExportThisWorkoutToStrava => '¿Exportar este entrenamiento a Strava?';
+
+  @override
+  String get syncOnlyThisCompletedWorkoutWillBeSent =>
+      'Solo se enviará este entrenamiento completado. Si Strava también escribe en Apple Health, exportar aquí y directamente a Apple Health puede crear duplicados. Las ediciones y eliminaciones pueden requerir cambios manuales en Strava.';
+
+  @override
+  String get syncExport => 'Exportar';
+
+  @override
+  String get syncStravaCouldNotCompleteThisRequestRefresh =>
+      'Strava no pudo completar esta solicitud. Actualiza el estado antes de intentarlo de nuevo.';
+
+  @override
+  String get syncStrava => 'Strava';
+
+  @override
+  String get syncStatusNotLoaded => 'Estado sin cargar.';
+
+  @override
+  String get syncUnavailableServerStravaConfigurationIsIncomplete =>
+      'No disponible: la configuración de Strava en el servidor está incompleta.';
+
+  @override
+  String get syncNotConnected => 'Sin conectar';
+
+  @override
+  String get syncDisconnectedLocallyButStravaRevocationIsUnconfirmed =>
+      'Desconectado localmente, pero no se ha confirmado la revocación en Strava. Elimina GymMane de las aplicaciones autorizadas de Strava.';
+
+  @override
+  String get syncConnectStrava => 'Conectar Strava';
+
+  @override
+  String get syncRefreshStravaStatus => 'Actualizar el estado de Strava';
+
+  @override
+  String get syncDisconnectStrava => 'Desconectar Strava';
+
+  @override
+  String get syncChooseASyncedGymManeWorkoutToExport =>
+      'Elige un entrenamiento sincronizado creado en GymMane para exportarlo. Se excluyen las importaciones externas y los conflictos sin resolver.';
+
+  @override
+  String get syncCheckStravaManuallyDoNotRetryThis => 'Comprueba Strava manualmente. No repitas esta subida.';
+
+  @override
+  String get syncEditOrDeleteThisActivityManuallyIn =>
+      'Edita o elimina esta actividad manualmente en Strava.';
+
+  @override
+  String get syncRefreshToCheckDeliveryStatus => 'Actualiza para comprobar el estado de la entrega.';
+
+  @override
+  String get syncWorkout => 'Entrenamiento';
+
+  @override
+  String get syncAppleHealthCouldNotBeReachedCheck =>
+      'No se pudo acceder a Apple Health. Comprueba los permisos en Ajustes.';
+
+  @override
+  String get syncAppleHealth => 'Apple Health';
+
+  @override
+  String get syncCheckingAvailability => 'Comprobando disponibilidad…';
+
+  @override
+  String get syncUnavailableOnThisDevice => 'No disponible en este dispositivo.';
+
+  @override
+  String get syncWorkoutWritePermissionHasNotBeenRequested =>
+      'No se ha solicitado permiso para guardar entrenamientos.';
+
+  @override
+  String get syncWorkoutWritePermissionDeniedChangeAccessIn =>
+      'Se ha denegado el permiso para guardar entrenamientos. Cambia el acceso en los ajustes de Apple Health.';
+
+  @override
+  String get syncWorkoutWritePermissionGranted => 'Permiso para guardar entrenamientos concedido.';
+
+  @override
+  String get syncOnlyWorkoutWritePermissionIsRequestedThis =>
+      'Solo se solicita permiso para guardar entrenamientos. Esto no sube el historial existente ni lee datos de salud.';
+
+  @override
+  String get syncAllowAppleHealthAccess => 'Permitir acceso a Apple Health';
+
+  @override
+  String get syncRefreshPermissionStatus => 'Actualizar el estado del permiso';
+
+  @override
+  String get syncUseThisIPhoneForAppleHealthExports => 'Usar este iPhone para exportar a Apple Health';
+
+  @override
+  String get syncChooseOnlyOneDeviceEachWorkoutStill =>
+      'Elige un solo dispositivo. Debes exportar cada entrenamiento expresamente. Evita exportar a Apple Health tanto desde aquí como desde Strava.';
+
+  @override
+  String get syncSelectAGymManeOriginWorkoutImportedHistory =>
+      'Selecciona un entrenamiento creado en GymMane. Se excluye el historial importado.';
+
+  @override
+  String get syncReconcile => 'Conciliar';
+
+  @override
+  String get syncRemoveFromHealth => 'Eliminar de Salud';
+
+  @override
+  String get syncRemoveThisExportFromAppleHealth => '¿Eliminar esta exportación de Apple Health?';
+
+  @override
+  String get syncOnlyThisGymManeExportIsRemovedThe =>
+      'Solo se elimina esta exportación de GymMane. El entrenamiento se conserva en GymMane.';
+
+  @override
+  String get syncRemove => 'Eliminar';
+
+  @override
+  String get syncExportThisWorkoutToAppleHealth => '¿Exportar este entrenamiento a Apple Health?';
+
+  @override
+  String get syncThisSendsOnlyTheSelectedWorkoutFrom =>
+      'Solo se envía el entrenamiento seleccionado desde este dispositivo. Comprueba que Strava u otro dispositivo no lo hayan exportado ya.';
+
+  @override
+  String get syncLocalDataCouldNotBeOpened => 'No se pudieron abrir los datos locales';
+
+  @override
+  String get syncYourSavedDataHasNotBeenReset =>
+      'Tus datos guardados no se han restablecido. Comprueba el espacio disponible o recupera el acceso al almacenamiento del dispositivo y vuelve a intentarlo.';
+
+  @override
+  String get syncRetry => 'Reintentar';
+
+  @override
+  String get syncSyncCouldNotCompleteSafelyLocalChanges =>
+      'La sincronización no pudo completarse de forma segura. Se conservan los cambios locales; vuelve a intentarlo o reconecta.';
+
+  @override
+  String get syncLocalAccountCouldNotBeSwitchedSafely =>
+      'No se pudo cambiar de cuenta local de forma segura.';
+
+  @override
+  String get syncAllowAppleHealthWorkoutAccessFirst =>
+      'Primero permite el acceso a los entrenamientos de Apple Health.';
+
+  @override
+  String get syncDesignateThisIPhoneForAppleHealthExports =>
+      'Primero elige este iPhone para exportar a Apple Health.';
+
+  @override
+  String get syncWorkoutChangedOrIsNotEligibleRefresh =>
+      'El entrenamiento ha cambiado o no es apto. Actualiza antes de exportarlo.';
+
+  @override
+  String get syncReconcileThePreviousAttemptBeforeExportingA =>
+      'Concilia el intento anterior antes de exportar una nueva versión.';
+
+  @override
+  String get syncAppleHealthExportIsDisabled => 'La exportación a Apple Health está desactivada.';
+
+  @override
+  String get syncAccountChangedRefreshExports => 'La cuenta ha cambiado. Actualiza las exportaciones.';
+
+  @override
+  String get syncReconcileTheCurrentExportBeforeDeleting =>
+      'Concilia la exportación actual antes de eliminarla.';
+
+  @override
+  String get syncAppleHealthOperationDidNotCompleteAny =>
+      'La operación de Apple Health no se completó. Las exportaciones interrumpidas se conservan para conciliarlas.';
+
+  @override
+  String get syncExportFromYourDesignatedIPhoneThisDevice =>
+      'Exporta desde el iPhone que hayas elegido. Este dispositivo puede sincronizar los entrenamientos con ese teléfono.';
+
+  @override
+  String get syncThisConflictChangedRefreshAndReviewBoth =>
+      'Este conflicto ha cambiado. Actualiza y vuelve a revisar ambas versiones.';
+
+  @override
+  String get syncSyncRequestFailed => 'La solicitud de sincronización ha fallado';
+
+  @override
+  String get syncConnectionTimedOutYourChangesRemainOn =>
+      'La conexión ha agotado el tiempo de espera. Tus cambios siguen en este dispositivo.';
+
+  @override
+  String get syncOfflineOrServerUnreachableYourChangesRemain =>
+      'Sin conexión o servidor inaccesible. Tus cambios siguen en este dispositivo.';
+
+  @override
+  String get syncSignInCancelled => 'Inicio de sesión cancelado.';
+
+  @override
+  String get syncSignInToSync => 'Inicia sesión para sincronizar.';
+
+  @override
+  String get syncAccountChangedSignInAgain => 'La cuenta ha cambiado. Vuelve a iniciar sesión.';
+
+  @override
+  String get syncSignInOrSessionRefreshFailedCheck =>
+      'Ha fallado el inicio de sesión o la renovación. Comprueba tus credenciales y la configuración del proveedor.';
+
+  @override
+  String get syncSignInServerTimedOutTryAgain =>
+      'El servidor de inicio de sesión ha agotado el tiempo de espera. Inténtalo cuando tengas conexión.';
+
+  @override
+  String get syncSignInServerUnreachableTryAgainWhen =>
+      'No se puede acceder al servidor de inicio de sesión. Inténtalo cuando tengas conexión.';
+
+  @override
+  String get syncCloudSyncUnavailableThisBuildNeedsAn =>
+      'Sincronización no disponible: esta versión necesita un servidor HTTPS, la URL del proveedor de autenticación y una clave pública de API.';
+
+  @override
+  String get syncCloudSyncUnavailableEmailSignInIs =>
+      'Sincronización no disponible: esta versión no tiene habilitado el inicio de sesión con correo electrónico.';
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'app/gymmane_app.dart';
+import 'screens/sync/startup_recovery.dart';
 import 'services/alarm_store.dart';
 import 'services/device_kind.dart';
 import 'services/home_widget_bridge.dart';
@@ -12,6 +13,7 @@ import 'services/local_store.dart';
 import 'services/media_store.dart';
 import 'services/rest_alarm.dart';
 import 'services/screen_awake.dart';
+import 'services/sync/sync_runtime.dart';
 import 'state/fit_state.dart';
 import 'wear/wear_app.dart';
 
@@ -27,11 +29,17 @@ Future<void> main() async {
   ));
 
   await initializeDateFormatting();
-  await Store.instance.init();
-  await MediaStore.init();
-  await AlarmStore.init();
-  await RestAlarm.instance.init();
-  fit.loadFromStore();
+  try {
+    await Store.instance.init();
+    await MediaStore.init();
+    await AlarmStore.init();
+    await RestAlarm.instance.init();
+    fit.loadFromStore();
+  } catch (_) {
+    runApp(StartupRecovery(retry: main));
+    return;
+  }
+  await SyncRuntime.initialize();
   fit.syncPhotoReminder();
   fit.syncTrainReminder();
 
