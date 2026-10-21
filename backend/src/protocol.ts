@@ -51,6 +51,42 @@ function set(value: unknown, planned = false) {
       value[key] === undefined || value[key] === null || finite(value[key]),
     );
 }
+// Dart emits three or six fractional digits, and no suffix for legacy local
+// dates. Never use Date.parse: it accepts prose and normalizes invalid days.
+function workoutDate(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const match =
+    /^([0-9]{4}|-[0-9]{4}|[+-][0-9]{6})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,6}))?(Z)?$/.exec(
+      value,
+    );
+  if (!match || match[0] !== value) return false;
+  const [, year, month, day, hour, minute, second, fraction = ""] = match;
+  const y = Number(year),
+    m = Number(month),
+    d = Number(day);
+  const leap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (
+    m < 1 ||
+    m > 12 ||
+    d < 1 ||
+    d > days[m - 1] ||
+    Number(hour) > 23 ||
+    Number(minute) > 59 ||
+    Number(second) > 59
+  )
+    return false;
+  // Check the shared DateTime range without losing microseconds or interpreting
+  // timezone-less legacy values using the server's local timezone.
+  const date = new Date(0);
+  date.setUTCFullYear(y, m - 1, d);
+  date.setUTCHours(Number(hour), Number(minute), Number(second), 0);
+  const micros = BigInt(fraction.padEnd(6, "0"));
+  return (
+    Number.isFinite(date.getTime()) &&
+    BigInt(date.getTime()) * 1000n + micros <= 8640000000000000000n
+  );
+}
 function payload(value: JsonObject, type: Operation["entityType"], id: string) {
   assert(typeof value.id === "string" && value.id.toLowerCase() === id);
   assert(Array.isArray(value.ex));
@@ -58,7 +94,7 @@ function payload(value: JsonObject, type: Operation["entityType"], id: string) {
     value.n === undefined || value.n === null || typeof value.n === "string",
   );
   if (type === "workout") {
-    assert(typeof value.d === "string" && Number.isFinite(Date.parse(value.d)));
+    assert(workoutDate(value.d), "Invalid workout ISO timestamp");
     assert(Number.isSafeInteger(value.dur) && (value.dur as number) >= 0);
     assert(
       value.r === undefined || value.r === null || typeof value.r === "string",

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { createServer, type Server } from "node:http";
 import { once } from "node:events";
+import { readFileSync } from "node:fs";
 import { Pool } from "pg";
 import { exportJWK, generateKeyPair, SignJWT } from "jose";
 import { migrate } from "../src/migrate.js";
@@ -383,6 +384,161 @@ integration(
     } finally {
       await new Promise<void>((resolve) => server.close(() => resolve()));
       await new Promise<void>((resolve) => unavailable.close(() => resolve()));
+    }
+  },
+);
+
+const dateFixtures = JSON.parse(
+  readFileSync(
+    new URL("./fixtures/workout-dates.json", import.meta.url),
+    "utf8",
+  ),
+) as { timestamp: string; dartIso: string }[];
+const invalidDates = [
+  "2026-10-20T12:00:00Z\n",
+  "2026-10-20T12:00:00+05:00",
+  "0",
+  "October 20, 2026",
+  "2026-10-20",
+  "2026-02-29T12:00:00Z",
+  "1900-02-29T12:00:00Z",
+  "2026-04-31T12:00:00Z",
+  "2026-00-20T12:00:00Z",
+  "2026-13-20T12:00:00Z",
+  "2026-10-00T12:00:00Z",
+  "2026-10-32T12:00:00Z",
+  "2026-10-20T24:00:00Z",
+  "2026-10-20T12:60:00Z",
+  "2026-10-20T12:00:60Z",
+  "2026-10-20T12:00:00.1234567Z",
+  "2026-10-20T12:00:00Z trailing",
+  " 2026-10-20T12:00:00Z",
+  "+999999-01-01T00:00:00.000Z",
+];
+test("workout dates reject permissive parser and calendar overflow inputs", () => {
+  for (const d of invalidDates) {
+    const op = operation();
+    op.payload.d = d;
+    assert.throws(
+      () => parsePush({ schemaVersion: 1, operations: [op] }),
+      { status: 400 },
+      d,
+    );
+  }
+});
+test("workout dates preserve Dart UTC and legacy local timestamp fixtures", () => {
+  for (const { timestamp } of dateFixtures) {
+    const op = operation();
+    op.payload.d = timestamp;
+    assert.deepEqual(
+      parsePush({ schemaVersion: 1, operations: [op] })[0].payload,
+      op.payload,
+    );
+  }
+});
+integration(
+  "invalid dates cannot poison changes; Dart fixtures survive push and pull",
+  async () => {
+    const jwt = await token(randomUUID());
+    for (const d of invalidDates) {
+      const op = operation();
+      op.payload.d = d;
+      assert.equal((await push(jwt, [operation(), op])).status, 400, d);
+    }
+    assert.deepEqual((await call("/v1/sync/pull", jwt)).body, {
+      entities: [],
+      nextCursor: "0",
+      hasMore: false,
+    });
+    const operations = dateFixtures.map(({ timestamp }) => {
+      const op = operation();
+      op.payload.d = timestamp;
+      return op;
+    });
+    const accepted = await push(jwt, operations);
+    assert.equal(accepted.status, 200);
+    const page = (await call("/v1/sync/pull", jwt)).body;
+    assert.deepEqual(
+      page.entities.map((entity: any) => entity.payload),
+      operations.map((op) => op.payload),
+    );
+    assert.equal(page.nextCursor, String(operations.length));
+  },
+);
+
+integration(
+  "pull during distinct-account writes never advances past an uncommitted change",
+  async () => {
+    const account = randomUUID(),
+      a = await token(account),
+      b = await token(randomUUID());
+    const first = operation(),
+      pending = operation(),
+      other = operation();
+    assert.equal((await push(a, [first])).status, 200);
+    const gate = await pool.connect();
+    const lockId = 741936;
+    let pendingWrite: ReturnType<typeof push> | undefined;
+    await gate.query("SELECT pg_advisory_lock($1)", [lockId]);
+    const {
+      rows: [{ pid }],
+    } = await gate.query("SELECT pg_backend_pid() AS pid");
+    await pool.query(`CREATE FUNCTION test_pause_change() RETURNS trigger LANGUAGE plpgsql AS $$
+    BEGIN IF NEW.account_id = '${account}'::uuid AND NEW.cursor = 2 THEN
+    PERFORM pg_advisory_xact_lock(${lockId}); END IF; RETURN NEW; END $$`);
+    await pool.query(
+      "CREATE TRIGGER test_pause_change BEFORE INSERT ON sync_changes FOR EACH ROW EXECUTE FUNCTION test_pause_change()",
+    );
+    try {
+      pendingWrite = push(a, [pending]);
+      // Observe an actual database lock dependency, not an assumed timing window.
+      let blocked = false;
+      for (let attempt = 0; attempt < 1000; attempt++) {
+        const result = await pool.query(
+          "SELECT 1 FROM pg_stat_activity WHERE $1::int = ANY(pg_blocking_pids(pid))",
+          [pid],
+        );
+        if (result.rowCount) {
+          blocked = true;
+          break;
+        }
+      }
+      assert.ok(blocked, "writer reached the change-insert barrier");
+      assert.equal((await push(b, [other])).status, 200);
+      const during = (await call("/v1/sync/pull", a)).body;
+      assert.deepEqual(
+        during.entities.map((entity: any) => entity.entityId),
+        [first.entityId],
+      );
+      assert.equal(during.nextCursor, "1");
+      assert.equal(during.hasMore, false);
+      assert.deepEqual((await call("/v1/sync/pull?cursor=1", a)).body, {
+        entities: [],
+        nextCursor: "1",
+        hasMore: false,
+      });
+      const otherPage = (await call("/v1/sync/pull", b)).body;
+      assert.equal(otherPage.nextCursor, "1");
+      assert.deepEqual(
+        otherPage.entities.map((entity: any) => entity.entityId),
+        [other.entityId],
+      );
+      await gate.query("SELECT pg_advisory_unlock($1)", [lockId]);
+      assert.equal((await pendingWrite).status, 200);
+      const after = (await call(`/v1/sync/pull?cursor=${during.nextCursor}`, a))
+        .body;
+      assert.deepEqual(
+        after.entities.map((entity: any) => entity.entityId),
+        [pending.entityId],
+      );
+      assert.equal(after.nextCursor, "2");
+      assert.equal(after.hasMore, false);
+    } finally {
+      await gate.query("SELECT pg_advisory_unlock($1)", [lockId]);
+      if (pendingWrite) await pendingWrite;
+      await pool.query("DROP TRIGGER test_pause_change ON sync_changes");
+      await pool.query("DROP FUNCTION test_pause_change()");
+      gate.release();
     }
   },
 );
