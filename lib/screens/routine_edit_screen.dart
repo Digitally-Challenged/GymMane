@@ -177,6 +177,7 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
 
   Widget _header(GymColors gc, int count) {
     final routine = fit.activeRoutine!;
+    final missing = fit.missingRoutineExerciseIds(routine);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -282,6 +283,7 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
         const SizedBox(height: 24),
         Text(t.exercisesWithCount(count), style: AppTheme.f(12, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 1.5)),
         const SizedBox(height: 10),
+        if (missing.isNotEmpty) _missingExercises(gc, missing),
         if (routine.exerciseIds.isEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
@@ -316,6 +318,36 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
       ],
     );
   }
+
+  Widget _missingExercises(GymColors gc, List<String> missing) => Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          t.routineMissingExercisesMessage(missing.length),
+          style: AppTheme.f(13, color: gc.textSecondary, height: 1.4),
+        ),
+        for (final id in missing) ...[
+          const SizedBox(height: 12),
+          Text(
+            id,
+            style: AppTheme.f(13, weight: FontWeight.w600, color: gc.text),
+          ),
+          const SizedBox(height: 8),
+          Semantics(
+            label: id,
+            child: GhostButton(
+              key: ValueKey('remove-missing-$id'),
+              label: t.removeFromRoutine,
+              icon: PhosphorIconsRegular.trash,
+              onTap: () => _removeById(id, id),
+            ),
+          ),
+        ],
+      ],
+    ),
+  );
 
   Widget _filterChips(GymColors gc) {
     Widget chip(String label, bool active, VoidCallback onTap) => Padding(
@@ -442,14 +474,16 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
     return unit.isEmpty ? parts.join(' · ') : '${parts.join(' · ')} $unit';
   }
 
-  void _remove(Exercise ex) {
-    final undo = fit.removeRoutineExercise(_id, ex.id);
+  void _remove(Exercise ex) => _removeById(ex.id, exerciseName(ex));
+
+  void _removeById(String id, String name) {
+    final undo = fit.removeRoutineExercise(_id, id);
     if (undo == null) return;
     HapticFeedback.lightImpact();
     showNotchToast(
       context,
       t.removedFromRoutine,
-      subtitle: exerciseName(ex),
+      subtitle: name,
       icon: PhosphorIconsFill.trash,
       accent: context.gc.warn,
       action: t.undo,

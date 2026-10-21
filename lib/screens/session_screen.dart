@@ -297,7 +297,7 @@ class SessionScreen extends StatelessWidget {
       children: [
         if (_inlineTimer(context)) ...[
           if (fit.holding && fit.holdEx >= 0)
-            _holdCard(gc)
+            _listHoldCard(gc)
           else if (s.restRemaining != null)
             _restCard(context, gc, s),
           const SizedBox(height: 12),
@@ -1876,6 +1876,19 @@ class SessionScreen extends StatelessWidget {
       ValueListenableBuilder<int>(valueListenable: fit.clock, builder: (_, _, _) => build());
 
   Widget _holdCard(GymColors gc) => _ticking(() => _holdPanel(gc));
+
+  Widget _listHoldCard(GymColors gc) => _ticking(
+    () => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _holdPanel(gc),
+        if (fit.holdPaused) ...[
+          const SizedBox(height: 12),
+          PrimaryButton(label: t.finishHoldNow, onTap: fit.completeHold),
+        ],
+      ],
+    ),
+  );
 
   Widget _holdPanel(GymColors gc) {
     final count = fit.sessionSetCount;

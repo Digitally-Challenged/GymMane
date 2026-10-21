@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/app/gymmane_app.dart';
 import 'package:gymmane/l10n/l10n.dart';
+import 'package:gymmane/models/exercise.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:gymmane/models/workout.dart';
 import 'package:gymmane/services/local_store.dart';
@@ -180,6 +181,75 @@ void main() {
     expect(remaining, 105);
   });
 
+  for (final mode in ['time', 'cardio']) {
+    testWidgets('inline list $mode timer can pause, resume, cancel and finish early', (tester) async {
+      await tester.runAsync(() async {
+        fit.sessionLayout = 'list';
+        final movement = fit.addCustomExercise(
+          name: 'Inline $mode',
+          primary: 'quads',
+          equipment: 'Bodyweight',
+          mode: mode,
+        );
+        final id = fit.createRoutine('Inline timer');
+        fit.toggleRoutineExercise(id, 'EIeI8Vf');
+        fit.toggleRoutineExercise(id, movement);
+        fit.setRoutineSetCount(id, movement, 2);
+        fit.startRoutine(fit.routines.first);
+        fit.endCountdown();
+        fit.setSessionSeconds(1, 0, 1200);
+        await screen(tester, const Size(320, 568), 2, const SessionScreen());
+
+        Finder control(String label) =>
+            find.byWidgetPredicate((w) => w is Semantics && w.properties.label == label);
+        await tester.ensureVisible(control(t.holdLabel).first);
+        await tester.tap(control(t.holdLabel).first);
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.ensureVisible(control(t.stopLabel));
+        await tester.tap(control(t.stopLabel));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holding, isFalse);
+        expect(fit.session!.exercises[1].sets.first.done, isFalse);
+
+        await tester.ensureVisible(control(t.holdLabel).last);
+        await tester.tap(control(t.holdLabel).last);
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holdEx, 1);
+        expect(fit.holdSet, 1);
+        await tester.ensureVisible(find.byType(TimerPanel));
+        await tester.tap(find.byType(TimerPanel));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holdPaused, isTrue);
+        await tester.tap(find.byType(TimerPanel));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holdPaused, isFalse);
+
+        // Advance the production clock's timestamps without a real five-minute wait.
+        final started = DateTime.now().subtract(const Duration(seconds: 300));
+        fit.holdStartsAt = started;
+        fit.holdEndsAt = started.add(const Duration(seconds: 1200));
+        await tester.tap(find.byType(TimerPanel));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holdPaused, isTrue);
+        final finish = find.widgetWithText(PrimaryButton, t.finishHoldNow);
+        expect(finish, findsOneWidget);
+        await tester.ensureVisible(finish);
+        expect(tester.getSize(finish).width, greaterThanOrEqualTo(44));
+        expect(tester.getSize(finish).height, greaterThanOrEqualTo(44));
+        await tester.tap(finish);
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(fit.holding, isFalse);
+        expect(fit.session!.exercises.first.sets.every((s) => !s.done), isTrue);
+        expect(fit.session!.exercises[1].sets.first.done, isFalse);
+        final completed = fit.session!.exercises[1].sets[1];
+        expect(completed.done, isTrue);
+        expect(completed.sec, mode == 'cardio' ? inInclusiveRange(299, 301) : 1200);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+      });
+    });
+  }
+
   testWidgets('logging opens numeric entry with the keyboard at 200 percent', (tester) async {
     await tester.runAsync(() async {
       fit.sessionLayout = 'cards';
@@ -217,8 +287,28 @@ void main() {
       fit.startRoutine(fit.routines.first);
       fit.endCountdown();
       final current = fit.session;
-      final broken = Routine('missing-routine', 'Needs repair', ['missing-exercise']);
+      const portable = Exercise(
+        id: 'custom:repair-known',
+        name: 'Portable known movement',
+        primary: 'quads',
+        secondary: [],
+        equipment: 'Bodyweight',
+        difficulty: 'Beginner',
+        art: '',
+        steps: [],
+      );
+      final broken = Routine(
+        'missing-routine',
+        'Needs repair',
+        ['EIeI8Vf', 'missing-exercise', portable.id],
+        exerciseDefinitions: {portable.id: portable},
+      );
+      broken.sets['EIeI8Vf'] = 2;
+      broken.plan['EIeI8Vf'] = [const PlannedSet(reps: 8, weightKg: 40)];
+      broken.rest['EIeI8Vf'] = 75;
       fit.routines.add(broken);
+      expect(fit.routineExercises(broken), isEmpty);
+      final currentSnapshot = current!.toJson();
       await tester.pumpWidget(const GymManeApp());
       await tester.pump(const Duration(milliseconds: 500));
       fit.startRoutine(broken);
@@ -232,6 +322,45 @@ void main() {
       expect(fit.route, 'routine-edit');
       expect(fit.activeRoutineId, broken.id);
       expect(identical(fit.session, current), isTrue);
+      expect(fit.session!.toJson(), currentSnapshot);
+      expect(broken.exerciseIds, ['EIeI8Vf', 'missing-exercise', portable.id]);
+      final remove = find.byKey(const ValueKey('remove-missing-missing-exercise'));
+      expect(remove, findsOneWidget);
+      await tester.ensureVisible(remove);
+      expect(tester.getSize(remove).width, greaterThanOrEqualTo(44));
+      expect(tester.getSize(remove).height, greaterThanOrEqualTo(44));
+      await tester.tap(remove);
+      await tester.pumpAndSettle();
+      expect(broken.exerciseIds, ['EIeI8Vf', portable.id]);
+      expect(broken.exerciseDefinitions, {portable.id: portable});
+      expect(broken.sets['EIeI8Vf'], 2);
+      expect(broken.plan['EIeI8Vf']!.single.reps, 8);
+      expect(broken.plan['EIeI8Vf']!.single.weightKg, 40);
+      expect(broken.rest['EIeI8Vf'], 75);
+      expect(fit.missingRoutineExerciseIds(broken), isEmpty);
+      expect(find.text('Portable known movement'), findsWidgets);
+      expect(identical(fit.session, current), isTrue);
+      expect(fit.session!.toJson(), currentSnapshot);
+      await tester.tap(find.byWidgetPredicate((w) => w is PrimaryButton && w.label == t.startWorkout));
+      await tester.pump(const Duration(milliseconds: 500));
+      // Start keeps the existing parked-workout protection and resumes it.
+      expect(fit.route, 'session');
+      expect(identical(fit.session, current), isTrue);
+      expect(fit.session!.toJson(), currentSnapshot);
+      // Intentionally finish and leave that workout before choosing a new start.
+      fit.toggleSet(0, 0);
+      expect(await fit.finishSession(), isTrue);
+      final savedCurrentId = fit.session!.workoutId;
+      fit.saveAndExit();
+      fit.openRoutine(broken.id);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byWidgetPredicate((w) => w is PrimaryButton && w.label == t.startWorkout));
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(identical(fit.session, current), isFalse);
+      expect(fit.session!.routineId, broken.id);
+      expect(fit.session!.exercises.map((e) => e.id), ['EIeI8Vf', portable.id]);
+      expect(fit.sessions.single.id, savedCurrentId);
+      expect(find.text(t.routineMissingExercisesTitle), findsNothing);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
     });
