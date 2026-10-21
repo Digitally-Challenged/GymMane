@@ -1,5 +1,11 @@
 import type { Pool, PoolClient } from "pg";
-import { active, connection, locked, type Job } from "./database.js";
+import {
+  active,
+  connection,
+  locked,
+  transaction,
+  type Job,
+} from "./database.js";
 import { Provider } from "./provider.js";
 import { ProviderError, providerId } from "./transport.js";
 const MAX_ATTEMPTS = 30;
@@ -47,6 +53,47 @@ export class UploadWorker {
         activityId,
       ],
     );
+  }
+  private async recordIntent(db: PoolClient, j: Job) {
+    if (!j.upload_id) {
+      // Serialize validation and intent with SyncStore.push's account row lock.
+      const account = await db.query(
+        "SELECT disabled FROM sync_accounts WHERE account_id=$1 FOR UPDATE",
+        [j.account_id],
+      );
+      if (!account.rows.length || account.rows[0].disabled) {
+        await this.update(db, j, "needsAuthorization", "Account unavailable");
+        return false;
+      }
+      const source = await db.query(
+        "SELECT revision,deleted FROM sync_entities WHERE account_id=$1 AND entity_type='workout' AND entity_id=$2",
+        [j.account_id, j.workout_id],
+      );
+      if (
+        !source.rows.length ||
+        source.rows[0].deleted ||
+        String(source.rows[0].revision) !== String(j.revision)
+      ) {
+        await this.update(
+          db,
+          j,
+          "unsupported",
+          "Workout changed or was deleted before upload",
+        );
+        return false;
+      }
+    }
+    // Mark sending durably before fetch. No automatic retry of ambiguous POSTs.
+    await db.query(
+      "UPDATE strava_jobs SET status=$4,attempts=attempts+1 WHERE account_id=$1 AND workout_id=$2 AND revision=$3",
+      [
+        j.account_id,
+        j.workout_id,
+        j.revision,
+        j.upload_id ? "processing" : "sending",
+      ],
+    );
+    return true;
   }
   private async run(db: PoolClient, account: string) {
     // Holding the account session lock proves any prior sending worker is gone.
@@ -109,36 +156,10 @@ export class UploadWorker {
       );
       return;
     }
-    if (!j.upload_id) {
-      // Stored revision must still exist and match before the first submission.
-      const source = await db.query(
-        "SELECT revision,deleted FROM sync_entities WHERE account_id=$1 AND entity_type='workout' AND entity_id=$2",
-        [account, j.workout_id],
-      );
-      if (
-        !source.rows.length ||
-        source.rows[0].deleted ||
-        String(source.rows[0].revision) !== String(j.revision)
-      ) {
-        await this.update(
-          db,
-          j,
-          "unsupported",
-          "Workout changed or was deleted before upload",
-        );
-        return;
-      }
-    }
-    // Mark sending durably before fetch. No automatic retry of ambiguous POSTs.
-    await db.query(
-      "UPDATE strava_jobs SET status=$4,attempts=attempts+1 WHERE account_id=$1 AND workout_id=$2 AND revision=$3",
-      [
-        account,
-        j.workout_id,
-        j.revision,
-        j.upload_id ? "processing" : "sending",
-      ],
-    );
+    // Commit the intent before the network request, while retaining the Strava
+    // session lock/generation fence. Later sync edits/deletions cannot cancel an
+    // already committed submission; ambiguous outcomes still must not resend.
+    if (!(await transaction(db, () => this.recordIntent(db, j)))) return;
     try {
       let result: Record<string, unknown>;
       if (j.upload_id)

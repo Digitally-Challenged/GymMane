@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { randomUUID, randomBytes } from "node:crypto";
 import type { IncomingMessage } from "node:http";
 import { Pool } from "pg";
+import { SyncStore } from "../src/store.js";
 import { migrate } from "../src/migrate.js";
 import { RouteRegistry } from "../src/modules.js";
 import { createStravaModule } from "./index.js";
@@ -71,8 +72,8 @@ beforeEach(async () => {
 after(async () => {
   await pool?.end();
 });
-function moduleFor(fetch: Transport) {
-  const module = createStravaModule(pool, env, fetch),
+function moduleFor(fetch: Transport, database = pool) {
+  const module = createStravaModule(database, env, fetch),
     registry = new RouteRegistry();
   module.register(registry, { pool });
   const call = async (
@@ -566,3 +567,138 @@ integration(
     assert.equal(uploads, 1);
   },
 );
+
+// Intercept only the worker connection; all SQL still runs against PostgreSQL.
+function workerDatabase(
+  hook: (sql: string, run: () => Promise<unknown>) => Promise<unknown>,
+) {
+  const database = new Pool({ connectionString: dbUrl });
+  database.on("connect", (client) => {
+    client.query = new Proxy(client.query, {
+      apply(target, self, args) {
+        return hook(String(args[0]), () => Reflect.apply(target, self, args));
+      },
+    });
+  });
+  return database;
+}
+async function mutateWorkout(
+  a: string,
+  id: string,
+  deleted: boolean,
+  database = pool,
+) {
+  const result = await new SyncStore(database).push(a, [
+    {
+      operationId: randomUUID(),
+      entityType: "workout",
+      entityId: id,
+      baseRevision: 1,
+      deleted,
+      payload: deleted ? null : { ...fixture(), id, n: "Edited" },
+    },
+  ]);
+  assert.equal(result.results[0].status, "accepted");
+  assert.equal(result.results[0].entity.revision, 2);
+}
+for (const deleted of [false, true]) {
+  integration(
+    `SyncStore ${deleted ? "deletion" : "edit"} committed before intent prevents POST`,
+    async () => {
+      const a = await account();
+      let uploads = 0;
+      const fetch: Transport = async (url) => {
+        if (url.endsWith("/oauth/token")) return json(tokens());
+        uploads++;
+        return json({ id: 902 });
+      };
+      const m = moduleFor(fetch);
+      await connect(m, a);
+      const id = await enqueue(m, a);
+      let mutated = false;
+      const database = workerDatabase(async (sql, run) => {
+        // BEGIN is the fixed worker's boundary; SELECT covers the old worker.
+        if (
+          !mutated &&
+          (sql === "BEGIN" || sql.startsWith("SELECT revision,deleted"))
+        ) {
+          mutated = true;
+          await mutateWorkout(a, id, deleted);
+        }
+        return run();
+      });
+      try {
+        await moduleFor(fetch, database).tick();
+        assert(mutated);
+        assert.equal(uploads, 0);
+        assert.equal((await job(id)).status, "unsupported");
+        assert.equal((await job(id)).attempts, 0);
+      } finally {
+        await database.end();
+      }
+    },
+  );
+  integration(
+    `SyncStore ${deleted ? "deletion" : "edit"} after validation waits for intent and cannot cancel it`,
+    async () => {
+      const a = await account();
+      let mutation: Promise<void> | undefined;
+      let entered!: () => void;
+      const mutationStarted = new Promise<void>((resolve) => {
+        entered = resolve;
+      });
+      const syncDatabase = workerDatabase(async (sql, run) => {
+        const pending = run();
+        if (sql.includes("FROM sync_accounts") && sql.endsWith("FOR UPDATE"))
+          entered();
+        return pending;
+      });
+      let uploads = 0;
+      const fetch: Transport = async (url) => {
+        if (url.endsWith("/oauth/token")) return json(tokens());
+        assert.equal((await job(id)).status, "sending");
+        // Sync can finish while the external request is in flight. Intent has
+        // already committed, so the original revision may still be delivered.
+        assert(mutation);
+        await mutation;
+        uploads++;
+        return json({ id: 903, activity_id: 904 });
+      };
+      const m = moduleFor(fetch);
+      await connect(m, a);
+      const id = await enqueue(m, a);
+      let checked = false;
+      const database = workerDatabase(async (sql, run) => {
+        const result = await run();
+        if (sql.startsWith("SELECT revision,deleted")) {
+          checked = true;
+          // The exact old race boundary: source was read, intent not yet saved.
+          // A separate session must be unable to take SyncStore's account lock.
+          await assert.rejects(
+            pool.query(
+              "SELECT account_id FROM sync_accounts WHERE account_id=$1 FOR UPDATE NOWAIT",
+              [a],
+            ),
+            { code: "55P03" },
+          );
+          mutation = mutateWorkout(a, id, deleted, syncDatabase);
+          // Resume only once real SyncStore has issued its conflicting lock query.
+          await mutationStarted;
+        }
+        return result;
+      });
+      try {
+        await moduleFor(fetch, database).tick();
+        assert(checked);
+        assert.equal(uploads, 1);
+        assert.equal((await job(id)).status, "confirmed");
+        await m.tick();
+        assert.equal(uploads, 1);
+      } finally {
+        await database.end();
+        await mutation;
+        await syncDatabase.end();
+      }
+    },
+  );
+}
