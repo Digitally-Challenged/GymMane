@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
+import 'local_store.dart';
+import '../models/identity.dart';
 
 class AlarmStore {
   AlarmStore._();
@@ -48,7 +50,7 @@ class AlarmStore {
       await _clear();
       final ext = _ext(srcPath);
 
-      final base = 'alarm-${DateTime.now().millisecondsSinceEpoch}.$ext';
+      final base = 'alarm-${newEntityId()}.$ext';
       await File(srcPath).copy('$_dir/$base');
       return base;
     } catch (_) {
@@ -60,7 +62,7 @@ class AlarmStore {
     if (_dir == null) return null;
     try {
       if (replace) await _clear();
-      final base = 'alarm-${DateTime.now().microsecondsSinceEpoch}.${_ext(name)}';
+      final base = 'alarm-${newEntityId()}.${_ext(name)}';
       await File('$_dir/$base').writeAsBytes(bytes, flush: true);
       return base;
     } catch (_) {
@@ -69,6 +71,7 @@ class AlarmStore {
   }
 
   static Future<void> delete(String basename) async {
+    if (Store.instance.protectedFileNames().contains(basename)) return;
     final path = pathFor(basename);
     if (path != null) await File(path).delete();
   }
@@ -80,8 +83,9 @@ class AlarmStore {
     try {
       final dir = Directory(_dir!);
       if (!await dir.exists()) return;
+      final protected = Store.instance.protectedFileNames();
       for (final f in dir.listSync()) {
-        if (f is File) await f.delete();
+        if (f is File && !protected.contains(f.uri.pathSegments.last)) await f.delete();
       }
     } catch (_) {}
   }

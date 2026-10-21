@@ -104,7 +104,7 @@ void main() {
     expectEverythingIsThere();
   });
 
-  test('a backup round-trips through export and import', () {
+  test('a backup round-trips through export and import', () async {
     fillEverything();
     final backup = fit.exportJson();
 
@@ -113,29 +113,29 @@ void main() {
     fit.routines.clear();
     fit.profile = Profile();
 
-    expect(fit.importJson(backup), true);
+    expect(await fit.importJson(backup), true);
     expectEverythingIsThere();
   });
 
-  test('rubbish input is refused instead of wiping your data', () {
+  test('rubbish input is refused instead of wiping your data', () async {
     fillEverything();
     for (final junk in ['', 'nope', '[]', '{oops', '{"a":1']) {
-      expect(fit.importJson(junk), false, reason: 'con "$junk"');
+      expect(await fit.importJson(junk), false, reason: 'con "$junk"');
     }
     expectEverythingIsThere();
   });
 
-  test('a backup from an empty install imports without blowing up', () {
+  test('a backup from an empty install imports without blowing up', () async {
     final empty = fit.exportJson();
-    expect(fit.importJson(empty), true);
+    expect(await fit.importJson(empty), true);
     expect(fit.sessions, isEmpty);
     expect(fit.profile.name, kDefaultName);
   });
 
-  test('old backups with the previous notes format still load', () {
+  test('old backups with the previous notes format still load', () async {
 
     const old = '{"notes":{"abc":"vieja nota"},"profile":{"name":"Legacy"}}';
-    expect(fit.importJson(old), true);
+    expect(await fit.importJson(old), true);
     expect(fit.profile.name, 'Legacy');
     expect(fit.notesFor('abc').single.text, 'vieja nota');
   });

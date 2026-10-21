@@ -76,11 +76,28 @@ class SyncRepository {
         if (entry.value['entityType'] == 'workout' &&
             entry.value['deleted'] != true &&
             entry.value['payload']?['origin'] == 'gymmane' &&
-            entry.value['origin'] == 'local' &&
             !(ns['conflicts'] as Map).containsKey(entry.key))
-          {..._copy(entry.value as Map<String, dynamic>),
-            'pending': (ns['outbox'] as List).any((op) => _key(op) == entry.key)},
+          {
+            ..._copy(entry.value as Map<String, dynamic>),
+            'pending': (ns['outbox'] as List).any((op) => _key(op) == entry.key),
+          },
     ];
+  }
+
+  /// File stores are shared on disk. Never reclaim names still referenced by
+  /// another account document (including legacy JSON imports with shared names).
+  Set<String> fileNamesOutsideActiveNamespace() {
+    final names = <String>{};
+    void collect(Object? value) {
+      if (value is String) names.add(value);
+      if (value is Map) value.values.forEach(collect);
+      if (value is List) value.forEach(collect);
+    }
+
+    for (final entry in (_root['namespaces'] as Map<String, dynamic>).entries) {
+      if (entry.key != namespace) collect(entry.value['document']);
+    }
+    return names;
   }
 
   Map<String, dynamic> deliveryLedger(String account, String destination) =>
@@ -153,7 +170,16 @@ class SyncRepository {
       ns['document'] = merged;
     }).then((_) {
       _presented[account] = snapshot;
-      _presentedRevisions[account] = _revisions(account);
+      final shown = _entities(snapshot);
+      final committed = _entities(_space(_root, account)['document'] as Map<String, dynamic>);
+      final revisions = _revisions(account);
+      final previous = _presentedRevisions[account] ?? {};
+      _presentedRevisions[account] = {
+        for (final key in shown.keys)
+          key: jsonEncode(shown[key]) == jsonEncode(committed[key])
+              ? (revisions[key] ?? 0)
+              : (previous[key] ?? 0),
+      };
     });
   }
 

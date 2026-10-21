@@ -114,9 +114,9 @@ void main() {
     expect(fit.onboarded, true, reason: 'no se pregunta dos veces');
   });
 
-  test('a backup without the flag does not silently re-ask', () {
+  test('a backup without the flag does not silently re-ask', () async {
 
-    expect(fit.importJson('{"profile":{"name":"Legacy"}}'), true);
+    expect(await fit.importJson('{"profile":{"name":"Legacy"}}'), true);
     expect(fit.onboarded, true);
   });
 }

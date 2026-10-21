@@ -749,7 +749,9 @@ class SettingsScreen extends StatelessWidget {
     }
     var success = false;
     try {
-      success = looksLikeZip(bytes) ? await restoreBackupZip(bytes) : await _restoreJson(bytes);
+      success = looksLikeZip(bytes)
+          ? await restoreBackupZip(bytes)
+          : await fit.importJson(utf8.decode(bytes));
     } catch (_) {
       success = false;
     }
@@ -1286,13 +1288,6 @@ class SettingsScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Future<bool> _restoreJson(Uint8List bytes) async {
-    final parsed = Store.instance.tryParse(utf8.decode(bytes));
-    if (parsed == null) return false;
-    await fit.restoreBackup(parsed);
-    return true;
   }
 
   Future<void> _pickBackground() async {

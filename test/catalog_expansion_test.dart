@@ -87,13 +87,13 @@ void main() {
     }
   });
 
-  test('new machine can be selected in a routine and survives backup restore', () {
+  test('new machine can be selected in a routine and survives backup restore', () async {
     const id = 'arsenal-reloaded-pendulum-squat';
     final routineId = fit.createRoutine('Arsenal legs');
     fit.toggleRoutineExercise(routineId, id);
     final backup = fit.exportJson();
     fit.resetAllData();
-    expect(fit.importJson(backup), isTrue);
+    expect(await fit.importJson(backup), isTrue);
     final routine = fit.routines.singleWhere((r) => r.id == routineId);
     fit.startRoutine(routine);
     expect(fit.session!.exercises.single.id, id);

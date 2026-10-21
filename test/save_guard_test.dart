@@ -53,6 +53,18 @@ void main() {
     expect(await platform.getAll(), contains('flutter.gymmane_repository_v1'));
   });
 
+  test('a failed web write is not resurrected from the preferences cache on restart', () async {
+    SharedPreferences.setMockInitialValues({});
+    await Store.instance.init();
+    await Store.instance.save({'name': 'durable'});
+    final platform = SharedPreferencesStorePlatform.instance;
+    SharedPreferencesStorePlatform.instance = _FailingStore();
+    await expectLater(Store.instance.save({'name': 'rejected'}), throwsStateError);
+    SharedPreferencesStorePlatform.instance = platform;
+    await Store.instance.init();
+    expect(Store.instance.load()['name'], 'durable');
+  });
+
   test('un número roto no impide guardar lo demás', () async {
     SharedPreferences.setMockInitialValues({});
     await Store.instance.init();

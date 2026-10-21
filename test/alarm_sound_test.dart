@@ -89,6 +89,26 @@ void main() {
     expect(File(path).existsSync(), isFalse);
   });
 
+  test('another account can replace and clear its alarm without deleting the first account sound', () async {
+    final repo = Store.instance.repository;
+    await repo.selectNamespace('alice');
+    fit.loadFromStore();
+    final original = (await AlarmStore.importSound(sourceSound('alice.wav').path))!;
+    fit.setAlarmSound(original, 'Alice');
+    await fit.persistNow(rethrowErrors: true);
+    await repo.selectNamespace('bob');
+    fit.loadFromStore();
+    final replacement = (await AlarmStore.importSound(sourceSound('bob.wav').path))!;
+    expect(replacement, isNot(original));
+    fit.setAlarmSound(replacement, 'Bob');
+    await fit.clearAlarmSound();
+    expect(AlarmStore.pathFor(original), isNotNull);
+    await repo.selectNamespace('alice');
+    fit.loadFromStore();
+    expect(fit.alarmSound, original);
+    expect(fit.alarmSoundPath, isNotNull);
+  });
+
   test('a sound that vanished between sessions falls back to the default', () async {
     final base = await AlarmStore.importSound(sourceSound('mine.wav').path);
     fit.setAlarmSound(base!, 'Mine');

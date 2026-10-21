@@ -31,7 +31,7 @@ void main() {
     return fit.routines.firstWhere((r) => r.id == id);
   }
 
-  void workout(Routine r, int reps, {int sets = 3}) {
+  Future<void> workout(Routine r, int reps, {int sets = 3}) async {
     fit.startRoutine(r);
     fit.endCountdown();
     final ex = fit.session!.exercises.first;
@@ -40,10 +40,10 @@ void main() {
       fit.setSessionReps(0, i, reps);
       fit.toggleSet(0, i);
     }
-    fit.finishSession();
+    await fit.finishSession();
   }
 
-  test('las cadenas no repiten ejercicios y todos existen', () {
+  test('las cadenas no repiten ejercicios y todos existen', () async {
     final all = [for (final c in kProgressions) ...c];
     expect(all.toSet().length, all.length);
     for (final id in all) {
@@ -53,38 +53,38 @@ void main() {
     expect(nextStepOf('pseudo-planche-push-up'), isNull);
   });
 
-  test('un solo buen día no basta: hacen falta dos entrenos seguidos', () {
+  test('un solo buen día no basta: hacen falta dos entrenos seguidos', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNull);
     fit.saveAndExit();
-    workout(r, 9);
+    await workout(r, 9);
     expect(fit.summaryLevelUp?.to.id, diamond);
   });
 
-  test('si una de las veces no llega a 3×8 no se sugiere', () {
+  test('si una de las veces no llega a 3×8 no se sugiere', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 7);
+    await workout(r, 7);
     expect(fit.summaryLevelUp, isNull);
   });
 
-  test('las negativas suben con 3×5', () {
+  test('las negativas suben con 3×5', () async {
     final r = routineWith(['negative-pull-up']);
-    workout(r, 5);
+    await workout(r, 5);
     fit.saveAndExit();
-    workout(r, 5);
+    await workout(r, 5);
     expect(fit.summaryLevelUp?.to.id, 'lBDjFxJ');
   });
 
-  test('cambiarlo en la rutina lo pone en el mismo sitio con sus series', () {
+  test('cambiarlo en la rutina lo pone en el mismo sitio con sus series', () async {
     final r = routineWith([pushUp, '6YUfHPL']);
     fit.bumpRoutineSets(r.id, pushUp, 1);
     final sets = fit.routineSets(r, pushUp);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.levelUpInRoutine, isTrue);
     expect(fit.levelUpSwap(), 'Calistenia');
     expect(r.exerciseIds, [diamond, '6YUfHPL']);
@@ -92,48 +92,48 @@ void main() {
     expect(fit.summaryLevelUp, isNull);
   });
 
-  test('después de verlo no vuelve a salir en una semana', () {
+  test('después de verlo no vuelve a salir en una semana', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNotNull);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNull);
   });
 
-  test('borrar el entreno que la sacó la deja volver a salir', () {
+  test('borrar el entreno que la sacó la deja volver a salir', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNotNull);
     fit.saveAndExit();
     fit.deleteSession(fit.sessions.last);
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp?.to.id, diamond);
   });
 
-  test('borrar otro entreno no la vuelve a sacar', () {
+  test('borrar otro entreno no la vuelve a sacar', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNotNull);
     fit.saveAndExit();
     fit.deleteSession(fit.sessions.first);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNull);
   });
 
-  test('«Me quedo con este» lo silencia para siempre y se puede deshacer', () {
+  test('«Me quedo con este» lo silencia para siempre y se puede deshacer', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     final undo = fit.levelUpStay()!;
     expect(fit.levelStay, contains(pushUp));
     undo();
@@ -141,28 +141,28 @@ void main() {
     expect(fit.summaryLevelUp?.to.id, diamond);
   });
 
-  test('seguir entrenando no gasta la sugerencia', () {
+  test('seguir entrenando no gasta la sugerencia', () async {
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNotNull);
     fit.continueSession();
     expect(fit.summaryLevelUp, isNull);
-    fit.finishSession();
+    await fit.finishSession();
     expect(fit.summaryLevelUp?.to.id, diamond);
   });
 
-  test('con el ajuste apagado nunca sale', () {
+  test('con el ajuste apagado nunca sale', () async {
     fit.toggleLevelHints();
     final r = routineWith([pushUp]);
-    workout(r, 8);
+    await workout(r, 8);
     fit.saveAndExit();
-    workout(r, 8);
+    await workout(r, 8);
     expect(fit.summaryLevelUp, isNull);
   });
 
-  test('se guarda y vuelve con la copia', () {
+  test('se guarda y vuelve con la copia', () async {
     fit.levelStay.add(pushUp);
     fit.levelSeen['negative-dip'] = 123;
     fit.toggleLevelHints();

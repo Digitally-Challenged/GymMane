@@ -66,7 +66,7 @@ void main() {
     await Store.instance.init();
     final text = _slideToToday(fixture.readAsStringSync());
     raw = jsonDecode(text) as Map<String, dynamic>;
-    expect(fit.importJson(text), true, reason: 'el backup de prueba debe ser válido');
+    expect(await fit.importJson(text), true, reason: 'el backup de prueba debe ser válido');
   });
 
   tearDown(() {
@@ -161,10 +161,10 @@ void main() {
     fit.setUnits('kg');
   });
 
-  test('a re-export round-trips without losing a single session', () {
+  test('a re-export round-trips without losing a single session', () async {
     final again = fit.exportJson();
     fit.sessions.clear();
-    expect(fit.importJson(again), true);
+    expect(await fit.importJson(again), true);
     expect(fit.sessions.length, (raw['sessions'] as List).length);
     expect(fit.volume30dKg, closeTo(fixtureVolume(30, 0), 0.5));
   });

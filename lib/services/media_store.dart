@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'local_store.dart';
 
 class MediaStore {
   MediaStore._();
@@ -61,7 +62,7 @@ class MediaStore {
   }
 
   static Future<void> delete(String basename) async {
-    if (_dir == null || basename.isEmpty) return;
+    if (_dir == null || basename.isEmpty || Store.instance.protectedFileNames().contains(basename)) return;
     try {
       final f = File('$_dir/$basename');
       if (await f.exists()) await f.delete();
@@ -71,8 +72,9 @@ class MediaStore {
   static Future<void> clearAll() async {
     if (_dir == null) return;
     try {
+      final protected = Store.instance.protectedFileNames();
       for (final f in Directory(_dir!).listSync()) {
-        if (f is File) await f.delete();
+        if (f is File && !protected.contains(f.uri.pathSegments.last)) await f.delete();
       }
     } catch (_) {}
   }

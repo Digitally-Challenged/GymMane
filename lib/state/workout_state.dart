@@ -1371,7 +1371,19 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     notifyListeners();
   }
 
-  Future<void> finishSession() async {
+  bool _finishingSession = false;
+  int _finishGeneration = 0;
+  Future<bool>? _finishCommit;
+  bool get isSessionFinishing => _finishingSession;
+
+  Future<bool> finishSession() async {
+    final current = session;
+    if (current == null) return false;
+    if (current.complete && _finishCommit != null) return _finishCommit!;
+    final generation = ++_finishGeneration;
+    final previous = sessions.where((row) => row.id == current.workoutId).firstOrNull;
+    final previousRotation = rotationNextId;
+    _finishingSession = true;
     _holdTimer?.cancel();
     holdEndsAt = null;
     _advanceTimer?.cancel();
@@ -1412,19 +1424,39 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       _advanceRotation(entry.routineId);
       _filed = entry;
       _computeSummaryHighlights(entry);
-      _offerLevelUp(entry);
     } else {
       _filed = null;
       summaryPrs = 0;
       summaryVsLast = null;
       summaryLevelUp = null;
     }
-    final committed = persistNow();
+    final committed = persistNow(rethrowErrors: true)
+        .then((_) => true, onError: (Object _) => false);
+    _finishCommit = committed;
+    notifyListeners();
+    final saved = await committed;
+    if (generation != _finishGeneration || !identical(session, s)) return saved;
+    _finishingSession = false;
+    _finishCommit = null;
+    if (!saved) {
+      sessions.removeWhere((row) => row.id == s.workoutId);
+      if (previous != null) sessions.add(previous);
+      sessions.sort((a, b) => a.date.compareTo(b.date));
+      rotationNextId = previousRotation;
+      _filed = null;
+      s.complete = false;
+      _elapsedBefore = s.summaryDuration ?? _elapsedBefore;
+      _runningSince = null;
+      sessionPaused = true;
+      notifyListeners();
+      return false;
+    }
+    if (_filed case final entry?) _offerLevelUp(entry);
     _refreshWidgets();
     syncTrainReminder();
     refreshAwards();
     notifyListeners();
-    await committed;
+    return true;
   }
 
   List<SessionExercise> get _savable =>
@@ -1749,6 +1781,9 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   }
 
   void saveAndExit() {
+    _finishGeneration++;
+    _finishingSession = false;
+    _finishCommit = null;
     _holdTimer?.cancel();
     holdEndsAt = null;
     holdEx = -1;
@@ -1776,5 +1811,5 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   void discardSession() => saveAndExit();
 
   bool get isSessionActive => route == 'session' && session != null && !session!.complete;
-  bool get isSessionComplete => route == 'session' && session != null && session!.complete;
+  bool get isSessionComplete => route == 'session' && session != null && session!.complete && !_finishingSession;
 }

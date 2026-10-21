@@ -108,7 +108,7 @@ void main() {
     final basename = fit.mediaFor(pushUp.id);
 
     fit.exerciseMedia.clear();
-    expect(fit.importJson(legacy), true);
+    expect(await fit.importJson(legacy), true);
     expect(fit.mediaFor(pushUp.id), basename);
   });
 
@@ -134,9 +134,9 @@ void main() {
     expect(await MediaStore.readBytes(note.media.single), png);
   });
 
-  test('a 1.0 backup with the old per-exercise notes lands in the journal', () {
+  test('a 1.0 backup with the old per-exercise notes lands in the journal', () async {
     expect(
-        fit.importJson(jsonEncode({
+        await fit.importJson(jsonEncode({
           'profile': {'name': 'Alex'},
           'exNotes': {
             pushUp.id: [

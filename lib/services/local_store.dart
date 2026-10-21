@@ -42,6 +42,8 @@ class Store {
 
   Map<String, dynamic> load() => _repository?.load() ?? {};
 
+  Set<String> protectedFileNames() => _repository?.fileNamesOutsideActiveNamespace() ?? {};
+
   String? note(String key) => _prefs?.getString('gm_$key');
 
   void setNote(String key, String value) => _prefs?.setString('gm_$key', value);

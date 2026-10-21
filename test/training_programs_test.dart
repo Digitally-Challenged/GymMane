@@ -73,14 +73,14 @@ void main() {
     expect(fit.session!.exercises.first.sets.map((s) => s.weight), [110, 85, 87.5]);
   });
 
-  test('routine backup, duplication and plan sharing retain progression behavior', () {
+  test('routine backup, duplication and plan sharing retain progression behavior', () async {
     fit.applyTemplate(kProgramTemplates.singleWhere((p) => p.id == 'linear'));
     final r = fit.routines.first;
     final copied = fit.duplicateRoutine(r.id);
     final shared = fit.exportPlanJson([r]);
     final backup = fit.exportJson();
     fit.resetAllData();
-    expect(fit.importJson(backup), isTrue);
+    expect(await fit.importJson(backup), isTrue);
     final restored = fit.routines.singleWhere((r) => r.id == copied);
     previous(restored, [LoggedSet(5, 100), LoggedSet(5, 100), LoggedSet(5, 100)]);
     fit.startRoutine(restored);

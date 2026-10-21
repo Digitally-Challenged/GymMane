@@ -636,11 +636,11 @@ class FitState extends FitCore
 
   String exportCsv() => Store.instance.exportCsv(sessions);
 
-  bool importJson(String raw) {
+  Future<bool> importJson(String raw) async {
     final map = Store.instance.tryParse(raw);
     if (map == null) return false;
     try {
-      applyBackup(map);
+      await restoreBackup(map);
       return true;
     } catch (_) {
       return false;
@@ -746,7 +746,17 @@ class FitState extends FitCore
     validateBackup(backup);
     _saveDebounce?.cancel();
     _saveDebounce = null;
-    final staged = FitState().._validating = true;
+    final staged = FitState()
+      .._validating = true
+      ..themePref = themePref
+      ..units = units
+      ..language = language
+      ..restSeconds = restSeconds
+      ..bgPattern = bgPattern
+      ..heatTone = heatTone
+      ..onboarded = onboarded
+      ..photoIntervalDays = photoIntervalDays
+      ..bodyTimeline = bodyTimeline;
     late Map<String, dynamic> document;
     try {
       staged.applyBackup(backup, restoredMedia: restoredMedia,
@@ -1122,8 +1132,10 @@ class FitState extends FitCore
     return out.join('\n').trim();
   }
 
-  static String _sessionKey(LoggedSession s) =>
-      '${s.date.toIso8601String()}|${s.exercises.map((e) => '${e.id}:${e.sets.length}').join(',')}';
+  static String _sessionKey(LoggedSession s) => legacyEntityId('external-workout', {
+    'd': s.date.toUtc().toIso8601String(), 'dur': s.durationSec,
+    'ex': s.exercises.map((e) => e.toJson()).toList(),
+  });
   int importParsedSessions(List<ParsedSession> parsed) {
     final seen = sessions.map(_sessionKey).toSet();
     var added = 0;
@@ -1140,8 +1152,9 @@ class FitState extends FitCore
             [for (final s in pe.sets) LoggedSet(s.reps, s.weightKg, rpe: s.rpe)]));
       }
       if (exs.isEmpty) continue;
-      final ls = LoggedSession(ps.date, ps.durationSec, exs, origin: 'import');
-      final key = _sessionKey(ls);
+      final draft = LoggedSession(ps.date, ps.durationSec, exs, origin: 'import');
+      final key = _sessionKey(draft);
+      final ls = LoggedSession(ps.date, ps.durationSec, exs, id: key, origin: 'import');
       if (seen.contains(key)) continue;
       sessions.add(ls);
       seen.add(key);

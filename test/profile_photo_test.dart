@@ -40,14 +40,14 @@ void main() {
     fit.persistNow();
   });
 
-  test('the photo survives a round trip through the backup', () {
+  test('the photo survives a round trip through the backup', () async {
     fit.setProfilePhoto(_png);
     final backup = fit.exportJson();
 
     fit.clearProfilePhoto();
     expect(fit.profilePhoto, isNull);
 
-    expect(fit.importJson(backup), true);
+    expect(await fit.importJson(backup), true);
     expect(fit.profilePhoto, _png);
   });
 

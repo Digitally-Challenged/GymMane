@@ -27,14 +27,14 @@ void main() {
     return fit.routines.firstWhere((r) => r.id == id);
   }
 
-  test('finishing by mistake can be undone and nothing is lost', () {
+  test('finishing by mistake can be undone and nothing is lost', () async {
     fit.startRoutine(routine(['Barbell Bench Press', 'Barbell Squat']));
     fit.endCountdown();
     fit.toggleSet(0, 0);
     final pending = fit.session!.exercises.expand((e) => e.sets).where((s) => !s.done).length;
     expect(pending, greaterThan(0));
 
-    fit.finishSession();
+    await fit.finishSession();
     expect(fit.isSessionComplete, isTrue);
     expect(fit.sessions, hasLength(1));
 
@@ -45,47 +45,47 @@ void main() {
     expect(fit.session!.exercises.first.sets.first.done, isTrue);
   });
 
-  test('finishing again leaves a single workout for the day', () {
+  test('finishing again leaves a single workout for the day', () async {
     fit.startRoutine(routine(['Barbell Bench Press']));
     fit.endCountdown();
     fit.toggleSet(0, 0);
-    fit.finishSession();
+    await fit.finishSession();
     fit.continueSession();
     fit.toggleSet(0, 1);
-    fit.finishSession();
+    await fit.finishSession();
 
     expect(fit.sessions, hasLength(1));
     expect(fit.sessions.single.exercises.single.sets, hasLength(2));
   });
 
-  test('the clock carries on from where it stopped', () {
+  test('the clock carries on from where it stopped', () async {
     fit.startRoutine(routine(['Barbell Bench Press']));
     fit.endCountdown();
     fit.toggleSet(0, 0);
-    fit.finishSession();
+    await fit.finishSession();
     final before = fit.session!.summaryDuration!;
     fit.continueSession();
     expect(fit.sessionElapsed, greaterThanOrEqualTo(before));
   });
 
-  test('an empty finish keeps the history untouched', () {
+  test('an empty finish keeps the history untouched', () async {
     final old = LoggedSession(DateTime.now().subtract(const Duration(days: 2)), 1800, [
       LoggedExercise('EIeI8Vf', 'Barbell Bench Press', 'chest', [LoggedSet(8, 60)]),
     ]);
     fit.sessions.add(old);
     fit.startRoutine(routine(['Barbell Squat']));
     fit.endCountdown();
-    fit.finishSession();
+    await fit.finishSession();
     fit.continueSession();
     expect(fit.sessions, [old]);
     expect(fit.isSessionActive, isTrue);
   });
 
-  test('after save and exit there is nothing to continue', () {
+  test('after save and exit there is nothing to continue', () async {
     fit.startRoutine(routine(['Barbell Bench Press']));
     fit.endCountdown();
     fit.toggleSet(0, 0);
-    fit.finishSession();
+    await fit.finishSession();
     fit.saveAndExit();
     fit.continueSession();
     expect(fit.session, isNull);

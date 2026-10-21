@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/models/workout.dart';
 import 'package:gymmane/services/backup_zip.dart';
 import 'package:gymmane/services/local_store.dart';
+import 'package:gymmane/services/workout_import.dart';
 import 'package:gymmane/services/media_store.dart';
 import 'package:gymmane/services/persistence/storage_backend.dart';
 import 'package:gymmane/state/fit_state.dart';
@@ -86,7 +87,7 @@ void main() {
     expect(fit.toJson(), before);
     expect(await MediaStore.readBytes(original), bytes);
     expect(
-      fit.importJson(
+      await fit.importJson(
         jsonEncode({
           ...before,
           'steps': {'goal': 'invalid'},
@@ -145,6 +146,48 @@ void main() {
     expect(Store.instance.load()['sessions'][0]['id'], id);
   });
 
+  test('repeated external import is stable and distinct set content is not discarded', () async {
+    final ex = fit.allExercises.first;
+    ParsedSession parsed(double weight) =>
+        ParsedSession(DateTime(2026, 1, 1), 120)
+          ..exercises.add(ParsedExercise(ex.name, ex.primary, id: ex.id)..sets.add(ParsedSet(8, weight)));
+    expect(fit.importParsedSessions([parsed(30)]), 1);
+    final id = fit.sessions.single.id;
+    expect(fit.sessions.single.origin, 'import');
+    expect(fit.importParsedSessions([parsed(30)]), 0);
+    expect(fit.sessions.single.id, id);
+    expect(fit.importParsedSessions([parsed(40)]), 1);
+    expect(fit.sessions.map((s) => s.id).toSet(), hasLength(2));
+    fit.sessions.clear();
+    expect(fit.importParsedSessions([parsed(30)]), 1);
+    expect(fit.sessions.single.id, id);
+    await fit.persistNow(rethrowErrors: true);
+  });
+
+  test('account reset and media deletion preserve another namespace files', () async {
+    final original = await originalMedia();
+    await Store.instance.repository.selectNamespace('alice');
+    fit.loadFromStore();
+    fit.resetAllData();
+    await fit.persistNow(rethrowErrors: true);
+    await MediaStore.delete(original);
+    expect(await MediaStore.readBytes(original), bytes);
+    await Store.instance.repository.selectNamespace('guest');
+    fit.loadFromStore();
+    expect(fit.exerciseMedia['exercise'], original);
+    expect(await MediaStore.readBytes(original), bytes);
+  });
+
+  test('corrupt legacy read refuses initialization and cannot overwrite original bytes', () async {
+    SharedPreferences.setMockInitialValues({'gymmane_v1': '{corrupt'});
+    await expectLater(Store.instance.init(), throwsFormatException);
+    await expectLater(Store.instance.save({'sessions': []}), throwsStateError);
+    expect((await SharedPreferences.getInstance()).getString('gymmane_v1'), '{corrupt');
+    // Restore the test store so cleanup is independent of the rejected read.
+    SharedPreferences.setMockInitialValues({});
+    await Store.instance.init();
+  });
+
   test('UI edit while pull awaits disk is preserved and becomes an explicit conflict', () async {
     final repo = Store.instance.repository;
     await repo.selectNamespace('alice');
@@ -180,6 +223,29 @@ void main() {
     expect(fit.sessions.single.name, 'Local during disk write');
     expect(repo.conflicts('alice')['workout:${row.id}']['payload']['n'], 'Remote');
     expect(await repo.pendingOperations('alice'), isEmpty);
+  });
+
+  test('failed workout completion never reports success and retry commits one identity', () async {
+    final ex = fit.allExercises.first;
+    fit.sessionPicks.add(ex.id);
+    fit.startSession();
+    fit.toggleSet(0, 0);
+    await fit.persistNow(rethrowErrors: true);
+    backend.reject = true;
+    final finishing = fit.finishSession();
+    expect(fit.isSessionFinishing, isTrue);
+    expect(fit.isSessionComplete, isFalse);
+    expect(await finishing, isFalse);
+    final id = fit.session!.workoutId;
+    expect(fit.session!.complete, isFalse);
+    expect(fit.sessions, isEmpty);
+    expect(fit.session!.exercises.first.sets.first.done, isTrue);
+    expect(Store.instance.saveFailed.value, isTrue);
+    backend.reject = false;
+    expect(await fit.finishSession(), isTrue);
+    expect(fit.isSessionComplete, isTrue);
+    expect(fit.sessions.single.id, id);
+    expect(Store.instance.load()['sessions'][0]['id'], id);
   });
 
   test('editing and continuing a completed workout keeps its ID without a delete operation', () async {

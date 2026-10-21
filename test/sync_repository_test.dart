@@ -239,7 +239,7 @@ void main() {
     expect(repository.load(), {'units': 'lb'});
   });
 
-  test('export ledger excludes imported, unknown and remote workouts', () async {
+  test('export ledger uses provenance, excluding imported and unknown workouts', () async {
     final local = workout();
     final imported = {...workout(), 'origin': 'import'};
     final unknown = {...workout()}..remove('origin');
@@ -252,6 +252,10 @@ void main() {
     await restarted.initialize({});
     expect(restarted.deliveryLedger('guest', 'healthkit'), {'optIn': true});
     expect(restarted.load().containsKey('deliveries'), isFalse);
+    await restarted.selectNamespace('alice');
+    await restarted.applyPullPage('alice', [remote(local, 1)], '1');
+    expect(restarted.exportableWorkouts('alice').single['entityId'], local['id']);
+    expect(restarted.exportableWorkouts('alice').single['origin'], 'remote');
   });
 
   test('actual SQLite transaction failure leaves the prior snapshot intact', () async {

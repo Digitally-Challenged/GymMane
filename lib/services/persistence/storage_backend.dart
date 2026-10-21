@@ -14,6 +14,9 @@ class PreferencesBackend implements StorageBackend {
   static const key = 'gymmane_repository_v1';
   @override
   Future<Map<String, dynamic>?> read() async {
+    // SharedPreferences updates its cache before the platform confirms writes.
+    // Read durable state, not a cached value left by a rejected write.
+    await preferences.reload();
     final raw = preferences.getString(key);
     return raw == null ? null : jsonDecode(raw) as Map<String, dynamic>;
   }
