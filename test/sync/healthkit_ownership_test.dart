@@ -16,7 +16,13 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       await Store.instance.init();
       fit.resetAllData();
-      final workout = LoggedSession(DateTime.utc(2026, 10, 20), 60, [], name: 'Guest');
+      final workout = LoggedSession(
+        DateTime.utc(2026, 10, 20),
+        60,
+        [],
+        name: 'Guest',
+        startedAt: DateTime.utc(2026, 10, 19, 23, 58),
+      );
       fit.sessions.add(workout);
       await fit.persistNow(rethrowErrors: true);
       final native = Native();

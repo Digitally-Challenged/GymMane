@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:gymmane/services/sync/sync_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -8,7 +10,7 @@ import 'package:gymmane/services/sync/store_sync_repository.dart';
 import 'package:gymmane/services/sync/sync_controller.dart';
 import 'package:gymmane/services/sync/sync_transport.dart';
 import 'package:gymmane/state/fit_state.dart';
-import 'sync_controller_test.dart' show TestAuth, TestRepository, configuration;
+import 'sync_controller_test.dart' show TestAuth, TestRepository, configuration, accountId;
 
 class BrokenRestore extends TestAuth {
   BrokenRestore() {
@@ -16,6 +18,10 @@ class BrokenRestore extends TestAuth {
   }
   @override
   Future<void> restore() async => throw const FormatException('Corrupt saved session');
+  @override
+  Future<void> signIn(String email, String password) async {
+    session = AuthSession(accountId, 'token', 'refresh', DateTime(2100));
+  }
 }
 
 class BrokenSwitch extends TestRepository {
@@ -25,6 +31,57 @@ class BrokenSwitch extends TestRepository {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('sign-in after restore failure resumes exactly one periodic sync timer', () async {
+    final timers = <ManualPeriodicTimer>[];
+    await runZoned(
+      () async {
+        final repository = TestRepository();
+        final sync = SyncController(
+          config: configuration,
+          auth: BrokenRestore(),
+          repository: repository,
+          transport: SyncTransport(
+            Uri.parse(configuration.serverUrl),
+            MockClient((_) async => http.Response('{"entities":[],"nextCursor":"0","hasMore":false}', 200)),
+          ),
+        );
+        addTearDown(sync.dispose);
+        await sync.initialize();
+        expect(sync.phase, SyncPhase.needsAuthorization);
+        await sync.signIn('person@example.com', 'password');
+        expect(repository.applications, 1);
+        expect(timers, hasLength(1));
+        Future<void> tick() async {
+          final finished = Completer<void>();
+          void listener() {
+            if (!sync.busy && !finished.isCompleted) finished.complete();
+          }
+
+          sync.addListener(listener);
+          timers.single.fire();
+          await finished.future;
+          sync.removeListener(listener);
+        }
+
+        await tick();
+        expect(repository.applications, 2);
+        await sync.signOut();
+        await sync.signIn('person@example.com', 'password');
+        expect(timers, hasLength(1));
+        expect(repository.applications, 3);
+        await tick();
+        expect(repository.applications, 4);
+      },
+      zoneSpecification: ZoneSpecification(
+        createPeriodicTimer: (self, parent, zone, duration, callback) {
+          expect(duration, const Duration(minutes: 1));
+          final timer = ManualPeriodicTimer(callback);
+          timers.add(timer);
+          return timer;
+        },
+      ),
+    );
+  });
   test('bad saved auth opens guest without copying private account data into guest', () async {
     SharedPreferences.setMockInitialValues({});
     await Store.instance.init();
@@ -67,4 +124,21 @@ void main() {
     await expectLater(sync.initialize(), throwsStateError);
     sync.dispose();
   });
+}
+
+class ManualPeriodicTimer implements Timer {
+  ManualPeriodicTimer(this.callback);
+  final void Function(Timer) callback;
+  @override
+  bool isActive = true;
+  @override
+  int tick = 0;
+  void fire() {
+    if (!isActive) return;
+    tick++;
+    callback(this);
+  }
+
+  @override
+  void cancel() => isActive = false;
 }

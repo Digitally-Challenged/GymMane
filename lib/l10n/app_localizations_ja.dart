@@ -5295,4 +5295,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get syncSavingWorkout => 'Saving workout…';
+
+  @override
+  String get syncHealthStartTimeRequired =>
+      'Apple Health export is unsupported for this workout because its actual start time was not recorded.';
 }

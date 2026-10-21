@@ -87,12 +87,17 @@ class HealthKitDelivery extends ChangeNotifier {
       final fingerprint = jsonEncode(workout);
       if (old?['status'] == 'confirmed' && old?['fingerprint'] == fingerprint) return;
       final version = (old?['revision'] as int? ?? 0) + 1;
+      final recordedStart = workout['startedAt'];
+      final start = recordedStart is String ? DateTime.tryParse(recordedStart) : null;
+      if (start == null || !start.isUtc) {
+        throw SyncFailure(t.syncHealthStartTimeRequired);
+      }
       final end = DateTime.parse(workout['d'] as String);
       final seconds = (workout['dur'] as num).toDouble();
       final native = HealthKitWorkout(
         id: id as String,
         revision: version,
-        startTime: end.subtract(Duration(microseconds: (seconds * 1000000).round())),
+        startTime: start,
         endTime: end,
         durationSeconds: seconds,
         name: workout['n'] as String? ?? 'GymMane workout',

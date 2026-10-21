@@ -1898,5 +1898,6 @@
   "syncNeedsAuthorization": "Authorization required",
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
-  "syncSavingWorkout": "Saving workout…"
+  "syncSavingWorkout": "Saving workout…",
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
 }

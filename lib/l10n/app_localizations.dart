@@ -9585,6 +9585,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saving workout…'**
   String get syncSavingWorkout;
+
+  /// No description provided for @syncHealthStartTimeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health export is unsupported for this workout because its actual start time was not recorded.'**
+  String get syncHealthStartTimeRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

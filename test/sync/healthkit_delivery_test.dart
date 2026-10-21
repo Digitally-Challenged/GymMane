@@ -8,6 +8,7 @@ const workoutId = '12345678-1234-1234-1234-123456789abc';
 final workout = <String, dynamic>{
   'id': workoutId,
   'd': '2026-10-20T14:00:00Z',
+  'startedAt': '2026-10-20T12:30:00Z',
   'dur': 3600,
   'n': 'Strength',
   'origin': 'gymmane',
@@ -18,6 +19,7 @@ class Ledger implements HealthDeliveryStore {
   String namespace = 'guest';
   SyncJson data = {};
   bool failWrite = false;
+  List<SyncJson> eligible = [workout];
   @override
   Future<SyncJson> read() async => jsonObject(jsonDecode(jsonEncode(data)));
   @override
@@ -27,7 +29,7 @@ class Ledger implements HealthDeliveryStore {
   }
 
   @override
-  Future<List<SyncJson>> eligibleWorkouts() async => [workout];
+  Future<List<SyncJson>> eligibleWorkouts() async => eligible;
 }
 
 class Native extends HealthKitAdapter {
@@ -54,6 +56,27 @@ class Native extends HealthKitAdapter {
 }
 
 void main() {
+  test('exports actual start and active duration without subtracting paused time', () async {
+    final native = Native();
+    final delivery = HealthKitDelivery(Ledger(), adapter: native, isPhone: () async => true);
+    await delivery.designate(true);
+    await delivery.export(workout);
+    expect(native.saves.single.startTime, DateTime.utc(2026, 10, 20, 12, 30));
+    expect(native.saves.single.durationSeconds, 3600);
+    expect(native.saves.single.endTime, DateTime.utc(2026, 10, 20, 14));
+  });
+  test('legacy missing start is unsupported without a native call or delivery intent', () async {
+    final legacy = {...workout}..remove('startedAt');
+    final ledger = Ledger()..eligible = [legacy];
+    final native = Native();
+    final delivery = HealthKitDelivery(ledger, adapter: native, isPhone: () async => true);
+    await delivery.designate(true);
+    await delivery.export(legacy);
+    expect(native.saves, isEmpty);
+    expect(delivery.message, contains('start time'));
+    expect(ledger.data['records'], anyOf(isNull, isEmpty));
+  });
+
   test('explicit phone opt-in required and intent commit precedes native save', () async {
     final ledger = Ledger();
     final native = Native();

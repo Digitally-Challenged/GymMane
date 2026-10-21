@@ -62,10 +62,15 @@ class SyncController extends ChangeNotifier {
       phase = account == null ? SyncPhase.signedOut : SyncPhase.ready;
       await _counts();
     });
+    _ensureTimer();
+    if (account != null && phase == SyncPhase.ready) unawaited(sync());
+  }
+
+  void _ensureTimer() {
+    if (_disposed || _timer != null) return;
     _timer = Timer.periodic(const Duration(minutes: 1), (_) {
       if (account != null && !busy && phase != SyncPhase.needsAuthorization) unawaited(sync());
     });
-    if (account != null && phase == SyncPhase.ready) unawaited(sync());
   }
 
   Future<void> signIn(String email, String password) async {
@@ -82,7 +87,10 @@ class SyncController extends ChangeNotifier {
       phase = SyncPhase.ready;
       await _counts();
     });
-    if (phase == SyncPhase.ready) await sync();
+    if (phase == SyncPhase.ready) {
+      _ensureTimer();
+      await sync();
+    }
   }
 
   Future<void> signOut() async {
