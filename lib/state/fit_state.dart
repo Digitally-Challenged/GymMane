@@ -64,8 +64,11 @@ class FitState extends FitCore
       LoggedSession.fromJson((row as Map).cast<String, dynamic>())];
     final loadedRoutines = [for (final row in (data['routines'] as List?) ?? [])
       Routine.fromJson((row as Map).cast<String, dynamic>())];
+    final loadedCustom = [for (final row in (data['custom'] as List?) ?? [])
+      Exercise.fromJson((row as Map).cast<String, dynamic>())];
     sessions..clear()..addAll(loadedSessions);
     routines..clear()..addAll(loadedRoutines);
+    customExercises..clear()..addAll(loadedCustom);
     _refreshWidgets();
     notifyListeners();
   }
@@ -78,7 +81,7 @@ class FitState extends FitCore
       await operation();
     } finally {
       String entities() => jsonEncode([sessions.map((s) => s.toJson()).toList(),
-        routines.map((r) => r.toJson()).toList()]);
+        routines.map((r) => r.toJson()).toList(), customExercises.map((e) => e.toJson()).toList()]);
       while (true) {
         final before = entities();
         await persistNow(rethrowErrors: true);

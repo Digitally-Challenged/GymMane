@@ -22,6 +22,238 @@ void main() {
     await fit.persistNow(rethrowErrors: true);
   });
 
+  Map<String, dynamic> remote(Map<String, dynamic> payload, int revision, String cursor) => {
+    'entityType': 'routine',
+    'entityId': payload['id'],
+    'revision': revision,
+    'deleted': false,
+    'payload': payload,
+    'cursor': cursor,
+  };
+
+  Future<void> acknowledge(StoreSyncRepository adapter) async {
+    for (final operation in await adapter.pendingOperations('alice')) {
+      await adapter.applyPushResults('alice', [
+        {
+          'operationId': operation['operationId'],
+          'status': 'accepted',
+          'entity': remote(operation['payload'] as Map<String, dynamic>, 1, '1'),
+        },
+      ]);
+    }
+  }
+
+  void edit(String id, String name, String mode) => fit.updateCustomExercise(
+    id,
+    name: name,
+    primary: 'abdomen',
+    equipment: 'Bodyweight',
+    difficulty: 'Beginner',
+    steps: ['Move'],
+    mode: mode,
+  );
+
+  test('newer two-device definition updates a retained local custom row', () async {
+    final adapter = StoreSyncRepository(Store.instance);
+    await adapter.selectNamespace('alice');
+    final id = fit.addCustomExercise(
+      name: 'Original hold',
+      primary: 'abdomen',
+      equipment: 'Bodyweight',
+      mode: 'time',
+    );
+    final routine = fit.createRoutine('Portable');
+    fit.toggleRoutineExercise(routine, id);
+    await fit.persistNow(rethrowErrors: true);
+    final initial = (await adapter.pendingOperations('alice')).single['payload'] as Map<String, dynamic>;
+    await acknowledge(adapter);
+    final prefs = await SharedPreferences.getInstance();
+    final deviceA = prefs.getString(PreferencesBackend.key)!;
+
+    // Device B imports the actual production payload, then edits the movement.
+    SharedPreferences.setMockInitialValues({});
+    await Store.instance.init();
+    fit.loadFromStore();
+    await adapter.selectNamespace('alice');
+    await adapter.applyPullPage('alice', [remote(initial, 1, '1')], '1');
+    edit(id, 'Remote bike', 'cardio');
+    await fit.persistNow(rethrowErrors: true);
+    final evolved = (await adapter.pendingOperations('alice')).single['payload'] as Map<String, dynamic>;
+
+    SharedPreferences.setMockInitialValues({PreferencesBackend.key: deviceA});
+    await Store.instance.init();
+    fit.loadFromStore();
+    expect(fit.customExercises.single.name, 'Original hold');
+    final before = Store.instance.load();
+    final malformed = jsonDecode(jsonEncode(evolved)) as Map<String, dynamic>;
+    malformed['exerciseDefinitions'][id]['k'] = 'unsupported';
+    await expectLater(
+      adapter.applyPullPage('alice', [remote(evolved, 2, '2'), remote(malformed, 3, '3')], '3'),
+      throwsFormatException,
+    );
+    expect(Store.instance.load(), before);
+    expect(await adapter.cursor('alice'), '0');
+    expect(fit.customExercises.single.name, 'Original hold');
+    await adapter.applyPullPage('alice', [remote(evolved, 2, '2')], '2');
+    expect(fit.customExercises.single.name, 'Remote bike');
+    expect(fit.modeOf(id), 'cardio');
+    expect(fit.routineExercises(fit.routines.single).single.name, 'Remote bike');
+    expect(await adapter.cursor('alice'), '2');
+    expect(await adapter.pendingOperations('alice'), isEmpty);
+    await fit.persistNow(rethrowErrors: true);
+    await Store.instance.init();
+    fit.loadFromStore();
+    expect(fit.customExercises.single.name, 'Remote bike');
+    expect(fit.modeOf(id), 'cardio');
+    expect(await adapter.pendingOperations('alice'), isEmpty);
+  });
+
+  for (final keepLocal in [false, true]) {
+    test('concurrent custom definition conflict resolves with keepLocal=$keepLocal', () async {
+      final adapter = StoreSyncRepository(Store.instance);
+      await adapter.selectNamespace('alice');
+      final id = fit.addCustomExercise(name: 'Original', primary: 'abdomen', equipment: 'Bodyweight');
+      final routine = fit.createRoutine('Conflict');
+      fit.toggleRoutineExercise(routine, id);
+      await fit.persistNow(rethrowErrors: true);
+      final original = (await adapter.pendingOperations('alice')).single['payload'] as Map<String, dynamic>;
+      await acknowledge(adapter);
+      edit(id, 'Local hold', 'time');
+      await fit.persistNow(rethrowErrors: true);
+      final incoming = jsonDecode(jsonEncode(original)) as Map<String, dynamic>;
+      incoming['exerciseDefinitions'][id]['n'] = 'Remote bike';
+      incoming['exerciseDefinitions'][id]['k'] = 'cardio';
+      await adapter.applyPullPage('alice', [remote(incoming, 2, '2')], '2');
+      expect(fit.customExercises.single.name, 'Local hold');
+      expect(await adapter.cursor('alice'), '2');
+      expect(await adapter.pendingOperations('alice'), isEmpty);
+      final conflict = (await adapter.conflicts('alice')).single;
+      await adapter.resolveConflict('alice', conflict, keepLocal: keepLocal);
+      expect(await adapter.conflicts('alice'), isEmpty);
+      expect(fit.customExercises.single.name, keepLocal ? 'Local hold' : 'Remote bike');
+      expect(fit.routineExercises(fit.routines.single).single.name, keepLocal ? 'Local hold' : 'Remote bike');
+      expect(fit.modeOf(id), keepLocal ? 'time' : 'cardio');
+      final pending = await adapter.pendingOperations('alice');
+      expect(pending, hasLength(keepLocal ? 1 : 0));
+      if (keepLocal) expect(pending.single['baseRevision'], 2);
+    });
+  }
+
+  test('shared definitions evolve across consecutive pull pages and survive restart', () async {
+    final adapter = StoreSyncRepository(Store.instance);
+    final id = fit.addCustomExercise(
+      name: 'Original',
+      primary: 'abdomen',
+      equipment: 'Bodyweight',
+      mode: 'time',
+    );
+    for (final name in ['First', 'Second']) {
+      final routine = fit.createRoutine(name);
+      fit.toggleRoutineExercise(routine, id);
+    }
+    await adapter.selectNamespace('alice');
+    await adapter.adoptGuest('alice');
+    final originals = [
+      for (final op in await adapter.pendingOperations('alice')) op['payload'] as Map<String, dynamic>,
+    ];
+    await adapter.selectNamespace('bob');
+    await adapter.applyPullPage('bob', [for (final row in originals) remote(row, 1, '1')], '1');
+    expect(fit.customExercises, isEmpty);
+    final updates = [for (final row in originals) jsonDecode(jsonEncode(row)) as Map<String, dynamic>];
+    for (final row in updates) {
+      row['exerciseDefinitions'][id]['n'] = 'Remote bike';
+      row['exerciseDefinitions'][id]['k'] = 'cardio';
+    }
+    await adapter.applyPullPage('bob', [remote(updates[0], 2, '2')], '2');
+    expect(await adapter.cursor('bob'), '2');
+    expect(fit.routines, hasLength(2));
+    expect(await adapter.pendingOperations('bob'), isEmpty);
+    await Store.instance.init();
+    fit.loadFromStore();
+    await adapter.applyPullPage('bob', [remote(updates[1], 2, '3')], '3');
+    expect(await adapter.cursor('bob'), '3');
+    for (final routine in fit.routines) {
+      expect(routine.exerciseDefinitions[id]!.name, 'Remote bike');
+      expect(fit.routineExercises(routine).single.mode, 'cardio');
+    }
+    expect(await adapter.conflicts('bob'), isEmpty);
+    expect(await adapter.pendingOperations('bob'), isEmpty);
+  });
+
+  for (final keepLocal in [false, true]) {
+    test('independent remote definition edits stage a conflict with keepLocal=$keepLocal', () async {
+      final adapter = StoreSyncRepository(Store.instance);
+      await adapter.selectNamespace('alice');
+      final id = fit.addCustomExercise(name: 'Original', primary: 'abdomen', equipment: 'Bodyweight');
+      for (final name in ['First', 'Second']) {
+        final routine = fit.createRoutine(name);
+        fit.toggleRoutineExercise(routine, id);
+      }
+      await fit.persistNow(rethrowErrors: true);
+      final originals = [
+        for (final op in await adapter.pendingOperations('alice')) op['payload'] as Map<String, dynamic>,
+      ];
+      await acknowledge(adapter);
+      final updates = [for (final row in originals) jsonDecode(jsonEncode(row)) as Map<String, dynamic>];
+      updates[0]['exerciseDefinitions'][id]['n'] = 'First remote edit';
+      updates[1]['exerciseDefinitions'][id]['n'] = 'Independent remote edit';
+      await adapter.applyPullPage('alice', [remote(updates[0], 2, '2')], '2');
+      await adapter.applyPullPage('alice', [remote(updates[1], 2, '3')], '3');
+      expect(await adapter.cursor('alice'), '3');
+      expect(fit.exerciseById(id)!.name, 'First remote edit');
+      final conflict = (await adapter.conflicts('alice')).single;
+      expect(conflict['local']['payload']['exerciseDefinitions'][id]['n'], 'First remote edit');
+      await adapter.resolveConflict('alice', conflict, keepLocal: keepLocal);
+      final expected = keepLocal ? 'First remote edit' : 'Independent remote edit';
+      expect(fit.customExercises.single.name, expected);
+      for (final routine in fit.routines) {
+        expect(routine.exerciseDefinitions[id]!.name, expected);
+      }
+      final pending = await adapter.pendingOperations('alice');
+      expect(pending, hasLength(keepLocal ? 1 : 0));
+      if (keepLocal) {
+        expect(pending.single['baseRevision'], 2);
+        expect(pending.single['payload']['exerciseDefinitions'][id]['n'], expected);
+      }
+      expect(await adapter.conflicts('alice'), isEmpty);
+    });
+  }
+
+  test('accepting a shared remote definition preserves other pending routine edits', () async {
+    final adapter = StoreSyncRepository(Store.instance);
+    await adapter.selectNamespace('alice');
+    final id = fit.addCustomExercise(name: 'Original', primary: 'abdomen', equipment: 'Bodyweight');
+    for (final name in ['First', 'Second']) {
+      final routine = fit.createRoutine(name);
+      fit.toggleRoutineExercise(routine, id);
+    }
+    await fit.persistNow(rethrowErrors: true);
+    final originals = [
+      for (final op in await adapter.pendingOperations('alice')) op['payload'] as Map<String, dynamic>,
+    ];
+    await acknowledge(adapter);
+    edit(id, 'Local hold', 'time');
+    fit.routines.last.name = 'Local routine name';
+    await fit.persistNow(rethrowErrors: true);
+    final queued = await adapter.pendingOperations('alice');
+    final incoming = jsonDecode(jsonEncode(originals[0])) as Map<String, dynamic>;
+    incoming['exerciseDefinitions'][id]['n'] = 'Remote bike';
+    incoming['exerciseDefinitions'][id]['k'] = 'cardio';
+    await adapter.applyPullPage('alice', [remote(incoming, 2, '2')], '2');
+    expect(fit.customExercises.single.name, 'Local hold');
+    final siblingBefore = queued.singleWhere((op) => op['entityId'] == originals[1]['id']);
+    expect((await adapter.pendingOperations('alice')).single, siblingBefore);
+    await adapter.resolveConflict('alice', (await adapter.conflicts('alice')).single, keepLocal: false);
+    expect(fit.customExercises.single.name, 'Remote bike');
+    expect(fit.routines.singleWhere((r) => r.id == originals[1]['id']).name, 'Local routine name');
+    final sibling = (await adapter.pendingOperations('alice')).single;
+    expect(sibling['entityId'], originals[1]['id']);
+    expect(sibling['payload']['n'], 'Local routine name');
+    expect(sibling['payload']['exerciseDefinitions'][id]['n'], 'Remote bike');
+    expect(sibling['operationId'], isNot(siblingBefore['operationId']));
+    expect(siblingBefore['payload']['exerciseDefinitions'][id]['n'], 'Local hold');
+  });
+
   test('guest custom routine survives adoption and delivery to a fresh device', () async {
     final adapter = StoreSyncRepository(Store.instance);
     final customId = fit.addCustomExercise(

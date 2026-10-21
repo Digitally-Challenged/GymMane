@@ -130,8 +130,16 @@ class SyncRepository {
 
   /// Device-local metadata is neither exported in backups nor sent in payloads.
   Map<String, dynamic>? entityMetadata(String account, String entityType, String entityId) {
-    final row = (_space(_root, account)['entities'] as Map)['$entityType:$entityId'];
-    return row == null ? null : _copy(row as Map<String, dynamic>);
+    final ns = _space(_root, account);
+    final key = '$entityType:$entityId';
+    final row = (ns['entities'] as Map)[key];
+    if (row == null) return null;
+    final result = _copy(row as Map<String, dynamic>);
+    final shown = _entities(ns['document'] as Map<String, dynamic>)[key];
+    if (entityType == 'routine' && shown != null) {
+      result['payload'] = _copy(shown['payload'] as Map<String, dynamic>);
+    }
+    return result;
   }
 
   Future<void> _transaction(void Function(Map<String, dynamic>) change) {
@@ -155,6 +163,20 @@ class SyncRepository {
       final current = ns['document'] as Map<String, dynamic>;
       final merged = _copy(snapshot);
       if (!replace) {
+        // Reconciliation can update the retained custom library while a view is
+        // awaiting disk. Preserve those rows unless the user actually edited it.
+        final beforeCustom = {for (final row in (baseline['custom'] as List?) ?? []) row['id']: row};
+        final afterCustom = {for (final row in (snapshot['custom'] as List?) ?? []) row['id']: row};
+        final custom = {for (final row in (current['custom'] as List?) ?? []) row['id']: row};
+        for (final id in {...beforeCustom.keys, ...afterCustom.keys}) {
+          if (jsonEncode(beforeCustom[id]) == jsonEncode(afterCustom[id])) continue;
+          if (afterCustom.containsKey(id)) {
+            custom[id] = afterCustom[id];
+          } else {
+            custom.remove(id);
+          }
+        }
+        if (snapshot.containsKey('custom') || custom.isNotEmpty) merged['custom'] = custom.values.toList();
         final before = _entities(baseline), after = _entities(snapshot);
         for (final pair in [('workout', 'sessions'), ('routine', 'routines')]) {
           final rows = <String, dynamic>{
@@ -277,6 +299,10 @@ class SyncRepository {
     outbox.removeWhere((op) => _key(op) == key);
     if (keepLocal) {
       final local = (ns['entities'] as Map)[key] as Map<String, dynamic>;
+      // A shared dependency may have evolved through another routine while
+      // this entity's immutable wire payload still carries the old definition.
+      final shown = _entities(ns['document'] as Map<String, dynamic>)[key];
+      if (shown != null) local['payload'] = shown['payload'];
       local['revision'] = remote['revision'];
       outbox.add({
         'operationId': newEntityId(),
@@ -288,17 +314,41 @@ class SyncRepository {
       });
     } else {
       final previous = (ns['entities'] as Map)[key] as Map?;
+      final document = ns['document'] as Map<String, dynamic>;
+      final before = _copy(document);
+      final payload = entityType == 'routine' && remote['deleted'] != true
+          ? reconcileRemoteRoutineDependencies(
+              document,
+              remote['payload'] as Map<String, dynamic>,
+              acceptRemote: true,
+            )
+          : remote['payload'];
       (ns['entities'] as Map)[key] = {
         ...remote,
         'origin': previous?['origin'] ?? 'remote',
         'localRevision': ((previous?['localRevision'] as int?) ?? 0) + 1,
       };
-      final document = ns['document'] as Map;
       final field = entityType == 'workout' ? 'sessions' : 'routines';
       final rows = (document[field] ??= <dynamic>[]) as List;
       rows.removeWhere((row) => row['id'] == entityId);
-      if (remote['deleted'] != true) rows.add(remote['payload']);
-      hydrateRoutineDependencies(document.cast<String, dynamic>());
+      if (remote['deleted'] != true) rows.add(payload);
+      hydrateRoutineDependencies(document);
+      _advanceRoutineProjections(ns, before, except: {key});
+      // Choosing a shared remote exercise definition applies to that movement
+      // throughout this account. Preserve other pending routine edits, but give
+      // their revised payloads fresh replay identities rather than mutating an
+      // operation that may already have reached the server.
+      final old = _entities(before), updated = _entities(document);
+      for (final sibling in updated.keys.where((k) => k != key && k.startsWith('routine:'))) {
+        if (jsonEncode(old[sibling]) == jsonEncode(updated[sibling]) ||
+            !outbox.any((op) => _key(op) == sibling)) {
+          continue;
+        }
+        outbox.removeWhere((op) => _key(op) == sibling);
+        final local = (ns['entities'] as Map)[sibling] as Map;
+        local['payload'] = updated[sibling]!['payload'];
+        outbox.add({...updated[sibling]!, 'baseRevision': local['revision'], 'operationId': newEntityId()});
+      }
     }
   });
 
@@ -312,6 +362,21 @@ class SyncRepository {
           'deleted': false,
         },
   };
+
+  // A dependency update can change another routine's displayed local payload
+  // without changing its wire revision. Fence stale conflict decisions too.
+  static void _advanceRoutineProjections(
+    Map<String, dynamic> ns,
+    Map<String, dynamic> before, {
+    required Set<String> except,
+  }) {
+    final old = _entities(before), updated = _entities(ns['document'] as Map<String, dynamic>);
+    for (final key in updated.keys.where((k) => k.startsWith('routine:') && !except.contains(k))) {
+      if (jsonEncode(old[key]) == jsonEncode(updated[key])) continue;
+      final local = (ns['entities'] as Map)[key] as Map?;
+      if (local != null) local['localRevision'] = ((local['localRevision'] as int?) ?? 0) + 1;
+    }
+  }
 
   static void _recordChanges(
     Map<String, dynamic> ns,
@@ -411,6 +476,8 @@ class SyncRepository {
       if (BigInt.parse(nextCursor) < BigInt.parse(ns['cursor'] as String)) {
         throw const FormatException('Cursor regression');
       }
+      final before = _copy(ns['document'] as Map<String, dynamic>);
+      final updatedKeys = <String>{};
       for (final entity in snapshot) {
         _validateEntity(entity);
         final key = _key(entity);
@@ -420,18 +487,35 @@ class SyncRepository {
           (ns['conflicts'] as Map)[key] = entity;
           continue;
         }
+        final document = ns['document'] as Map<String, dynamic>;
+        final payload = entity['entityType'] == 'routine' && entity['deleted'] != true
+            ? reconcileRemoteRoutineDependencies(
+                document,
+                _copy(entity['payload'] as Map<String, dynamic>),
+                previous: previous?['payload'] as Map<String, dynamic>?,
+                pendingRoutineIds: {
+                  for (final op in ns['outbox'] as List)
+                    if (op['entityType'] == 'routine') op['entityId'] as String,
+                },
+              )
+            : entity['payload'];
+        if (entity['deleted'] != true && payload == null) {
+          (ns['conflicts'] as Map)[key] = entity;
+          continue;
+        }
         (ns['entities'] as Map)[key] = {
           ...entity,
           'origin': previous?['origin'] ?? 'remote',
           'localRevision': ((previous?['localRevision'] as int?) ?? 0) + 1,
         };
-        final document = ns['document'] as Map;
         final field = entity['entityType'] == 'workout' ? 'sessions' : 'routines';
         final rows = (document[field] ??= <dynamic>[]) as List;
         rows.removeWhere((row) => row['id'] == entity['entityId']);
-        if (entity['deleted'] != true) rows.add(entity['payload']);
+        if (entity['deleted'] != true) rows.add(payload);
+        updatedKeys.add(key);
       }
       hydrateRoutineDependencies((ns['document'] as Map).cast<String, dynamic>());
+      _advanceRoutineProjections(ns, before, except: updatedKeys);
       ns['cursor'] = nextCursor;
     });
   }
