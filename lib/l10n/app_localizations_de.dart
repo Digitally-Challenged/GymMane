@@ -5470,4 +5470,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get syncSynced => 'Synced';
+
+  @override
+  String get routineMissingExercisesTitle => 'Exercises need restoring';
+
+  @override
+  String routineMissingExercisesMessage(int count) {
+    return 'This routine is missing $count exercises. Restore them from a backup or remove them from the routine before starting.';
+  }
 }

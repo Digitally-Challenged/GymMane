@@ -9609,6 +9609,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Synced'**
   String get syncSynced;
+
+  /// No description provided for @routineMissingExercisesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises need restoring'**
+  String get routineMissingExercisesTitle;
+
+  /// No description provided for @routineMissingExercisesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This routine is missing {count} exercises. Restore them from a backup or remove them from the routine before starting.'**
+  String routineMissingExercisesMessage(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
