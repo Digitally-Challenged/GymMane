@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,12 +8,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gymmane/models/workout.dart';
 import 'package:gymmane/screens/sync/completed_workout_delivery.dart';
+import 'package:gymmane/screens/sync/delivery_updates.dart';
 import 'package:gymmane/services/local_store.dart';
 import 'package:gymmane/services/sync/healthkit_delivery.dart';
 import 'package:gymmane/services/sync/store_health_delivery.dart';
 import 'package:gymmane/services/sync/sync_runtime.dart';
 import 'package:gymmane/state/fit_state.dart';
 import 'healthkit_delivery_test.dart' show Native;
+import 'sync_controller_test.dart' as c;
 
 class AvailableHealth extends Native {
   @override
@@ -57,6 +60,123 @@ void main() {
     expect(find.text('Other workout'), findsNothing);
     expect(find.text('Export'), findsNothing);
     await tester.pumpWidget(const SizedBox());
+  });
+  for (final source in ['imported', 'conflicted']) {
+    testWidgets('$source selected source rename and deletion refresh without exportable changes', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      await Store.instance.init();
+      fit.resetAllData();
+      final repository = Store.instance.repository;
+      if (source == 'conflicted') {
+        await repository.selectNamespace('account-a');
+        fit.reloadSyncedEntities();
+      }
+      fit.sessions.add(
+        LoggedSession.fromJson({
+          ...completed(selectedId, 'Original selected workout', 20).toJson(),
+          'origin': source == 'imported' ? 'imported' : 'gymmane',
+        }),
+      );
+      await fit.persistNow(rethrowErrors: true);
+      if (source == 'conflicted') {
+        await repository.applyPullPage(repository.namespace, [
+          {
+            'entityType': 'workout',
+            'entityId': selectedId,
+            'revision': 1,
+            'cursor': '1',
+            'deleted': false,
+            'payload': completed(selectedId, 'Remote conflict', 20).toJson(),
+          },
+        ], '1');
+        expect(repository.conflicts(repository.namespace), contains('workout:$selectedId'));
+      }
+      SyncRuntime.health = null;
+      SyncRuntime.controller = null;
+      expect(repository.exportableWorkouts(repository.namespace), isEmpty);
+      var providerRefreshes = 0;
+      final candidates = DeliveryUpdates(() => providerRefreshes++);
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: CompletedWorkoutDelivery(workoutId: selectedId)),
+        ),
+      );
+      expect(find.text('Original selected workout'), findsOneWidget);
+      // Unrelated FitState notifications do not refresh providers or the source.
+      fit.reloadSyncedEntities();
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pumpAndSettle();
+      expect(providerRefreshes, 0);
+      fit.sessions.single.name = 'Renamed selected workout';
+      await fit.persistNow(rethrowErrors: true);
+      fit.reloadSyncedEntities();
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pumpAndSettle();
+      expect(repository.exportableWorkouts(repository.namespace), isEmpty);
+      expect(find.text('Renamed selected workout'), findsOneWidget);
+      expect(find.text('Original selected workout'), findsNothing);
+      expect(providerRefreshes, 0);
+      fit.sessions.clear();
+      await fit.persistNow(rethrowErrors: true);
+      fit.reloadSyncedEntities();
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pumpAndSettle();
+      expect(repository.exportableWorkouts(repository.namespace), isEmpty);
+      expect(find.text('Renamed selected workout'), findsNothing);
+      expect(find.text('Saved on this device'), findsNothing);
+      expect(providerRefreshes, 0);
+      candidates.dispose();
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
+  testWidgets('selected ineligible conflict status refreshes without metadata or candidate changes', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    await Store.instance.init();
+    fit.resetAllData();
+    final repository = Store.instance.repository;
+    await repository.selectNamespace(c.accountId);
+    fit.reloadSyncedEntities();
+    fit.sessions.add(
+      LoggedSession.fromJson({
+        ...completed(selectedId, 'Imported selected workout', 20).toJson(),
+        'origin': 'imported',
+      }),
+    );
+    await fit.persistNow(rethrowErrors: true);
+    final sync = c.controller(c.TestRepository(), c.TestAuth(), (_) async => http.Response('{}', 200));
+    SyncRuntime.controller = sync;
+    SyncRuntime.health = null;
+    final before = repository.entityMetadata(repository.namespace, 'workout', selectedId);
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: CompletedWorkoutDelivery(workoutId: selectedId)),
+      ),
+    );
+    expect(find.textContaining('conflicts need review'), findsNothing);
+    await repository.applyPullPage(repository.namespace, [
+      {
+        'entityType': 'workout',
+        'entityId': selectedId,
+        'revision': 1,
+        'cursor': '1',
+        'deleted': true,
+        'payload': null,
+      },
+    ], '1');
+    fit.reloadSyncedEntities();
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pumpAndSettle();
+    expect(repository.entityMetadata(repository.namespace, 'workout', selectedId), before);
+    expect(repository.exportableWorkouts(repository.namespace), isEmpty);
+    expect(find.textContaining('conflicts need review'), findsOneWidget);
+    expect(find.text('Imported selected workout'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    SyncRuntime.controller = null;
+    sync.dispose();
   });
   for (final size in [const Size(390, 844), const Size(320, 568)]) {
     testWidgets('delivery and consent fit $size at 200% text', (tester) async {

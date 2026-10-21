@@ -19,8 +19,10 @@ class HealthKitDelivery extends ChangeNotifier {
   HealthKitDelivery(this.store, {this.adapter = const HealthKitAdapter(), this.isPhone = _nativePhone});
   final Future<bool> Function() isPhone;
   static Future<bool> _nativePhone() async => (await AppleCapabilities.current).isPhone;
-  Future<void> _requirePhone() async {
-    if (!await isPhone()) {
+  Future<void> _requirePhone(_HealthOperation operation) async {
+    final phone = await isPhone();
+    _requireCurrent(operation);
+    if (!phone) {
       throw SyncFailure(t.syncExportFromYourDesignatedIPhoneThisDevice);
     }
   }
@@ -49,12 +51,11 @@ class HealthKitDelivery extends ChangeNotifier {
       _refreshAgain = true;
       return;
     }
-    await _run(() async {
-      final namespace = store.namespace;
-      final generation = _generation;
+    await _run((operation) async {
       final ledger = await store.read();
+      _requireCurrent(operation);
       final candidates = await store.eligibleWorkouts();
-      if (namespace != store.namespace || generation != _generation) return;
+      _requireCurrent(operation);
       enabled = ledger['enabled'] == true;
       records = jsonObject(ledger['records'] ?? <String, dynamic>{});
       workouts = candidates;
@@ -62,35 +63,44 @@ class HealthKitDelivery extends ChangeNotifier {
   }
 
   Future<void> designate(bool value) async {
-    await _run(() async {
-      final namespace = store.namespace;
-      if (value) await _requirePhone();
-      if (value && await adapter.authorization() != HealthKitAuthorization.authorized) {
-        throw SyncFailure(t.syncAllowAppleHealthWorkoutAccessFirst);
+    await _run((operation) async {
+      final namespace = operation.namespace;
+      if (value) await _requirePhone(operation);
+      _requireCurrent(operation);
+      if (value) {
+        final authorization = await adapter.authorization();
+        _requireCurrent(operation);
+        if (authorization != HealthKitAuthorization.authorized) {
+          throw SyncFailure(t.syncAllowAppleHealthWorkoutAccessFirst);
+        }
       }
-      if (namespace != store.namespace) throw SyncFailure(t.syncAccountChangedRefreshExports);
+      _requireCurrent(operation);
       final ledger = await store.read();
+      _requireCurrent(operation);
       ledger['enabled'] = value;
       await store.write(namespace, ledger);
+      _requireCurrent(operation);
       enabled = value;
     });
   }
 
   Future<void> export(SyncJson workout) async {
-    await _run(() async {
-      final namespace = store.namespace;
-      await _requirePhone();
-      if (namespace != store.namespace) throw SyncFailure(t.syncAccountChangedRefreshExports);
+    await _run((operation) async {
+      final namespace = operation.namespace;
+      await _requirePhone(operation);
+      _requireCurrent(operation);
       final ledger = await store.read();
+      _requireCurrent(operation);
       if (ledger['enabled'] != true) {
         throw SyncFailure(t.syncDesignateThisIPhoneForAppleHealthExports);
       }
       final eligible = await store.eligibleWorkouts();
+      _requireCurrent(operation);
       final id = workout['id'];
       if (!eligible.any((entry) => entry['id'] == id && jsonEncode(entry) == jsonEncode(workout))) {
         throw SyncFailure(t.syncWorkoutChangedOrIsNotEligibleRefresh);
       }
-      if (namespace != store.namespace) throw SyncFailure(t.syncAccountChangedRefreshExports);
+      _requireCurrent(operation);
       final entries = jsonObject(ledger['records'] ??= <String, dynamic>{});
       final old = entries[id] == null ? null : jsonObject(entries[id]);
       if (old != null && ['sending', 'unknown'].contains(old['status'])) {
@@ -122,31 +132,34 @@ class HealthKitDelivery extends ChangeNotifier {
         'payload': native.toMap(),
       };
       await store.write(namespace, ledger);
-      await _deliver(namespace, ledger, id);
+      _requireCurrent(operation);
+      await _deliver(operation, ledger, id);
     });
   }
 
   Future<void> reconcile(String id) async {
-    await _run(() async {
-      final namespace = store.namespace;
-      await _requirePhone();
-      if (namespace != store.namespace) throw SyncFailure(t.syncAccountChangedRefreshExports);
+    await _run((operation) async {
+      await _requirePhone(operation);
+      _requireCurrent(operation);
       final ledger = await store.read();
+      _requireCurrent(operation);
       if (ledger['enabled'] != true) throw SyncFailure(t.syncAppleHealthExportIsDisabled);
       final entry = jsonObject(jsonObject(ledger['records'])[id]);
       if (!['sending', 'unknown'].contains(entry['status'])) return;
       // HealthKit sync identifier + version makes this an idempotent upsert,
       // never a new randomly identified workout after response loss.
-      await _deliver(namespace, ledger, id);
+      _requireCurrent(operation);
+      await _deliver(operation, ledger, id);
     });
   }
 
   Future<void> remove(String id) async {
-    await _run(() async {
-      final namespace = store.namespace;
-      await _requirePhone();
+    await _run((operation) async {
+      final namespace = operation.namespace;
+      await _requirePhone(operation);
+      _requireCurrent(operation);
       final ledger = await store.read();
-      if (namespace != store.namespace) throw SyncFailure(t.syncAccountChangedRefreshExports);
+      _requireCurrent(operation);
       final entry = jsonObject(jsonObject(ledger['records'])[id]);
       if (entry['status'] != 'confirmed') {
         throw SyncFailure(t.syncReconcileTheCurrentExportBeforeDeleting);
@@ -155,14 +168,17 @@ class HealthKitDelivery extends ChangeNotifier {
       entry['operation'] = 'delete';
       entry['status'] = 'sending';
       await store.write(namespace, ledger);
-      await _deliver(namespace, ledger, id);
+      _requireCurrent(operation);
+      await _deliver(operation, ledger, id);
     });
   }
 
-  Future<void> _deliver(String namespace, SyncJson ledger, String id) async {
+  Future<void> _deliver(_HealthOperation operation, SyncJson ledger, String id) async {
+    final namespace = operation.namespace;
     final entry = jsonObject(jsonObject(ledger['records'])[id]);
     final payload = jsonObject(entry['payload']);
     try {
+      _requireCurrent(operation);
       if (entry['operation'] == 'delete') {
         await adapter.deleteWorkout(id: id, revision: entry['revision'] as int);
       } else {
@@ -177,34 +193,45 @@ class HealthKitDelivery extends ChangeNotifier {
           ),
         );
       }
+      // A native call already started may finish after account invalidation.
+      // Keep its durable intent unresolved for explicit reconciliation.
+      if (!_isCurrent(operation)) return;
       entry['status'] = entry['operation'] == 'delete' ? 'deleted' : 'confirmed';
       await store.write(namespace, ledger);
     } catch (_) {
+      if (!_isCurrent(operation)) return;
       entry['status'] = 'unknown';
       await store.write(namespace, ledger);
       rethrow;
     } finally {
-      if (store.namespace == namespace) records = jsonObject(ledger['records']);
+      if (_isCurrent(operation)) records = jsonObject(ledger['records']);
     }
   }
 
-  Future<void> _run(Future<void> Function() action) async {
+  bool _isCurrent(_HealthOperation operation) =>
+      operation.namespace == store.namespace && operation.generation == _generation;
+
+  void _requireCurrent(_HealthOperation operation) {
+    if (!_isCurrent(operation)) throw SyncFailure(t.syncAccountChangedRefreshExports);
+  }
+
+  Future<void> _run(Future<void> Function(_HealthOperation) action) async {
     if (busy) return;
-    final namespace = store.namespace;
-    final generation = _generation;
+    final operation = _HealthOperation(store.namespace, _generation);
     busy = true;
     message = null;
     notifyListeners();
     try {
-      await action();
+      _requireCurrent(operation);
+      await action(operation);
     } on SyncFailure catch (error) {
-      if (generation == _generation && namespace == store.namespace) message = error.message;
+      if (_isCurrent(operation)) message = error.message;
     } catch (_) {
-      if (generation == _generation && namespace == store.namespace) {
+      if (_isCurrent(operation)) {
         message = t.syncAppleHealthOperationDidNotCompleteAny;
       }
     } finally {
-      if (namespace != store.namespace || generation != _generation) {
+      if (!_isCurrent(operation)) {
         enabled = false;
         records = {};
         workouts = [];
@@ -217,4 +244,10 @@ class HealthKitDelivery extends ChangeNotifier {
       }
     }
   }
+}
+
+class _HealthOperation {
+  const _HealthOperation(this.namespace, this.generation);
+  final String namespace;
+  final int generation;
 }

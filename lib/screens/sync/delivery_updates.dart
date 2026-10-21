@@ -7,7 +7,7 @@ import '../../state/fit_state.dart';
 
 /// Observe durable candidates without writing a snapshot during every refresh.
 class DeliveryUpdates {
-  DeliveryUpdates(this.onChanged, {this.sync}) {
+  DeliveryUpdates(this.onChanged, {this.sync, this.localProjection}) {
     _account = sync?.account;
     _lastSynced = sync?.lastSynced;
     _candidates = _snapshot();
@@ -17,6 +17,9 @@ class DeliveryUpdates {
   }
   final VoidCallback onChanged;
   final SyncController? sync;
+  // Consumers displaying ineligible sources can observe their own durable data.
+  // Provider sections retain candidate-only equality by default.
+  final Object? Function()? localProjection;
   String? _account;
   DateTime? _lastSynced;
   Timer? _timer;
@@ -27,7 +30,10 @@ class DeliveryUpdates {
   String? _snapshot() {
     try {
       final repository = Store.instance.repository;
-      return jsonEncode([repository.namespace, repository.exportableWorkouts(repository.namespace)]);
+      return jsonEncode([
+        repository.namespace,
+        localProjection == null ? repository.exportableWorkouts(repository.namespace) : localProjection!(),
+      ]);
     } catch (_) {
       return null;
     }

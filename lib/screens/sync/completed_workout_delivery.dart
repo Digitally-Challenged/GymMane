@@ -34,11 +34,21 @@ class _CompletedWorkoutDeliveryState extends State<CompletedWorkoutDelivery> {
       _namespace = Store.instance.repository.namespace;
       _sync = SyncRuntime.controller;
       _sync?.addListener(_refresh);
-      _updates = DeliveryUpdates(_refresh);
+      _updates = DeliveryUpdates(_refresh, localProjection: _selectedSource);
       _refresh();
     } catch (_) {
       // Session previews have no durable store or native runtime.
     }
+  }
+
+  Object? _selectedSource() {
+    final repository = Store.instance.repository;
+    if (repository.namespace != _namespace) return null;
+    return [
+      repository.entityMetadata(_namespace!, 'workout', widget.workoutId),
+      repository.conflicts(_namespace!)['workout:${widget.workoutId}'],
+      repository.exportableWorkouts(_namespace!).where((e) => e['entityId'] == widget.workoutId).toList(),
+    ];
   }
 
   void _refresh() {
