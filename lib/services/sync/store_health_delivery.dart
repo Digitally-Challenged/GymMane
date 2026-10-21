@@ -1,5 +1,4 @@
 import '../local_store.dart';
-import '../../state/fit_state.dart';
 import 'healthkit_delivery.dart';
 import 'sync_transport.dart';
 
@@ -20,7 +19,7 @@ class StoreHealthDelivery implements HealthDeliveryStore {
 }
 
 Future<List<SyncJson>> exportableWorkouts(Store store, {bool syncedOnly = false}) async {
-  await fit.persistNow(rethrowErrors: true);
+  await store.repository.flushed;
   final entities = store.repository.exportableWorkouts(store.repository.namespace);
   return syncedOnly
       ? entities

@@ -4,25 +4,64 @@ import 'package:flutter/material.dart';
 import '../../services/integrations/healthkit/healthkit_adapter.dart';
 import '../../services/sync/healthkit_delivery.dart';
 import '../../services/sync/sync_transport.dart';
+import '../../services/sync/sync_runtime.dart';
+import 'delivery_updates.dart';
+import 'workout_delivery_details.dart';
 
 /// Permission is an explicit opt-in. Delivery opt-in and history adoption are
 /// separate concerns; obtaining permission never initiates a historical upload.
 class HealthKitSection extends StatefulWidget {
-  const HealthKitSection({super.key, required this.delivery, this.adapter = const HealthKitAdapter()});
+  const HealthKitSection({
+    super.key,
+    required this.delivery,
+    this.adapter = const HealthKitAdapter(),
+    this.workoutId,
+  });
   final HealthKitAdapter adapter;
   final HealthKitDelivery delivery;
+  final String? workoutId;
   @override
   State<HealthKitSection> createState() => _HealthKitSectionState();
 }
 
-class _HealthKitSectionState extends State<HealthKitSection> {
+class _HealthKitSectionState extends State<HealthKitSection> with WidgetsBindingObserver {
+  late final DeliveryUpdates _updates;
   HealthKitAuthorization? _status;
   String? _error;
   bool _busy = true;
+  int _accountGeneration = 0;
+  late String _namespace;
+  String? _account;
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _namespace = widget.delivery.store.namespace;
+    _account = SyncRuntime.controller?.account;
+    _updates = DeliveryUpdates(_changed, sync: SyncRuntime.controller);
     _check();
+  }
+
+  void _changed() {
+    if (_namespace != widget.delivery.store.namespace || _account != SyncRuntime.controller?.account) {
+      _namespace = widget.delivery.store.namespace;
+      _account = SyncRuntime.controller?.account;
+      ++_accountGeneration;
+      widget.delivery.invalidate();
+    }
+    widget.delivery.refresh();
+  }
+
+  @override
+  void dispose() {
+    _updates.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !_busy) _check();
   }
 
   Future<void> _check({bool request = false}) async {
@@ -62,7 +101,8 @@ class _HealthKitSectionState extends State<HealthKitSection> {
         HealthKitAuthorization.authorized => t.syncWorkoutWritePermissionGranted,
       }),
       if (_error != null) Text(_error!),
-      Text(t.syncOnlyWorkoutWritePermissionIsRequestedThis),
+      if (widget.workoutId == null || _status == HealthKitAuthorization.notDetermined)
+        Text(t.syncOnlyWorkoutWritePermissionIsRequestedThis),
       if (_status == HealthKitAuthorization.notDetermined)
         FilledButton(
           onPressed: _busy ? null : () => _check(request: true),
@@ -79,29 +119,36 @@ class _HealthKitSectionState extends State<HealthKitSection> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SwitchListTile(
-            title: Text(t.syncUseThisIPhoneForAppleHealthExports),
-            subtitle: Text(t.syncChooseOnlyOneDeviceEachWorkoutStill),
-            value: delivery.enabled,
-            onChanged: delivery.busy ? null : delivery.designate,
-          ),
+          if (widget.workoutId == null || !delivery.enabled)
+            SwitchListTile(
+              title: Text(t.syncUseThisIPhoneForAppleHealthExports),
+              subtitle: Text(t.syncChooseOnlyOneDeviceEachWorkoutStill),
+              value: delivery.enabled,
+              onChanged: delivery.busy ? null : delivery.designate,
+            ),
           if (delivery.message != null) Text(delivery.message!),
           if (delivery.enabled) ...[
-            Text(t.syncSelectAGymManeOriginWorkoutImportedHistory),
-            for (final workout in delivery.workouts)
-              ListTile(
-                title: Text('${workout['n'] ?? t.syncWorkout}'),
-                subtitle: Text('${workout['d']}'),
-                trailing: TextButton(
+            if (widget.workoutId == null) Text(t.syncSelectAGymManeOriginWorkoutImportedHistory),
+            for (final workout in delivery.workouts.where(
+              (w) => widget.workoutId == null || w['id'] == widget.workoutId,
+            ))
+              WorkoutDeliveryTile(
+                title: workoutName(workout),
+                subtitle: workoutDate(context, workout['d']),
+                action: TextButton(
                   onPressed: delivery.busy ? null : () => _export(workout),
                   child: Text(t.syncExport),
                 ),
               ),
           ],
-          for (final entry in delivery.records.entries)
-            ListTile(
-              title: Text('${syncStatusLabel(jsonObject(entry.value)['status'])} · ${entry.key}'),
-              trailing: ['sending', 'unknown'].contains(jsonObject(entry.value)['status'])
+          for (final entry in delivery.records.entries.where(
+            (e) => widget.workoutId == null || e.key == widget.workoutId,
+          ))
+            WorkoutDeliveryTile(
+              title:
+                  '${_recordName(entry.key, jsonObject(entry.value))} · ${syncStatusLabel(jsonObject(entry.value)['status'])}',
+              subtitle: workoutDate(context, jsonObject(jsonObject(entry.value)['payload'])['endTime']),
+              action: ['sending', 'unknown'].contains(jsonObject(entry.value)['status'])
                   ? TextButton(
                       onPressed: delivery.busy || !delivery.enabled
                           ? null
@@ -120,11 +167,20 @@ class _HealthKitSectionState extends State<HealthKitSection> {
     },
   );
 
+  String _recordName(String id, SyncJson record) {
+    for (final workout in widget.delivery.workouts) {
+      if (workout['id'] == id) return workoutName(workout);
+    }
+    return jsonObject(record['payload'])['name'] as String? ?? t.syncWorkout;
+  }
+
   Future<void> _remove(String id) async {
     final namespace = widget.delivery.store.namespace;
+    final generation = _accountGeneration;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Text(t.syncRemoveThisExportFromAppleHealth),
         content: Text(t.syncOnlyThisGymManeExportIsRemovedThe),
         actions: [
@@ -133,25 +189,36 @@ class _HealthKitSectionState extends State<HealthKitSection> {
         ],
       ),
     );
-    if (confirmed == true && mounted && namespace == widget.delivery.store.namespace) {
+    if (confirmed == true &&
+        mounted &&
+        namespace == widget.delivery.store.namespace &&
+        generation == _accountGeneration) {
       await widget.delivery.remove(id);
     }
   }
 
   Future<void> _export(SyncJson workout) async {
     final namespace = widget.delivery.store.namespace;
+    final generation = _accountGeneration;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Text(t.syncExportThisWorkoutToAppleHealth),
-        content: Text(t.syncThisSendsOnlyTheSelectedWorkoutFrom),
+        content: Text(
+          '${workoutName(workout)}\n${workoutDate(context, workout['d'])}\n\n${t.syncThisSendsOnlyTheSelectedWorkoutFrom}',
+        ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: Text(t.syncCancel)),
           FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(t.syncExport)),
         ],
       ),
     );
-    if (confirmed == true && mounted && namespace == widget.delivery.store.namespace) {
+    if (confirmed == true &&
+        mounted &&
+        namespace == widget.delivery.store.namespace &&
+        generation == _accountGeneration &&
+        (widget.workoutId == null || widget.workoutId == workout['id'])) {
       await widget.delivery.export(workout);
     }
   }

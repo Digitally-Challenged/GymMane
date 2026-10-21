@@ -9,6 +9,78 @@ import 'package:gymmane/services/sync/sync_transport.dart';
 import 'sync_controller_test.dart' show TestRepository, TestAuth;
 
 void main() {
+  testWidgets('conflict review shows differing sets and deletion before choosing', (tester) async {
+    final sync = SyncController(
+      config: const SyncConfig.environment(),
+      auth: TestAuth(),
+      repository: TestRepository(),
+      transport: SyncTransport(
+        Uri.parse('https://unused.example'),
+        MockClient((_) async => http.Response('{}', 500)),
+      ),
+    );
+    sync.conflicts = [
+      {
+        'entityType': 'workout',
+        'entityId': 'PRIVATE_UUID',
+        'deleted': false,
+        'payload': {
+          'n': 'Strength',
+          'd': '2026-10-20T14:00:00Z',
+          'dur': 60,
+          'ex': [
+            {
+              'id': 'squat',
+              'n': 'Squat',
+              's': [
+                {'r': 8, 'w': 85.0},
+                {'r': 6, 'w': 90.0},
+              ],
+            },
+          ],
+        },
+        'local': {
+          'deleted': false,
+          'payload': {
+            'n': 'Strength',
+            'd': '2026-10-20T14:00:00Z',
+            'dur': 60,
+            'ex': [
+              {
+                'id': 'squat',
+                'n': 'Squat',
+                's': [
+                  {'r': 10, 'w': 80.0},
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        'entityType': 'workout',
+        'entityId': 'ANOTHER_PRIVATE_UUID',
+        'deleted': true,
+        'payload': null,
+        'local': {
+          'deleted': false,
+          'payload': {'n': 'Deleted remotely', 'ex': []},
+        },
+      },
+    ];
+    await tester.pumpWidget(MaterialApp(home: SyncScreen(controller: sync)));
+    await tester.scrollUntilVisible(find.textContaining('Squat').first, 300);
+    expect(find.textContaining('Squat'), findsNWidgets(2));
+    expect(find.textContaining('REPS 10'), findsOneWidget);
+    expect(find.textContaining('80 kg'), findsOneWidget);
+    expect(find.textContaining('REPS 8'), findsOneWidget);
+    expect(find.textContaining('90 kg'), findsOneWidget);
+    expect(find.textContaining('PRIVATE_UUID'), findsNothing);
+    await tester.scrollUntilVisible(find.textContaining('Server: Deleted'), 200);
+    expect(find.textContaining('Server: Deleted'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    sync.dispose();
+  });
   testWidgets('missing config shows unavailable and never offers sign in', (tester) async {
     var requests = 0;
     final sync = SyncController(

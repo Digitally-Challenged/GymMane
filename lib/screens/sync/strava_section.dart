@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/sync/sync_controller.dart';
 import '../../services/sync/sync_transport.dart';
+import 'delivery_updates.dart';
+import 'workout_delivery_details.dart';
 
 class StravaSection extends StatefulWidget {
-  const StravaSection({super.key, required this.sync, required this.workouts});
+  const StravaSection({super.key, required this.sync, required this.workouts, this.workoutId});
   final SyncController sync;
   final Future<List<SyncJson>> Function() workouts;
+  final String? workoutId;
   @override
   State<StravaSection> createState() => _StravaSectionState();
 }
@@ -23,17 +26,20 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
   int _generation = 0;
   bool _refreshAfterBusy = false;
   bool _revocationUnconfirmed = false;
+  late final DeliveryUpdates _updates;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     widget.sync.addListener(_accountChanged);
     _account = widget.sync.account;
+    _updates = DeliveryUpdates(_refresh, sync: widget.sync);
     _refresh();
   }
 
   @override
   void dispose() {
+    _updates.dispose();
     widget.sync.removeListener(_accountChanged);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -76,27 +82,34 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
     return result;
   }
 
-  Future<void> _refresh() => _run(() async {
-    if (widget.sync.account == null) return;
-    final generation = _generation;
-    final status = await _request('GET', '/v1/strava/status');
-    if (status['configured'] is! bool || status['connected'] is! bool) {
-      throw const FormatException('Invalid Strava status');
+  Future<void> _refresh() {
+    if (_busy) {
+      _refreshAfterBusy = true;
+      return Future.value();
     }
-    for (final job in jsonList(status['jobs'])) {
-      if (job['workoutId'] is! String || job['status'] is! String) {
-        throw const FormatException('Invalid Strava job');
+    return _run(() async {
+      if (widget.sync.account == null) return;
+      final generation = _generation;
+      final status = await _request('GET', '/v1/strava/status');
+      if (status['configured'] is! bool || status['connected'] is! bool) {
+        throw const FormatException('Invalid Strava status');
       }
-    }
-    final workouts = await widget.workouts();
-    if (generation != _generation) return;
-    if (mounted) {
-      setState(() {
-        _status = status;
-        _workouts = workouts;
-      });
-    }
-  });
+      for (final job in jsonList(status['jobs'])) {
+        if (job['workoutId'] is! String || job['status'] is! String) {
+          throw const FormatException('Invalid Strava job');
+        }
+      }
+      final workouts = await widget.workouts();
+      if (generation != _generation) return;
+      if (mounted) {
+        setState(() {
+          _status = status;
+          _workouts = workouts;
+        });
+      }
+    });
+  }
+
   Future<void> _connect() => _run(() async {
     final result = await _request('POST', '/v1/strava/connect', body: {});
     final uri = Uri.parse(result['authorizationUrl'] as String);
@@ -109,24 +122,38 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
       throw SyncFailure(t.syncCouldNotOpenStravaAuthorization);
     }
   });
-  Future<void> _export(SyncJson workout) async {
+  Future<void> _export(SyncJson workout, {bool retry = false}) async {
     final account = widget.sync.account;
+    final generation = _generation;
+    final payload = jsonObject(workout['payload']);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(t.syncExportThisWorkoutToStrava),
-        content: Text(t.syncOnlyThisCompletedWorkoutWillBeSent),
+        scrollable: true,
+        title: Text(retry ? '${t.syncStrava} · ${t.syncRetry}' : t.syncExportThisWorkoutToStrava),
+        content: Text(
+          '${workoutName(payload)}\n${workoutDate(context, payload['d'])}\n\n${t.syncOnlyThisCompletedWorkoutWillBeSent}',
+        ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: Text(t.syncCancel)),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(t.syncExport)),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(retry ? t.syncRetry : t.syncExport),
+          ),
         ],
       ),
     );
-    if (confirmed != true || !mounted || account != widget.sync.account) return;
+    if (confirmed != true ||
+        !mounted ||
+        account != widget.sync.account ||
+        generation != _generation ||
+        (widget.workoutId != null && widget.workoutId != workout['entityId'])) {
+      return;
+    }
     await _run(() async {
       await _request(
         'POST',
-        '/v1/strava/export',
+        retry ? '/v1/strava/retry' : '/v1/strava/export',
         body: {'workoutId': workout['entityId'], 'revision': workout['revision']},
       );
     });
@@ -184,24 +211,29 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
             FilledButton(onPressed: _busy ? null : _connect, child: Text(t.syncConnectStrava)),
           TextButton(onPressed: _busy ? null : _refresh, child: Text(t.syncRefreshStravaStatus)),
           if (_status?['connected'] == true) ...[
-            TextButton(
-              onPressed: _busy
-                  ? null
-                  : () async {
-                      await _run(() async {
-                        final result = await _request('POST', '/v1/strava/disconnect', body: {});
-                        _revocationUnconfirmed = result['revocationStatus'] == 'unconfirmed';
-                      });
-                      await _refresh();
-                    },
-              child: Text(t.syncDisconnectStrava),
-            ),
-            Text(t.syncChooseASyncedGymManeWorkoutToExport),
-            for (final workout in _workouts)
-              ListTile(
-                title: Text('${jsonObject(workout['payload'])['n'] ?? t.syncWorkout}'),
-                subtitle: Text('${jsonObject(workout['payload'])['d']}'),
-                trailing: TextButton(
+            if (widget.workoutId == null)
+              TextButton(
+                onPressed: _busy
+                    ? null
+                    : () async {
+                        await _run(() async {
+                          final result = await _request('POST', '/v1/strava/disconnect', body: {});
+                          _revocationUnconfirmed = result['revocationStatus'] == 'unconfirmed';
+                        });
+                        await _refresh();
+                      },
+                child: Text(t.syncDisconnectStrava),
+              ),
+            if (widget.workoutId == null) Text(t.syncChooseASyncedGymManeWorkoutToExport),
+            if (widget.workoutId != null && !_workouts.any((w) => w['entityId'] == widget.workoutId))
+              Text(t.syncWaitingForCloudSync),
+            for (final workout in _workouts.where(
+              (w) => widget.workoutId == null || w['entityId'] == widget.workoutId,
+            ))
+              WorkoutDeliveryTile(
+                title: workoutName(jsonObject(workout['payload'])),
+                subtitle: workoutDate(context, jsonObject(workout['payload'])['d']),
+                action: TextButton(
                   onPressed: _busy || jobs.any((job) => job['workoutId'] == workout['entityId'])
                       ? null
                       : () => _export(workout),
@@ -209,16 +241,30 @@ class _StravaSectionState extends State<StravaSection> with WidgetsBindingObserv
                 ),
               ),
           ],
-          for (final job in jobs)
-            ListTile(
-              title: Text('${syncStatusLabel(job['status'])} · ${job['workoutId']}'),
-              subtitle: Text(
+          for (final job in jobs.where((j) => widget.workoutId == null || j['workoutId'] == widget.workoutId))
+            WorkoutDeliveryTile(
+              title: '${job['name'] ?? t.syncWorkout} · ${syncStatusLabel(job['status'])}',
+              subtitle: [
+                for (final workout in _workouts.where((w) => w['entityId'] == job['workoutId']))
+                  workoutDate(context, jsonObject(workout['payload'])['d']),
                 job['status'] == 'unknown'
                     ? t.syncCheckStravaManuallyDoNotRetryThis
                     : job['status'] == 'unsupported'
                     ? t.syncEditOrDeleteThisActivityManuallyIn
                     : '${job['message'] ?? t.syncRefreshToCheckDeliveryStatus}',
-              ),
+              ].join('\n'),
+              action: job['canRetry'] == true && job['revision'] is int
+                  ? TextButton(
+                      onPressed: _busy
+                          ? null
+                          : () => _export({
+                              'entityId': job['workoutId'],
+                              'revision': job['revision'],
+                              'payload': {'n': job['name'] ?? t.syncWorkout},
+                            }, retry: true),
+                      child: Text(t.syncRetry),
+                    )
+                  : null,
             ),
         ],
       ],

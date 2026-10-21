@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/services/integrations/healthkit/healthkit_adapter.dart';
 import 'package:gymmane/services/sync/healthkit_delivery.dart';
@@ -55,7 +56,43 @@ class Native extends HealthKitAdapter {
   }
 }
 
+class DelayedLedger extends Ledger {
+  final pending = Completer<List<SyncJson>>();
+  final entered = Completer<void>();
+  int reads = 0;
+  @override
+  Future<List<SyncJson>> eligibleWorkouts() async {
+    reads++;
+    if (reads == 1) {
+      entered.complete();
+      return pending.future;
+    }
+    return eligible;
+  }
+}
+
 void main() {
+  test('refresh during a lookup is not lost and stale account data is suppressed', () async {
+    final ledger = DelayedLedger();
+    final delivery = HealthKitDelivery(ledger);
+    final first = delivery.refresh();
+    // Explicitly enter the delayed candidate boundary.
+    await ledger.entered.future;
+    ledger.namespace = 'account-b';
+    ledger.eligible = [
+      {...workout, 'n': 'Account B'},
+    ];
+    delivery.invalidate();
+    final next = delivery.refresh();
+    ledger.pending.complete([
+      {...workout, 'n': 'Account A private'},
+    ]);
+    await first;
+    await next;
+    expect(delivery.workouts.single['n'], 'Account B');
+    expect(delivery.busy, false);
+    delivery.dispose();
+  });
   test('exports actual start and active duration without subtracting paused time', () async {
     final native = Native();
     final delivery = HealthKitDelivery(Ledger(), adapter: native, isPhone: () async => true);

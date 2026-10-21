@@ -24,7 +24,12 @@ void main() {
           'connected': true,
           'jobs': statusRequests == 1
               ? [
-                  {'workoutId': 'ACCOUNT_A_PRIVATE_ID', 'status': 'confirmed'},
+                  {
+                    'workoutId': 'ACCOUNT_A_PRIVATE_ID',
+                    'name': 'Account A private workout',
+                    'status': 'confirmed',
+                    'canRetry': false,
+                  },
                 ]
               : [],
         }),
@@ -49,6 +54,7 @@ void main() {
     local.complete([]);
     await tester.pumpAndSettle();
     expect(find.textContaining('ACCOUNT_A_PRIVATE_ID'), findsNothing);
+    expect(find.textContaining('Account A private workout'), findsNothing);
     expect(statusRequests, 2);
     await tester.pumpWidget(const SizedBox());
     sync.dispose();

@@ -32,20 +32,32 @@ class HealthKitDelivery extends ChangeNotifier {
   String? message;
   SyncJson records = {};
   List<SyncJson> workouts = [];
+  int _generation = 0;
+  bool _refreshAgain = false;
 
   void invalidate() {
+    ++_generation;
     enabled = false;
     records = {};
     workouts = [];
+    message = null;
     notifyListeners();
   }
 
   Future<void> refresh() async {
+    if (busy) {
+      _refreshAgain = true;
+      return;
+    }
     await _run(() async {
+      final namespace = store.namespace;
+      final generation = _generation;
       final ledger = await store.read();
+      final candidates = await store.eligibleWorkouts();
+      if (namespace != store.namespace || generation != _generation) return;
       enabled = ledger['enabled'] == true;
       records = jsonObject(ledger['records'] ?? <String, dynamic>{});
-      workouts = await store.eligibleWorkouts();
+      workouts = candidates;
     });
   }
 
@@ -179,23 +191,30 @@ class HealthKitDelivery extends ChangeNotifier {
   Future<void> _run(Future<void> Function() action) async {
     if (busy) return;
     final namespace = store.namespace;
+    final generation = _generation;
     busy = true;
     message = null;
     notifyListeners();
     try {
       await action();
     } on SyncFailure catch (error) {
-      message = error.message;
+      if (generation == _generation && namespace == store.namespace) message = error.message;
     } catch (_) {
-      message = t.syncAppleHealthOperationDidNotCompleteAny;
+      if (generation == _generation && namespace == store.namespace) {
+        message = t.syncAppleHealthOperationDidNotCompleteAny;
+      }
     } finally {
-      if (namespace != store.namespace) {
+      if (namespace != store.namespace || generation != _generation) {
         enabled = false;
         records = {};
         workouts = [];
       }
       busy = false;
       notifyListeners();
+      if (_refreshAgain) {
+        _refreshAgain = false;
+        await refresh();
+      }
     }
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../services/sync/sync_controller.dart';
 import '../../services/sync/sync_transport.dart';
+import '../../state/fit_state.dart';
+import 'workout_delivery_details.dart';
 
 class SyncScreen extends StatefulWidget {
   const SyncScreen({super.key, required this.controller, this.healthSection, this.stravaSection});
@@ -76,7 +78,7 @@ class _SyncScreenState extends State<SyncScreen> {
               Text(t.syncAccountLabel(sync.account!)),
               Text(t.syncPendingLabel(sync.pendingCount, sync.conflicts.length)),
               if (sync.lastSynced != null) Text(t.syncLastCompletedLabel('${sync.lastSynced!.toLocal()}')),
-              FilledButton(onPressed: sync.busy ? null : sync.sync, child: Text(t.syncSyncNow)),
+              FilledButton(onPressed: sync.busy ? null : sync.requestSync, child: Text(t.syncSyncNow)),
               OutlinedButton(
                 onPressed: sync.busy ? null : _adoptGuest,
                 child: Text(t.syncReviewGuestHistoryForUpload),
@@ -111,6 +113,7 @@ class _SyncScreenState extends State<SyncScreen> {
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
+          scrollable: true,
           title: Text(t.syncUploadGuestHistory),
           content: Text(t.syncGuestUploadPreview(preview['workouts'] ?? 0, preview['routines'] ?? 0)),
           actions: [
@@ -140,7 +143,7 @@ class _SyncScreenState extends State<SyncScreen> {
           Text(
             t.syncConflictLabel(
               conflict['entityType'] == 'workout' ? t.syncWorkout : t.syncRoutine,
-              '${conflict['entityId']}',
+              _conflictName(conflict),
             ),
           ),
           Text(t.syncDeviceVersionLabel(_version(conflict['local']))),
@@ -170,18 +173,68 @@ class _SyncScreenState extends State<SyncScreen> {
     final payload = value['payload'];
     if (payload is! Map<String, dynamic>) return t.syncNoDetailsAvailable;
     return [
-      payload['n'] ?? payload['name'] ?? t.syncUntitled,
-      if (payload['d'] != null) payload['d'],
-      if (payload['dur'] != null) t.syncSecondsLabel(payload['dur'] as int),
-      if (payload['ex'] is List) t.exerciseCount((payload['ex'] as List).length),
-    ].join(' · ');
+          payload['n'] ?? payload['name'] ?? t.syncUntitled,
+          if (payload['d'] != null) workoutDate(context, payload['d']),
+          if (payload['dur'] != null) t.syncSecondsLabel(payload['dur'] as int),
+          if (payload['ex'] is List) t.exerciseCount((payload['ex'] as List).length),
+        ].join(' · ') +
+        _exerciseDetails(payload);
   }
+
+  String _conflictName(SyncJson conflict) {
+    final local = conflict['local'];
+    final payload = local is Map ? local['payload'] : null;
+    return workoutName(
+      payload is SyncJson
+          ? payload
+          : conflict['payload'] is SyncJson
+          ? jsonObject(conflict['payload'])
+          : {},
+    );
+  }
+
+  String _exerciseDetails(SyncJson payload) {
+    final lines = <String>[];
+    for (final value in (payload['ex'] as List?) ?? []) {
+      final exercise = value is SyncJson ? value : <String, dynamic>{'id': value};
+      final id = exercise['id'] as String?;
+      final definition = (payload['exerciseDefinitions'] as Map?)?[id];
+      final name =
+          exercise['n'] ??
+          (definition is Map ? definition['name'] ?? definition['n'] : null) ??
+          (id == null ? null : fit.exerciseById(id)?.name) ??
+          t.syncNoDetailsAvailable;
+      final sets = exercise['s'] as List? ?? (payload['p'] as Map?)?[id] as List? ?? [];
+      final count = sets.isNotEmpty
+          ? sets.length
+          : (payload['s'] as Map?)?[id] as int? ?? (value is String ? 3 : 0);
+      lines.add('$name · ${t.setCount(count)}');
+      for (var index = 0; index < sets.length; index++) {
+        final set = jsonObject(sets[index]);
+        lines.add(
+          [
+            '${t.set} ${index + 1}:',
+            if (set['r'] != null) '${t.repsCol} ${set['r']}',
+            if (set['w'] is num) '${_number(set['w'] as num)} kg',
+            if (set['t'] is num) t.syncSecondsLabel((set['t'] as num).toInt()),
+            if (set['km'] is num) '${_number(set['km'] as num)} km',
+            if (set['e'] != null) 'RPE ${set['e']}',
+          ].join(' · '),
+        );
+      }
+    }
+    return lines.isEmpty ? '' : '\n${lines.join('\n')}';
+  }
+
+  String _number(num value) =>
+      value == value.roundToDouble() ? value.toInt().toString() : decimalText('$value');
 
   Future<void> _resolve(SyncJson conflict, bool keepLocal) async {
     final account = widget.controller.account;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Text(keepLocal ? t.syncKeepThisDeviceSVersion : t.syncUseServerVersionQuestion),
         content: Text(
           keepLocal
