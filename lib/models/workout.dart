@@ -1,5 +1,7 @@
 import 'training_method.dart';
 import 'identity.dart';
+import 'exercise.dart';
+import '../catalog/exercise_catalog.dart';
 
 enum SetKind { normal, warmup, drop, failure, restPause }
 
@@ -244,13 +246,15 @@ class Routine {
     Set<String>? chained,
     Map<String, List<PlannedSet>>? plan,
     Map<String, int>? rest,
+    Map<String, Exercise>? exerciseDefinitions,
     this.group = '',
     this.method = TrainingMethod.standard,
     this.color = -1,
   }) : sets = sets ?? {},
        chained = chained ?? {},
        plan = plan ?? {},
-       rest = rest ?? {};
+       rest = rest ?? {},
+       exerciseDefinitions = exerciseDefinitions ?? {};
   final String id;
   String name;
   String group;
@@ -261,11 +265,17 @@ class Routine {
   final Set<String> chained;
   final Map<String, List<PlannedSet>> plan;
   final Map<String, int> rest;
+  final Map<String, Exercise> exerciseDefinitions;
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'n': name,
     'ex': exerciseIds,
+    if (exerciseDefinitions.keys.any(exerciseIds.contains))
+      'exerciseDefinitions': {
+        for (final entry in exerciseDefinitions.entries)
+          if (exerciseIds.contains(entry.key)) entry.key: entry.value.toJson(),
+      },
     if (rest.isNotEmpty) 'r': rest,
     if (sets.isNotEmpty) 's': sets,
     if (chained.isNotEmpty) 'c': chained.toList(),
@@ -278,6 +288,10 @@ class Routine {
     j['id'] as String,
     j['n'] as String,
     ((j['ex'] as List?) ?? []).cast<String>(),
+    exerciseDefinitions: _exerciseDefinitions(
+      j['exerciseDefinitions'],
+      ((j['ex'] as List?) ?? []).cast<String>(),
+    ),
     sets: ((j['s'] as Map?) ?? const {}).map((k, v) => MapEntry(k as String, (v as num).toInt())),
     chained: ((j['c'] as List?) ?? const []).cast<String>().toSet(),
     plan: ((j['p'] as Map?) ?? const {}).map(
@@ -293,4 +307,66 @@ class Routine {
     method: TrainingMethod.fromJson(j['method']),
     color: (j['k'] as num?)?.toInt() ?? -1,
   );
+}
+
+// Dependency definitions are untrusted sync/backup input. Exercise.fromJson is
+// intentionally tolerant for old catalogs, so validate the wire shape first.
+Map<String, Exercise> _exerciseDefinitions(Object? raw, List<String> referenced) {
+  if (raw == null) return {};
+  if (raw is! Map) throw const FormatException('Invalid exercise definitions');
+  final builtins = kExercises.map((e) => e.id).toSet();
+  final definitions = <String, Exercise>{};
+  for (final entry in raw.entries) {
+    final id = entry.key;
+    final value = entry.value;
+    if (id is! String ||
+        id.isEmpty ||
+        !referenced.contains(id) ||
+        builtins.contains(id) ||
+        value is! Map ||
+        value['id'] != id ||
+        value['n'] is! String ||
+        (value['n'] as String).trim().isEmpty ||
+        value['p'] is! String ||
+        (value['p'] as String).isEmpty) {
+      throw const FormatException('Invalid custom exercise dependency');
+    }
+    for (final key in ['e', 'd']) {
+      if (value.containsKey(key) && value[key] is! String) {
+        throw const FormatException('Invalid custom exercise field');
+      }
+    }
+    for (final key in ['s', 'st', 'a']) {
+      if (value.containsKey(key) &&
+          (value[key] is! List || !(value[key] as List).every((v) => v is String))) {
+        throw const FormatException('Invalid custom exercise list');
+      }
+    }
+    if ((value.containsKey('k') && !['', ...kExerciseModeIds].contains(value['k'])) ||
+        (value.containsKey('ty') && !['', ...kExerciseKinds].contains(value['ty']))) {
+      throw const FormatException('Invalid custom exercise mode or kind');
+    }
+    definitions[id] = Exercise.fromJson(value.cast<String, dynamic>());
+  }
+  return definitions;
+}
+
+class MissingRoutineExercises implements Exception {
+  MissingRoutineExercises(this.routineId, Iterable<String> exerciseIds)
+    : exerciseIds = List.unmodifiable(exerciseIds);
+  final String routineId;
+  final List<String> exerciseIds;
+
+  @override
+  String toString() => 'Restore or remove missing exercises before starting: ${exerciseIds.join(', ')}';
+}
+
+class RoutineExerciseResolution {
+  RoutineExerciseResolution(Iterable<Exercise> resolved, Iterable<String> missing)
+    : missingIds = List.unmodifiable(missing),
+      exercises = missing.isEmpty ? List.unmodifiable(resolved) : const [];
+
+  final List<Exercise> exercises;
+  final List<String> missingIds;
+  bool get canStart => missingIds.isEmpty;
 }

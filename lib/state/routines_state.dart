@@ -22,14 +22,25 @@ mixin RoutinesState on FitCore, LibraryState {
 
   Routine? get activeRoutine => activeRoutineId == null ? null : _routine(activeRoutineId!);
 
-  List<Exercise> routineExercises(Routine r) {
-    final out = <Exercise>[];
-    for (final id in r.exerciseIds) {
-      final e = exerciseById(id);
-      if (e != null) out.add(e);
+  RoutineExerciseResolution resolveRoutineExercises(Routine routine) {
+    final exercises = <Exercise>[];
+    final missing = <String>[];
+    for (final id in routine.exerciseIds) {
+      final exercise = exerciseById(id) ?? routine.exerciseDefinitions[id];
+      if (exercise == null) {
+        missing.add(id);
+      } else {
+        exercises.add(exercise);
+      }
     }
-    return out;
+    return RoutineExerciseResolution(exercises, missing);
   }
+
+  List<String> missingRoutineExerciseIds(Routine routine) => resolveRoutineExercises(routine).missingIds;
+
+  /// Safe for display callers; incomplete routines never appear as a partial
+  /// workout. Use resolveRoutineExercises to explain which movements need repair.
+  List<Exercise> routineExercises(Routine routine) => resolveRoutineExercises(routine).exercises;
 
   Routine? get todayRoutine => routineOn(DateTime.now());
 
@@ -311,6 +322,7 @@ mixin RoutinesState on FitCore, LibraryState {
     final copy = createRoutine(t.copySuffix(routineTitle(source)));
     final made = _routine(copy)!;
     made.exerciseIds.addAll(source.exerciseIds);
+    made.exerciseDefinitions.addAll(source.exerciseDefinitions);
     made.sets.addAll(source.sets);
     made.chained.addAll(source.chained);
     made.plan.addAll({for (final e in source.plan.entries) e.key: [...e.value]});
@@ -381,6 +393,9 @@ mixin RoutinesState on FitCore, LibraryState {
       r.chained.remove(exId);
     } else {
       r.exerciseIds.add(exId);
+      if (isCustom(exId)) {
+        if (exerciseById(exId) case final exercise?) r.exerciseDefinitions[exId] = exercise;
+      }
     }
     _persist();
     notifyListeners();
@@ -391,7 +406,9 @@ mixin RoutinesState on FitCore, LibraryState {
     if (r == null) return;
     final at = r.exerciseIds.indexOf(from);
     if (at < 0 || r.exerciseIds.contains(to)) return;
+    final replacement = exerciseById(to);
     r.exerciseIds[at] = to;
+    if (replacement != null && isCustom(to)) r.exerciseDefinitions[to] = replacement;
     final sets = r.sets.remove(from);
     if (sets != null) r.sets[to] = sets;
     final plan = r.plan.remove(from);
