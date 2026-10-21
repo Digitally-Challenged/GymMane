@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../l10n/l10n.dart';
 import '../state/fit_state.dart';
 import '../widgets/ui_kit.dart';
+import 'apple_capabilities.dart';
 
 class LiveWorkout {
   LiveWorkout._();
@@ -24,6 +25,7 @@ class LiveWorkout {
 
   static Future<void> sync() async {
     if (!_supported) return;
+    if (Platform.isIOS && !(await AppleCapabilities.current).liveActivities) return;
     if (!_listening && Platform.isAndroid) {
       _listening = true;
       _android.setMethodCallHandler((call) async {
@@ -187,6 +189,7 @@ class LiveWorkout {
 
   static Future<void> end() async {
     if (!_supported) return;
+    if (Platform.isIOS && !(await AppleCapabilities.current).liveActivities) return;
     final wasShown = _lastKey.isNotEmpty;
     _lastKey = '';
     try {

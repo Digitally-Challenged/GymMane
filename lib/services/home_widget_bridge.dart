@@ -9,6 +9,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../widgets/home_widget_views.dart';
 import 'nutrition_widgets.dart';
+import 'apple_capabilities.dart';
 
 class HomeWidgetBridge {
   HomeWidgetBridge._();
@@ -60,6 +61,8 @@ class HomeWidgetBridge {
   }
 
   static Future<void> _paint() async {
+    if (!_supported) return;
+    if (_ios && !(await AppleCapabilities.current).homeWidgets) return;
     try {
       final today = _stamp(DateTime.now());
       final everyone = _allPainted != today;
