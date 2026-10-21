@@ -12,7 +12,7 @@
     "start": "node dist/src/main.js",
     "dev": "tsx src/main.ts",
     "migrate": "tsx src/migrate.ts",
-    "test": "tsx --test tests/*.test.ts",
+    "test": "node scripts/test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

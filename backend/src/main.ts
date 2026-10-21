@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { createApp } from "./server.js";
+import { loadRuntimeModules, startModuleJobs } from "./runtime-modules.js";
 function required(name: string) {
   const value = process.env[name];
   if (!value) throw new Error(`${name} required`);
@@ -30,6 +31,8 @@ const pool = new Pool({
 });
 pool.on("error", () => console.error("Idle database connection failed"));
 await pool.query("SELECT 1 FROM backend_migrations LIMIT 1");
+const modules = await loadRuntimeModules(pool, process.env);
+const stopJobs = startModuleJobs(modules);
 const server = createApp(
   pool,
   {
@@ -37,7 +40,7 @@ const server = createApp(
     jwksUrl,
     audience: required("AUTH_AUDIENCE"),
   },
-  [],
+  modules.map((module) => module.register),
   {
     allowedOrigins: (process.env.CORS_ALLOWED_ORIGINS ?? "")
       .split(",")
@@ -51,6 +54,6 @@ server.listen(port, process.env.HOST ?? "127.0.0.1", () =>
 for (const signal of ["SIGINT", "SIGTERM"])
   process.once(signal, () => {
     server.close(() => {
-      void pool.end();
+      void stopJobs().then(() => pool.end());
     });
   });

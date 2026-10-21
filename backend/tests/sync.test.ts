@@ -360,3 +360,29 @@ integration(
     }
   },
 );
+
+integration(
+  "JWKS service failure is retriable rather than invalid credentials",
+  async () => {
+    const unavailable = createServer((_request, response) => {
+      response.statusCode = 503;
+      response.end();
+    });
+    const url = await listen(unavailable);
+    const server = createApp(pool, {
+      issuer,
+      audience: "authenticated",
+      jwksUrl: url + "/jwks",
+    });
+    const address = await listen(server);
+    try {
+      const response = await fetch(address + "/v1/sync/pull", {
+        headers: { authorization: `Bearer ${await token(randomUUID())}` },
+      });
+      assert.equal(response.status, 503);
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await new Promise<void>((resolve) => unavailable.close(() => resolve()));
+    }
+  },
+);

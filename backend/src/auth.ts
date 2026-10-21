@@ -1,4 +1,4 @@
-import { createRemoteJWKSet, jwtVerify } from "jose";
+import { createRemoteJWKSet, jwtVerify, errors } from "jose";
 import type { Pool } from "pg";
 import { HttpError, uuid } from "./protocol.js";
 export interface AuthConfig {
@@ -29,8 +29,16 @@ export function createAuthenticator(config: AuthConfig, pool: Pool) {
         !Number.isSafeInteger(claims.iat) ||
         claims.iat! > Date.now() / 1000 + 30
       )
-        throw new Error("Invalid subject or issue time");
-    } catch {
+        throw new HttpError(401, "Invalid subject or issue time");
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      if (
+        !(error instanceof errors.JOSEError) ||
+        ["ERR_JWKS_TIMEOUT", "ERR_JWKS_INVALID", "ERR_JOSE_GENERIC"].includes(
+          error.code,
+        )
+      )
+        throw new HttpError(503, "Authentication service unavailable");
       throw new HttpError(401, "Invalid or expired token");
     }
     const accountId = claims.sub.toLowerCase();

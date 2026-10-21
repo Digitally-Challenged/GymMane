@@ -30,7 +30,7 @@ JWT signatures, issuer, audience, expiry, subject and issue time are verified on
 
 ## Module boundary
 
-`src/modules.ts` exports `BackendModule(registry, {pool})`. Pass modules to `createApp(pool, auth, modules)`; no Strava module is implicitly enabled. `registry.authenticated(method, path, handler)` receives `{accountId, request, url, readJson}` and returns JSON. `readJson` enforces the common byte limit.
+`src/modules.ts` exports `BackendModule(registry, {pool})`. Pass modules to `createApp(pool, auth, modules)`; no Strava module is implicitly enabled. `STRAVA_ENABLED=true` loads `strava/index.js` and calls `createStravaModule(pool, process.env)`; missing modules fail startup. Registered module jobs tick every five seconds without overlap and shutdown waits for an active tick before closing the database. Provider operations must have bounded network timeouts. `registry.authenticated(method, path, handler)` receives `{accountId, request, url, readJson}` and returns JSON. `readJson` enforces the common byte limit.
 
 OAuth modules can deliberately register `registry.publicCallback(method, path, verifyState, handler)`. `verifyState(request, url)` must validate and atomically consume one-use OAuth state and return its bound account ID before the handler runs. This route does not require app bearer auth. Handlers throw `HttpError(status, safeMessage)` for public errors. Route names must be unique. Module owners manage their own transactions, encryption, jobs and shutdown integration; migrations are numbered SQL files under `migrations/` and run transactionally with an advisory lock. Strava owns migration 002 and `strava/`; shared startup registration remains an explicit integration step.
 
