@@ -1527,5 +1527,10 @@
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
   "syncSavingWorkout": "Saving workout…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "このデバイスに保存済み",
+  "syncWaitingForCloudSync": "クラウド同期待ち",
+  "syncSynced": "同期済み",
+  "routineMissingExercisesTitle": "エクササイズの復元が必要です",
+  "routineMissingExercisesMessage": "見つからないエクササイズ：{count}種目。開始する前にバックアップから復元するか、このルーティンから削除してください。"
 }

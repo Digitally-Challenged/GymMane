@@ -1527,5 +1527,10 @@
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
   "syncSavingWorkout": "Saving workout…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "이 기기에 저장됨",
+  "syncWaitingForCloudSync": "클라우드 동기화 대기 중",
+  "syncSynced": "동기화됨",
+  "routineMissingExercisesTitle": "운동을 복원해야 합니다",
+  "routineMissingExercisesMessage": "누락된 운동: {count}개. 시작하기 전에 백업에서 복원하거나 이 루틴에서 삭제하세요."
 }

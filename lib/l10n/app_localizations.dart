@@ -9619,7 +9619,7 @@ abstract class AppLocalizations {
   /// No description provided for @routineMissingExercisesMessage.
   ///
   /// In en, this message translates to:
-  /// **'This routine is missing {count} exercises. Restore them from a backup or remove them from the routine before starting.'**
+  /// **'Missing exercises: {count}. Restore them from a backup or remove them from this routine before starting.'**
   String routineMissingExercisesMessage(int count);
 }
 

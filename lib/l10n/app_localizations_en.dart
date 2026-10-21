@@ -5435,6 +5435,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String routineMissingExercisesMessage(int count) {
-    return 'This routine is missing $count exercises. Restore them from a backup or remove them from the routine before starting.';
+    return 'Missing exercises: $count. Restore them from a backup or remove them from this routine before starting.';
   }
 }

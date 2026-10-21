@@ -1527,5 +1527,10 @@
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
   "syncSavingWorkout": "Saving workout…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "已儲存至此裝置",
+  "syncWaitingForCloudSync": "等待雲端同步",
+  "syncSynced": "已同步",
+  "routineMissingExercisesTitle": "需要還原訓練動作",
+  "routineMissingExercisesMessage": "遺失的動作：{count} 個。開始前，請從備份還原這些動作，或將其從此訓練計畫中移除。"
 }

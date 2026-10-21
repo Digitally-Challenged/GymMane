@@ -1642,5 +1642,10 @@
   "syncFailed": "Ha fallado",
   "syncUnsupported": "No compatible",
   "syncSavingWorkout": "Guardando entrenamiento…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "Guardado en este dispositivo",
+  "syncWaitingForCloudSync": "Esperando la sincronización con la nube",
+  "syncSynced": "Sincronizado",
+  "routineMissingExercisesTitle": "Es necesario restaurar ejercicios",
+  "routineMissingExercisesMessage": "Ejercicios que faltan: {count}. Restáuralos desde una copia de seguridad o elimínalos de esta rutina antes de empezar."
 }

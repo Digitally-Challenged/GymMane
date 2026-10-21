@@ -1904,7 +1904,7 @@
   "syncWaitingForCloudSync": "Waiting for cloud sync",
   "syncSynced": "Synced",
   "routineMissingExercisesTitle": "Exercises need restoring",
-  "routineMissingExercisesMessage": "This routine is missing {count} exercises. Restore them from a backup or remove them from the routine before starting.",
+  "routineMissingExercisesMessage": "Missing exercises: {count}. Restore them from a backup or remove them from this routine before starting.",
   "@routineMissingExercisesMessage": {
     "placeholders": {
       "count": {

@@ -39,11 +39,11 @@
 
 **Contract:** Routine round-trips an optional typed exerciseDefinitions map serialized under exerciseDefinitions. Only referenced custom exercises are included, with stable original IDs and existing Exercise JSON. Reject malformed definitions and built-in ID overrides. Routine/start resolution uses supplied definitions without mutating another account or silently omitting missing movements. Missing unresolved dependencies block starting with an actionable state. Dependency hydration must preserve custom time/cardio/reps-only behavior and deletion semantics; document the final helper signatures in the task report before UI work.
 
-- [ ] Write failing regression using the production StoreSyncRepository: create built-in + custom routine as guest, adopt account, assert two resolved movements and the same custom mode; deliver its routine payload to a fresh repository and assert the same.
-- [ ] Prove old routines/backups without definitions still load; repeat adoption/pull is idempotent; malformed or conflicting dependency definitions leave original data intact and account A cannot alter account B.
-- [ ] Implement the contract in the canonical routine serialization/resolution path. Avoid global catalog mutation and new envelope entity types.
-- [ ] Run flutter test --no-pub test/custom_routine_sync_test.dart test/sync test/sync_repository_test.dart test/safe_restore_test.dart test/training_programs_test.dart; run affected backend tests/check. Report actual totals.
-- [ ] Commit only owned files with fix: preserve custom exercises in synced routines.
+- [x] Write failing regression using the production StoreSyncRepository: create built-in + custom routine as guest, adopt account, assert two resolved movements and the same custom mode; deliver its routine payload to a fresh repository and assert the same.
+- [x] Prove old routines/backups without definitions still load; repeat adoption/pull is idempotent; malformed or conflicting dependency definitions leave original data intact and account A cannot alter account B.
+- [x] Implement the contract in the canonical routine serialization/resolution path. Avoid global catalog mutation and new envelope entity types.
+- [x] Run flutter test --no-pub test/custom_routine_sync_test.dart test/sync test/sync_repository_test.dart test/safe_restore_test.dart test/training_programs_test.dart; run affected backend tests/check. Report actual totals.
+- [x] Commit only owned files with fix: preserve custom exercises in synced routines.
 
 Representative acceptance assertion:
 ```dart
@@ -58,11 +58,11 @@ expect(fit.session!.exercises.map((e) => e.id), [builtinId, customId]);
 
 **Contract:** POST /v1/strava/retry body {workoutId, revision}; job projection adds canRetry boolean and name string. canRetry is true only for a proven pre-submission failure/no POST intent, no uploadId/activityId, same athlete ownership, and latest nondeleted source revision. A valid retry is durable, idempotent and returns the queued/current job. Unknown/sending/processing/confirmed or ambiguous prior submission cannot retry. Reconnect to the same athlete may allow a previously unsent job after explicit action; reconnect to another athlete cannot silently send it. Server enforces eligibility independently of UI flags. Retain existing unsupported/edit/delete safeguards.
 
-- [ ] Write failing PostgreSQL/provider tests: known never-sent auth failure -> reconnect same athlete -> explicit retry -> exactly one create; ambiguous POST -> retry rejected and zero second creates; retry replay idempotent; another account/athlete or deleted/edited source rejected.
-- [ ] Implement minimal durable submission evidence and retry route; use existing transactions/account locks/generation fence. Do not infer safe retry merely from a status string.
-- [ ] Return canRetry and human-readable workout name in status jobs, preserving old fields.
-- [ ] Run npm run check, npm run format:check, and isolated PostgreSQL Strava suite. Report tests and API fields.
-- [ ] Commit owned files with fix: recover safely from unsent Strava exports.
+- [x] Write failing PostgreSQL/provider tests: known never-sent auth failure -> reconnect same athlete -> explicit retry -> exactly one create; ambiguous POST -> retry rejected and zero second creates; retry replay idempotent; another account/athlete or deleted/edited source rejected.
+- [x] Implement minimal durable submission evidence and retry route; use existing transactions/account locks/generation fence. Do not infer safe retry merely from a status string.
+- [x] Return canRetry and human-readable workout name in status jobs, preserving old fields.
+- [x] Run npm run check, npm run format:check, and isolated PostgreSQL Strava suite. Report tests and API fields.
+- [x] Commit owned files with fix: recover safely from unsent Strava exports.
 
 ### Task C: acknowledged-save and foreground sync scheduling
 
@@ -70,10 +70,10 @@ expect(fit.session!.exercises.map((e) => e.id), [builtinId, customId]);
 
 **Contract:** SyncController.requestSync() is a void, coalesced trigger; controller exposes truthful pending/conflict/last-completed state. Trigger only after acknowledged domain saves with pending work, on app resume and after auth recovery. Keep a bounded periodic fallback for reconnect detection, avoid echo loops from pull/persistence notifications, serialize network cycles, preserve account/generation fences, and drain bounded pending batches promptly rather than waiting one minute per edit. Retain guest/no-config zero-network behavior.
 
-- [ ] Write failing fake-time tests that local durable change starts a push promptly, multiple changes coalesce, resume triggers pull, no-network/guest stay safe, a save during sync causes one follow-up, server pulls do not trigger an endless cycle, and signout cancels scheduled account work.
-- [ ] Add acknowledged-save observation in Store and a single scheduling owner in runtime/controller; update AppShell resume through requestSync without coupling domain state to HTTP.
-- [ ] Run flutter test --no-pub test/sync test/safe_restore_test.dart test/persistence_test.dart and analyzer for changed code.
-- [ ] Commit owned files with fix: synchronize durable iPhone changes promptly.
+- [x] Write failing fake-time tests that local durable change starts a push promptly, multiple changes coalesce, resume triggers pull, no-network/guest stay safe, a save during sync causes one follow-up, server pulls do not trigger an endless cycle, and signout cancels scheduled account work.
+- [x] Add acknowledged-save observation in Store and a single scheduling owner in runtime/controller; update AppShell resume through requestSync without coupling domain state to HTTP.
+- [x] Run flutter test --no-pub test/sync test/safe_restore_test.dart test/persistence_test.dart and analyzer for changed code.
+- [x] Commit owned files with fix: synchronize durable iPhone changes promptly.
 
 ### Task N: native capability cleanup and delivery scaffold
 
@@ -81,10 +81,10 @@ expect(fit.session!.exercises.map((e) => e.id), [builtinId, customId]);
 
 **Contract:** Keep com.apple.developer.healthkit and existing keychain signing identity. Remove health-records and background-delivery unused entitlements. Preserve com.nickcoleman.gymmane, Nick Coleman's team and intentional Xcode project edits. Add a compile-safe placeholder CompletedWorkoutDelivery({super.key, required String workoutId}) widget in lib/screens/sync/completed_workout_delivery.dart for the next wave to implement.
 
-- [ ] Inspect diff and entitlements; validate plist syntax and no unused clinical/background entitlement remains.
-- [ ] Add scaffold class with the exact constructor, returning SizedBox.shrink until Task E replaces it.
-- [ ] Build iOS simulator without signing when feasible; report signing/entitlement evidence. No app installation or external Apple publishing from worker.
-- [ ] Commit only owned files with fix: align iPhone capabilities with workout export.
+- [x] Inspect diff and entitlements; validate plist syntax and no unused clinical/background entitlement remains.
+- [x] Add scaffold class with the exact constructor, returning SizedBox.shrink until Task E replaces it.
+- [x] Build iOS simulator without signing when feasible; report signing/entitlement evidence. No app installation or external Apple publishing from worker.
+- [x] Commit only owned files with fix: align iPhone capabilities with workout export.
 
 ## Wave 1: integrate reviewed engine/scaffold contracts
 
@@ -98,11 +98,11 @@ Coordinator reviews task compliance and quality separately for D/S/C/N; creates 
 
 **Contract:** Remove the global 1.15 text cap. Primary workout controls offer >=44x44 logical-point touch regions, never shrink hit targets with FittedBox; support 200% text and wrapping. Keep current set, previous performance and rest feedback convenient on iPhone without introducing a tablet redesign. Add CompletedWorkoutDelivery(workoutId: fit.session!.workoutId!) to completed-session content for the actual selected ID when nonnull, not sessions.last. Make first-page Start training prominent using existing localized start label; keep optional setup accessible. Render no iOS widget actions when AppleCapabilities.current.homeWidgets is false.
 
-- [ ] Write widget tests at 390x844 and 320x568 with 1x/2x text: start/complete workout, effort columns, rest controls and keyboard show no overflow and primary hit regions meet the target. Do not suppress Flutter overflow errors.
-- [ ] Test a new user can start offline immediately, optional setup persists, and capability-false iOS hides widget actions while Android remains supported.
-- [ ] Integrate Task E's exact scaffold constructor and preserve paused/rest state, swipe/delete safety and existing theme.
-- [ ] Run focused new tests plus session, continue_session, session_lock, routine_session_edit, existing onboarding/layout tests and analyzer.
-- [ ] Commit owned files with fix: improve accessible iPhone workout logging.
+- [x] Write widget tests at 390x844 and 320x568 with 1x/2x text: start/complete workout, effort columns, rest controls and keyboard show no overflow and primary hit regions meet the target. Do not suppress Flutter overflow errors.
+- [x] Test a new user can start offline immediately, optional setup persists, and capability-false iOS hides widget actions while Android remains supported.
+- [x] Integrate Task E's exact scaffold constructor and preserve paused/rest state, swipe/delete safety and existing theme.
+- [x] Run focused new tests plus session, continue_session, session_lock, routine_session_edit, existing onboarding/layout tests and analyzer.
+- [x] Commit owned files with fix: improve accessible iPhone workout logging.
 
 ### Task E: completed-workout exports and understandable recovery
 
@@ -110,18 +110,18 @@ Coordinator reviews task compliance and quality separately for D/S/C/N; creates 
 
 **Contract:** CompletedWorkoutDelivery({super.key, required String workoutId}) resolves exactly that durable workout and uses SyncRuntime when available, safely hiding unsupported actions in previews. Separate local save/cloud/Health/Strava states; show name and formatted local date, not UUID in user-facing delivery lists. Keep explicit per-workout confirmation and account fences. No history bulk opt-in. Use server canRetry + POST /v1/strava/retry for safe retry; unknown outcomes show manual-check instructions and no create retry. Refresh delivery candidates after sync/local data change and permission status on resume. Conflict review compares exercises, set counts/reps/weights and deletions before choosing, with existing confirmation safeguards.
 
-- [ ] Write widget tests: completed selected ID is used even when another newer workout exists; guest Health export works without cloud; Strava waits until source synced; known-safe retry enabled, unknown retry absent; account change suppresses stale result; local dates/name visible; sync refreshes candidates; conflicts show the differing sets.
-- [ ] Implement focused reusable provider controls instead of duplicating delivery rules in the 2996-line session screen.
-- [ ] Run flutter test --no-pub test/sync test/apple/healthkit_adapter_test.dart; report counts and screenshots/capture evidence for iPhone layout if available.
-- [ ] Commit owned files with feat: surface workout exports and actionable delivery status.
+- [x] Write widget tests: completed selected ID is used even when another newer workout exists; guest Health export works without cloud; Strava waits until source synced; known-safe retry enabled, unknown retry absent; account change suppresses stale result; local dates/name visible; sync refreshes candidates; conflicts show the differing sets.
+- [x] Implement focused reusable provider controls instead of duplicating delivery rules in the 2996-line session screen.
+- [x] Run flutter test --no-pub test/sync test/apple/healthkit_adapter_test.dart; report counts and screenshots/capture evidence for iPhone layout if available.
+- [x] Commit owned files with feat: surface workout exports and actionable delivery status.
 
 ## Wave 3: independent adversarial integration and release
 
-- [ ] Coordinator applies any requested localization changes in one place and generates translations using existing conventions; no parallel writes to l10n.
-- [ ] Fresh reviewers receive diff package + task report and explicitly return spec compliance and quality verdicts. Route important findings back to implementer before release.
+- [x] Coordinator applies any requested localization changes in one place and generates translations using existing conventions; no parallel writes to l10n.
+- [x] Fresh reviewers receive diff package + task report and explicitly return spec compliance and quality verdicts. Route important findings back to implementer before release.
 - [ ] Run full Flutter tests, analyzer, formatting/diff checks, backend check/build/format/tests with disposable PostgreSQL, real HTTP two-client harness, iPhone simulator build and signed release archive.
 - [ ] Physically validate iPhone launch, onboarding, one workout, app interruption/relaunch, rest notification permission, Health permission/save/revision/delete when user interaction is available. Real provider smoke tests require configured accounts; never substitute mock success.
-- [ ] Inspect actual NAS/runtime hosting and credentials read-only; choose established production target if present. Never replace openGym or another application's containers/data.
+- [x] Inspect actual NAS/runtime hosting and credentials read-only; choose established production target if present. Never replace openGym or another application's containers/data.
 - [ ] Deploy backend only with real HTTPS/auth/secret configuration and verified migrations, backups and health/release identity. Verify public callback and real Strava authorization/upload before enabling its production UI.
 - [ ] Publish reviewed commits to the personal fork; upload signed build to existing App Store Connect app/TestFlight if access is available. Git push alone is not mobile deployment. Do not invent a download link or silently submit a public App Store release.
 - [ ] Record exact published SHA, server release, build/version, test evidence, and any external prerequisite that prevents deployment. Continue all independent work if one live prerequisite is missing.
@@ -136,11 +136,16 @@ Plan created before edits. Implementation tasks and Orca Run IDs will be recorde
 
 **Contract:** Prepare a repeatable Synology/standard Docker Compose deployment for an isolated GymMane backend and private PostgreSQL, with migrations completing before API startup, durable data volume, nonroot API, restart/health checks, runtime secrets supplied as variables (no actual secrets or hardcoded credentials), explicit HTTPS reverse-proxy prerequisite, and a non-destructive backup/restore procedure. Never touch existing openGym services. Add unauthenticated GET /health returning only status and the configured release identifier, with safe no-secret error handling and an injectable testable release config. Keep API auth/CORS unchanged on other routes. The deploy check must compare exact release identity, not merely HTTP 200. A package script must reject dirty/missing release references and include migration 003/custom definition code from the final integrated tree when executed later. Worker must not actually deploy, use credentials, or create cloud services.
 
-- [ ] Write health-route tests for configured SHA, DB failure/initialization where meaningful, GET-only behavior and no auth regression on sync routes.
-- [ ] Add minimal health route/config and safe compose/package/verify scripts. Store no data/passwords/build files at project root.
-- [ ] Run backend check/build/format and focused tests. Validate compose syntax without printing resolved secrets. Report exact commands, deployment steps and unresolved host prerequisites to /tmp/gymmane-P-report.md.
-- [ ] Commit owned files with build: package verifiable GymMane backend releases.
+- [x] Write health-route tests for configured SHA, DB failure/initialization where meaningful, GET-only behavior and no auth regression on sync routes.
+- [x] Add minimal health route/config and safe compose/package/verify scripts. Store no data/passwords/build files at project root.
+- [x] Run backend check/build/format and focused tests. Validate compose syntax without printing resolved secrets. Report exact commands, deployment steps and unresolved host prerequisites to /tmp/gymmane-P-report.md.
+- [x] Commit owned files with build: package verifiable GymMane backend releases.
 
 Execution checkpoint: Run run_e8aae7f3c79c. Native Task N and its independent review passed (4d157ef). Strava Task S and its independent review passed (b44a8ac). Custom dependencies Task D implemented (1b0a8f7), independent review running. Task C scheduling is still implementing/testing. Live Synology inspection found only opengym-web-1 and opengym-api-1 in the opengym project; no GymMane project. App Store Connect first-use terms require Nick's acceptance; do not accept on his behalf. Supabase organization GymMane is being provisioned on the Free plan; no paid service authorized or required by this plan.
 
 Execution update: Task C and its independent spec/quality review passed (5493483); C and S are integrated into feat-native-sync. Task D review identified D1 stale local definitions rejecting legitimate remote updates and D2 shared-definition changes crossing pull pages blocking cursor advancement; fix round 1 is assigned and must pass scoped re-review before its integration. Dependency correction: Task E consumes only reviewed N/C/S contracts, so it can proceed now without waiting on D's storage-internal repair; Task U still waits for D and will receive its final resolver API. Task U ownership also includes AppShell after Task C integration, solely to show an actionable routineStartError warning safely across routine entry points. Explicit per-ID mode/reps-only preferences remain device-local; intrinsic exercise mode/equipment definitions transfer.
+
+
+Execution checkpoint, October 21: D original and D1/D2 repair 4030064 independently passed and were integrated; S b44a8ac, C 5493483, N 4d157ef and P ce9d043 independently passed and were integrated. Production package workspace was safely renamed to chore-gymmane-production with branch/folder/Orca naming verified. U is implementing iPhone logging/onboarding, with narrow shared PrimaryButton/GhostButton and askNumber lifecycle ownership approved. E implementation 3aa5da6 is undergoing an owner fix for independent findings E1 (post-confirmation Health operation generation fencing) and E2 (ineligible selected source refresh); do not integrate until re-review. Integrated backend check/build/format and all 57 PostgreSQL tests passed, release tools 14 passed, and both real HTTP Flutter client update-order tests passed. Reviewed backend source at 12bd1ee was packaged, built on the actual Synology and started in an isolated GymMane project; private HTTPS health verified the exact full SHA, migrations 001/002/003 were restored successfully in a new drill database, and existing openGym containers remained healthy. Final integrated source identity and physical/provider validation remain release gates. Apple App Store Connect terms are now accepted and Apps access verified; app record/signing/upload are still pending. No private hostname, credentials or tokens belong in this public plan.
+
+Final source checkpoint: all D/S/C/N/E/U/P implementation gates and independent spec/quality reviews have passed, including D1/D2, E1/E2 and U1/U2 repairs. E is integrated as 4f8272a/2225fcc; U as 81b4e3a/0361c90. Production readiness B1 d029e6b adds authenticated configured=false status while Strava is disabled; independent review passed and the final backend suite has 64 passes with zero skips. The combined Flutter run initially found five missing locale keys; coordinator supplied the new messages in all 17 shipped locales and regenerated getters, then the complete suite passed 990 tests with five documented environment/private-fixture skips and a clean full analyzer. Both HTTP client-order scenarios passed in the real PostgreSQL harness before B1; final harness/native archive/release publication remain queued. Native TestFlight metadata now explicitly declares exempt encryption after source/dependency and Apple documentation review; see https://developer.apple.com/documentation/bundleresources/information-property-list/itsappusesnonexemptencryption. Apple app creation succeeded and private TestFlight upload options are prepared. No public App Store submission is authorized or performed. Strava user profile onboarding remains an external prerequisite; provider exports remain unavailable until configuration and live verification.

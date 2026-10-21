@@ -5469,19 +5469,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Apple Health export is unsupported for this workout because its actual start time was not recorded.';
 
   @override
-  String get syncSavedOnThisDevice => 'Saved on this device';
+  String get syncSavedOnThisDevice => 'Enregistré sur cet appareil';
 
   @override
-  String get syncWaitingForCloudSync => 'Waiting for cloud sync';
+  String get syncWaitingForCloudSync => 'En attente de synchronisation avec le cloud';
 
   @override
-  String get syncSynced => 'Synced';
+  String get syncSynced => 'Synchronisé';
 
   @override
-  String get routineMissingExercisesTitle => 'Exercises need restoring';
+  String get routineMissingExercisesTitle => 'Des exercices doivent être restaurés';
 
   @override
   String routineMissingExercisesMessage(int count) {
-    return 'This routine is missing $count exercises. Restore them from a backup or remove them from the routine before starting.';
+    return 'Exercices manquants : $count. Restaurez-les à partir d’une sauvegarde ou retirez-les de cette routine avant de commencer.';
   }
 }

@@ -5249,20 +5249,20 @@ class AppLocalizationsZh extends AppLocalizations {
       'Apple Health export is unsupported for this workout because its actual start time was not recorded.';
 
   @override
-  String get syncSavedOnThisDevice => 'Saved on this device';
+  String get syncSavedOnThisDevice => '已保存到此设备';
 
   @override
-  String get syncWaitingForCloudSync => 'Waiting for cloud sync';
+  String get syncWaitingForCloudSync => '等待云同步';
 
   @override
-  String get syncSynced => 'Synced';
+  String get syncSynced => '已同步';
 
   @override
-  String get routineMissingExercisesTitle => 'Exercises need restoring';
+  String get routineMissingExercisesTitle => '需要恢复训练动作';
 
   @override
   String routineMissingExercisesMessage(int count) {
-    return 'This routine is missing $count exercises. Restore them from a backup or remove them from the routine before starting.';
+    return '缺失的动作：$count 个。开始前，请从备份恢复这些动作，或将其从此训练计划中移除。';
   }
 }
 
@@ -10124,4 +10124,21 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get syncHealthStartTimeRequired =>
       'Apple Health export is unsupported for this workout because its actual start time was not recorded.';
+
+  @override
+  String get syncSavedOnThisDevice => '已儲存至此裝置';
+
+  @override
+  String get syncWaitingForCloudSync => '等待雲端同步';
+
+  @override
+  String get syncSynced => '已同步';
+
+  @override
+  String get routineMissingExercisesTitle => '需要還原訓練動作';
+
+  @override
+  String routineMissingExercisesMessage(int count) {
+    return '遺失的動作：$count 個。開始前，請從備份還原這些動作，或將其從此訓練計畫中移除。';
+  }
 }

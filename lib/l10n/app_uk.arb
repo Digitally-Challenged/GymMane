@@ -1527,5 +1527,10 @@
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
   "syncSavingWorkout": "Saving workout…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "Збережено на цьому пристрої",
+  "syncWaitingForCloudSync": "Очікування синхронізації з хмарою",
+  "syncSynced": "Синхронізовано",
+  "routineMissingExercisesTitle": "Потрібно відновити вправи",
+  "routineMissingExercisesMessage": "Відсутніх вправ: {count}. Перед початком відновіть їх із резервної копії або вилучіть із цієї програми."
 }

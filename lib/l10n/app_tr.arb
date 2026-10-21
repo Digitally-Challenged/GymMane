@@ -1527,5 +1527,10 @@
   "syncFailed": "Failed",
   "syncUnsupported": "Unsupported",
   "syncSavingWorkout": "Saving workout…",
-  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded."
+  "syncHealthStartTimeRequired": "Apple Health export is unsupported for this workout because its actual start time was not recorded.",
+  "syncSavedOnThisDevice": "Bu cihaza kaydedildi",
+  "syncWaitingForCloudSync": "Bulut eşitlemesi bekleniyor",
+  "syncSynced": "Eşitlendi",
+  "routineMissingExercisesTitle": "Egzersizlerin geri yüklenmesi gerekiyor",
+  "routineMissingExercisesMessage": "Eksik egzersiz sayısı: {count}. Başlamadan önce bunları bir yedekten geri yükleyin veya bu rutinden kaldırın."
 }
