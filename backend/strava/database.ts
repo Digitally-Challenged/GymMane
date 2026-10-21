@@ -20,6 +20,8 @@ export interface Job {
   activity_id: string | null;
   message: string | null;
   attempts: number;
+  athlete_id: string | null;
+  post_intent_at: Date | null;
 }
 export function publicJob(job: Job) {
   return {
@@ -29,6 +31,7 @@ export function publicJob(job: Job) {
     uploadId: job.upload_id,
     activityId: job.activity_id,
     message: job.message,
+    name: job.name,
   };
 }
 // Session locks deliberately span COMMIT before an external side effect. A

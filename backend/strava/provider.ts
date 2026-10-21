@@ -18,12 +18,18 @@ export class Provider {
     readonly config: Config,
     readonly fetch: Transport,
   ) {}
-  async request(db: PoolClient, path: string, init: RequestInit) {
+  async request(
+    db: PoolClient,
+    path: string,
+    init: RequestInit,
+    beforeFetch?: () => Promise<void>,
+  ) {
     const gate = await db.query(
       "SELECT until_at > now() AS paused, until_at FROM strava_throttle WHERE id=true",
     );
     if (gate.rows[0].paused)
       throw new ProviderError(429, gate.rows[0].until_at);
+    await beforeFetch?.();
     const response = await this.fetch(`https://www.strava.com${path}`, init);
     const until = rateLimitUntil(response);
     await db.query(

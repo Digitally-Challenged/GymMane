@@ -1,19 +1,19 @@
 import { randomBytes } from "node:crypto";
 import type { Pool, PoolClient } from "pg";
 import type { BackendModule } from "../src/modules.js";
-import { assert, HttpError, object, uuid } from "../src/protocol.js";
+import { assert, HttpError, object } from "../src/protocol.js";
 import { stateDigest, TokenCipher } from "./crypto.js";
 import {
   active,
   connection,
   locked,
-  publicJob,
   transaction,
   type Job,
 } from "./database.js";
 import { strengthPayload, UnsupportedWorkout } from "./payload.js";
 import { Provider, type Config } from "./provider.js";
 import { providerId, transport, type Transport } from "./transport.js";
+import { jobs, projectJob, retry, workoutReference } from "./retry.js";
 import { UploadWorker } from "./worker.js";
 function configFrom(env: NodeJS.ProcessEnv): Config | null {
   const names = [
@@ -78,16 +78,13 @@ export function createStravaModule(
           };
         return run(accountId, async (db) => {
           const c = await connection(db, accountId);
-          const jobs = await db.query<Job>(
-            "SELECT * FROM strava_jobs WHERE account_id=$1 ORDER BY created_at DESC LIMIT 100",
-            [accountId],
-          );
+          const currentJobs = await jobs(db, accountId);
           return {
             configured: true,
             connected: c.status === "connected" && !c.refresh_pending,
             athleteId: c.athlete_id,
             status: c.refresh_pending ? "needsAuthorization" : c.status,
-            jobs: jobs.rows.map(publicJob),
+            jobs: currentJobs.map(projectJob),
           };
         });
       },
@@ -248,19 +245,22 @@ export function createStravaModule(
     );
     registry.authenticated(
       "POST",
-      "/v1/strava/export",
+      "/v1/strava/retry",
       async ({ accountId, readJson }) => {
         requireProvider();
         const raw = await readJson();
-        assert(
-          object(raw) &&
-            Object.keys(raw).length === 2 &&
-            typeof raw.workoutId === "string" &&
-            uuid.test(raw.workoutId) &&
-            Number.isSafeInteger(raw.revision) &&
-            (raw.revision as number) > 0,
+        return run(accountId, (db) =>
+          transaction(db, () => retry(db, accountId, raw)),
         );
-        const id = raw.workoutId.toLowerCase();
+      },
+    );
+    registry.authenticated(
+      "POST",
+      "/v1/strava/export",
+      async ({ accountId, readJson }) => {
+        requireProvider();
+        const raw = workoutReference(await readJson());
+        const id = raw.workoutId;
         return run(accountId, async (db) => {
           const c = await connection(db, accountId);
           const source = (
@@ -273,16 +273,11 @@ export function createStravaModule(
             throw new HttpError(404, "Workout not found");
           if (Number(source.revision) !== raw.revision)
             throw new HttpError(409, "Sync the latest workout revision first");
-          const existing = (
-            await db.query<Job>(
-              "SELECT * FROM strava_jobs WHERE account_id=$1 AND workout_id=$2 ORDER BY revision DESC",
-              [accountId, id],
-            )
-          ).rows;
+          const existing = await jobs(db, accountId, id);
           const same = existing.find(
             (j) => Number(j.revision) === raw.revision,
           );
-          if (same) return publicJob(same);
+          if (same) return projectJob(same);
           if (c.status !== "connected" || c.refresh_pending)
             throw new HttpError(409, "Connect Strava first");
           // Even across generations and edits, never duplicate a potentially sent activity.
@@ -292,6 +287,8 @@ export function createStravaModule(
           if (
             existing.some(
               (j) =>
+                j.post_intent_at ||
+                j.activity_id ||
                 j.upload_id ||
                 [
                   "sending",
@@ -319,7 +316,7 @@ export function createStravaModule(
               : "GymMane strength workout";
           const job = (
             await db.query<Job>(
-              "INSERT INTO strava_jobs(account_id,workout_id,revision,generation,status,payload,name,message) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
+              "INSERT INTO strava_jobs(account_id,workout_id,revision,generation,status,payload,name,message,athlete_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *",
               [
                 accountId,
                 id,
@@ -329,10 +326,11 @@ export function createStravaModule(
                 payload,
                 name,
                 message,
+                c.athlete_id,
               ],
             )
           ).rows[0];
-          return publicJob(job);
+          return projectJob({ ...job, retry_safe: false });
         });
       },
     );
