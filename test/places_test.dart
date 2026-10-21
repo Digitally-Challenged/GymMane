@@ -102,10 +102,10 @@ void main() {
     expect(fit.placeExerciseCount(place), greaterThan(50));
   });
 
-  test('places survive a save and a reload, and the active one with them', () {
+  test('places survive a save and a reload, and the active one with them', () async {
     final id = fit.addPlace('Gimnasio', equipment: {'Barbell', 'Machine'});
     fit.setActivePlace(id);
-    fit.persistNow();
+    await fit.persistNow();
 
     fit.places.clear();
     fit.activePlaceId = '';

@@ -43,7 +43,7 @@ void main() {
     fit.toggleRepsOnly(pullUp.id);
     expect(fit.isRepsOnly(pullUp.id), false, reason: 'desmarcarlo manda sobre el material');
 
-    fit.persistNow();
+    await fit.persistNow();
     fit.repsOnly.clear();
     fit.repsOnlyOff.clear();
     fit.loadFromStore();

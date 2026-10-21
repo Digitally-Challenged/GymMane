@@ -29,16 +29,16 @@ void main() {
     fit.nextExercise();
   }
 
-  void killAndReopen() {
-    fit.persistNow();
+  Future<void> killAndReopen() async {
+    await fit.persistNow();
     fit.session = null;
     fit.route = 'home';
     fit.loadFromStore();
   }
 
-  test('a workout in progress survives the app being killed', () {
+  test('a workout in progress survives the app being killed', () async {
     startAndLog();
-    killAndReopen();
+    await killAndReopen();
 
     expect(fit.session, isNotNull, reason: 'el entreno no puede evaporarse');
     expect(fit.route, 'session', reason: 'vuelves justo donde estabas');
@@ -50,13 +50,13 @@ void main() {
     expect(firstSet.done, true, reason: 'la serie marcada sigue marcada');
   });
 
-  test('the clock keeps counting real time while the app is dead', () {
+  test('the clock keeps counting real time while the app is dead', () async {
     startAndLog();
 
-    fit.persistNow();
+    await fit.persistNow();
     final raw = Store.instance.load();
     raw['liveStart'] = DateTime.now().subtract(const Duration(minutes: 10)).toIso8601String();
-    Store.instance.save(raw);
+    await Store.instance.save(raw);
 
     fit.session = null;
     fit.loadFromStore();
@@ -66,23 +66,23 @@ void main() {
     expect(fit.sessionPaused, false);
   });
 
-  test('a paused workout comes back paused, not silently running', () {
+  test('a paused workout comes back paused, not silently running', () async {
     startAndLog();
     fit.toggleSessionPause();
     final frozen = fit.sessionElapsed;
 
-    killAndReopen();
+    await killAndReopen();
 
     expect(fit.sessionPaused, true);
     expect(fit.sessionElapsed, frozen, reason: 'en pausa el reloj no corre ni estando muerta');
   });
 
-  test('a rest still running comes back with the time it really has left', () {
+  test('a rest still running comes back with the time it really has left', () async {
     startAndLog();
     fit.startRest();
     final left = fit.session!.restRemaining!;
 
-    killAndReopen();
+    await killAndReopen();
 
     expect(fit.session!.restRemaining, isNotNull,
         reason: 'la alarma sigue programada, así que la cuenta tiene que seguir en pantalla');
@@ -90,16 +90,16 @@ void main() {
         reason: 'el descanso cuenta por reloj, no se reinicia');
   });
 
-  test('a rest whose time already passed is not resurrected', () {
+  test('a rest whose time already passed is not resurrected', () async {
     startAndLog();
     fit.startRest();
     fit.session!.restEndsAt = DateTime.now().subtract(const Duration(seconds: 1));
 
-    killAndReopen();
+    await killAndReopen();
     expect(fit.session!.restRemaining, isNull);
   });
 
-  test('finishing clears the rescue copy so it does not reappear', () {
+  test('finishing clears the rescue copy so it does not reappear', () async {
     startAndLog();
     fit.finishSession();
     fit.saveAndExit();
@@ -110,7 +110,7 @@ void main() {
     expect(fit.route, 'home');
   });
 
-  test('discarding a workout leaves nothing to come back to', () {
+  test('discarding a workout leaves nothing to come back to', () async {
     startAndLog();
     fit.discardSession();
     expect(Store.instance.load().containsKey('live'), false);
@@ -118,10 +118,10 @@ void main() {
     expect(fit.session, isNull);
   });
 
-  test('a finished-but-unsaved summary is not treated as live', () {
+  test('a finished-but-unsaved summary is not treated as live', () async {
     startAndLog();
     fit.finishSession();
-    fit.persistNow();
+    await fit.persistNow();
     expect(Store.instance.load().containsKey('live'), false,
         reason: 'la sesión completa ya está en el historial');
   });

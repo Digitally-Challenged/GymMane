@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/workout.dart';
+import 'persistence/backend_factory.dart';
+import 'persistence/storage_backend.dart';
+import 'persistence/sync_repository.dart';
 
 class Store {
   Store._();
@@ -14,32 +17,45 @@ class Store {
   final _saveFailed = ValueNotifier(false);
   ValueListenable<bool> get saveFailed => _saveFailed;
 
-  Future<void> init() async {
-    _prefs ??= await SharedPreferences.getInstance();
-  }
+  static Future<StorageBackend> Function(SharedPreferences) backendFactory = openStorageBackend;
+  SyncRepository? _repository;
+  bool _initializationFailed = false;
+  SyncRepository get repository => _repository ?? (throw StateError('Store is not initialized'));
 
-  Map<String, dynamic> load() {
-    final raw = _prefs?.getString(_key);
-    if (raw == null || raw.isEmpty) return {};
+  Future<void> init() async {
     try {
-      final decoded = jsonDecode(raw);
-      return decoded is Map<String, dynamic> ? decoded : {};
+      _prefs = await SharedPreferences.getInstance();
+      final backend = await backendFactory(_prefs!);
+      final repo = SyncRepository(backend);
+      final existing = await backend.read();
+      final raw = existing == null ? _prefs!.getString(_key) : null;
+      final legacy = raw == null ? <String, dynamic>{} : jsonDecode(raw) as Map<String, dynamic>;
+      await repo.initialize(legacy);
+      _repository = repo;
+      _initializationFailed = false;
     } catch (_) {
-      return {};
+      _initializationFailed = true;
+      _saveFailed.value = true;
+      rethrow;
     }
   }
+
+  Map<String, dynamic> load() => _repository?.load() ?? {};
 
   String? note(String key) => _prefs?.getString('gm_$key');
 
   void setNote(String key, String value) => _prefs?.setString('gm_$key', value);
 
-  Future<void> save(Map<String, dynamic> data) async {
+  Future<void> save(Map<String, dynamic> data, {bool replace = false}) async {
     try {
-      final saved = await _prefs?.setString(_key, jsonEncode(finite(data)));
-      _saveFailed.value = saved != true;
+      // Some previews instantiate state before startup initializes storage.
+      if (_initializationFailed) throw StateError('Storage initialization failed; original data preserved');
+      if (_repository == null) return;
+      await repository.save((finite(data) as Map).cast<String, dynamic>(), replace: replace);
+      _saveFailed.value = false;
     } catch (_) {
       _saveFailed.value = true;
-      debugPrint('Store.save failed; local changes have not been saved.');
+      rethrow;
     }
   }
 

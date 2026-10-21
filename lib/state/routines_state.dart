@@ -4,7 +4,6 @@ const int kDefaultRoutineSets = 3;
 
 mixin RoutinesState on FitCore, LibraryState {
   String? activeRoutineId;
-  int _routineSeq = 0;
 
   void goRoutines() => pushRoute('routines');
 
@@ -263,7 +262,7 @@ mixin RoutinesState on FitCore, LibraryState {
   }
 
   String createRoutine([String name = '']) {
-    final id = 'r${DateTime.now().microsecondsSinceEpoch}-${_routineSeq++}';
+    final id = newEntityId();
     routines.add(Routine(id, name.trim(), []));
     refreshAwards();
     _persist();

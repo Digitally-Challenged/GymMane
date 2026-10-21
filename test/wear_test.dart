@@ -124,7 +124,7 @@ void main() {
     await tester.tap(find.text(t.keepTraining));
     await _settle(tester);
     expect(fit.isSessionActive, isTrue);
-    expect(fit.sessions, isEmpty);
+    expect(fit.sessions, hasLength(1));
     fit.saveAndExit();
     await _settle(tester);
   });

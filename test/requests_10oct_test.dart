@@ -62,25 +62,25 @@ void main() {
   });
 
   group('#180 duración de la sesión', () {
-    test('se corrige y se guarda', () {
+    test('se corrige y se guarda', () async {
       final s = LoggedSession(DateTime.now(), 108 * 60, [
         LoggedExercise('x', 'x', 'chest', [LoggedSet(8, 60)]),
       ]);
       fit.sessions.add(s);
       fit.setSessionDuration(s, 45 * 60);
       expect(fit.daySummary(DateTime.now())!.durationSec, 45 * 60);
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.sessions.single.durationSec, 45 * 60);
     });
   });
 
   group('#181 negro AMOLED', () {
-    test('es un tema oscuro aparte y se recuerda', () {
+    test('es un tema oscuro aparte y se recuerda', () async {
       fit.setThemePref('amoled');
       expect(fit.dark, isTrue);
       expect(fit.themeMode, ThemeMode.dark);
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.themePref, 'amoled');
       fit.setThemePref('dark');
@@ -89,7 +89,7 @@ void main() {
   });
 
   group('#167 músculos secundarios', () {
-    test('se cambian en un ejercicio de la app, se guardan y se pueden restablecer', () {
+    test('se cambian en un ejercicio de la app, se guardan y se pueden restablecer', () async {
       final ex = fit.allExercises.firstWhere((e) => e.secondary.length == 1 && e.primary == 'chest');
       final before = [...ex.secondary];
       fit.setSecondary(ex.id, [...before, 'shoulders']);
@@ -97,7 +97,7 @@ void main() {
       fit.setMuscleFilter('shoulders');
       expect(fit.exercisesFiltered.map((e) => e.id), contains(ex.id));
       fit.setMuscleFilter('shoulders');
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.exerciseById(ex.id)!.secondary, contains('shoulders'));
       fit.resetSecondary(ex.id);

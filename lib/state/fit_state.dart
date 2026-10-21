@@ -11,6 +11,8 @@ import '../catalog/exercise_catalog.dart';
 import '../catalog/program_templates.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
+import '../models/identity.dart';
+import '../services/migration/identity_migration.dart';
 import '../models/live_session.dart';
 import '../models/measure.dart';
 import '../models/note.dart';
@@ -54,11 +56,44 @@ part 'workout_state.dart';
 
 class FitState extends FitCore
     with ToolsState, LibraryState, SettingsState, NotesState, PlacesState, MeasuresState, MomentsState, TimelineState, StatsState, StepsState, NutritionState, AwardsState, RoutinesState, WorkoutState {
+  /// Refresh only replicated entities after a pull; keep the active workout,
+  /// navigation and device preferences untouched and do not enqueue an echo.
+  void reloadSyncedEntities() {
+    final data = Store.instance.load();
+    final loadedSessions = [for (final row in (data['sessions'] as List?) ?? [])
+      LoggedSession.fromJson((row as Map).cast<String, dynamic>())];
+    final loadedRoutines = [for (final row in (data['routines'] as List?) ?? [])
+      Routine.fromJson((row as Map).cast<String, dynamic>())];
+    sessions..clear()..addAll(loadedSessions);
+    routines..clear()..addAll(loadedRoutines);
+    _refreshWidgets();
+    notifyListeners();
+  }
+
+  /// Rebase UI edits made while a remote transaction is awaiting disk, then
+  /// reload synchronously only once the local entity snapshot is stable.
+  Future<void> applySyncChange(Future<void> Function() operation) async {
+    await persistNow(rethrowErrors: true);
+    try {
+      await operation();
+    } finally {
+      String entities() => jsonEncode([sessions.map((s) => s.toJson()).toList(),
+        routines.map((r) => r.toJson()).toList()]);
+      while (true) {
+        final before = entities();
+        await persistNow(rethrowErrors: true);
+        if (entities() == before) break;
+      }
+      reloadSyncedEntities();
+    }
+  }
+
   void loadFromStore() {
     final data = withMergedExercises(Store.instance.load());
     _loading = true;
+    saveAndExit();
     if (data['language'] == null) _adoptDeviceLanguage();
-    if (data.isNotEmpty) {
+    {
       profile = Profile.fromJson((data['profile'] as Map?)?.cast<String, dynamic>() ?? {});
       if (const {'Athlete', 'Atleta', 'Name'}.contains(profile.name)) {
         profile.name = kDefaultName;
@@ -170,8 +205,8 @@ class FitState extends FitCore
     sessionLayout = data['layout'] == 'list' ? 'list' : 'cards';
     heatmapRange = data['heatRange'] == 'year' ? 'year' : 'weeks';
     alarmStyle = data['alarmStyle'] as String? ?? 'quiet';
-    RestAlarm.instance.style = alarmStyle;
-    Beeper.instance.loud = alarmStyle == 'loud';
+    if (!_validating) RestAlarm.instance.style = alarmStyle;
+    if (!_validating) Beeper.instance.loud = alarmStyle == 'loud';
     noSuggest
       ..clear()
       ..addAll(((data['noSuggest'] as List?) ?? const []).cast<String>());
@@ -222,7 +257,7 @@ class FitState extends FitCore
     showRoutineRow = data['showRoutineRow'] as bool? ?? true;
     levelHints = data['levelHints'] as bool? ?? true;
     toastSound = data['toastSound'] as bool? ?? true;
-    Beeper.instance.chimeOn = toastSound;
+    if (!_validating) Beeper.instance.chimeOn = toastSound;
     heatmapLabels = data['heatLabels'] as bool? ?? true;
     hideShots = data['hideShots'] as bool? ?? false;
     multiPlan = data['multiPlan'] as bool? ?? false;
@@ -604,8 +639,23 @@ class FitState extends FitCore
   bool importJson(String raw) {
     final map = Store.instance.tryParse(raw);
     if (map == null) return false;
-    applyBackup(map);
-    return true;
+    try {
+      applyBackup(map);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Runs the same parsers against isolated state, without timers, storage or
+  /// global preferences. Invalid late fields cannot partially mutate this state.
+  static void validateBackup(Map<String, dynamic> backup) {
+    final probe = FitState().._validating = true;
+    try {
+      probe.applyBackup(backup);
+    } finally {
+      probe.dispose();
+    }
   }
 
   void applyBackup(Map<String, dynamic> backup,
@@ -614,7 +664,8 @@ class FitState extends FitCore
       Map<String, String>? restoredShots,
       Map<String, String>? restoredMoments,
       Map<String, String>? restoredFoods}) {
-    final map = withMergedExercises(backup);
+    if (!_validating) validateBackup(backup);
+    final map = withMergedExercises(migrateIdentities(backup));
     if (restoredMedia != null) restoredMedia = withMergedExercises(restoredMedia).cast<String, String>();
     _loading = true;
     profile = Profile.fromJson((map['profile'] as Map?)?.cast<String, dynamic>() ?? {});
@@ -668,6 +719,13 @@ class FitState extends FitCore
     loadNutrition((map['nutrition'] as Map?)?.cast<String, dynamic>(), restored: restoredFoods);
     loadSteps((map['steps'] as Map?)?.cast<String, dynamic>());
     _seedCalculatorsFromProfile();
+    if (_validating) {
+      if (map['live'] case final Map live) WorkoutSession.fromJson(live.cast<String, dynamic>());
+      (map['liveElapsed'] as num?)?.toInt();
+      map['livePaused'] as bool?;
+      map['liveStart'] as String?;
+      return;
+    }
     saveAndExit();
     _restoreLiveSession(map);
     _loading = false;
@@ -676,6 +734,38 @@ class FitState extends FitCore
     syncPhotoReminder();
     _refreshWidgets();
     notifyListeners();
+  }
+
+  Future<void> restoreBackup(Map<String, dynamic> backup,
+      {Map<String, String>? restoredMedia,
+      Map<String, String>? restoredNoteMedia,
+      Map<String, String>? restoredShots,
+      Map<String, String>? restoredMoments,
+      Map<String, String>? restoredFoods}) async {
+    backup = migrateIdentities(backup);
+    validateBackup(backup);
+    _saveDebounce?.cancel();
+    _saveDebounce = null;
+    final staged = FitState().._validating = true;
+    late Map<String, dynamic> document;
+    try {
+      staged.applyBackup(backup, restoredMedia: restoredMedia,
+        restoredNoteMedia: restoredNoteMedia, restoredShots: restoredShots,
+        restoredMoments: restoredMoments, restoredFoods: restoredFoods);
+      document = staged.toJson();
+      for (final key in ['live', 'liveElapsed', 'livePaused', 'liveStart', 'alarmSound', 'alarmSoundName']) {
+        if (backup.containsKey(key)) document[key] = backup[key];
+      }
+    } finally {
+      staged.dispose();
+    }
+    await Store.instance.save(document, replace: true);
+    applyBackup(document);
+    _saveDebounce?.cancel();
+    _saveDebounce = null;
+    alarmSound = document['alarmSound'] as String?;
+    alarmSoundName = document['alarmSoundName'] as String?;
+    RestAlarm.instance.customSoundPath = alarmSoundPath;
   }
 
   void _loadAwards(Map<String, dynamic> map) {
@@ -1050,7 +1140,7 @@ class FitState extends FitCore
             [for (final s in pe.sets) LoggedSet(s.reps, s.weightKg, rpe: s.rpe)]));
       }
       if (exs.isEmpty) continue;
-      final ls = LoggedSession(ps.date, ps.durationSec, exs);
+      final ls = LoggedSession(ps.date, ps.durationSec, exs, origin: 'import');
       final key = _sessionKey(ls);
       if (seen.contains(key)) continue;
       sessions.add(ls);
@@ -1144,6 +1234,7 @@ class FitState extends FitCore
 
   @override
   void dispose() {
+    _saveDebounce?.cancel();
     _sessionTimer?.cancel();
     _restTimer?.cancel();
     super.dispose();

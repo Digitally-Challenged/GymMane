@@ -9,7 +9,16 @@ class AlarmStore {
   static String? _dir;
 
   static const audioExtensions = <String>[
-    'mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac', 'opus', 'wma', 'caf', 'aiff',
+    'mp3',
+    'wav',
+    'ogg',
+    'm4a',
+    'aac',
+    'flac',
+    'opus',
+    'wma',
+    'caf',
+    'aiff',
   ];
 
   static const maxDuration = Duration(seconds: 15);
@@ -47,16 +56,21 @@ class AlarmStore {
     }
   }
 
-  static Future<String?> saveBytes(String name, Uint8List bytes) async {
+  static Future<String?> saveBytes(String name, Uint8List bytes, {bool replace = true}) async {
     if (_dir == null) return null;
     try {
-      await _clear();
-      final base = 'alarm-${DateTime.now().millisecondsSinceEpoch}.${_ext(name)}';
+      if (replace) await _clear();
+      final base = 'alarm-${DateTime.now().microsecondsSinceEpoch}.${_ext(name)}';
       await File('$_dir/$base').writeAsBytes(bytes, flush: true);
       return base;
     } catch (_) {
       return null;
     }
+  }
+
+  static Future<void> delete(String basename) async {
+    final path = pathFor(basename);
+    if (path != null) await File(path).delete();
   }
 
   static Future<void> clear() => _clear();

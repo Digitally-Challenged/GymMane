@@ -76,10 +76,10 @@ void main() {
     expect(fit.sessions.single.exercises.single.volume, closeTo(480, 0.01));
   });
 
-  test('the kind survives a save and a reload of the live session', () {
+  test('the kind survives a save and a reload of the live session', () async {
     startChestSession();
     fit.setSetKind(0, 0, SetKind.drop);
-    fit.persistNow();
+    await fit.persistNow();
 
     fit.session = null;
     fit.loadFromStore();
@@ -188,9 +188,9 @@ void main() {
       expect(fit.hasCustomRest('x'), false);
     });
 
-    test('it survives a save and a reload', () {
+    test('it survives a save and a reload', () async {
       fit.setExerciseRest('bench', 150);
-      fit.persistNow();
+      await fit.persistNow();
 
       fit.exerciseRest.clear();
       fit.loadFromStore();

@@ -118,9 +118,9 @@ void main() {
       expect(seeded, fit.pickSeed);
     });
 
-    test('hidden exercises survive a restart', () {
+    test('hidden exercises survive a restart', () async {
       fit.toggleSuggest(idOf('Barbell Bench Press'));
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.suggests(idOf('Barbell Bench Press')), isFalse);
     });
@@ -378,9 +378,9 @@ void main() {
   });
 
   group('settings', () {
-    test('the theme can follow the phone and older backups still load', () {
+    test('the theme can follow the phone and older backups still load', () async {
       fit.setThemePref('system');
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.themePref, 'system');
       fit.applyBackup({'dark': false});
@@ -388,10 +388,10 @@ void main() {
       fit.setThemePref('dark');
     });
 
-    test('the rest alarm style is kept and handed to the alarm', () {
+    test('the rest alarm style is kept and handed to the alarm', () async {
       fit.setAlarmStyle('vibrate');
       expect(RestAlarm.instance.style, 'vibrate');
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.alarmStyle, 'vibrate');
       fit.setAlarmStyle('loud');

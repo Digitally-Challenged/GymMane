@@ -22,7 +22,7 @@ void main() {
         home: SaveStatus(child: Scaffold(body: Text('Workout'))),
       ),
     );
-    await Store.instance.save({'unsaved': true});
+    await expectLater(Store.instance.save({'unsaved': true}), throwsStateError);
     await tester.pump();
     expect(find.bySemanticsLabel(t.localSaveFailed), findsOneWidget);
     SharedPreferencesStorePlatform.instance = platform;
@@ -40,16 +40,17 @@ void main() {
     SharedPreferencesStorePlatform.instance = failing;
     addTearDown(() => SharedPreferencesStorePlatform.instance = platform);
 
-    await Store.instance.save({'name': 'unsaved'});
+    await expectLater(Store.instance.save({'name': 'unsaved'}), throwsStateError);
     expect(Store.instance.saveFailed.value, isTrue);
     failing.throws = true;
-    await Store.instance.save({'name': 'still unsaved'});
+    await expectLater(Store.instance.save({'name': 'still unsaved'}), throwsStateError);
     expect(Store.instance.saveFailed.value, isTrue);
 
     SharedPreferencesStorePlatform.instance = platform;
     await Store.instance.save({'name': 'saved'});
     expect(Store.instance.saveFailed.value, isFalse);
-    expect(await platform.getAll(), containsPair('flutter.gymmane_v1', '{"name":"saved"}'));
+    expect(Store.instance.load()['name'], 'saved');
+    expect(await platform.getAll(), contains('flutter.gymmane_repository_v1'));
   });
 
   test('un número roto no impide guardar lo demás', () async {

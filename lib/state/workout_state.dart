@@ -1371,7 +1371,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     notifyListeners();
   }
 
-  void finishSession() {
+  Future<void> finishSession() async {
     _holdTimer?.cancel();
     holdEndsAt = null;
     _advanceTimer?.cancel();
@@ -1403,7 +1403,9 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
           logged.add(LoggedExercise(e.id, e.name, e.primary, doneSets));
         }
       }
-      final entry = LoggedSession(s.loggedAt ?? DateTime.now(), s.summaryDuration ?? 0, logged, routineId: s.routineId, name: s.name);
+      final entry = LoggedSession(s.loggedAt ?? DateTime.now(), s.summaryDuration ?? 0, logged, id: s.workoutId, origin: s.origin, utcOffsetSeconds: s.utcOffsetSeconds, routineId: s.routineId, name: s.name);
+      s.workoutId = entry.id;
+      sessions.removeWhere((old) => old.id == entry.id);
       sessions.add(entry);
       sessions.sort((a, b) => a.date.compareTo(b.date));
       _rotationBefore = rotationNextId;
@@ -1417,11 +1419,12 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       summaryVsLast = null;
       summaryLevelUp = null;
     }
-    persistNow();
+    final committed = persistNow();
     _refreshWidgets();
     syncTrainReminder();
     refreshAwards();
     notifyListeners();
+    await committed;
   }
 
   List<SessionExercise> get _savable =>
@@ -1688,7 +1691,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     }
     final filed = _filed;
     if (filed != null) {
-      sessions.remove(filed);
+      s.workoutId = filed.id;
       final back = _rotationBefore;
       if (back != null) rotationNextId = back;
     }
@@ -1710,8 +1713,10 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
 
   void resumeLoggedSession(LoggedSession ls) {
     if (session != null && !session!.complete) return;
-    sessions.remove(ls);
     final s = WorkoutSession()
+      ..workoutId = ls.id
+      ..origin = ls.origin
+      ..utcOffsetSeconds = ls.utcOffsetSeconds
       ..loggedAt = ls.date
       ..manual = _dayKey(ls.date) != _dayKey(DateTime.now())
       ..routineId = ls.routineId

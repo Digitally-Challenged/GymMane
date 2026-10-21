@@ -59,10 +59,10 @@ void main() {
     expect(fit.measures, isEmpty);
   });
 
-  test('readings survive a save and a reload', () {
+  test('readings survive a save and a reload', () async {
     fit.addMeasure('thigh', 60);
     fit.addMeasure('bodyfat', 15);
-    fit.persistNow();
+    await fit.persistNow();
 
     fit.measures.clear();
     fit.loadFromStore();

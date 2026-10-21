@@ -58,6 +58,10 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
       _applyLanguage(PlatformDispatcher.instance.locale.toLanguageTag());
 
   void _applyLanguage(String code) {
+    if (_validating) {
+      language = code;
+      return;
+    }
     setAppLanguage(code);
     language = appLanguage;
   }

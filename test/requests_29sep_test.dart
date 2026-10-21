@@ -40,22 +40,22 @@ void main() {
       expect(cells[cells.length - 7 + fit.todayIndex], greaterThan(0));
     });
 
-    test('los días y meses vienen encendidos y apagarlos se guarda', () {
+    test('los días y meses vienen encendidos y apagarlos se guarda', () async {
       expect(fit.heatmapLabels, isTrue);
       fit.toggleHeatmapLabels();
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.heatmapLabels, isFalse);
     });
   });
 
   group('#127 ideas de FitNotes', () {
-    test('el objetivo mide el mejor peso y se guarda con su fecha', () {
+    test('el objetivo mide el mejor peso y se guarda con su fecha', () async {
       fit.sessions.add(logged(DateTime.now(), [LoggedSet(5, 100), LoggedSet(3, 110)]));
       final due = DateTime.now().add(const Duration(days: 30));
       fit.setExerciseGoal(bench, 140, due);
       expect(fit.goalBest(bench), 110);
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       final g = fit.exerciseGoals[bench]!;
       expect(g.target, 140);

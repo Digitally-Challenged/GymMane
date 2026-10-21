@@ -74,7 +74,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     await Store.instance.init();
     fit.setLanguage('es');
-    fit.persistNow();
+    await fit.persistNow();
     fit.loadFromStore();
     expect(fit.language, 'es', reason: 'lo que elige el usuario manda');
     fit.setLanguage('en');

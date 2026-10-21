@@ -36,8 +36,11 @@ Future<Uint8List> buildBackupZip() async {
     if (bytes == null || bytes.isEmpty) continue;
     final ex = fit.exerciseById(entry.key);
     final dir = MediaStore.isVideo(entry.value) ? _videosDir : _imagesDir;
-    final name = _uniqueName(used, slugify(ex == null ? entry.key : exerciseName(ex)),
-        MediaStore.extOf(entry.value));
+    final name = _uniqueName(
+      used,
+      slugify(ex == null ? entry.key : exerciseName(ex)),
+      MediaStore.extOf(entry.value),
+    );
     archive.addFile(ArchiveFile.noCompress('$dir/$name', bytes.length, bytes));
     paths[entry.key] = '$dir/$name';
   }
@@ -76,7 +79,8 @@ Future<Uint8List> buildBackupZip() async {
     if (momentMedia.containsKey(moment.file)) continue;
     final bytes = await MediaStore.readBytes(moment.file);
     if (bytes == null || bytes.isEmpty) continue;
-    final path = '$_momentsDir/${_day(moment.date)}-${momentMedia.length + 1}'
+    final path =
+        '$_momentsDir/${_day(moment.date)}-${momentMedia.length + 1}'
         '.${MediaStore.extOf(moment.file)}';
     used.add(path);
     archive.addFile(ArchiveFile.noCompress(path, bytes.length, bytes));
@@ -108,109 +112,84 @@ Future<Uint8List> buildBackupZip() async {
   }
 
   archive.addFile(
-      ArchiveFile.string(kBackupJsonEntry, const JsonEncoder.withIndent('  ').convert(Store.finite(data))));
+    ArchiveFile.string(kBackupJsonEntry, const JsonEncoder.withIndent('  ').convert(Store.finite(data))),
+  );
   return ZipEncoder().encodeBytes(archive);
 }
 
 Future<bool> restoreBackupZip(Uint8List zipBytes) async {
-  final Archive archive;
+  final staged = <String>[];
+  String? stagedAlarm;
   try {
-    archive = ZipDecoder().decodeBytes(zipBytes);
+    final archive = ZipDecoder().decodeBytes(zipBytes);
+    final names = <String>{};
+    var expandedSize = 0;
+    for (final file in archive.files) {
+      expandedSize += file.size;
+      if (!names.add(file.name) ||
+          file.name.startsWith('/') ||
+          file.name.contains('\\') ||
+          file.name.split('/').contains('..') ||
+          expandedSize > 512 * 1024 * 1024) {
+        throw const FormatException('Unsafe or oversized backup');
+      }
+    }
+    final jsonFile = _findJson(archive);
+    if (jsonFile == null || jsonFile.size > 32 * 1024 * 1024) return false;
+    final data = jsonDecode(utf8.decode(jsonFile.readBytes() ?? const [])) as Map<String, dynamic>;
+    FitState.validateBackup(data);
+
+    // Validate every media reference before writing any file. Staged names are
+    // unique and originals remain in place until the durable document commits.
+    final media = <String, Map<String, String>>{};
+    for (final field in ['media', 'noteMedia', 'shotMedia', 'momentMedia', 'foodMedia']) {
+      final references = ((data[field] as Map?) ?? {}).cast<String, String>();
+      media[field] = references;
+      for (final path in references.values) {
+        final file = archive.findFile(path);
+        if (file == null || !file.isFile || file.readBytes() == null) {
+          throw FormatException('Missing backup media: $path');
+        }
+      }
+    }
+    final restored = <String, Map<String, String>>{};
+    for (final group in media.entries) {
+      final remapped = <String, String>{};
+      for (final entry in group.value.entries) {
+        final bytes = archive.findFile(entry.value)!.readBytes()!;
+        final base = await MediaStore.saveBytes('restore', MediaStore.extOf(entry.value), bytes);
+        if (base == null) throw StateError('Cannot stage backup media');
+        staged.add(base);
+        remapped[entry.key] = base;
+      }
+      restored[group.key] = remapped;
+    }
+    final alarmName = data['alarmSound'] as String?;
+    if (alarmName != null && alarmName.isNotEmpty) {
+      final file = archive.findFile('$_alarmDir/$alarmName');
+      if (file == null) throw const FormatException('Missing alarm media');
+      stagedAlarm = await AlarmStore.saveBytes(alarmName, file.readBytes()!, replace: false);
+      if (stagedAlarm == null) throw StateError('Cannot stage alarm');
+      data['alarmSound'] = stagedAlarm;
+    }
+    await fit.restoreBackup(
+      data,
+      restoredMedia: restored['media'],
+      restoredNoteMedia: restored['noteMedia'],
+      restoredShots: restored['shotMedia'],
+      restoredMoments: restored['momentMedia'],
+      restoredFoods: restored['foodMedia'],
+    );
+    // Retain old files: backups and other account namespaces may still reference
+    // them. A separate reference-aware collector can reclaim unreferenced media.
+    return true;
   } catch (_) {
+    for (final name in staged) {
+      await MediaStore.delete(name);
+    }
+    if (stagedAlarm != null) await AlarmStore.delete(stagedAlarm);
     return false;
   }
-
-  final jsonFile = _findJson(archive);
-  if (jsonFile == null) return false;
-  final Map<String, dynamic> data;
-  try {
-    final decoded = jsonDecode(utf8.decode(jsonFile.readBytes() ?? const []));
-    if (decoded is! Map<String, dynamic>) return false;
-    data = decoded;
-  } catch (_) {
-    return false;
-  }
-
-  await MediaStore.clearAll();
-  final wanted = <String, String>{};
-  ((data['media'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wanted[k] = v;
-  });
-  final restored = <String, String>{};
-  for (final e in wanted.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes(e.key, MediaStore.extOf(e.value), bytes);
-    if (base != null) restored[e.key] = base;
-  }
-
-  final wantedNotes = <String, String>{};
-  ((data['noteMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedNotes[k] = v;
-  });
-  final restoredNotes = <String, String>{};
-  for (final e in wantedNotes.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('note', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredNotes[e.key] = base;
-  }
-
-  final wantedShots = <String, String>{};
-  ((data['shotMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedShots[k] = v;
-  });
-  final restoredShots = <String, String>{};
-  for (final e in wantedShots.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('shot', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredShots[e.key] = base;
-  }
-
-  final wantedMoments = <String, String>{};
-  ((data['momentMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedMoments[k] = v;
-  });
-  final restoredMoments = <String, String>{};
-  for (final e in wantedMoments.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('moment', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredMoments[e.key] = base;
-  }
-
-  final wantedFoods = <String, String>{};
-  ((data['foodMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedFoods[k] = v;
-  });
-  final restoredFoods = <String, String>{};
-  for (final e in wantedFoods.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('food', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredFoods[e.key] = base;
-  }
-
-  final alarmName = data['alarmSound'] as String?;
-  String? alarmBase;
-  if (alarmName != null && alarmName.isNotEmpty) {
-    final bytes = archive.findFile('$_alarmDir/$alarmName')?.readBytes();
-    if (bytes != null) alarmBase = await AlarmStore.saveBytes(alarmName, bytes);
-  }
-
-  fit.applyBackup(data,
-      restoredMedia: restored,
-      restoredNoteMedia: restoredNotes,
-      restoredShots: restoredShots,
-      restoredMoments: restoredMoments,
-      restoredFoods: restoredFoods);
-  if (alarmBase != null) {
-    fit.setAlarmSound(alarmBase, (data['alarmSoundName'] as String?) ?? alarmBase);
-  } else {
-    await fit.clearAlarmSound();
-  }
-  return true;
 }
 
 ArchiveFile? _findJson(Archive a) {
@@ -246,12 +225,32 @@ String _uniqueName(Set<String> used, String slug, String ext) {
 }
 
 const Map<String, String> _fold = {
-  'á': 'a', 'à': 'a', 'ä': 'a', 'â': 'a', 'ã': 'a', 'å': 'a',
-  'é': 'e', 'è': 'e', 'ë': 'e', 'ê': 'e',
-  'í': 'i', 'ì': 'i', 'ï': 'i', 'î': 'i',
-  'ó': 'o', 'ò': 'o', 'ö': 'o', 'ô': 'o', 'õ': 'o',
-  'ú': 'u', 'ù': 'u', 'ü': 'u', 'û': 'u',
-  'ñ': 'n', 'ç': 'c', 'ß': 'ss',
+  'á': 'a',
+  'à': 'a',
+  'ä': 'a',
+  'â': 'a',
+  'ã': 'a',
+  'å': 'a',
+  'é': 'e',
+  'è': 'e',
+  'ë': 'e',
+  'ê': 'e',
+  'í': 'i',
+  'ì': 'i',
+  'ï': 'i',
+  'î': 'i',
+  'ó': 'o',
+  'ò': 'o',
+  'ö': 'o',
+  'ô': 'o',
+  'õ': 'o',
+  'ú': 'u',
+  'ù': 'u',
+  'ü': 'u',
+  'û': 'u',
+  'ñ': 'n',
+  'ç': 'c',
+  'ß': 'ss',
 };
 
 String slugify(String name) {
@@ -264,8 +263,5 @@ String slugify(String name) {
       buffer.write('-');
     }
   }
-  return buffer
-      .toString()
-      .replaceAll(RegExp('-+'), '-')
-      .replaceAll(RegExp(r'^-|-$'), '');
+  return buffer.toString().replaceAll(RegExp('-+'), '-').replaceAll(RegExp(r'^-|-$'), '');
 }

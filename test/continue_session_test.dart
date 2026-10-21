@@ -40,7 +40,7 @@ void main() {
 
     fit.continueSession();
     expect(fit.isSessionActive, isTrue);
-    expect(fit.sessions, isEmpty, reason: 'la entrada guardada por error se quita');
+    expect(fit.sessions, hasLength(1), reason: 'continuation retains the durable identity');
     expect(fit.session!.exercises.expand((e) => e.sets).where((s) => !s.done).length, pending);
     expect(fit.session!.exercises.first.sets.first.done, isTrue);
   });

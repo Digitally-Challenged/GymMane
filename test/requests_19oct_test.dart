@@ -116,11 +116,11 @@ void main() {
       expect(fit.routinesOn(DateTime.now()).single.id, a.id);
     });
 
-    test('nada de rutinas vacías ni ids sueltos al cargar', () {
+    test('nada de rutinas vacías ni ids sueltos al cargar', () async {
       final a = routine('A'), b = routine('B');
       rotate([a, b]);
       fit.rotationIds.add('no-existe');
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.rotationRoutines.map((r) => r.id), [a.id, b.id]);
     });

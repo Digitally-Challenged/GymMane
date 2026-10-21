@@ -69,7 +69,7 @@ void main() {
     expect(fit.alarmSoundPath, isNotNull);
     expect(RestAlarm.instance.customSoundPath, fit.alarmSoundPath);
 
-    fit.persistNow();
+    await fit.persistNow();
     fit.loadFromStore();
     expect(fit.alarmSound, base, reason: 'sobrevive a reiniciar la app');
     expect(fit.alarmSoundName, 'Mine');
@@ -92,7 +92,7 @@ void main() {
   test('a sound that vanished between sessions falls back to the default', () async {
     final base = await AlarmStore.importSound(sourceSound('mine.wav').path);
     fit.setAlarmSound(base!, 'Mine');
-    fit.persistNow();
+    await fit.persistNow();
 
     File(AlarmStore.pathFor(base)!).deleteSync();
     fit.loadFromStore();

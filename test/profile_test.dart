@@ -37,10 +37,10 @@ void main() {
     expect(fit.profile.badge, '', reason: 'tocar la que tienes la quita');
   });
 
-  test('the join date comes from the first workout, not from today', () {
+  test('the join date comes from the first workout, not from today', () async {
     final old = DateTime.now().subtract(const Duration(days: 400));
     fit.sessions.add(LoggedSession(old, 1800, const []));
-    fit.persistNow();
+    await fit.persistNow();
     fit.profile.since = null;
     fit.loadFromStore();
 
@@ -67,9 +67,9 @@ void main() {
     expect(fit.unseenAwards, isEmpty);
   });
 
-  test('a medal won while opening the app still gets its celebration', () {
+  test('a medal won while opening the app still gets its celebration', () async {
     fit.sessions.add(LoggedSession(DateTime.now(), 1800, const []));
-    fit.persistNow();
+    await fit.persistNow();
     fit.pendingAwards.clear();
     fit.loadFromStore();
 
@@ -78,13 +78,13 @@ void main() {
         reason: 'se ganaba en silencio y aparecía en el perfil sin animación');
   });
 
-  test('a medal already celebrated does not come back on the next launch', () {
+  test('a medal already celebrated does not come back on the next launch', () async {
     fit.sessions.add(LoggedSession(DateTime.now(), 1800, const []));
     fit.refreshAwards();
     while (fit.nextCelebration != null) {
       fit.celebrationShown();
     }
-    fit.persistNow();
+    await fit.persistNow();
     fit.loadFromStore();
 
     expect(fit.pendingAwards, isEmpty);

@@ -63,7 +63,7 @@ void main() {
     test('the correction survives a restart', () async {
       final s = log();
       fit.setLoggedReps(s.exercises.single, 1, 6);
-      fit.persistNow();
+      await fit.persistNow();
 
       fit.sessions.clear();
       fit.loadFromStore();
@@ -84,7 +84,7 @@ void main() {
       final s = log();
       fit.resumeLoggedSession(s);
 
-      expect(fit.sessions, isEmpty, reason: 'sale del historial mientras se retoma');
+      expect(fit.sessions.single.id, s.id, reason: 'the durable original stays until its edit commits');
       expect(fit.isSessionActive, true);
       expect(fit.route, 'session');
       final live = fit.session!.exercises.single;

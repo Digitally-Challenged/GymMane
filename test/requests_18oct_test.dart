@@ -69,7 +69,7 @@ void main() {
       expect(fit.rotationStep, 0);
     });
 
-    test('se guarda, y borrar una rutina pasa a la siguiente', () {
+    test('se guarda, y borrar una rutina pasa a la siguiente', () async {
       final a = routine('A'), b = routine('B'), c = routine('C');
       fit.setRotation(true);
       for (final r in [a, b, c]) {
@@ -79,7 +79,7 @@ void main() {
       fit.reorderRotation(2, 0);
       expect(fit.rotationIds, [c.id, a.id, b.id]);
 
-      fit.persistNow();
+      await fit.persistNow();
       fit.rotationIds.clear();
       fit.rotation = false;
       fit.loadFromStore();
@@ -105,7 +105,7 @@ void main() {
   });
 
   group('mover la sesión de hoy', () {
-    test('pasa a otro día sin tocar el plan semanal y se deshace', () {
+    test('pasa a otro día sin tocar el plan semanal y se deshace', () async {
       final a = routine('A');
       final today = DateTime.now();
       fit.assignRoutineToDay(today.weekday, a.id);
@@ -117,7 +117,7 @@ void main() {
       expect(fit.movedOn(today), isTrue);
       expect(fit.isTrainingDay(today), isFalse);
 
-      fit.persistNow();
+      await fit.persistNow();
       fit.planMoves.clear();
       fit.loadFromStore();
       expect(fit.routinesOn(day(2)).single.id, a.id);
@@ -152,10 +152,10 @@ void main() {
   });
 
   group('vista en lista', () {
-    test('el ajuste se guarda y por defecto son tarjetas', () {
+    test('el ajuste se guarda y por defecto son tarjetas', () async {
       expect(fit.sessionLayout, 'cards');
       fit.setSessionLayout('list');
-      fit.persistNow();
+      await fit.persistNow();
       fit.sessionLayout = 'cards';
       fit.loadFromStore();
       expect(fit.listLayout, isTrue);

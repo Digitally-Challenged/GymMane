@@ -70,9 +70,9 @@ void main() {
     expect(fit.bodyWindowDays, 30, reason: 'sin recordatorio la ventana sigue siendo de un mes');
   });
 
-  test('the muscle map mode survives a save and a reload', () {
+  test('the muscle map mode survives a save and a reload', () async {
     fit.setBodyTimeline(true);
-    fit.persistNow();
+    await fit.persistNow();
     fit.bodyTimeline = false;
     fit.loadFromStore();
     expect(fit.bodyTimeline, true);

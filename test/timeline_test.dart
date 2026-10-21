@@ -135,7 +135,7 @@ void main() {
   test('photos survive a save and a reload, and reset wipes them', () async {
     await fit.attachShot(DateTime(2026, 1, 1), 'front', await source('a.png'));
     fit.setPhotoInterval(60);
-    fit.persistNow();
+    await fit.persistNow();
 
     fit.shots.clear();
     fit.loadFromStore();

@@ -112,7 +112,7 @@ void main() {
       expect(fit.showRoutineRow, isTrue);
       fit.toggleWeekStats();
       fit.toggleRoutineRow();
-      fit.persistNow();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.showWeekStats, isFalse);
       expect(fit.showRoutineRow, isFalse);

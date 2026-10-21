@@ -186,7 +186,7 @@ void main() {
     expect(fit.photoIntervalDays, 15);
   });
 
-  test('a day whose photos are missing from the zip is dropped, not left broken', () async {
+  test('missing referenced photos reject the backup and preserve original data', () async {
     await fit.attachShot(DateTime(2026, 2, 1), 'front', await source('f.png', png));
     final zip = await buildBackupZip();
     final stripped = Archive();
@@ -196,9 +196,10 @@ void main() {
       stripped.addFile(ArchiveFile.noCompress(f.name, bytes.length, bytes));
     }
 
-    fit.resetAllData();
-    expect(await restoreBackupZip(ZipEncoder().encodeBytes(stripped)), true);
-    expect(fit.timeline, isEmpty);
+    final original = fit.timeline.single.shot('front')!;
+    expect(await restoreBackupZip(ZipEncoder().encodeBytes(stripped)), false);
+    expect(fit.timeline.single.shot('front'), original);
+    expect(await MediaStore.readBytes(original), png);
   });
 
   test('slugs are file-safe and keep the exercise readable', () {

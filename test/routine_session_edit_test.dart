@@ -55,7 +55,7 @@ void main() {
     test('the order survives a restart', () async {
       final r = routineWithThree();
       fit.reorderRoutineExercise(r, 0, 3);
-      await pumpEventQueue();
+      await fit.persistNow();
       fit.loadFromStore();
       expect(fit.routines.single.exerciseIds, [b, c, a]);
     });
@@ -155,7 +155,7 @@ void main() {
       routineWithThree();
       start();
       fit.removeSessionExercise(0);
-      fit.persistNow();
+      await fit.persistNow();
 
       fit.session = null;
       fit.loadFromStore();

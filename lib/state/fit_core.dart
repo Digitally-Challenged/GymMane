@@ -115,6 +115,7 @@ abstract class FitCore extends ChangeNotifier {
   double stepLb = 5;
   int weekStartDay = DateTime.monday;
   bool _loading = false;
+  bool _validating = false;
   Timer? _saveDebounce;
 
   void refreshAwards({bool silent = false}) {}
@@ -125,11 +126,15 @@ abstract class FitCore extends ChangeNotifier {
     _saveDebounce = Timer(const Duration(milliseconds: 400), persistNow);
   }
 
-  void persistNow() {
+  Future<void> persistNow({bool rethrowErrors = false}) async {
     _saveDebounce?.cancel();
     _saveDebounce = null;
     if (_loading) return;
-    Store.instance.save(toJson());
+    try {
+      await Store.instance.save(toJson());
+    } catch (_) {
+      if (rethrowErrors) rethrow;
+    }
   }
 
   void goHome() => _setRoute('home', reset: true);

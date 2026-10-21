@@ -69,9 +69,9 @@ void main() {
     expect(fit.nextCelebration, isNull);
   });
 
-  test('the choice survives a restart', () {
+  test('the choice survives a restart', () async {
     fit.toggleGamification();
-    fit.persistNow();
+    await fit.persistNow();
     fit.gamification = true;
     fit.loadFromStore();
     expect(fit.gamification, isFalse);
