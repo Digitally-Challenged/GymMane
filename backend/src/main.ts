@@ -30,11 +30,21 @@ const pool = new Pool({
 });
 pool.on("error", () => console.error("Idle database connection failed"));
 await pool.query("SELECT 1 FROM backend_migrations LIMIT 1");
-const server = createApp(pool, {
-  issuer,
-  jwksUrl,
-  audience: required("AUTH_AUDIENCE"),
-});
+const server = createApp(
+  pool,
+  {
+    issuer,
+    jwksUrl,
+    audience: required("AUTH_AUDIENCE"),
+  },
+  [],
+  {
+    allowedOrigins: (process.env.CORS_ALLOWED_ORIGINS ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  },
+);
 server.listen(port, process.env.HOST ?? "127.0.0.1", () =>
   console.log(`Sync backend listening on port ${port}`),
 );

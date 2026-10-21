@@ -6,7 +6,8 @@
     "strict": true,
     "outDir": "dist",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "."
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "strava/**/*.ts"]
 }
