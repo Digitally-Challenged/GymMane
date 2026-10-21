@@ -9591,6 +9591,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apple Health export is unsupported for this workout because its actual start time was not recorded.'**
   String get syncHealthStartTimeRequired;
+
+  /// No description provided for @syncSavedOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device'**
+  String get syncSavedOnThisDevice;
+
+  /// No description provided for @syncWaitingForCloudSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for cloud sync'**
+  String get syncWaitingForCloudSync;
+
+  /// No description provided for @syncSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get syncSynced;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
