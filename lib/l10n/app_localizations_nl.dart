@@ -1619,7 +1619,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get fullyOffline => '100% offline';
 
   @override
-  String get fullyOfflineWhy => 'Geen account, geen server. Je trainingen verlaten deze telefoon nooit.';
+  String get fullyOfflineWhy =>
+      'Werkt offline zonder account. Cloudsynchronisatie en gekoppelde diensten zijn optioneel.';
 
   @override
   String get yoursToTake => 'Je gegevens zijn van jou';
@@ -1668,7 +1669,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get welcomeKicker => 'WELKOM BIJ';
 
   @override
-  String get welcomeBlurb => 'Alles blijft op je telefoon. Geen account, geen internet, niets te betalen.';
+  String get welcomeBlurb =>
+      'Begin offline zonder account. Kies of je trainingen wilt synchroniseren of andere diensten wilt koppelen.';
 
   @override
   String get welcomeStart => 'BEGINNEN';

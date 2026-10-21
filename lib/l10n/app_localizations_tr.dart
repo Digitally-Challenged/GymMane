@@ -1617,7 +1617,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get fullyOffline => '%100 çevrimdışı';
 
   @override
-  String get fullyOfflineWhy => 'Hesap yok, sunucu yok. Antrenman verilerin bu telefondan asla çıkmaz.';
+  String get fullyOfflineWhy =>
+      'Hesap olmadan çevrimdışı çalışır. Bulut senkronizasyonu ve bağlı hizmetler isteğe bağlıdır.';
 
   @override
   String get yoursToTake => 'Verilerin sana ait';
@@ -1666,7 +1667,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get welcomeKicker => 'HOŞ GELDİN';
 
   @override
-  String get welcomeBlurb => 'Her şey telefonunda kalır. Hesap yok, internet yok, ödeme yok.';
+  String get welcomeBlurb =>
+      'Hesap olmadan çevrimdışı başla. Antrenmanlarını senkronize edip etmeyeceğini veya başka hizmetler bağlayıp bağlamayacağını seç.';
 
   @override
   String get welcomeStart => 'BAŞLA';

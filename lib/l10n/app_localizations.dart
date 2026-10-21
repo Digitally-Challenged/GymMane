@@ -2959,7 +2959,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullyOfflineWhy.
   ///
   /// In en, this message translates to:
-  /// **'No account, no servers. Your training never leaves this phone.'**
+  /// **'Works offline without an account. Cloud sync and connected services are optional.'**
   String get fullyOfflineWhy;
 
   /// No description provided for @yoursToTake.
@@ -3043,7 +3043,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBlurb.
   ///
   /// In en, this message translates to:
-  /// **'Everything stays on your phone. No account, no internet, nothing to pay.'**
+  /// **'Start offline without an account. Choose whether to sync your workouts or connect other services.'**
   String get welcomeBlurb;
 
   /// No description provided for @welcomeStart.

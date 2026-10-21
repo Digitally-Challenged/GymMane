@@ -1617,7 +1617,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get fullyOfflineWhy =>
-      'Nessun account, nessun server. I tuoi allenamenti non lasciano mai questo telefono.';
+      'Funziona offline senza account. La sincronizzazione cloud e i servizi collegati sono facoltativi.';
 
   @override
   String get yoursToTake => 'I tuoi dati sono tuoi';
@@ -1666,7 +1666,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get welcomeBlurb =>
-      'Tutto resta sul tuo telefono. Nessun account, niente internet, niente da pagare.';
+      'Inizia offline senza account. Scegli se sincronizzare gli allenamenti o collegare altri servizi.';
 
   @override
   String get welcomeStart => 'INIZIA';

@@ -1609,7 +1609,8 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fullyOffline => 'کاملاً آفلاین';
 
   @override
-  String get fullyOfflineWhy => 'بدون حساب، بدون سرور. تمرینت هرگز از این گوشی خارج نمی‌شود.';
+  String get fullyOfflineWhy =>
+      'بدون حساب و آفلاین کار می‌کند. همگام‌سازی ابری و اتصال به سرویس‌ها اختیاری است.';
 
   @override
   String get yoursToTake => 'داده‌ات مال توست';
@@ -1657,7 +1658,8 @@ class AppLocalizationsFa extends AppLocalizations {
   String get welcomeKicker => 'خوش‌آمدی به';
 
   @override
-  String get welcomeBlurb => 'همه‌چیز روی گوشی‌ات می‌ماند. بدون حساب، بدون اینترنت، بدون پرداخت.';
+  String get welcomeBlurb =>
+      'بدون حساب و آفلاین شروع کن. خودت انتخاب کن که تمرین‌ها را همگام‌سازی کنی یا به سرویس‌های دیگر متصل شوی.';
 
   @override
   String get welcomeStart => 'شروع کن';

@@ -1622,7 +1622,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fullyOfflineWhy =>
-      'Aucun compte, aucun serveur. Tes entraînements ne quittent jamais ce téléphone.';
+      'Fonctionne hors ligne sans compte. La synchronisation cloud et les services connectés sont facultatifs.';
 
   @override
   String get yoursToTake => 'Tes données t’appartiennent';
@@ -1671,7 +1671,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get welcomeKicker => 'BIENVENUE SUR';
 
   @override
-  String get welcomeBlurb => 'Tout reste sur ton téléphone. Aucun compte, pas d’Internet, rien à payer.';
+  String get welcomeBlurb =>
+      'Commence hors ligne sans compte. Choisis de synchroniser tes entraînements ou de connecter d’autres services.';
 
   @override
   String get welcomeStart => 'COMMENCER';

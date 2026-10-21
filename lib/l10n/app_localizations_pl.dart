@@ -1617,7 +1617,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get fullyOffline => '100% offline';
 
   @override
-  String get fullyOfflineWhy => 'Bez konta, bez serwera. Twoje treningi nigdy nie opuszczają telefonu.';
+  String get fullyOfflineWhy =>
+      'Działa offline bez konta. Synchronizacja w chmurze i połączone usługi są opcjonalne.';
 
   @override
   String get yoursToTake => 'Twoje dane należą do ciebie';
@@ -1666,7 +1667,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get welcomeKicker => 'WITAJ W';
 
   @override
-  String get welcomeBlurb => 'Wszystko zostaje na telefonie. Bez konta, bez internetu, bez opłat.';
+  String get welcomeBlurb =>
+      'Zacznij offline bez konta. Zdecyduj, czy chcesz synchronizować treningi lub łączyć inne usługi.';
 
   @override
   String get welcomeStart => 'ZACZNIJ';

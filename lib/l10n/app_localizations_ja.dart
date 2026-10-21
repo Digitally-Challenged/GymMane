@@ -1566,7 +1566,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get fullyOffline => '100%オフライン';
 
   @override
-  String get fullyOfflineWhy => 'アカウントもサーバーも不要。ワークアウトデータはこの端末から出ません。';
+  String get fullyOfflineWhy => 'アカウントなしでオフライン利用できます。クラウド同期や外部サービスとの連携は任意です。';
 
   @override
   String get yoursToTake => 'データはあなたのもの';
@@ -1614,7 +1614,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get welcomeKicker => 'ようこそ';
 
   @override
-  String get welcomeBlurb => 'すべて端末内に保存。アカウント不要、インターネット不要、支払いなし。';
+  String get welcomeBlurb => 'アカウントなしでオフラインから始められます。ワークアウトの同期や外部サービスとの連携は自分で選べます。';
 
   @override
   String get welcomeStart => '始める';

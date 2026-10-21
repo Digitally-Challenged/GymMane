@@ -558,7 +558,7 @@
   "freeForever": "Free forever",
   "freeForeverWhy": "No subscription, no ads, nothing locked behind a paywall.",
   "fullyOffline": "Fully offline",
-  "fullyOfflineWhy": "No account, no servers. Your training never leaves this phone.",
+  "fullyOfflineWhy": "Works offline without an account. Cloud sync and connected services are optional.",
   "yoursToTake": "Your data is yours",
   "yoursToTakeWhy": "Export it to CSV whenever you like, and delete it all in one tap.",
   "whatsInside": "WHAT'S INSIDE",
@@ -575,7 +575,7 @@
   "reset": "RESET",
 
   "welcomeKicker": "WELCOME TO",
-  "welcomeBlurb": "Everything stays on your phone. No account, no internet, nothing to pay.",
+  "welcomeBlurb": "Start offline without an account. Choose whether to sync your workouts or connect other services.",
   "welcomeStart": "GET STARTED",
   "onbStep": "STEP {i} OF {n}",
   "@onbStep": { "placeholders": { "i": { "type": "int" }, "n": { "type": "int" } } },

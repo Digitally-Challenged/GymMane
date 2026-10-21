@@ -1615,7 +1615,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fullyOffline => 'Totalmente sin conexión';
 
   @override
-  String get fullyOfflineWhy => 'Sin cuenta, sin servidores. Tu entreno no sale de este móvil.';
+  String get fullyOfflineWhy =>
+      'Funciona sin conexión y sin cuenta. La sincronización en la nube y los servicios conectados son opcionales.';
 
   @override
   String get yoursToTake => 'Tus datos son tuyos';
@@ -1664,7 +1665,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get welcomeKicker => 'TE DAMOS LA BIENVENIDA A';
 
   @override
-  String get welcomeBlurb => 'Todo se queda en tu móvil. Sin cuenta, sin internet, sin pagar nada.';
+  String get welcomeBlurb =>
+      'Empieza sin conexión y sin cuenta. Tú decides si sincronizas tus entrenamientos o conectas otros servicios.';
 
   @override
   String get welcomeStart => 'EMPEZAR';

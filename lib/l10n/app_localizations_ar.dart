@@ -1608,7 +1608,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fullyOffline => '100% دون اتصال';
 
   @override
-  String get fullyOfflineWhy => 'لا حساب ولا خادم. تمارينك لا تغادر هذا الهاتف أبدًا.';
+  String get fullyOfflineWhy => 'يعمل دون اتصال ودون حساب. المزامنة السحابية والخدمات المتصلة اختيارية.';
 
   @override
   String get yoursToTake => 'بياناتك ملكك';
@@ -1657,7 +1657,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeKicker => 'مرحبًا بك في';
 
   @override
-  String get welcomeBlurb => 'كل شيء يبقى على هاتفك. لا حساب ولا إنترنت ولا دفع.';
+  String get welcomeBlurb =>
+      'ابدأ دون اتصال ودون حساب. اختر ما إذا كنت تريد مزامنة تمارينك أو ربط خدمات أخرى.';
 
   @override
   String get welcomeStart => 'ابدأ';

@@ -1662,7 +1662,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fullyOffline => 'Полностью офлайн';
 
   @override
-  String get fullyOfflineWhy => 'Без аккаунта и серверов. Твои тренировки не покидают этот телефон.';
+  String get fullyOfflineWhy =>
+      'Работает офлайн без аккаунта. Облачная синхронизация и подключение сервисов необязательны.';
 
   @override
   String get yoursToTake => 'Данные — твои';
@@ -1718,7 +1719,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get welcomeKicker => 'ДОБРО ПОЖАЛОВАТЬ В';
 
   @override
-  String get welcomeBlurb => 'Всё остаётся на твоём телефоне. Без аккаунта, без интернета, без оплаты.';
+  String get welcomeBlurb =>
+      'Начни офлайн без аккаунта. Решай сам, синхронизировать ли тренировки и подключать ли другие сервисы.';
 
   @override
   String get welcomeStart => 'НАЧАТЬ';

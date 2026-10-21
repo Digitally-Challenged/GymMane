@@ -1551,7 +1551,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fullyOffline => '完全离线';
 
   @override
-  String get fullyOfflineWhy => '无账号、无服务器。';
+  String get fullyOfflineWhy => '无需账号即可离线使用。云同步和外部服务连接均为可选功能。';
 
   @override
   String get yoursToTake => '数据归你所有';
@@ -1598,7 +1598,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get welcomeKicker => '欢迎使用';
 
   @override
-  String get welcomeBlurb => '所有数据均保存在你的手机上。无账号、无网络连接要求、无任何费用。';
+  String get welcomeBlurb => '无需账号即可离线开始。你可以自行选择是否同步训练或连接其他服务。';
 
   @override
   String get welcomeStart => '立即开始';
@@ -6378,7 +6378,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get fullyOffline => '100% 離線';
 
   @override
-  String get fullyOfflineWhy => '不需帳號、不連伺服器。你的訓練資料永遠不會離開這支手機。';
+  String get fullyOfflineWhy => '不需帳號即可離線使用。雲端同步和外部服務連結皆為選用功能。';
 
   @override
   String get yoursToTake => '資料屬於你';
@@ -6425,7 +6425,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get welcomeKicker => '歡迎使用';
 
   @override
-  String get welcomeBlurb => '所有資料都留在手機上。不需帳號、不需網路、不用付費。';
+  String get welcomeBlurb => '不需帳號即可離線開始。你可以自行選擇是否同步訓練或連結其他服務。';
 
   @override
   String get welcomeStart => '開始';

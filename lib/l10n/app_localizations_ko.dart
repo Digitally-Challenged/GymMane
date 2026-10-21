@@ -1579,7 +1579,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get fullyOffline => '100% 오프라인';
 
   @override
-  String get fullyOfflineWhy => '계정도 서버도 없습니다. 운동 데이터는 이 휴대전화 밖으로 나가지 않습니다.';
+  String get fullyOfflineWhy => '계정 없이 오프라인으로 사용할 수 있습니다. 클라우드 동기화와 외부 서비스 연결은 선택 사항입니다.';
 
   @override
   String get yoursToTake => '데이터는 사용자의 것입니다';
@@ -1627,7 +1627,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get welcomeKicker => '환영합니다';
 
   @override
-  String get welcomeBlurb => '모든 데이터는 휴대전화에 남습니다. 계정, 인터넷, 결제가 필요 없습니다.';
+  String get welcomeBlurb => '계정 없이 오프라인으로 시작하세요. 운동 동기화나 외부 서비스 연결 여부를 직접 선택할 수 있습니다.';
 
   @override
   String get welcomeStart => '시작';
