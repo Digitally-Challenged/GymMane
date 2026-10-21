@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../local_store.dart';
-import '../../state/fit_state.dart';
 import 'store_sync_repository.dart';
 import 'sync_auth.dart';
 import 'sync_config.dart';
@@ -16,15 +15,15 @@ class SyncRuntime {
   SyncRuntime._();
   static SyncController? controller;
   static HealthKitDelivery? health;
+  static http.Client? _client;
   static Future<void> initialize() async {
-    if (controller != null) {
-      fit.removeListener(controller!.localChanged);
-      controller!.dispose();
-    }
+    controller?.dispose();
+    _client?.close();
     health?.dispose();
     health = HealthKitDelivery(StoreHealthDelivery(Store.instance));
     const config = SyncConfig.environment();
     final client = http.Client();
+    _client = client;
     final auth = SupabaseSyncAuth(
       config,
       client,
@@ -37,6 +36,7 @@ class SyncRuntime {
       auth: auth,
       repository: StoreSyncRepository(Store.instance),
       transport: SyncTransport(Uri.tryParse(config.serverUrl) ?? Uri(), client),
+      acknowledgedSaves: Store.instance.acknowledgedSaves,
     );
     String? account;
     controller!.addListener(() {
@@ -46,6 +46,5 @@ class SyncRuntime {
       unawaited(health!.refresh());
     });
     await controller!.initialize();
-    fit.addListener(controller!.localChanged);
   }
 }

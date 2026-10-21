@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -16,6 +17,12 @@ class Store {
   SharedPreferences? _prefs;
   final _saveFailed = ValueNotifier(false);
   ValueListenable<bool> get saveFailed => _saveFailed;
+  final _acknowledgedSaves = StreamController<String>.broadcast();
+
+  /// Namespace of a successful domain save that has durable outgoing work.
+  /// Consumers still check for sendable work: conflicts can retain an outbox,
+  /// and applying remote data can persist an unchanged domain snapshot.
+  Stream<String> get acknowledgedSaves => _acknowledgedSaves.stream;
 
   static Future<StorageBackend> Function(SharedPreferences) backendFactory = openStorageBackend;
   SyncRepository? _repository;
@@ -53,8 +60,13 @@ class Store {
       // Some previews instantiate state before startup initializes storage.
       if (_initializationFailed) throw StateError('Storage initialization failed; original data preserved');
       if (_repository == null) return;
-      await repository.save((finite(data) as Map).cast<String, dynamic>(), replace: replace);
+      final repo = repository;
+      final namespace = repo.namespace;
+      await repo.save((finite(data) as Map).cast<String, dynamic>(), replace: replace);
       _saveFailed.value = false;
+      if (namespace != 'guest' && repo.pendingCount(namespace) > 0) {
+        _acknowledgedSaves.add(namespace);
+      }
     } catch (_) {
       _saveFailed.value = true;
       rethrow;
