@@ -250,7 +250,7 @@ void main() {
     await repository.saveDeliveryLedger('guest', 'healthkit', {'optIn': true});
     final restarted = SyncRepository(backend);
     await restarted.initialize({});
-    expect(restarted.deliveryLedger('guest', 'healthkit'), {'optIn': true});
+    expect(restarted.deliveryLedger('guest', 'healthkit'), {'optIn': true, 'records': {}});
     expect(restarted.load().containsKey('deliveries'), isFalse);
     await restarted.selectNamespace('alice');
     await restarted.applyPullPage('alice', [remote(local, 1)], '1');
