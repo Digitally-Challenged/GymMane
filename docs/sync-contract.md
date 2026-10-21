@@ -31,3 +31,23 @@ Strava is server-side OAuth and queued upload. Store secrets/tokens encrypted, s
 ## Verification
 
 Test account isolation, idempotency/misuse, conflicting edits and tombstones, cursor pagination/restart, interrupted commits, invalid backups, token revocation, upload response loss and physical-device HealthKit permission behavior. Missing live credentials may block live verification, but not implementation or deterministic local tests. Do not claim a mock proves live interoperability.
+
+## Building and configuring the native trial
+
+The Apple host uses bundle ID `com.gymmane.app` and supports iPhone and iPad. Simulator verification does not constitute a signed device build or TestFlight release. Select the intended Apple Developer team and register that bundle ID with HealthKit before signing; verify entitlements on physical devices.
+
+With the pinned Flutter SDK on PATH, generate native configuration with `FLUTTER_SWIFT_PACKAGE_MANAGER=true flutter build ios --simulator --no-codesign --config-only`, then run `pod install` from `ios/`. An arm64 simulator build can be produced from the repository root with:
+
+```sh
+xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
+  -configuration Debug -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
+  CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+```
+
+Account sync requires an existing email/password account at the configured auth provider, the deployed backend, and these public Flutter build definitions: `GYMMANE_SYNC_URL` (HTTPS backend origin), `GYMMANE_AUTH_URL` (HTTPS Supabase project origin), `GYMMANE_AUTH_PUBLIC_KEY` (public anon/publishable key), and `GYMMANE_EMAIL_AUTH=true`. Never put a service-role key, database password, Strava secret, or encryption key in Flutter definitions. A build without this configuration remains usable offline and reports cloud sync as unavailable. Configure the backend separately using `backend/README.md` and Strava using `backend/strava/README.md`.
+
+Apple Health exports are explicit, per-workout actions from the iPhone the user chooses. The designation is device-local; it is not an enforced account-wide lease. Use one phone, synchronize iPad workouts to it, then export there. Do not assume background delivery or safely re-export all history after reinstall/replacement. Strava's independent Send to Health behavior can create another copy; review that routing before exporting to both services. Deleting local history does not retract an existing provider copy automatically.
+
+Current release gates include real auth-provider interoperability, physical iPhone/iPad convergence, HealthKit permission/revision/deletion behavior, live Strava OAuth/upload/retry verification, and signed TestFlight delivery. Local fake-provider and simulator checks must be reported separately from those gates.
