@@ -45,9 +45,12 @@ npm run build
 npm test                        # unit tests; SQL tests explicitly skip without TEST_DATABASE_URL
 bash scripts/test-postgres.sh   # starts disposable loopback Postgres; runs all tests; stops/removes it
 dart tests/date_compatibility.dart # optional Dart SDK: shared timestamp fixtures
+bash scripts/test-postgres.sh node --import tsx tests/flutter_sync_harness.ts # requires Flutter SDK
 ```
 
 The integration runner requires local PostgreSQL binaries, uses trust auth only on its disposable loopback cluster, and defaults to port 55440 (`TEST_POSTGRES_PORT` overrides). Alternatively set `TEST_DATABASE_URL` to an isolated localhost database whose name ends `_test`; tests migrate it and intentionally inject a receipt failure trigger. Never point tests at a shared database. Tests execute actual SQL and sign ES256 JWTs against a real local HTTP JWKS endpoint. They cover auth rejection/revocation, account isolation, operation misuse, original conflict receipts, tombstones, pagination, concurrency, receipt failure rollback and HTTP-server restart durability. They do not prove device sync, production recovery, live-provider auth or cloud deployment.
+
+The Flutter harness starts the production Node HTTP app plus a loopback JWKS server and launches `flutter test test/sync/live_backend_test.dart`. It generates ES256 signing keys in memory and passes short-lived test JWTs only through the child environment. Two independent SQLite-backed `SyncRepository` instances use the real `SyncTransport` to prove offline edits in both reconnect orders, preservation and explicit resolution of routine/workout conflicts, accepted/conflict receipt replay, account isolation with identical entity IDs, and tombstones surviving repository restart. The test explicitly skips outside this harness. This exercises repository/transport integration, not the UI/controller lifecycle, physical devices, or live identity providers; all records are synthetic and the disposable database is removed on exit.
 
 Back up all sync tables and the migration ledger together using PostgreSQL backup tooling; restore to an isolated database before switching traffic. Do not independently restore/truncate receipts or changes, which would break retries and cursors. Production backup/restore drills and retention/storage capacity planning remain release requirements.
 
