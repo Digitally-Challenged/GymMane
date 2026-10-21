@@ -16,6 +16,8 @@ Use authenticated HTTPS JSON. Default server implementation targets Postgres and
 
 Completed workout payload contains existing logged-session JSON plus stable `id`; routine payload preserves existing routine JSON plus stable UUID identity where migrated. Payload schemas are validated on both sides without removing supported legacy fields. Original exercise catalog IDs remain unchanged. Detailed storage migration is responsible for preserving identities across repeated import/backup/restore. No active session, secrets, photos, nutrition, or device preferences are synced.
 
+Newly recorded workouts preserve nullable `startedAt` as the actual UTC start, `d` as finish time, `dur` as active seconds, and `utcOffsetSeconds` as the recorded local offset. Pauses increase elapsed time without increasing active time. Old records without a trustworthy start remain synchronizable but are unsupported for automatic provider export; never reconstruct start by subtracting active duration from finish. Supplied times must be valid and ordered, with active duration no more than elapsed plus one second of timer rounding. Strava receives actual start, elapsed seconds and active seconds separately.
+
 ## Local reliability
 
 Local data commit and outgoing change commit are atomic. Serialize persistence writes and await critical workout/restore completion. Failed or corrupt reads cannot silently overwrite original data with empty state. Preserve the legacy preferences document and media until migration has committed and been validated. Stage and validate backup content before replacing any local data.
