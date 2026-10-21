@@ -89,6 +89,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   final _snap = SnapshotController();
   bool _changedUnder = false;
 
+  bool _routineWarningPending = false;
+
   @override
   void initState() {
     super.initState();
@@ -182,6 +184,41 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   void _fitChanged() {
     if (_snap.allowSnapshotting) _changedUnder = true;
     _syncSnap();
+    final error = fit.routineStartError;
+    if (error == null || _routineWarningPending) return;
+    _routineWarningPending = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted || !identical(fit.routineStartError, error)) {
+        _routineWarningPending = false;
+        return;
+      }
+      fit.routineStartError = null;
+      final edit = await showAppDialog<bool>(
+        context: context,
+        builder: (dialog) => AlertDialog(
+          scrollable: true,
+          backgroundColor: context.gc.bgRaised,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
+          title: Text(
+            t.routineMissingExercisesTitle,
+            style: AppTheme.f(19, weight: FontWeight.w800, color: context.gc.text),
+          ),
+          content: Text(
+            t.routineMissingExercisesMessage(error.exerciseIds.length),
+            style: AppTheme.f(13.5, color: context.gc.textSecondary, height: 1.45),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(dialog, false), child: Text(t.cancel)),
+            if (fit.routines.any((r) => r.id == error.routineId))
+              TextButton(onPressed: () => Navigator.pop(dialog, true), child: Text(t.editEntry)),
+          ],
+        ),
+      );
+      _routineWarningPending = false;
+      if (mounted && edit == true && fit.routines.any((r) => r.id == error.routineId)) {
+        fit.openRoutine(error.routineId);
+      }
+    });
   }
 
   void _syncSnap() => scheduleMicrotask(() {

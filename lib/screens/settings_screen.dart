@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../l10n/l10n.dart';
 import '../models/profile.dart';
 import '../services/alarm_store.dart';
+import '../services/apple_capabilities.dart';
 import '../services/backup_zip.dart';
 import '../services/fitnotes_backup.dart';
 import '../services/home_widget_bridge.dart';
@@ -422,18 +423,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ]),
             const SizedBox(height: 18),
-            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) ...[
-              _sectionLabel(gc, t.sectionWidgets),
-              const SizedBox(height: 8),
-              _linkGroup(gc, [
-                (PhosphorIconsRegular.squaresFour, t.addActivityWidget, () => _addWidget(context, 'HeatmapWidgetProvider')),
-                (PhosphorIconsRegular.chartBar, t.addStatsWidget, () => _addWidget(context, 'StatsWidgetProvider')),
-                (PhosphorIconsRegular.person, t.addBodyWidget, () => _addWidget(context, 'BodyWidgetProvider')),
-                (PhosphorIconsRegular.checkCircle, t.addTodayWidget, () => _addWidget(context, 'TodayWidgetProvider')),
-                (PhosphorIconsRegular.calendarCheck, t.addWeekWidget, () => _addWidget(context, 'WeekWidgetProvider')),
-              ]),
-              const SizedBox(height: 18),
-            ],
+            _homeWidgets(context, gc),
             _sectionLabel(gc, t.sectionData),
             const SizedBox(height: 8),
             _linkGroup(gc, [
@@ -461,6 +451,47 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
       ),
+    );
+  }
+
+  Widget _homeWidgets(BuildContext context, GymColors gc) {
+    if (kIsWeb) return const SizedBox.shrink();
+    final platform = defaultTargetPlatform;
+    if (platform != TargetPlatform.android && platform != TargetPlatform.iOS) {
+      return const SizedBox.shrink();
+    }
+    Widget actions() => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _sectionLabel(gc, t.sectionWidgets),
+        const SizedBox(height: 8),
+        _linkGroup(gc, [
+          (
+            PhosphorIconsRegular.squaresFour,
+            t.addActivityWidget,
+            () => _addWidget(context, 'HeatmapWidgetProvider'),
+          ),
+          (PhosphorIconsRegular.chartBar, t.addStatsWidget, () => _addWidget(context, 'StatsWidgetProvider')),
+          (PhosphorIconsRegular.person, t.addBodyWidget, () => _addWidget(context, 'BodyWidgetProvider')),
+          (
+            PhosphorIconsRegular.checkCircle,
+            t.addTodayWidget,
+            () => _addWidget(context, 'TodayWidgetProvider'),
+          ),
+          (
+            PhosphorIconsRegular.calendarCheck,
+            t.addWeekWidget,
+            () => _addWidget(context, 'WeekWidgetProvider'),
+          ),
+        ]),
+        const SizedBox(height: 18),
+      ],
+    );
+    if (platform == TargetPlatform.android) return actions();
+    return FutureBuilder<AppleCapabilities>(
+      future: AppleCapabilities.current,
+      builder: (context, snapshot) =>
+          snapshot.data?.homeWidgets == true ? actions() : const SizedBox.shrink(),
     );
   }
 

@@ -108,23 +108,51 @@ Future<double?> askNumber(
   required String initial,
   required bool decimal,
 }) async {
-  final gc = context.gc;
-  final controller = TextEditingController(text: initial)
-    ..selection = TextSelection(baseOffset: 0, extentOffset: initial.length);
-
   final raw = await showAppDialog<String>(
     context: context,
-    builder: (dctx) => appDialog(
+    builder: (_) => _NumberDialog(title: title, initial: initial, decimal: decimal),
+  );
+  return double.tryParse((raw ?? '').trim().replaceAll(',', '.'));
+}
+
+class _NumberDialog extends StatefulWidget {
+  const _NumberDialog({required this.title, required this.initial, required this.decimal});
+
+  final String title;
+  final String initial;
+  final bool decimal;
+
+  @override
+  State<_NumberDialog> createState() => _NumberDialogState();
+}
+
+class _NumberDialogState extends State<_NumberDialog> {
+  late final _controller = TextEditingController(text: widget.initial)
+    ..selection = TextSelection(baseOffset: 0, extentOffset: widget.initial.length);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final gc = context.gc;
+    return appDialog(
       gc,
-      title: Text(titleCase(title), style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text)),
+      title: Text(
+        titleCase(widget.title),
+        style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text),
+      ),
       content: TextField(
-        controller: controller,
+        controller: _controller,
         autofocus: true,
-        keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+        keyboardType: TextInputType.numberWithOptions(decimal: widget.decimal),
         textAlign: TextAlign.center,
         style: AppTheme.f(34, weight: FontWeight.w800, color: gc.text, height: 1.1),
         cursorColor: gc.accent,
-        onSubmitted: (v) => Navigator.of(dctx).pop(v),
+        onSubmitted: (value) => Navigator.of(context).pop(value),
         decoration: InputDecoration(
           filled: true,
           fillColor: gc.bgRaised2,
@@ -133,12 +161,9 @@ Future<double?> askNumber(
         ),
       ),
       actions: [
-        dialogAction(t.cancel, gc.textSecondary, () => Navigator.of(dctx).pop(), strong: false),
-        dialogAction(t.set, gc.accent, () => Navigator.of(dctx).pop(controller.text)),
+        dialogAction(t.cancel, gc.textSecondary, () => Navigator.of(context).pop(), strong: false),
+        dialogAction(t.set, gc.accent, () => Navigator.of(context).pop(_controller.text)),
       ],
-    ),
-  );
-  controller.dispose();
-
-  return double.tryParse((raw ?? '').trim().replaceAll(',', '.'));
+    );
+  }
 }

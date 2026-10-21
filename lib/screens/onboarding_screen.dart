@@ -55,6 +55,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     fit.completeOnboarding();
   }
 
+  void _startTraining() {
+    _finish();
+    fit.startWorkout();
+  }
+
   Widget _in(int order, Widget child) => Rise(index: order, child: child);
 
   Future<void> _pickPhoto() async {
@@ -125,7 +130,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final gc = context.gc;
     return Scaffold(
       backgroundColor: gc.bg,
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Positioned.fill(child: _Glow(gc)),
@@ -200,30 +204,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _bottomBar(GymColors gc) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 22),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (_index > 0)
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _go(_index - 1),
-              child: Container(
-                width: 56,
-                height: 56,
-                margin: const EdgeInsets.only(right: 12),
-                decoration: BoxDecoration(color: gc.bgRaised, shape: BoxShape.circle),
-                child: Icon(PhosphorIconsBold.arrowLeft, size: 18, color: gc.textSecondary),
-              ),
+          if (_index == 0) ...[
+            PrimaryButton(label: t.welcomeStart, onTap: _startTraining),
+            const SizedBox(height: 8),
+            TextButton(onPressed: () => _go(1), child: Text(titleCase(t.next))),
+          ] else
+            Row(
+              children: [
+                if (_index > 0)
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => _go(_index - 1),
+                    child: Container(
+                      width: 56,
+                      height: 56,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(color: gc.bgRaised, shape: BoxShape.circle),
+                      child: Icon(PhosphorIconsBold.arrowLeft, size: 18, color: gc.textSecondary),
+                    ),
+                  ),
+                Expanded(
+                  child: PrimaryButton(
+                    label: _index == _last
+                        ? t.welcomeStart
+                        : _index == 2 && fit.profile.photo.isEmpty
+                        ? t.onbPhotoLater
+                        : t.next,
+                    onTap: () => _index == _last ? _finish() : _go(_index + 1),
+                  ),
+                ),
+              ],
             ),
-          Expanded(
-            child: PrimaryButton(
-              label: _index == _last
-                  ? t.welcomeStart
-                  : _index == 2 && fit.profile.photo.isEmpty
-                      ? t.onbPhotoLater
-                      : t.next,
-              onTap: () => _index == _last ? _finish() : _go(_index + 1),
-            ),
-          ),
         ],
       ),
     );
@@ -329,7 +343,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text('GymMane',
-                      style: AppTheme.f(44, weight: FontWeight.w800, color: gc.text, height: 1)),
+                      style: AppTheme.f(34, weight: FontWeight.w800, color: gc.text, height: 1)),
                 ),
               ),
               const SizedBox(height: 12),

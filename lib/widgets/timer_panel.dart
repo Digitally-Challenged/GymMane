@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
-import 'rolling_text.dart';
 
 String clockLabel(int seconds) {
   final s = seconds < 0 ? 0 : seconds;
@@ -58,29 +57,29 @@ class TimerPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 40,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _nudge(gc, '−15', onMinus),
-                  Expanded(
-                    child: Container(
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      padding: const EdgeInsets.only(top: 9),
-                      alignment: Alignment.topCenter,
-                      decoration: BoxDecoration(
-                        color: gc.bgRaised2,
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
-                      ),
-                      child: Text(label.toUpperCase(),
-                          style: AppTheme.f(11, weight: FontWeight.w800, color: gc.text, letterSpacing: 2)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _nudge(gc, '−15', onMinus),
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 44),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
+                    alignment: Alignment.topCenter,
+                    decoration: BoxDecoration(
+                      color: gc.bgRaised2,
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+                    ),
+                    child: Text(
+                      label.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: AppTheme.f(11, weight: FontWeight.w800, color: gc.text, letterSpacing: 2),
                     ),
                   ),
-                  _nudge(gc, '+15', onPlus),
-                ],
-              ),
+                ),
+                _nudge(gc, '+15', onPlus),
+              ],
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
@@ -93,30 +92,28 @@ class TimerPanel extends StatelessWidget {
                 children: [
                   _Ticks(left: left, lit: accent, dim: gc.bgRaised2),
                   const SizedBox(height: 14),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Text(
+                    clockLabel(remaining),
+                    textAlign: TextAlign.center,
+                    style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05),
+                  ),
+                  const SizedBox(height: 4),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 150),
+                    child: Text(
+                      hint.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 24,
+                    runSpacing: 12,
                     children: [
-                      Expanded(child: _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start)),
-                      const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          RollingText(clockLabel(remaining),
-                              countsDown: true,
-                              style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05)),
-                          const SizedBox(height: 4),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 150),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(hint.toUpperCase(),
-                                  maxLines: 1,
-                                  style: AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(child: _stat(gc, sets, setsLabel, CrossAxisAlignment.end)),
+                      _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start),
+                      _stat(gc, sets, setsLabel, CrossAxisAlignment.start),
                     ],
                   ),
                 ],
@@ -129,18 +126,19 @@ class TimerPanel extends StatelessWidget {
   }
 
   Widget _stat(GymColors gc, String value, String caption, CrossAxisAlignment align) => Column(
-        crossAxisAlignment: align,
-        children: [
-          RollingText(value, style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text, height: 1.1)),
-          const SizedBox(height: 3),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(caption.toUpperCase(),
-                maxLines: 1,
-                style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-          ),
-        ],
-      );
+    crossAxisAlignment: align,
+    children: [
+      Text(
+        value,
+        style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text, height: 1.1),
+      ),
+      const SizedBox(height: 3),
+      Text(
+        caption.toUpperCase(),
+        style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5),
+      ),
+    ],
+  );
 
   Widget _nudge(GymColors gc, String glyph, VoidCallback? onTap) {
     if (onTap == null) return const SizedBox(width: 56);
@@ -154,12 +152,15 @@ class TimerPanel extends StatelessWidget {
           onTap();
         },
         child: Container(
-          width: 56,
-          height: 32,
+          constraints: const BoxConstraints(minWidth: 56, minHeight: 44),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           margin: const EdgeInsets.only(bottom: 4),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: gc.bgRaised, borderRadius: BorderRadius.circular(100)),
-          child: Text(glyph, style: AppTheme.f(12.5, weight: FontWeight.w800, color: gc.textSecondary)),
+          child: Text(
+            glyph,
+            style: AppTheme.f(12.5, weight: FontWeight.w800, color: gc.textSecondary),
+          ),
         ),
       ),
     );

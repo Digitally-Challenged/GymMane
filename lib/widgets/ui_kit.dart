@@ -202,20 +202,22 @@ class GhostButton extends StatelessWidget {
     return Pressable(
       onTap: onTap,
       child: Container(
-        height: 46,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        constraints: const BoxConstraints(minHeight: 46),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: context.gc.bgRaised2,
-          borderRadius: BorderRadius.circular(100),
-        ),
+        decoration: BoxDecoration(color: context.gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 16, color: gc.ember),
             const SizedBox(width: 8),
-            Text(titleCase(label),
-                style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.text)),
+            Flexible(
+              child: Text(
+                titleCase(label),
+                textAlign: TextAlign.center,
+                style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.text),
+              ),
+            ),
           ],
         ),
       ),
@@ -953,22 +955,18 @@ class PrimaryButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: height,
+        constraints: BoxConstraints(minHeight: height < 44 ? 44 : height),
         decoration: BoxDecoration(color: bg ?? gc.ember, borderRadius: BorderRadius.circular(100)),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (icon != null) ...[
-              SvgPathIcon(icon!, size: 15, color: f),
-              const SizedBox(width: 9),
-            ],
+            if (icon != null) ...[SvgPathIcon(icon!, size: 15, color: f), const SizedBox(width: 9)],
             Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(titleCase(label),
-                    maxLines: 1,
-                    style: AppTheme.f(15.5, weight: FontWeight.w700, color: f, letterSpacing: 0.2)),
+              child: Text(
+                titleCase(label),
+                textAlign: TextAlign.center,
+                style: AppTheme.f(15.5, weight: FontWeight.w700, color: f, letterSpacing: 0.2),
               ),
             ),
           ],

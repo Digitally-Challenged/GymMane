@@ -7,7 +7,6 @@ import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import 'dialogs.dart';
 import 'glass.dart';
-import 'rolling_text.dart';
 import 'ui_kit.dart';
 
 class RulerPicker extends StatefulWidget {
@@ -262,18 +261,25 @@ Future<double?> askRuler(
   return showAppSheet<double>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     builder: (sheet) => StatefulBuilder(
       builder: (sheet, setSheet) {
         final gc = sheet.gc;
-        final reading = Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
+        final reading = Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 6,
           children: [
-            RollingText(show(current), style: AppTheme.f(54, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+            Text(
+              show(current),
+              textAlign: TextAlign.center,
+              style: AppTheme.f(54, weight: FontWeight.w800, color: gc.text, height: 1.1),
+            ),
             if (unit.isNotEmpty) ...[
-              const SizedBox(width: 6),
-              Text(unit, style: AppTheme.f(18, weight: FontWeight.w700, color: gc.textSecondary)),
+              Text(
+                unit,
+                style: AppTheme.f(18, weight: FontWeight.w700, color: gc.textSecondary),
+              ),
             ],
           ],
         );
@@ -288,73 +294,94 @@ Future<double?> askRuler(
           height: vertical ? 300 : 86,
           onChanged: (v) => setSheet(() => current = v),
         );
-        return Container(
-          padding: sheetPad(sheet),
-          decoration: BoxDecoration(
-            color: gc.bgRaised,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SheetHandle(),
-              const SizedBox(height: 14),
-              Row(children: [
-                Expanded(
-                  child: Text(titleCase(title),
-                      style: AppTheme.f(15, weight: FontWeight.w700, color: gc.textSecondary)),
-                ),
-                Semantics(
-                  button: true,
-                  label: title,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () async {
-                      final typed = await askNumber(sheet,
-                          title: title, initial: show(current), decimal: step != step.roundToDouble());
-                      if (typed == null) return;
-                      setSheet(() => current = ((typed.clamp(min, max) / step).round() * step).toDouble());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(PhosphorIconsRegular.keyboard, size: 20, color: gc.textSecondary),
-                    ),
-                  ),
-                ),
-              ]),
-              const SizedBox(height: 10),
-              if (vertical)
-                Row(children: [
-                  Expanded(child: Center(child: reading)),
-                  SizedBox(width: 130, child: ruler),
-                ])
-              else ...[
-                Center(child: reading),
-                const SizedBox(height: 18),
-                ruler,
-              ],
-              if (hint != null) ...[
+        return SingleChildScrollView(
+          child: Container(
+            padding: sheetPad(sheet),
+            decoration: BoxDecoration(
+              color: gc.bgRaised,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SheetHandle(),
                 const SizedBox(height: 14),
-                Text(hint,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        titleCase(title),
+                        style: AppTheme.f(15, weight: FontWeight.w700, color: gc.textSecondary),
+                      ),
+                    ),
+                    Semantics(
+                      button: true,
+                      label: title,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () async {
+                          final typed = await askNumber(
+                            sheet,
+                            title: title,
+                            initial: show(current),
+                            decimal: step != step.roundToDouble(),
+                          );
+                          if (typed == null || !sheet.mounted) return;
+                          setSheet(
+                            () => current = ((typed.clamp(min, max) / step).round() * step).toDouble(),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Icon(PhosphorIconsRegular.keyboard, size: 20, color: gc.textSecondary),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                if (vertical)
+                  Row(
+                    children: [
+                      Expanded(child: Center(child: reading)),
+                      SizedBox(width: 130, child: ruler),
+                    ],
+                  )
+                else ...[
+                  Center(child: reading),
+                  const SizedBox(height: 18),
+                  ruler,
+                ],
+                if (hint != null) ...[
+                  const SizedBox(height: 14),
+                  Text(
+                    hint,
                     textAlign: TextAlign.center,
-                    style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary, height: 1.4)),
-              ],
-              const SizedBox(height: 18),
-              PrimaryButton(label: t.set, onTap: () => Navigator.of(sheet).pop(current)),
-              if (clearLabel != null)
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => Navigator.of(sheet).pop(rulerCleared),
-                  child: SizedBox(
-                    height: 48,
-                    child: Center(
-                      child: Text(clearLabel,
-                          style: AppTheme.f(14, weight: FontWeight.w600, color: gc.textSecondary)),
+                    style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary, height: 1.4),
+                  ),
+                ],
+                const SizedBox(height: 18),
+                PrimaryButton(label: t.set, onTap: () => Navigator.of(sheet).pop(current)),
+                if (clearLabel != null)
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => Navigator.of(sheet).pop(rulerCleared),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 48),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          clearLabel,
+                          textAlign: TextAlign.center,
+                          style: AppTheme.f(14, weight: FontWeight.w600, color: gc.textSecondary),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },
