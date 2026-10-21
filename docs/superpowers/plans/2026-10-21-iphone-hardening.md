@@ -129,3 +129,16 @@ Coordinator reviews task compliance and quality separately for D/S/C/N; creates 
 ## Execution ledger
 
 Plan created before edits. Implementation tasks and Orca Run IDs will be recorded here by the coordinator. No live provider/server status is assumed from old handoffs.
+
+### Task P: production package and release identity (parallel with reviews/UI)
+
+**Ownership:** backend/Dockerfile, backend/.dockerignore, backend/src/server.ts and main.ts, focused backend/tests/health.test.ts, scripts/release/**, backend/deploy/** and backend/README.md deployment section. Do not edit protocol.ts, migrations, Strava module, Flutter or ios. Read existing runtime before adding anything.
+
+**Contract:** Prepare a repeatable Synology/standard Docker Compose deployment for an isolated GymMane backend and private PostgreSQL, with migrations completing before API startup, durable data volume, nonroot API, restart/health checks, runtime secrets supplied as variables (no actual secrets or hardcoded credentials), explicit HTTPS reverse-proxy prerequisite, and a non-destructive backup/restore procedure. Never touch existing openGym services. Add unauthenticated GET /health returning only status and the configured release identifier, with safe no-secret error handling and an injectable testable release config. Keep API auth/CORS unchanged on other routes. The deploy check must compare exact release identity, not merely HTTP 200. A package script must reject dirty/missing release references and include migration 003/custom definition code from the final integrated tree when executed later. Worker must not actually deploy, use credentials, or create cloud services.
+
+- [ ] Write health-route tests for configured SHA, DB failure/initialization where meaningful, GET-only behavior and no auth regression on sync routes.
+- [ ] Add minimal health route/config and safe compose/package/verify scripts. Store no data/passwords/build files at project root.
+- [ ] Run backend check/build/format and focused tests. Validate compose syntax without printing resolved secrets. Report exact commands, deployment steps and unresolved host prerequisites to /tmp/gymmane-P-report.md.
+- [ ] Commit owned files with build: package verifiable GymMane backend releases.
+
+Execution checkpoint: Run run_e8aae7f3c79c. Native Task N and its independent review passed (4d157ef). Strava Task S and its independent review passed (b44a8ac). Custom dependencies Task D implemented (1b0a8f7), independent review running. Task C scheduling is still implementing/testing. Live Synology inspection found only opengym-web-1 and opengym-api-1 in the opengym project; no GymMane project. App Store Connect first-use terms require Nick's acceptance; do not accept on his behalf. Supabase organization GymMane is being provisioned on the Free plan; no paid service authorized or required by this plan.
