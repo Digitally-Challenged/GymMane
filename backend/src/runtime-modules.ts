@@ -8,7 +8,21 @@ export async function loadRuntimeModules(
   pool: Pool,
   env: NodeJS.ProcessEnv,
 ): Promise<RuntimeModule[]> {
-  if (env.STRAVA_ENABLED !== "true") return [];
+  if (env.STRAVA_ENABLED !== "true")
+    return [
+      {
+        register: (registry) => {
+          registry.authenticated("GET", "/v1/strava/status", async () => ({
+            configured: false,
+            connected: false,
+            athleteId: null,
+            status: "disconnected",
+            jobs: [],
+          }));
+        },
+        tick: async () => {},
+      },
+    ];
   // Optional module is supplied by the Strava owner; enabling without it fails startup.
   const path = "../strava/index.js";
   const implementation = await import(path);
