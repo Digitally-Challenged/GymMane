@@ -5464,4 +5464,45 @@ class AppLocalizationsTr extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Eksik egzersiz sayısı: $count. Başlamadan önce bunları bir yedekten geri yükleyin veya bu rutinden kaldırın.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Her çalışma setinde yedek tekrar sayısını kaydet. İlerlemeden önce sonraki antrenmanda toparlanmanı değerlendir. 5–10 dakika ısın; yük girildiğinde hazırlık setleri eklenir.';
+
+  @override
+  String get blockOptionalArms => 'Kol setlerini 5. güne taşı';
+
+  @override
+  String get blockSettingsTitle => 'Egzersiz yükleri ve sınırları';
+
+  @override
+  String get blockCalibrationHint =>
+      'Başlangıç yükü program geçmişi oluşana kadar kullanılır. Sonraki hedefler kaydedilen performansı izler.';
+
+  @override
+  String get blockRecoveryQuestion => 'Önceki antrenman: toparlanman ve ertesi gün eklem tepkisi nasıldı?';
+
+  @override
+  String get blockCalibrationLoad => 'Başlangıç yükü';
+
+  @override
+  String get blockIncreaseBy => 'Artış miktarı';
+
+  @override
+  String get blockLoadStep => 'Kullanılabilir yük adımı';
+
+  @override
+  String get blockLoadCap => 'En yüksek yük (isteğe bağlı)';
+
+  @override
+  String get blockResponseStable => 'Toparlandım; belirtiler aynı';
+
+  @override
+  String get blockResponseWorse => 'Toparlanmadım / belirtiler arttı';
+
+  @override
+  String get blockOptionalLocked => 'Haftanın ilk antrenmanından önce seç.';
+
+  @override
+  String get blockOptionalHint => 'Altı seti yeniden dağıtır; haftalık hacim değişmez.';
 }

@@ -5454,4 +5454,45 @@ class AppLocalizationsAr extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'التمارين المفقودة: $count. استعدها من نسخة احتياطية أو أزلها من هذا الروتين قبل البدء.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'سجّل التكرارات المتبقية في كل مجموعة عمل. راجع تعافيك في التمرين التالي قبل زيادة الحمل. أحمِ الجسم لمدة 5–10 دقائق؛ تظهر مجموعات التهيئة بعد إدخال الوزن.';
+
+  @override
+  String get blockOptionalArms => 'نقل مجموعات الذراعين إلى اليوم 5';
+
+  @override
+  String get blockSettingsTitle => 'أوزان التمارين وحدودها';
+
+  @override
+  String get blockCalibrationHint =>
+      'يُستخدم الوزن الأولي قبل وجود سجل لهذا البرنامج. تعتمد الأهداف التالية على أدائك المسجّل.';
+
+  @override
+  String get blockRecoveryQuestion => 'التمرين السابق: كيف كان التعافي واستجابة المفاصل في اليوم التالي؟';
+
+  @override
+  String get blockCalibrationLoad => 'الوزن الأولي';
+
+  @override
+  String get blockIncreaseBy => 'مقدار الزيادة';
+
+  @override
+  String get blockLoadStep => 'خطوة الوزن المتاحة';
+
+  @override
+  String get blockLoadCap => 'الوزن الأقصى (اختياري)';
+
+  @override
+  String get blockResponseStable => 'تعافيت؛ الأعراض مستقرة';
+
+  @override
+  String get blockResponseWorse => 'لم أتعافَ / ازدادت الأعراض';
+
+  @override
+  String get blockOptionalLocked => 'اختر قبل أول تمرين في الأسبوع.';
+
+  @override
+  String get blockOptionalHint => 'يعيد توزيع ست مجموعات؛ الحجم الأسبوعي لا يتغير.';
 }

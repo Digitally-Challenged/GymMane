@@ -6,6 +6,7 @@ import '../models/training_method.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'block_exercise_context.dart';
 
 class ExerciseContext extends StatelessWidget {
   const ExerciseContext({super.key, required this.exerciseId, required this.onHistory});
@@ -15,6 +16,7 @@ class ExerciseContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (fit.session?.program != null) return BlockExerciseContext(exerciseId: exerciseId);
     final last = fit.lastEffortSummaryFor(exerciseId);
     if (last == null) return const SizedBox.shrink();
     final gc = context.gc;

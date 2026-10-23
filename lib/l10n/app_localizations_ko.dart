@@ -5327,4 +5327,44 @@ class AppLocalizationsKo extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return '누락된 운동: $count개. 시작하기 전에 백업에서 복원하거나 이 루틴에서 삭제하세요.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      '각 작업 세트의 여유 반복 수를 기록하세요. 중량을 높이기 전 다음 운동에서 회복 상태를 확인하세요. 5–10분 준비 운동을 하고, 중량 입력 후 준비 세트가 표시됩니다.';
+
+  @override
+  String get blockOptionalArms => '팔 세트를 5일차로 이동';
+
+  @override
+  String get blockSettingsTitle => '운동 중량 및 제한';
+
+  @override
+  String get blockCalibrationHint => '프로그램 기록이 없을 때는 초기 중량을 사용합니다. 이후 목표는 기록한 수행 결과를 따릅니다.';
+
+  @override
+  String get blockRecoveryQuestion => '지난 운동 후 회복과 다음 날 관절 상태는 어땠나요?';
+
+  @override
+  String get blockCalibrationLoad => '초기 중량';
+
+  @override
+  String get blockIncreaseBy => '증가량';
+
+  @override
+  String get blockLoadStep => '사용 가능한 중량 간격';
+
+  @override
+  String get blockLoadCap => '최대 중량(선택)';
+
+  @override
+  String get blockResponseStable => '회복됨; 증상 안정';
+
+  @override
+  String get blockResponseWorse => '미회복 / 증상 악화';
+
+  @override
+  String get blockOptionalLocked => '주의 첫 운동 전에 선택하세요.';
+
+  @override
+  String get blockOptionalHint => '6세트를 재배분하며 주간 총량은 같습니다.';
 }

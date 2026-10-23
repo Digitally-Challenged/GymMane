@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "等待雲端同步",
   "syncSynced": "已同步",
   "routineMissingExercisesTitle": "需要還原訓練動作",
-  "routineMissingExercisesMessage": "遺失的動作：{count} 個。開始前，請從備份還原這些動作，或將其從此訓練計畫中移除。"
+  "routineMissingExercisesMessage": "遺失的動作：{count} 個。開始前，請從備份還原這些動作，或將其從此訓練計畫中移除。",
+  "blockWorkoutGuide": "每組工作組都記錄剩餘次數。下次訓練先評估恢復情況，再增加負荷。熱身5–10分鐘；輸入重量後會顯示遞增熱身組。",
+  "blockOptionalArms": "將手臂訓練組移至第5天",
+  "blockSettingsTitle": "動作重量與上限",
+  "blockCalibrationHint": "本計畫尚無紀錄時使用初始重量，之後的目標依據已記錄的表現調整。",
+  "blockRecoveryQuestion": "上次訓練後的恢復及第二天關節反應如何？",
+  "blockCalibrationLoad": "初始重量",
+  "blockIncreaseBy": "增加量",
+  "blockLoadStep": "可用重量級距",
+  "blockLoadCap": "最大重量（選填）",
+  "blockResponseStable": "已恢復；症狀穩定",
+  "blockResponseWorse": "未恢復／症狀加重",
+  "blockOptionalLocked": "請在本週第一次訓練前選擇。",
+  "blockOptionalHint": "重新分配六組，每週總訓練量不變。"
 }

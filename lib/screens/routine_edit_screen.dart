@@ -7,10 +7,13 @@ import '../l10n/l10n.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
 import '../models/training_method.dart';
+import '../models/block_program.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
+import '../widgets/block_program_card.dart';
+import '../widgets/block_rule_editor.dart';
 import '../widgets/exercise_media.dart';
 import '../widgets/exercise_preview.dart';
 import '../widgets/ruler_picker.dart';
@@ -235,6 +238,7 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
         ]),
         const SizedBox(height: 18),
         _colors(gc, routine),
+        if (routine.program != null) BlockProgramCard(routine: routine),
         if (routine.method != TrainingMethod.standard) ...[
           const SizedBox(height: 16),
           Text(
@@ -645,7 +649,10 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
                     style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.brass, letterSpacing: 1)),
               ],
               const SizedBox(height: 2),
-              FittedBox(
+              if (routine.program?.rules[ex.id] case final rule?)
+                Text('Up to ${rule.sets} work sets · ${rule.method == BlockMethod.reversePyramid ? '6/8/10' : '${rule.minReps}–${rule.maxReps}'} reps',
+                    style: AppTheme.f(12, color: gc.textSecondary))
+              else FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: AlignmentDirectional.centerStart,
                 child: StepperControl(
@@ -763,6 +770,11 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
   }
 
   void _openPlan(Exercise ex) {
+    if (fit.activeRoutine?.program != null) {
+      showModalBottomSheet<void>(context: context, isScrollControlled: true, useSafeArea: true,
+        builder: (_) => BlockRuleEditor(routine: fit.activeRoutine!, exerciseId: ex.id));
+      return;
+    }
     showAppSheet<void>(
       context: context,
       isScrollControlled: true,

@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "クラウド同期待ち",
   "syncSynced": "同期済み",
   "routineMissingExercisesTitle": "エクササイズの復元が必要です",
-  "routineMissingExercisesMessage": "見つからないエクササイズ：{count}種目。開始する前にバックアップから復元するか、このルーティンから削除してください。"
+  "routineMissingExercisesMessage": "見つからないエクササイズ：{count}種目。開始する前にバックアップから復元するか、このルーティンから削除してください。",
+  "blockWorkoutGuide": "各ワークセットの余力回数を記録してください。負荷を上げる前に次回のトレーニングで回復状態を確認します。5〜10分ウォームアップし、重量入力後に準備セットを表示します。",
+  "blockOptionalArms": "腕のセットを5日目へ移動",
+  "blockSettingsTitle": "種目の重量と上限",
+  "blockCalibrationHint": "このプログラムの履歴がない間は初期重量を使います。その後の目標は記録した実績に基づきます。",
+  "blockRecoveryQuestion": "前回の運動後の回復と翌日の関節の状態は？",
+  "blockCalibrationLoad": "初期重量",
+  "blockIncreaseBy": "増加量",
+  "blockLoadStep": "使用可能な重量刻み",
+  "blockLoadCap": "最大重量（任意）",
+  "blockResponseStable": "回復済み・症状は安定",
+  "blockResponseWorse": "未回復・症状が悪化",
+  "blockOptionalLocked": "週の最初のトレーニング前に選択してください。",
+  "blockOptionalHint": "6セットを再配分します。週の総量は変わりません。"
 }

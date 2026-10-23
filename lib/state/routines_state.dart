@@ -329,6 +329,14 @@ mixin RoutinesState on FitCore, LibraryState {
     made.rest.addAll(source.rest);
     made.group = source.group;
     made.method = source.method;
+    if (source.program case final program?) {
+      made.program = BlockProgram(
+        id: newEntityId(),
+        start: _dayKey(DateTime.now()),
+        day: program.day,
+        rules: program.rules,
+      );
+    }
     made.color = source.color;
     _persist();
     notifyListeners();
@@ -387,12 +395,30 @@ mixin RoutinesState on FitCore, LibraryState {
     final r = _routine(routineId);
     if (r == null) return;
     if (r.exerciseIds.remove(exId)) {
+      if (r.program case final program?) {
+        r.program = program.copyWith(rules: {...program.rules}..remove(exId));
+      }
       r.sets.remove(exId);
       r.plan.remove(exId);
       r.rest.remove(exId);
       r.chained.remove(exId);
     } else {
       r.exerciseIds.add(exId);
+      if (r.program case final program? when !program.rules.containsKey(exId)) {
+        r.program = program.copyWith(
+          rules: {
+            ...program.rules,
+            exId: BlockExerciseRule(
+              sets: 3,
+              calibrationSets: 2,
+              deloadSets: 1,
+              minReps: 8,
+              maxReps: 12,
+              maxWeightKg: hybridSquatCap(exerciseById(exId)?.name ?? ''),
+            ),
+          },
+        );
+      }
       if (isCustom(exId)) {
         if (exerciseById(exId) case final exercise?) r.exerciseDefinitions[exId] = exercise;
       }
@@ -408,6 +434,15 @@ mixin RoutinesState on FitCore, LibraryState {
     if (at < 0 || r.exerciseIds.contains(to)) return;
     final replacement = exerciseById(to);
     r.exerciseIds[at] = to;
+    if (r.program case final program?) {
+      final rule = program.rules[from];
+      final rules = {...program.rules}..remove(from);
+      if (rule != null) {
+        final cap = hybridSquatCap(replacement?.name ?? '');
+        rules[to] = rule.copyWith(seedKg: 0, clearCap: cap == null, maxWeightKg: cap);
+      }
+      r.program = program.copyWith(rules: rules);
+    }
     if (replacement != null && isCustom(to)) r.exerciseDefinitions[to] = replacement;
     final sets = r.sets.remove(from);
     if (sets != null) r.sets[to] = sets;
@@ -429,6 +464,7 @@ mixin RoutinesState on FitCore, LibraryState {
     final plan = r.plan[exId];
     final rest = r.rest[exId];
     final chained = r.chained.contains(exId);
+    final rule = r.program?.rules[exId];
     toggleRoutineExercise(routineId, exId);
     return () {
       final back = _routine(routineId);
@@ -438,6 +474,9 @@ mixin RoutinesState on FitCore, LibraryState {
       if (plan != null) back.plan[exId] = plan;
       if (rest != null) back.rest[exId] = rest;
       if (chained) back.chained.add(exId);
+      if (rule != null && back.program != null) {
+        back.program = back.program!.copyWith(rules: {...back.program!.rules, exId: rule});
+      }
       _persist();
       notifyListeners();
     };

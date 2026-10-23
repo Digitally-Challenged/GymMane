@@ -5587,4 +5587,46 @@ class AppLocalizationsRu extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Отсутствующих упражнений: $count. Перед началом восстановите их из резервной копии или удалите из этой программы.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Записывайте запас повторений в каждом рабочем подходе. Перед повышением нагрузки оцените восстановление на следующей тренировке. Разминайтесь 5–10 минут; разминочные подходы появятся после ввода веса.';
+
+  @override
+  String get blockOptionalArms => 'Перенести подходы на руки на день 5';
+
+  @override
+  String get blockSettingsTitle => 'Нагрузки и ограничения упражнений';
+
+  @override
+  String get blockCalibrationHint =>
+      'Начальный вес используется до появления истории программы. Последующие цели зависят от записанных результатов.';
+
+  @override
+  String get blockRecoveryQuestion =>
+      'Прошлая тренировка: как прошли восстановление и реакция суставов на следующий день?';
+
+  @override
+  String get blockCalibrationLoad => 'Начальный вес';
+
+  @override
+  String get blockIncreaseBy => 'Прибавка веса';
+
+  @override
+  String get blockLoadStep => 'Доступный шаг веса';
+
+  @override
+  String get blockLoadCap => 'Максимальный вес (необязательно)';
+
+  @override
+  String get blockResponseStable => 'Восстановился; симптомы стабильны';
+
+  @override
+  String get blockResponseWorse => 'Не восстановился / симптомы усилились';
+
+  @override
+  String get blockOptionalLocked => 'Выберите до первой тренировки недели.';
+
+  @override
+  String get blockOptionalHint => 'Перераспределяет шесть подходов; недельный объём не меняется.';
 }

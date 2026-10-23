@@ -9,6 +9,9 @@ import 'package:flutter/services.dart';
 
 import '../catalog/exercise_catalog.dart';
 import '../catalog/program_templates.dart';
+import '../catalog/hybrid_program.dart';
+import '../models/block_program.dart';
+import '../services/block_program.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
 import '../models/identity.dart';
@@ -39,6 +42,7 @@ import '../services/train_reminder.dart';
 import '../services/workout_import.dart';
 
 part 'awards_state.dart';
+part 'block_program_state.dart';
 part 'fit_core.dart';
 part 'library_state.dart';
 part 'measures_state.dart';
@@ -55,7 +59,22 @@ part 'tools_state.dart';
 part 'workout_state.dart';
 
 class FitState extends FitCore
-    with ToolsState, LibraryState, SettingsState, NotesState, PlacesState, MeasuresState, MomentsState, TimelineState, StatsState, StepsState, NutritionState, AwardsState, RoutinesState, WorkoutState {
+    with
+        ToolsState,
+        LibraryState,
+        SettingsState,
+        NotesState,
+        PlacesState,
+        MeasuresState,
+        MomentsState,
+        TimelineState,
+        StatsState,
+        StepsState,
+        NutritionState,
+        AwardsState,
+        RoutinesState,
+        BlockProgramState,
+        WorkoutState {
   /// Refresh only replicated entities after a pull; keep the active workout,
   /// navigation and device preferences untouched and do not enqueue an echo.
   void reloadSyncedEntities() {
@@ -875,6 +894,7 @@ class FitState extends FitCore
   Exercise? matchExerciseByName(String name) => matchExercise(name, allExercises);
 
   int applyTemplate(ProgramTemplate template) {
+    if (template.id == 'hybrid-12-week') return applyHybridProgram();
     final planWasEmpty = weeklyPlan.isEmpty;
     var made = 0;
     final sameDay = <String, String>{};
@@ -976,10 +996,12 @@ class FitState extends FitCore
     return (added: result.added, missed: result.missed, readable: true);
   }
 
-  Exercise? _planExercise(PlanItem item, {bool create = false}) {
+  Exercise? _planExercise(PlanItem item, {bool create = false, bool exact = false}) {
     final byId = item.id == null ? null : exerciseById(item.id!);
     if (byId != null && (item.name.isEmpty || !isCustom(byId.id) || byId.name == item.name)) return byId;
-    final byName = matchExerciseByName(item.name);
+    final byName = exact
+        ? allExercises.where((e) => e.name == item.name).firstOrNull
+        : matchExerciseByName(item.name);
     if (byName != null) return byName;
     if (!create || (item.muscle ?? '').isEmpty) return null;
     final muscle = kMuscles.any((m) => m.id == item.muscle) ? item.muscle! : 'chest';
@@ -1024,10 +1046,11 @@ class FitState extends FitCore
       {bool schedule = false}) {
     var made = 0, added = 0;
     final missed = <String>[];
+    final programIds = <String, String>{};
     for (final plan in plans) {
       final picked = <(Exercise, PlanItem)>[];
       for (final item in plan.items) {
-        final ex = _planExercise(item, create: true);
+        final ex = _planExercise(item, create: true, exact: plan.program != null);
         if (ex == null) {
           if (!missed.contains(item.name)) missed.add(item.name);
           continue;
@@ -1038,11 +1061,25 @@ class FitState extends FitCore
       if (picked.isEmpty) continue;
       final name = plan.name.isEmpty ? t.newRoutineName : plan.name;
       final ids = [for (final p in picked) p.$1.id];
-      final existing = routines.where((r) => _sameRoutine(r, name, ids) && r.group == plan.group).firstOrNull;
+      final existing = plan.program != null
+          ? null
+          : routines.where((r) => _sameRoutine(r, name, ids) && r.group == plan.group).firstOrNull;
       final id = existing?.id ?? createRoutine(name);
       if (existing == null) {
         setRoutineGroup(id, plan.group);
         _routine(id)!.method = plan.method;
+        if (plan.program case final program?) {
+          final remap = {
+            for (final (ex, item) in picked)
+              if (item.id != null) item.id!: ex.id,
+          };
+          _routine(id)!.program = BlockProgram(
+            id: programIds.putIfAbsent(program.id, newEntityId),
+            start: _dayKey(DateTime.now()),
+            day: program.day,
+            rules: {for (final entry in program.rules.entries) ?remap[entry.key]: entry.value},
+          );
+        }
         for (final (ex, item) in picked) {
           toggleRoutineExercise(id, ex.id);
           final sets = _plannedFrom(item);
@@ -1106,6 +1143,7 @@ class FitState extends FitCore
             'name': routineTitle(r),
             if (r.group.isNotEmpty) 'group': r.group,
             if (r.method != TrainingMethod.standard) 'method': r.method.name,
+            if (r.program != null) 'blockProgram': r.program!.toJson(),
             if (withSchedule)
               'days': [for (var d = 1; d <= 7; d++) if (plannedOn(d, r.id)) d],
             'exercises': [

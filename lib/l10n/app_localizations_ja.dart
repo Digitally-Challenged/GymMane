@@ -5316,4 +5316,44 @@ class AppLocalizationsJa extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return '見つからないエクササイズ：$count種目。開始する前にバックアップから復元するか、このルーティンから削除してください。';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      '各ワークセットの余力回数を記録してください。負荷を上げる前に次回のトレーニングで回復状態を確認します。5〜10分ウォームアップし、重量入力後に準備セットを表示します。';
+
+  @override
+  String get blockOptionalArms => '腕のセットを5日目へ移動';
+
+  @override
+  String get blockSettingsTitle => '種目の重量と上限';
+
+  @override
+  String get blockCalibrationHint => 'このプログラムの履歴がない間は初期重量を使います。その後の目標は記録した実績に基づきます。';
+
+  @override
+  String get blockRecoveryQuestion => '前回の運動後の回復と翌日の関節の状態は？';
+
+  @override
+  String get blockCalibrationLoad => '初期重量';
+
+  @override
+  String get blockIncreaseBy => '増加量';
+
+  @override
+  String get blockLoadStep => '使用可能な重量刻み';
+
+  @override
+  String get blockLoadCap => '最大重量（任意）';
+
+  @override
+  String get blockResponseStable => '回復済み・症状は安定';
+
+  @override
+  String get blockResponseWorse => '未回復・症状が悪化';
+
+  @override
+  String get blockOptionalLocked => '週の最初のトレーニング前に選択してください。';
+
+  @override
+  String get blockOptionalHint => '6セットを再配分します。週の総量は変わりません。';
 }

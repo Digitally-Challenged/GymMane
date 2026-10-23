@@ -5476,4 +5476,45 @@ class AppLocalizationsIt extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Esercizi mancanti: $count. Ripristinali da un backup oppure rimuovili da questa routine prima di iniziare.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Registra le ripetizioni in riserva per ogni serie. Valuta il recupero alla sessione successiva prima di progredire. Riscaldati 5–10 minuti; le serie preparatorie compaiono dopo aver inserito un carico.';
+
+  @override
+  String get blockOptionalArms => 'Sposta le serie braccia al giorno 5';
+
+  @override
+  String get blockSettingsTitle => 'Carichi e limiti degli esercizi';
+
+  @override
+  String get blockCalibrationHint =>
+      'Il carico iniziale si usa prima che il programma abbia uno storico. Gli obiettivi successivi seguono le prestazioni registrate.';
+
+  @override
+  String get blockRecoveryQuestion => 'Sessione precedente: recupero e risposta articolare il giorno dopo?';
+
+  @override
+  String get blockCalibrationLoad => 'Carico iniziale';
+
+  @override
+  String get blockIncreaseBy => 'Aumenta di';
+
+  @override
+  String get blockLoadStep => 'Incremento di carico disponibile';
+
+  @override
+  String get blockLoadCap => 'Carico massimo (facoltativo)';
+
+  @override
+  String get blockResponseStable => 'Recuperato; sintomi stabili';
+
+  @override
+  String get blockResponseWorse => 'Non recuperato / sintomi peggiori';
+
+  @override
+  String get blockOptionalLocked => 'Scegli prima della prima sessione settimanale.';
+
+  @override
+  String get blockOptionalHint => 'Ridistribuisce sei serie; il volume settimanale non cambia.';
 }

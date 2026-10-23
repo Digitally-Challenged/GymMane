@@ -1,3 +1,5 @@
+import { validateBlockProgram } from "./block-program.js";
+
 export class HttpError extends Error {
   constructor(
     public status: number,
@@ -285,6 +287,7 @@ function payload(value: JsonObject, type: Operation["entityType"], id: string) {
     value.n === undefined || value.n === null || typeof value.n === "string",
   );
   if (type === "workout") {
+    validateBlockProgram(value.program, true, [], assert);
     assert(workoutDate(value.d) !== null, "Invalid workout ISO timestamp");
     assert(Number.isSafeInteger(value.dur) && (value.dur as number) >= 0);
     if (value.startedAt !== undefined && value.startedAt !== null)
@@ -306,6 +309,7 @@ function payload(value: JsonObject, type: Operation["entityType"], id: string) {
       exercise.s.forEach((s) => set(s));
     }
   } else {
+    validateBlockProgram(value.program, false, value.ex, assert);
     assert(
       typeof value.n === "string" &&
         value.ex.every((x) => typeof x === "string"),

@@ -276,4 +276,16 @@ const List<ProgramTemplate> kProgramTemplates = [
       ('Hanging Leg Raise', 3),
     ], weekday: 5),
   ]),
+  ProgramTemplate(
+    'hybrid-12-week',
+    '12-Week Hybrid',
+    [
+      ProgramDay('Upper A', [], weekday: 1),
+      ProgramDay('Lower A', [], weekday: 2),
+      ProgramDay('Upper B', [], weekday: 4),
+      ProgramDay('Lower B', [], weekday: 6),
+    ],
+    description:
+        'Four core days, optional arms day. Calibrate loads, build repetitions and weight, and deload every fourth week. Upper/lower volume: 60/40.',
+  ),
 ];

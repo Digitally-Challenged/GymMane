@@ -5478,4 +5478,46 @@ class AppLocalizationsDe extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Fehlende Übungen: $count. Stelle sie aus einer Sicherung wieder her oder entferne sie vor dem Start aus diesem Trainingsplan.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Protokolliere bei jedem Arbeitssatz die Wiederholungsreserve. Prüfe vor der nächsten Steigerung deine Erholung. Wärme dich 5–10 Minuten auf; Aufwärmsätze erscheinen nach Eingabe einer Last.';
+
+  @override
+  String get blockOptionalArms => 'Armsätze auf Tag 5 verschieben';
+
+  @override
+  String get blockSettingsTitle => 'Trainingslasten und Grenzen';
+
+  @override
+  String get blockCalibrationHint =>
+      'Die Startlast gilt, solange dieses Programm keinen Verlauf hat. Spätere Ziele folgen deiner protokollierten Leistung.';
+
+  @override
+  String get blockRecoveryQuestion =>
+      'Letztes Training: Wie waren Erholung und Gelenkbeschwerden am Folgetag?';
+
+  @override
+  String get blockCalibrationLoad => 'Startlast';
+
+  @override
+  String get blockIncreaseBy => 'Steigern um';
+
+  @override
+  String get blockLoadStep => 'Verfügbarer Lastschritt';
+
+  @override
+  String get blockLoadCap => 'Maximale Last (optional)';
+
+  @override
+  String get blockResponseStable => 'Erholt; Beschwerden stabil';
+
+  @override
+  String get blockResponseWorse => 'Nicht erholt / Beschwerden stärker';
+
+  @override
+  String get blockOptionalLocked => 'Vor dem ersten Training der Woche wählen.';
+
+  @override
+  String get blockOptionalHint => 'Verteilt sechs Sätze um; das Wochenvolumen bleibt gleich.';
 }

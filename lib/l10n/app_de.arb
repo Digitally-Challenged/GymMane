@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "Warten auf Cloud-Synchronisierung",
   "syncSynced": "Synchronisiert",
   "routineMissingExercisesTitle": "Übungen müssen wiederhergestellt werden",
-  "routineMissingExercisesMessage": "Fehlende Übungen: {count}. Stelle sie aus einer Sicherung wieder her oder entferne sie vor dem Start aus diesem Trainingsplan."
+  "routineMissingExercisesMessage": "Fehlende Übungen: {count}. Stelle sie aus einer Sicherung wieder her oder entferne sie vor dem Start aus diesem Trainingsplan.",
+  "blockWorkoutGuide": "Protokolliere bei jedem Arbeitssatz die Wiederholungsreserve. Prüfe vor der nächsten Steigerung deine Erholung. Wärme dich 5–10 Minuten auf; Aufwärmsätze erscheinen nach Eingabe einer Last.",
+  "blockOptionalArms": "Armsätze auf Tag 5 verschieben",
+  "blockSettingsTitle": "Trainingslasten und Grenzen",
+  "blockCalibrationHint": "Die Startlast gilt, solange dieses Programm keinen Verlauf hat. Spätere Ziele folgen deiner protokollierten Leistung.",
+  "blockRecoveryQuestion": "Letztes Training: Wie waren Erholung und Gelenkbeschwerden am Folgetag?",
+  "blockCalibrationLoad": "Startlast",
+  "blockIncreaseBy": "Steigern um",
+  "blockLoadStep": "Verfügbarer Lastschritt",
+  "blockLoadCap": "Maximale Last (optional)",
+  "blockResponseStable": "Erholt; Beschwerden stabil",
+  "blockResponseWorse": "Nicht erholt / Beschwerden stärker",
+  "blockOptionalLocked": "Vor dem ersten Training der Woche wählen.",
+  "blockOptionalHint": "Verteilt sechs Sätze um; das Wochenvolumen bleibt gleich."
 }

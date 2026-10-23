@@ -5437,4 +5437,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Missing exercises: $count. Restore them from a backup or remove them from this routine before starting.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Log reps in reserve on each work set. Review your response at the next workout before progressing. Warm up for 5–10 minutes; ramp sets are included once a load is entered.';
+
+  @override
+  String get blockOptionalArms => 'Move arm sets to day 5';
+
+  @override
+  String get blockSettingsTitle => 'Exercise loads and limits';
+
+  @override
+  String get blockCalibrationHint =>
+      'Calibration load is used before this program has history. Later targets follow your recorded performance.';
+
+  @override
+  String get blockRecoveryQuestion => 'Previous workout: how was your recovery and next-day joint response?';
+
+  @override
+  String get blockCalibrationLoad => 'Calibration load';
+
+  @override
+  String get blockIncreaseBy => 'Increase by';
+
+  @override
+  String get blockLoadStep => 'Available load step';
+
+  @override
+  String get blockLoadCap => 'Maximum load (optional)';
+
+  @override
+  String get blockResponseStable => 'Recovered; symptoms stable';
+
+  @override
+  String get blockResponseWorse => 'Not recovered / symptoms worse';
+
+  @override
+  String get blockOptionalLocked => 'Choose before the week’s first workout.';
+
+  @override
+  String get blockOptionalHint => 'Redistributes six sets; weekly volume stays the same.';
 }

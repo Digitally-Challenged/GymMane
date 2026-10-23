@@ -5512,4 +5512,46 @@ class AppLocalizationsPl extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Liczba brakujących ćwiczeń: $count. Przed rozpoczęciem przywróć je z kopii zapasowej lub usuń z tego planu.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Zapisuj zapas powtórzeń w każdej serii roboczej. Oceń regenerację na kolejnym treningu przed zwiększeniem obciążenia. Rozgrzewaj się 5–10 minut; serie wprowadzające pojawią się po wpisaniu ciężaru.';
+
+  @override
+  String get blockOptionalArms => 'Przenieś serie ramion na dzień 5';
+
+  @override
+  String get blockSettingsTitle => 'Obciążenia i limity ćwiczeń';
+
+  @override
+  String get blockCalibrationHint =>
+      'Ciężar początkowy obowiązuje, gdy program nie ma jeszcze historii. Kolejne cele wynikają z zapisanych wyników.';
+
+  @override
+  String get blockRecoveryQuestion =>
+      'Poprzedni trening: jak wyglądała regeneracja i reakcja stawów następnego dnia?';
+
+  @override
+  String get blockCalibrationLoad => 'Ciężar początkowy';
+
+  @override
+  String get blockIncreaseBy => 'Zwiększ o';
+
+  @override
+  String get blockLoadStep => 'Dostępny skok ciężaru';
+
+  @override
+  String get blockLoadCap => 'Maksymalny ciężar (opcjonalnie)';
+
+  @override
+  String get blockResponseStable => 'Regeneracja dobra; objawy stabilne';
+
+  @override
+  String get blockResponseWorse => 'Brak regeneracji / nasilenie objawów';
+
+  @override
+  String get blockOptionalLocked => 'Wybierz przed pierwszym treningiem tygodnia.';
+
+  @override
+  String get blockOptionalHint => 'Przenosi sześć serii; objętość tygodniowa pozostaje bez zmian.';
 }

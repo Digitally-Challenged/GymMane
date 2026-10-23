@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "Oczekiwanie na synchronizację z chmurą",
   "syncSynced": "Zsynchronizowano",
   "routineMissingExercisesTitle": "Ćwiczenia wymagają przywrócenia",
-  "routineMissingExercisesMessage": "Liczba brakujących ćwiczeń: {count}. Przed rozpoczęciem przywróć je z kopii zapasowej lub usuń z tego planu."
+  "routineMissingExercisesMessage": "Liczba brakujących ćwiczeń: {count}. Przed rozpoczęciem przywróć je z kopii zapasowej lub usuń z tego planu.",
+  "blockWorkoutGuide": "Zapisuj zapas powtórzeń w każdej serii roboczej. Oceń regenerację na kolejnym treningu przed zwiększeniem obciążenia. Rozgrzewaj się 5–10 minut; serie wprowadzające pojawią się po wpisaniu ciężaru.",
+  "blockOptionalArms": "Przenieś serie ramion na dzień 5",
+  "blockSettingsTitle": "Obciążenia i limity ćwiczeń",
+  "blockCalibrationHint": "Ciężar początkowy obowiązuje, gdy program nie ma jeszcze historii. Kolejne cele wynikają z zapisanych wyników.",
+  "blockRecoveryQuestion": "Poprzedni trening: jak wyglądała regeneracja i reakcja stawów następnego dnia?",
+  "blockCalibrationLoad": "Ciężar początkowy",
+  "blockIncreaseBy": "Zwiększ o",
+  "blockLoadStep": "Dostępny skok ciężaru",
+  "blockLoadCap": "Maksymalny ciężar (opcjonalnie)",
+  "blockResponseStable": "Regeneracja dobra; objawy stabilne",
+  "blockResponseWorse": "Brak regeneracji / nasilenie objawów",
+  "blockOptionalLocked": "Wybierz przed pierwszym treningiem tygodnia.",
+  "blockOptionalHint": "Przenosi sześć serii; objętość tygodniowa pozostaje bez zmian."
 }

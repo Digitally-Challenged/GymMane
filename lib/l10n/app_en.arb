@@ -1911,5 +1911,18 @@
         "type": "int"
       }
     }
-  }
+  },
+  "blockWorkoutGuide": "Log reps in reserve on each work set. Review your response at the next workout before progressing. Warm up for 5–10 minutes; ramp sets are included once a load is entered.",
+  "blockOptionalArms": "Move arm sets to day 5",
+  "blockSettingsTitle": "Exercise loads and limits",
+  "blockCalibrationHint": "Calibration load is used before this program has history. Later targets follow your recorded performance.",
+  "blockRecoveryQuestion": "Previous workout: how was your recovery and next-day joint response?",
+  "blockCalibrationLoad": "Calibration load",
+  "blockIncreaseBy": "Increase by",
+  "blockLoadStep": "Available load step",
+  "blockLoadCap": "Maximum load (optional)",
+  "blockResponseStable": "Recovered; symptoms stable",
+  "blockResponseWorse": "Not recovered / symptoms worse",
+  "blockOptionalLocked": "Choose before the week’s first workout.",
+  "blockOptionalHint": "Redistributes six sets; weekly volume stays the same."
 }

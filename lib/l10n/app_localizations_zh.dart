@@ -5264,6 +5264,45 @@ class AppLocalizationsZh extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return '缺失的动作：$count 个。开始前，请从备份恢复这些动作，或将其从此训练计划中移除。';
   }
+
+  @override
+  String get blockWorkoutGuide => '每组工作组都记录剩余次数。下次训练先评估恢复情况，再增加负荷。热身5–10分钟；输入重量后会显示递增热身组。';
+
+  @override
+  String get blockOptionalArms => '将手臂训练组移至第5天';
+
+  @override
+  String get blockSettingsTitle => '动作重量与上限';
+
+  @override
+  String get blockCalibrationHint => '本计划尚无记录时使用初始重量，之后的目标依据已记录的表现调整。';
+
+  @override
+  String get blockRecoveryQuestion => '上次训练后的恢复及第二天关节反应如何？';
+
+  @override
+  String get blockCalibrationLoad => '初始重量';
+
+  @override
+  String get blockIncreaseBy => '增加量';
+
+  @override
+  String get blockLoadStep => '可用重量步进';
+
+  @override
+  String get blockLoadCap => '最大重量（可选）';
+
+  @override
+  String get blockResponseStable => '已恢复；症状稳定';
+
+  @override
+  String get blockResponseWorse => '未恢复／症状加重';
+
+  @override
+  String get blockOptionalLocked => '请在本周第一次训练前选择。';
+
+  @override
+  String get blockOptionalHint => '重新分配六组，每周总训练量不变。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -10141,4 +10180,43 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String routineMissingExercisesMessage(int count) {
     return '遺失的動作：$count 個。開始前，請從備份還原這些動作，或將其從此訓練計畫中移除。';
   }
+
+  @override
+  String get blockWorkoutGuide => '每組工作組都記錄剩餘次數。下次訓練先評估恢復情況，再增加負荷。熱身5–10分鐘；輸入重量後會顯示遞增熱身組。';
+
+  @override
+  String get blockOptionalArms => '將手臂訓練組移至第5天';
+
+  @override
+  String get blockSettingsTitle => '動作重量與上限';
+
+  @override
+  String get blockCalibrationHint => '本計畫尚無紀錄時使用初始重量，之後的目標依據已記錄的表現調整。';
+
+  @override
+  String get blockRecoveryQuestion => '上次訓練後的恢復及第二天關節反應如何？';
+
+  @override
+  String get blockCalibrationLoad => '初始重量';
+
+  @override
+  String get blockIncreaseBy => '增加量';
+
+  @override
+  String get blockLoadStep => '可用重量級距';
+
+  @override
+  String get blockLoadCap => '最大重量（選填）';
+
+  @override
+  String get blockResponseStable => '已恢復；症狀穩定';
+
+  @override
+  String get blockResponseWorse => '未恢復／症狀加重';
+
+  @override
+  String get blockOptionalLocked => '請在本週第一次訓練前選擇。';
+
+  @override
+  String get blockOptionalHint => '重新分配六組，每週總訓練量不變。';
 }

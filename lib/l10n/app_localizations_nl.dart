@@ -5472,4 +5472,45 @@ class AppLocalizationsNl extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'Ontbrekende oefeningen: $count. Herstel ze vanuit een back-up of verwijder ze uit deze routine voordat je begint.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'Noteer bij elke werkset de herhalingen in reserve. Beoordeel je herstel bij de volgende training voordat je verhoogt. Warm 5–10 minuten op; opbouwsets verschijnen na het invoeren van een gewicht.';
+
+  @override
+  String get blockOptionalArms => 'Armsets naar dag 5 verplaatsen';
+
+  @override
+  String get blockSettingsTitle => 'Gewichten en grenzen per oefening';
+
+  @override
+  String get blockCalibrationHint =>
+      'Het startgewicht geldt zolang dit programma geen historie heeft. Latere doelen volgen je geregistreerde prestaties.';
+
+  @override
+  String get blockRecoveryQuestion => 'Vorige training: hoe waren je herstel en gewrichten de volgende dag?';
+
+  @override
+  String get blockCalibrationLoad => 'Startgewicht';
+
+  @override
+  String get blockIncreaseBy => 'Verhogen met';
+
+  @override
+  String get blockLoadStep => 'Beschikbare gewichtsstap';
+
+  @override
+  String get blockLoadCap => 'Maximumgewicht (optioneel)';
+
+  @override
+  String get blockResponseStable => 'Hersteld; klachten stabiel';
+
+  @override
+  String get blockResponseWorse => 'Niet hersteld / klachten erger';
+
+  @override
+  String get blockOptionalLocked => 'Kies vóór de eerste training van de week.';
+
+  @override
+  String get blockOptionalHint => 'Verdeelt zes sets opnieuw; het weekvolume blijft gelijk.';
 }

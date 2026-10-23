@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "Bulut eşitlemesi bekleniyor",
   "syncSynced": "Eşitlendi",
   "routineMissingExercisesTitle": "Egzersizlerin geri yüklenmesi gerekiyor",
-  "routineMissingExercisesMessage": "Eksik egzersiz sayısı: {count}. Başlamadan önce bunları bir yedekten geri yükleyin veya bu rutinden kaldırın."
+  "routineMissingExercisesMessage": "Eksik egzersiz sayısı: {count}. Başlamadan önce bunları bir yedekten geri yükleyin veya bu rutinden kaldırın.",
+  "blockWorkoutGuide": "Her çalışma setinde yedek tekrar sayısını kaydet. İlerlemeden önce sonraki antrenmanda toparlanmanı değerlendir. 5–10 dakika ısın; yük girildiğinde hazırlık setleri eklenir.",
+  "blockOptionalArms": "Kol setlerini 5. güne taşı",
+  "blockSettingsTitle": "Egzersiz yükleri ve sınırları",
+  "blockCalibrationHint": "Başlangıç yükü program geçmişi oluşana kadar kullanılır. Sonraki hedefler kaydedilen performansı izler.",
+  "blockRecoveryQuestion": "Önceki antrenman: toparlanman ve ertesi gün eklem tepkisi nasıldı?",
+  "blockCalibrationLoad": "Başlangıç yükü",
+  "blockIncreaseBy": "Artış miktarı",
+  "blockLoadStep": "Kullanılabilir yük adımı",
+  "blockLoadCap": "En yüksek yük (isteğe bağlı)",
+  "blockResponseStable": "Toparlandım; belirtiler aynı",
+  "blockResponseWorse": "Toparlanmadım / belirtiler arttı",
+  "blockOptionalLocked": "Haftanın ilk antrenmanından önce seç.",
+  "blockOptionalHint": "Altı seti yeniden dağıtır; haftalık hacim değişmez."
 }

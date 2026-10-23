@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "في انتظار المزامنة السحابية",
   "syncSynced": "تمت المزامنة",
   "routineMissingExercisesTitle": "تحتاج التمارين إلى الاستعادة",
-  "routineMissingExercisesMessage": "التمارين المفقودة: {count}. استعدها من نسخة احتياطية أو أزلها من هذا الروتين قبل البدء."
+  "routineMissingExercisesMessage": "التمارين المفقودة: {count}. استعدها من نسخة احتياطية أو أزلها من هذا الروتين قبل البدء.",
+  "blockWorkoutGuide": "سجّل التكرارات المتبقية في كل مجموعة عمل. راجع تعافيك في التمرين التالي قبل زيادة الحمل. أحمِ الجسم لمدة 5–10 دقائق؛ تظهر مجموعات التهيئة بعد إدخال الوزن.",
+  "blockOptionalArms": "نقل مجموعات الذراعين إلى اليوم 5",
+  "blockSettingsTitle": "أوزان التمارين وحدودها",
+  "blockCalibrationHint": "يُستخدم الوزن الأولي قبل وجود سجل لهذا البرنامج. تعتمد الأهداف التالية على أدائك المسجّل.",
+  "blockRecoveryQuestion": "التمرين السابق: كيف كان التعافي واستجابة المفاصل في اليوم التالي؟",
+  "blockCalibrationLoad": "الوزن الأولي",
+  "blockIncreaseBy": "مقدار الزيادة",
+  "blockLoadStep": "خطوة الوزن المتاحة",
+  "blockLoadCap": "الوزن الأقصى (اختياري)",
+  "blockResponseStable": "تعافيت؛ الأعراض مستقرة",
+  "blockResponseWorse": "لم أتعافَ / ازدادت الأعراض",
+  "blockOptionalLocked": "اختر قبل أول تمرين في الأسبوع.",
+  "blockOptionalHint": "يعيد توزيع ست مجموعات؛ الحجم الأسبوعي لا يتغير."
 }

@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "等待云同步",
   "syncSynced": "已同步",
   "routineMissingExercisesTitle": "需要恢复训练动作",
-  "routineMissingExercisesMessage": "缺失的动作：{count} 个。开始前，请从备份恢复这些动作，或将其从此训练计划中移除。"
+  "routineMissingExercisesMessage": "缺失的动作：{count} 个。开始前，请从备份恢复这些动作，或将其从此训练计划中移除。",
+  "blockWorkoutGuide": "每组工作组都记录剩余次数。下次训练先评估恢复情况，再增加负荷。热身5–10分钟；输入重量后会显示递增热身组。",
+  "blockOptionalArms": "将手臂训练组移至第5天",
+  "blockSettingsTitle": "动作重量与上限",
+  "blockCalibrationHint": "本计划尚无记录时使用初始重量，之后的目标依据已记录的表现调整。",
+  "blockRecoveryQuestion": "上次训练后的恢复及第二天关节反应如何？",
+  "blockCalibrationLoad": "初始重量",
+  "blockIncreaseBy": "增加量",
+  "blockLoadStep": "可用重量步进",
+  "blockLoadCap": "最大重量（可选）",
+  "blockResponseStable": "已恢复；症状稳定",
+  "blockResponseWorse": "未恢复／症状加重",
+  "blockOptionalLocked": "请在本周第一次训练前选择。",
+  "blockOptionalHint": "重新分配六组，每周总训练量不变。"
 }

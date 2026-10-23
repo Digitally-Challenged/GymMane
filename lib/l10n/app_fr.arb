@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "En attente de synchronisation avec le cloud",
   "syncSynced": "Synchronisé",
   "routineMissingExercisesTitle": "Des exercices doivent être restaurés",
-  "routineMissingExercisesMessage": "Exercices manquants : {count}. Restaurez-les à partir d’une sauvegarde ou retirez-les de cette routine avant de commencer."
+  "routineMissingExercisesMessage": "Exercices manquants : {count}. Restaurez-les à partir d’une sauvegarde ou retirez-les de cette routine avant de commencer.",
+  "blockWorkoutGuide": "Notez les répétitions en réserve à chaque série. Évaluez votre récupération à la séance suivante avant de progresser. Échauffez-vous 5–10 minutes ; les séries progressives apparaissent après saisie de la charge.",
+  "blockOptionalArms": "Déplacer les bras au jour 5",
+  "blockSettingsTitle": "Charges et limites des exercices",
+  "blockCalibrationHint": "La charge initiale sert avant tout historique dans ce programme. Ensuite, les objectifs suivent vos performances enregistrées.",
+  "blockRecoveryQuestion": "Séance précédente : récupération et réaction articulaire le lendemain ?",
+  "blockCalibrationLoad": "Charge initiale",
+  "blockIncreaseBy": "Augmenter de",
+  "blockLoadStep": "Palier de charge disponible",
+  "blockLoadCap": "Charge maximale (facultatif)",
+  "blockResponseStable": "Récupéré ; symptômes stables",
+  "blockResponseWorse": "Récupération insuffisante / symptômes aggravés",
+  "blockOptionalLocked": "Choisissez avant la première séance de la semaine.",
+  "blockOptionalHint": "Redistribue six séries ; le volume hebdomadaire reste identique."
 }

@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "In attesa della sincronizzazione cloud",
   "syncSynced": "Sincronizzato",
   "routineMissingExercisesTitle": "Alcuni esercizi devono essere ripristinati",
-  "routineMissingExercisesMessage": "Esercizi mancanti: {count}. Ripristinali da un backup oppure rimuovili da questa routine prima di iniziare."
+  "routineMissingExercisesMessage": "Esercizi mancanti: {count}. Ripristinali da un backup oppure rimuovili da questa routine prima di iniziare.",
+  "blockWorkoutGuide": "Registra le ripetizioni in riserva per ogni serie. Valuta il recupero alla sessione successiva prima di progredire. Riscaldati 5–10 minuti; le serie preparatorie compaiono dopo aver inserito un carico.",
+  "blockOptionalArms": "Sposta le serie braccia al giorno 5",
+  "blockSettingsTitle": "Carichi e limiti degli esercizi",
+  "blockCalibrationHint": "Il carico iniziale si usa prima che il programma abbia uno storico. Gli obiettivi successivi seguono le prestazioni registrate.",
+  "blockRecoveryQuestion": "Sessione precedente: recupero e risposta articolare il giorno dopo?",
+  "blockCalibrationLoad": "Carico iniziale",
+  "blockIncreaseBy": "Aumenta di",
+  "blockLoadStep": "Incremento di carico disponibile",
+  "blockLoadCap": "Carico massimo (facoltativo)",
+  "blockResponseStable": "Recuperato; sintomi stabili",
+  "blockResponseWorse": "Non recuperato / sintomi peggiori",
+  "blockOptionalLocked": "Scegli prima della prima sessione settimanale.",
+  "blockOptionalHint": "Ridistribuisce sei serie; il volume settimanale non cambia."
 }

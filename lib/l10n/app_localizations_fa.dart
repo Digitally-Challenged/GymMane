@@ -5430,4 +5430,45 @@ class AppLocalizationsFa extends AppLocalizations {
   String routineMissingExercisesMessage(int count) {
     return 'تمرین‌های مفقود: $count. پیش از شروع، آن‌ها را از نسخهٔ پشتیبان بازیابی کنید یا از این برنامه حذف کنید.';
   }
+
+  @override
+  String get blockWorkoutGuide =>
+      'در هر ست کاری تعداد تکرارهای باقی‌مانده را ثبت کنید. پیش از افزایش بار، در جلسه بعد وضعیت ریکاوری را بررسی کنید. ۵–۱۰ دقیقه گرم کنید؛ پس از ورود وزنه ست‌های آماده‌سازی نمایش داده می‌شوند.';
+
+  @override
+  String get blockOptionalArms => 'انتقال ست‌های بازو به روز ۵';
+
+  @override
+  String get blockSettingsTitle => 'وزنه‌ها و محدودیت‌های تمرین';
+
+  @override
+  String get blockCalibrationHint =>
+      'وزنه اولیه تا زمانی استفاده می‌شود که برنامه سابقه‌ای ندارد. اهداف بعدی بر اساس عملکرد ثبت‌شده تعیین می‌شوند.';
+
+  @override
+  String get blockRecoveryQuestion => 'جلسه قبل: ریکاوری و واکنش مفاصل در روز بعد چگونه بود؟';
+
+  @override
+  String get blockCalibrationLoad => 'وزنه اولیه';
+
+  @override
+  String get blockIncreaseBy => 'مقدار افزایش';
+
+  @override
+  String get blockLoadStep => 'گام وزنه موجود';
+
+  @override
+  String get blockLoadCap => 'حداکثر وزنه (اختیاری)';
+
+  @override
+  String get blockResponseStable => 'ریکاوری شده؛ علائم پایدار';
+
+  @override
+  String get blockResponseWorse => 'ریکاوری نشده / علائم بدتر';
+
+  @override
+  String get blockOptionalLocked => 'پیش از اولین تمرین هفته انتخاب کنید.';
+
+  @override
+  String get blockOptionalHint => 'شش ست را بازتوزیع می‌کند؛ حجم هفتگی ثابت می‌ماند.';
 }

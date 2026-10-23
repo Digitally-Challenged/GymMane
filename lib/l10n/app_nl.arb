@@ -1532,5 +1532,18 @@
   "syncWaitingForCloudSync": "Wachten op cloudsynchronisatie",
   "syncSynced": "Gesynchroniseerd",
   "routineMissingExercisesTitle": "Oefeningen moeten worden hersteld",
-  "routineMissingExercisesMessage": "Ontbrekende oefeningen: {count}. Herstel ze vanuit een back-up of verwijder ze uit deze routine voordat je begint."
+  "routineMissingExercisesMessage": "Ontbrekende oefeningen: {count}. Herstel ze vanuit een back-up of verwijder ze uit deze routine voordat je begint.",
+  "blockWorkoutGuide": "Noteer bij elke werkset de herhalingen in reserve. Beoordeel je herstel bij de volgende training voordat je verhoogt. Warm 5–10 minuten op; opbouwsets verschijnen na het invoeren van een gewicht.",
+  "blockOptionalArms": "Armsets naar dag 5 verplaatsen",
+  "blockSettingsTitle": "Gewichten en grenzen per oefening",
+  "blockCalibrationHint": "Het startgewicht geldt zolang dit programma geen historie heeft. Latere doelen volgen je geregistreerde prestaties.",
+  "blockRecoveryQuestion": "Vorige training: hoe waren je herstel en gewrichten de volgende dag?",
+  "blockCalibrationLoad": "Startgewicht",
+  "blockIncreaseBy": "Verhogen met",
+  "blockLoadStep": "Beschikbare gewichtsstap",
+  "blockLoadCap": "Maximumgewicht (optioneel)",
+  "blockResponseStable": "Hersteld; klachten stabiel",
+  "blockResponseWorse": "Niet hersteld / klachten erger",
+  "blockOptionalLocked": "Kies vóór de eerste training van de week.",
+  "blockOptionalHint": "Verdeelt zes sets opnieuw; het weekvolume blijft gelijk."
 }

@@ -1,4 +1,5 @@
 import 'training_method.dart';
+import 'block_program.dart';
 import 'identity.dart';
 import 'exercise.dart';
 import '../catalog/exercise_catalog.dart';
@@ -144,6 +145,7 @@ class LoggedSession {
     String? id,
     this.routineId,
     this.name,
+    this.program,
     this.origin = 'gymmane',
     DateTime? startedAt,
     int? utcOffsetSeconds,
@@ -159,6 +161,7 @@ class LoggedSession {
   final List<LoggedExercise> exercises;
   final String? routineId;
   String? name;
+  final BlockSession? program;
 
   DateTime get day => date.subtract(Duration(seconds: durationSec));
   double get volume => exercises.fold(0.0, (s, e) => s + e.volume);
@@ -174,6 +177,7 @@ class LoggedSession {
     'ex': exercises.map((e) => e.toJson()).toList(),
     if (routineId != null) 'r': routineId,
     if (name != null) 'n': name,
+    if (program != null) 'program': program!.toJson(),
   };
   factory LoggedSession.fromJson(Map<String, dynamic> j) => LoggedSession(
     DateTime.parse(j['d'] as String).toLocal(),
@@ -185,6 +189,7 @@ class LoggedSession {
     utcOffsetSeconds: (j['utcOffsetSeconds'] as num?)?.toInt(),
     routineId: j['r'] as String?,
     name: j['n'] as String?,
+    program: j['program'] == null ? null : BlockSession.fromJson(blockMap(j['program'])),
   );
 }
 
@@ -249,6 +254,7 @@ class Routine {
     Map<String, Exercise>? exerciseDefinitions,
     this.group = '',
     this.method = TrainingMethod.standard,
+    this.program,
     this.color = -1,
   }) : sets = sets ?? {},
        chained = chained ?? {},
@@ -259,6 +265,7 @@ class Routine {
   String name;
   String group;
   TrainingMethod method;
+  BlockProgram? program;
   int color;
   final List<String> exerciseIds;
   final Map<String, int> sets;
@@ -281,6 +288,7 @@ class Routine {
     if (chained.isNotEmpty) 'c': chained.toList(),
     if (group.isNotEmpty) 'g': group,
     if (method != TrainingMethod.standard) 'method': method.name,
+    if (program != null) 'program': program!.toJson(),
     if (color >= 0) 'k': color,
     if (plan.isNotEmpty) 'p': plan.map((k, v) => MapEntry(k, v.map((s) => s.toJson()).toList())),
   };
@@ -305,8 +313,19 @@ class Routine {
     ),
     group: (j['g'] as String?) ?? '',
     method: TrainingMethod.fromJson(j['method']),
+    program: _routineProgram(j),
     color: (j['k'] as num?)?.toInt() ?? -1,
   );
+}
+
+BlockProgram? _routineProgram(Map<String, dynamic> json) {
+  if (json['program'] == null) return null;
+  final program = BlockProgram.fromJson(blockMap(json['program']));
+  final ids = (json['ex'] as List?) ?? const [];
+  if (program.rules.keys.any((id) => !ids.contains(id))) {
+    throw const FormatException('Unreferenced program exercise');
+  }
+  return program;
 }
 
 // Dependency definitions are untrusted sync/backup input. Exercise.fromJson is

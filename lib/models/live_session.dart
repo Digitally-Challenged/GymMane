@@ -1,4 +1,5 @@
 import 'workout.dart';
+import 'block_program.dart';
 
 class SessionSet {
   SessionSet(this.reps, this.weight, this.done, {this.kind = SetKind.normal, this.rpe, this.sec, this.km});
@@ -77,6 +78,8 @@ class WorkoutSession {
   String origin = 'gymmane';
   int? utcOffsetSeconds;
   String? routineId;
+  BlockSession? program;
+  bool programManuallyEdited = false;
   String? name;
   DateTime? loggedAt;
   DateTime? startedAt;
@@ -109,6 +112,8 @@ class WorkoutSession {
     'c': complete,
     if (manual) 'm': true,
     if (routineId != null) 'r': routineId,
+    if (program != null) 'program': program!.toJson(),
+    if (programManuallyEdited) 'programEdited': true,
     if (name != null) 'n': name,
     'at': loggedAt?.toIso8601String(),
     if (startedAt != null) 'startedAt': startedAt!.toUtc().toIso8601String(),
@@ -130,6 +135,8 @@ class WorkoutSession {
     ..origin = j['origin'] as String? ?? 'unknown'
     ..utcOffsetSeconds = (j['utcOffsetSeconds'] as num?)?.toInt()
     ..routineId = j['r'] as String?
+    ..program = j['program'] == null ? null : BlockSession.fromJson(blockMap(j['program']))
+    ..programManuallyEdited = j['programEdited'] == true
     ..name = j['n'] as String?
     ..loggedAt = DateTime.tryParse((j['at'] as String?) ?? '')
     ..startedAt = DateTime.tryParse(j['startedAt'] as String? ?? '')?.toUtc()

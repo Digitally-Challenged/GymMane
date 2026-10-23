@@ -1,11 +1,13 @@
 part of 'fit_state.dart';
 
-mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsState, RoutinesState {
+mixin WorkoutState
+    on FitCore, SettingsState, LibraryState, PlacesState, StatsState, RoutinesState, BlockProgramState {
   final List<String> selectedMuscles = [];
   final Set<String> sessionPicks = {};
   final Set<String> pickSeed = {};
   String trainStep = 'select';
   String? trainKind;
+  @override
   WorkoutSession? session;
   Timer? _sessionTimer;
   Timer? _restTimer;
@@ -202,6 +204,49 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   TrainingMethod get sessionTrainingMethod =>
       _routine(session?.routineId ?? '')?.method ?? TrainingMethod.standard;
 
+  LoggedSession? previousBlockSession(String exerciseId) {
+    final snapshot = session?.program;
+    if (snapshot == null) return null;
+    final before = session?.startedAt ?? DateTime.now();
+    final matching =
+        sessions
+            .where(
+              (s) =>
+                  s.id != session?.workoutId &&
+                  s.program?.programId == snapshot.programId &&
+                  s.program?.day == snapshot.day &&
+                  !s.program!.deload &&
+                  s.program!.targets.containsKey(exerciseId) &&
+                  !s.date.isAfter(before),
+            )
+            .toList()
+          ..sort((a, b) => b.date.compareTo(a.date));
+    return matching.firstOrNull;
+  }
+
+  void reviewBlockResponse(String exerciseId, BlockResponse response) {
+    final previous = previousBlockSession(exerciseId);
+    if (previous == null) return;
+    previous.program!.responses[exerciseId] = response;
+    final current = session!;
+    final routine = _routine(current.routineId ?? '');
+    // Never replace sets after any part of the workout has been recorded.
+    if (routine?.program != null && !current.programManuallyEdited &&
+        !current.exercises.any((e) => e.sets.any((s) => s.done))) {
+      final opening = blockOpening(routine!, on: current.startedAt?.toLocal());
+      current.program = opening.session;
+      current.exercises = [
+        for (final id in routine.exerciseIds)
+          if (opening.plans[id] case final plan?)
+            if (exerciseById(id) case final ex?)
+              SessionExercise(ex.id, ex.name, ex.primary, _fromPlan(id, plan)),
+      ];
+      current.currentIndex = current.currentIndex.clamp(0, current.exercises.length - 1);
+    }
+    _persist();
+    notifyListeners();
+  }
+
   List<PlannedSet> _programPlan(Routine routine, String id) {
     final plan = plannedSets(routine, id);
     if (routine.method == TrainingMethod.standard ||
@@ -242,6 +287,19 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
 
   void startRoutine(Routine r, {DateTime? on}) {
     if (_backToParked()) return;
+    programStartError = null;
+    if (r.program != null) {
+      try {
+        final opening = blockOpening(r, on: on);
+        final exs = routineExercises(r).where((e) => opening.plans.containsKey(e.id)).toList();
+        if (exs.isEmpty) return;
+        _beginSession(exs, planned: opening.plans, routineId: r.id, on: on, program: opening.session);
+      } on StateError catch (error) {
+        programStartError = error.message.toString();
+        notifyListeners();
+      }
+      return;
+    }
     final exs = routineExercises(r);
     if (exs.isEmpty) return;
     _beginSession(exs,
@@ -388,13 +446,18 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     return step;
   }
 
-  void _beginSession(List<Exercise> exs,
-      {Map<String, int>? plan,
-      Map<String, List<PlannedSet>> planned = const {},
-      Set<String> chained = const {},
-      String? routineId,
-      DateTime? on}) {
-    final s = WorkoutSession()..routineId = routineId;
+  void _beginSession(
+    List<Exercise> exs, {
+    Map<String, int>? plan,
+    Map<String, List<PlannedSet>> planned = const {},
+    Set<String> chained = const {},
+    String? routineId,
+    BlockSession? program,
+    DateTime? on,
+  }) {
+    final s = WorkoutSession()
+      ..routineId = routineId
+      ..program = program;
     if (on != null) {
       s.loggedAt = DateTime(on.year, on.month, on.day, 12);
       s.manual = true;
@@ -1208,17 +1271,43 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   }
 
   void setSessionReps(int exIdx, int setIdx, int reps) {
+    if (session?.program != null) session!.programManuallyEdited = true;
     _carry(exIdx, setIdx, (st) => st.reps, (st, v) => st.reps = v, reps.clamp(0, 999));
     _persist();
     notifyListeners();
   }
 
   void setSessionWeight(int exIdx, int setIdx, double kg) {
+    if (!kg.isFinite) return;
+    if (session?.program != null) session!.programManuallyEdited = true;
     final sets = session!.exercises[exIdx].sets;
     final before = sets[setIdx].weight;
-    final next = _round3(kg.clamp(0, 1000));
+    final rule = session!.program?.rules[session!.exercises[exIdx].id];
+    final squatCap = session!.program == null ? null : hybridSquatCap(session!.exercises[exIdx].name);
+    final cap = math.min(rule?.maxWeightKg ?? 1000, squatCap ?? 1000);
+    final next = math.min(cap, _round3(kg.clamp(0, cap)));
     final id = session!.exercises[exIdx].id;
-    if (sessionTrainingMethod == TrainingMethod.reversePyramid &&
+    if (rule != null && identical(sets.where((s) => s.counts).firstOrNull, sets[setIdx])) {
+      final warmups = sets.where((s) => !s.counts).toList();
+      for (var i = 0; i < warmups.length; i++) {
+        final fraction = .4 + .2 * i;
+        final oldWarm = (before * fraction / rule.roundingKg + 1e-9).floor() * rule.roundingKg;
+        if (!warmups[i].done && (warmups[i].weight - oldWarm).abs() < .002) {
+          warmups[i].weight = (next * fraction / rule.roundingKg + 1e-9).floor() * rule.roundingKg;
+        }
+      }
+    }
+    if (rule?.method == BlockMethod.reversePyramid) {
+      sets[setIdx].weight = next;
+      final work = sets.where((s) => s.counts).toList();
+      if (work.isNotEmpty && identical(work.first, sets[setIdx])) {
+        for (var i = 1; i < work.length; i++) {
+          if (!work[i].done && (work[i].weight - pyramidWeight(before, i, rule!.roundingKg)).abs() < .002) {
+            work[i].weight = pyramidWeight(next, i, rule.roundingKg);
+          }
+        }
+      }
+    } else if (sessionTrainingMethod == TrainingMethod.reversePyramid &&
         !isRepsOnly(id) && !isAssisted(id) && modeOf(id).isEmpty) {
       sets[setIdx].weight = next;
       _adjustPyramidBackoffs(exIdx, setIdx, before, next);
@@ -1263,6 +1352,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   void removeSessionExercise(int exIdx) {
     final s = session!;
     if (exIdx < 0 || exIdx >= s.exercises.length) return;
+    if (s.program != null) s.programManuallyEdited = true;
     s.exercises.removeAt(exIdx);
     if (s.exercises.isEmpty) {
       discardSession();
@@ -1277,9 +1367,11 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     final s = session;
     final ex = exerciseById(id);
     if (s == null || ex == null || s.exercises.any((e) => e.id == id)) return;
+    if (s.program != null) s.programManuallyEdited = true;
     final chain = chainAt(s.currentIndex);
     final at = chain.isEmpty ? s.exercises.length : chain.last + 1;
-    s.exercises.insert(at, SessionExercise(ex.id, ex.name, ex.primary, _openingSets(id)));
+    s.exercises.insert(at, SessionExercise(ex.id, ex.name, ex.primary,
+        s.program == null ? _openingSets(id) : _unplannedBlockSets(2)));
     _advanceTimer?.cancel();
     s.currentIndex = at;
     persistNow();
@@ -1314,14 +1406,24 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
     final s = session;
     final to = exerciseById(toId);
     if (s == null || to == null || exIdx < 0 || exIdx >= s.exercises.length || inSession(toId)) return;
+    if (s.program != null) s.programManuallyEdited = true;
     final from = s.exercises[exIdx];
     final left = from.sets.where((st) => !st.done && st.counts).length;
     final started = from.sets.any((st) => st.done);
     final count = left > 0 ? left : null;
-    final next = SessionExercise(to.id, to.name, to.primary,
-        started ? _workingOpeners(toId, count: count) : _openingSets(toId, count: count),
-        linkedNext: from.linkedNext,
-        swappedFrom: from.swappedFrom ?? from.id);
+    final next = SessionExercise(
+      to.id,
+      to.name,
+      to.primary,
+      s.program != null
+          ? _unplannedBlockSets(count ?? from.sets.where((st) => st.counts).length,
+              reps: s.program!.rules[from.id]?.minReps ?? 8)
+          : started
+          ? _workingOpeners(toId, count: count)
+          : _openingSets(toId, count: count),
+      linkedNext: from.linkedNext,
+      swappedFrom: from.swappedFrom ?? from.id,
+    );
     if (started) {
       from.sets.removeWhere((st) => !st.done);
       from.linkedNext = false;
@@ -1432,6 +1534,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
         utcOffsetSeconds: s.utcOffsetSeconds,
         routineId: s.routineId,
         name: s.name,
+        program: s.program,
       );
       s.workoutId = entry.id;
       sessions.removeWhere((old) => old.id == entry.id);
@@ -1770,6 +1873,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
       ..startedAt = ls.startedAt
       ..manual = _dayKey(ls.date) != _dayKey(DateTime.now())
       ..routineId = ls.routineId
+      ..program = ls.program == null ? null : BlockSession.fromJson(ls.program!.toJson())
       ..name = ls.name
       ..exercises = ls.exercises
           .map((e) => SessionExercise(

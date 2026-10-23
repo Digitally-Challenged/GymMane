@@ -9621,6 +9621,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Missing exercises: {count}. Restore them from a backup or remove them from this routine before starting.'**
   String routineMissingExercisesMessage(int count);
+
+  /// No description provided for @blockWorkoutGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Log reps in reserve on each work set. Review your response at the next workout before progressing. Warm up for 5–10 minutes; ramp sets are included once a load is entered.'**
+  String get blockWorkoutGuide;
+
+  /// No description provided for @blockOptionalArms.
+  ///
+  /// In en, this message translates to:
+  /// **'Move arm sets to day 5'**
+  String get blockOptionalArms;
+
+  /// No description provided for @blockSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise loads and limits'**
+  String get blockSettingsTitle;
+
+  /// No description provided for @blockCalibrationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Calibration load is used before this program has history. Later targets follow your recorded performance.'**
+  String get blockCalibrationHint;
+
+  /// No description provided for @blockRecoveryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous workout: how was your recovery and next-day joint response?'**
+  String get blockRecoveryQuestion;
+
+  /// No description provided for @blockCalibrationLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Calibration load'**
+  String get blockCalibrationLoad;
+
+  /// No description provided for @blockIncreaseBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase by'**
+  String get blockIncreaseBy;
+
+  /// No description provided for @blockLoadStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Available load step'**
+  String get blockLoadStep;
+
+  /// No description provided for @blockLoadCap.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum load (optional)'**
+  String get blockLoadCap;
+
+  /// No description provided for @blockResponseStable.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovered; symptoms stable'**
+  String get blockResponseStable;
+
+  /// No description provided for @blockResponseWorse.
+  ///
+  /// In en, this message translates to:
+  /// **'Not recovered / symptoms worse'**
+  String get blockResponseWorse;
+
+  /// No description provided for @blockOptionalLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose before the week’s first workout.'**
+  String get blockOptionalLocked;
+
+  /// No description provided for @blockOptionalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Redistributes six sets; weekly volume stays the same.'**
+  String get blockOptionalHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
