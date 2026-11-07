@@ -102,7 +102,7 @@ Reuse the existing keys `perSide`, `justTheBar`, `barWeight`, `targetWeight`, `p
   - `double collarsFor(String id, {String equipment = 'Barbell'})`: `collarsDisplay` when `equipment == 'Barbell' && !hasOwnBar(id)`, else 0.
   - `platesPerSide(double displayTarget, double displayBar, {double collars = 0})` and `loadableTotal(..., {double collars = 0})`. Per side = `(target − bar − collars) / 2`, floored at 0. `loadableTotal` adds `collars` back in.
   - `plateBreakdown` and `rmAtPct` pass `collarsDisplay`; `plateHint` passes `collarsFor(id, equipment: equipment)`.
-  - Reverse: `Map<double, int> reverseCounts` (display size → per-side count), `void bumpReverse(double size, int d)` (floor 0, no max), `void clearReverse()`, `double get reverseTotal` = `plateBarDisplay + collarsDisplay + 2 × Σ size × count`. Changing `units` must clear `reverseCounts`: hook the existing units setter in `settings_state.dart`.
+  - Reverse: `Map<double, int> reverseCounts` (display size → per-side count), `void bumpReverse(double size, int d)` (floor 0, no max), `void clearReverse()`, `double get reverseTotal` = `plateBarDisplay + collarsDisplay + 2 × Σ size × count`. Changing `units` must clear `reverseCounts`: the setter is in `lib/state/fit_core.dart` (~line 185, `units = u;`). Clear through an overridable hook (e.g. `void onUnitsChanged() {}` in `FitCore`, overridden in `ToolsState`).
 
 - [ ] **Step 1: Write the failing tests** in `test/plates_test.dart`:
   - `plateChange` cases: `225→235 lb` gives off `[]`, on `[5×1]`; `185→205` gives off `[25×1]`, on `[35×1]`; equal lists give both empty; `[]→[45×2]` gives on `[45×2]`.
