@@ -1,6 +1,8 @@
 import 'dart:math' as math;
+import 'dart:ui' show SemanticsAction, Tristate;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart' show SemanticsData;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/models/plate_math.dart';
 import 'package:gymmane/theme/app_colors.dart';
@@ -22,9 +24,12 @@ Widget _host(Widget child, {double width = 320, ThemeData? theme}) => MaterialAp
   ),
 );
 
+/// A plate on the bar is keyed `plate-<size>-<index>`; the disc's `plate-disc-*` buttons are not plates.
+final _plateKey = RegExp(r'^plate-\d+(\.\d+)?-\d+$');
+
 bool _isPlate(Widget w) {
   final k = w.key;
-  return k is ValueKey<String> && k.value.startsWith('plate-');
+  return k is ValueKey<String> && _plateKey.hasMatch(k.value);
 }
 
 Finder _plates() => find.byWidgetPredicate(_isPlate);
@@ -213,13 +218,27 @@ void main() {
       }
     });
 
-    testWidgets('a button with no callback does nothing', (tester) async {
-      var decs = 0;
+    testWidgets('a button with no callback is inert and reads as disabled', (tester) async {
+      final handle = tester.ensureSemantics();
+      var incs = 0;
       await tester.pumpWidget(
-        _host(width: 96, PlateDisc(size: 45, colour: kPlateBlue, count: 0, onDec: null, onInc: () => decs++)),
+        _host(width: 96, PlateDisc(size: 45, colour: kPlateBlue, count: 0, onDec: null, onInc: () => incs++)),
       );
+
       await tester.tap(dec());
-      expect(decs, 0);
+      expect(incs, 0, reason: 'tapping the disabled − must not reach the + callback');
+      await tester.tap(inc());
+      expect(incs, 1, reason: 'the + next to it still works');
+
+      SemanticsData semantics(String label) =>
+          tester.getSemantics(find.bySemanticsLabel(label)).getSemanticsData();
+      final minus = semantics('Decrease 45');
+      expect(minus.flagsCollection.isEnabled, Tristate.isFalse);
+      expect(minus.hasAction(SemanticsAction.tap), isFalse);
+      final plus = semantics('Increase 45');
+      expect(plus.flagsCollection.isEnabled, Tristate.isTrue);
+      expect(plus.hasAction(SemanticsAction.tap), isTrue);
+      handle.dispose();
     });
 
     testWidgets('the − and + buttons are labelled for screen readers', (tester) async {
@@ -232,23 +251,23 @@ void main() {
       handle.dispose();
     });
 
-    testWidgets('text is dark on light plates and light on dark ones', (tester) async {
-      double luminance(String text) => tester.widget<Text>(find.text(text)).style!.color!.computeLuminance();
-
-      await tester.pumpWidget(
-        _host(width: 96, PlateDisc(size: 10, colour: kPlateWhite, count: 3, onDec: () {}, onInc: () {})),
-      );
-      expect(luminance('10'), lessThan(0.1));
-
-      await tester.pumpWidget(
-        _host(width: 96, PlateDisc(size: 45, colour: kPlateBlue, count: 3, onDec: () {}, onInc: () {})),
-      );
-      expect(luminance('45'), greaterThan(0.9));
-
-      await tester.pumpWidget(
-        _host(width: 96, PlateDisc(size: 35, colour: kPlateYellow, count: 3, onDec: () {}, onInc: () {})),
-      );
-      expect(luminance('35'), lessThan(0.1), reason: 'white on yellow is unreadable');
+    testWidgets('ink is whichever of dark and white contrasts more with the plate', (tester) async {
+      const dark = Color(0xFF1A1713);
+      const white = Color(0xFFFFFFFF);
+      final cases = <(String, Color, Color)>[
+        ('grey', const Color(0xFF777777), white),
+        ('blue', kPlateBlue, white),
+        ('white', const Color(0xFFEEEEEE), dark),
+        ('yellow', kPlateYellow, dark),
+        ('green', kPlateGreen, dark),
+      ];
+      for (final (name, plate, ink) in cases) {
+        await tester.pumpWidget(
+          _host(width: 96, PlateDisc(size: 45, colour: plate, count: 3, onDec: () {}, onInc: () {})),
+        );
+        expect(tester.widget<Text>(find.text('45')).style!.color, ink, reason: '$name plate label');
+        expect(tester.widget<Text>(find.text('−')).style!.color, ink, reason: '$name plate − glyph');
+      }
     });
 
     testWidgets('dimmed discs sit at 35% opacity', (tester) async {
