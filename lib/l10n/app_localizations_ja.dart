@@ -1802,6 +1802,63 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => '装着';
+
+  @override
+  String get plateTabReverse => '何が付いている？';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'バー $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'バー $bar + カラー $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'クリア';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return '片側に $plates を追加';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return '片側から $plates を外す';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return '片側で $off を外して $on を追加';
+  }
+
+  @override
+  String get plateCollars => 'カラー (1個あたり)';
+
+  @override
+  String get plateColours => 'プレートの色';
+
+  @override
+  String get plateColoursColoured => '色付き';
+
+  @override
+  String get plateColoursIron => 'アイアン';
+
+  @override
+  String get plateColoursCustom => 'カスタム';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w の色';
+  }
+
+  @override
+  String get plateColourHint => 'プレートを長押しして色を変更';
+
+  @override
   String get autoWarmup => 'ウォームアップセットから開始';
 
   @override

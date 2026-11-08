@@ -1852,6 +1852,63 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'تحميل';
+
+  @override
+  String get plateTabReverse => 'ماذا على البار؟';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'البار $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'البار $bar + المثبّتات $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'مسح';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'أضف $plates لكل جانب';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'أزل $plates من كل جانب';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'أزل $off وأضف $on لكل جانب';
+  }
+
+  @override
+  String get plateCollars => 'المثبّتات (للواحد)';
+
+  @override
+  String get plateColours => 'ألوان الأقراص';
+
+  @override
+  String get plateColoursColoured => 'ملوّنة';
+
+  @override
+  String get plateColoursIron => 'حديد';
+
+  @override
+  String get plateColoursCustom => 'مخصّص';
+
+  @override
+  String plateColourOf(String w) {
+    return 'لون $w';
+  }
+
+  @override
+  String get plateColourHint => 'اضغط مطولًا على القرص لتغيير لونه';
+
+  @override
   String get autoWarmup => 'ابدأ بمجموعات الإحماء';
 
   @override

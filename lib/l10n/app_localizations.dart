@@ -3382,6 +3382,96 @@ abstract class AppLocalizations {
   /// **'Closest you can load: {w}'**
   String plateAchievable(String w);
 
+  /// No description provided for @plateTabLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get plateTabLoad;
+
+  /// No description provided for @plateTabReverse.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on it?'**
+  String get plateTabReverse;
+
+  /// No description provided for @plateSum.
+  ///
+  /// In en, this message translates to:
+  /// **'{bar} bar + 2 × ({plates}) = {total}'**
+  String plateSum(String bar, String plates, String total);
+
+  /// No description provided for @plateSumCollars.
+  ///
+  /// In en, this message translates to:
+  /// **'{bar} bar + {collars} collars + 2 × ({plates}) = {total}'**
+  String plateSumCollars(String bar, String collars, String plates, String total);
+
+  /// No description provided for @plateClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get plateClear;
+
+  /// No description provided for @plateChangeAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {plates} each side'**
+  String plateChangeAdd(String plates);
+
+  /// No description provided for @plateChangeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Take off {plates} each side'**
+  String plateChangeOff(String plates);
+
+  /// No description provided for @plateChangeSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'Take off {off}, add {on} each side'**
+  String plateChangeSwap(String off, String on);
+
+  /// No description provided for @plateCollars.
+  ///
+  /// In en, this message translates to:
+  /// **'Collars (each)'**
+  String get plateCollars;
+
+  /// No description provided for @plateColours.
+  ///
+  /// In en, this message translates to:
+  /// **'PLATE COLOURS'**
+  String get plateColours;
+
+  /// No description provided for @plateColoursColoured.
+  ///
+  /// In en, this message translates to:
+  /// **'Coloured'**
+  String get plateColoursColoured;
+
+  /// No description provided for @plateColoursIron.
+  ///
+  /// In en, this message translates to:
+  /// **'Iron'**
+  String get plateColoursIron;
+
+  /// No description provided for @plateColoursCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get plateColoursCustom;
+
+  /// No description provided for @plateColourOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{w} colour'**
+  String plateColourOf(String w);
+
+  /// No description provided for @plateColourHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Long-press a plate to change its colour'**
+  String get plateColourHint;
+
   /// No description provided for @autoWarmup.
   ///
   /// In en, this message translates to:

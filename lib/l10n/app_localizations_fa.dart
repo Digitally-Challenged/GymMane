@@ -1853,6 +1853,63 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'بستن وزنه';
+
+  @override
+  String get plateTabReverse => 'روی میله چیست؟';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'میله $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'میله $bar + قفل‌ها $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'پاک کردن';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'در هر طرف $plates اضافه کن';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'از هر طرف $plates بردار';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'از هر طرف $off بردار و $on اضافه کن';
+  }
+
+  @override
+  String get plateCollars => 'قفل‌ها (هر کدام)';
+
+  @override
+  String get plateColours => 'رنگ وزنه‌ها';
+
+  @override
+  String get plateColoursColoured => 'رنگی';
+
+  @override
+  String get plateColoursIron => 'آهنی';
+
+  @override
+  String get plateColoursCustom => 'سفارشی';
+
+  @override
+  String plateColourOf(String w) {
+    return 'رنگ $w';
+  }
+
+  @override
+  String get plateColourHint => 'روی وزنه طولانی فشار بده تا رنگش عوض شود';
+
+  @override
   String get autoWarmup => 'شروع با ست‌های گرم‌کردن';
 
   @override

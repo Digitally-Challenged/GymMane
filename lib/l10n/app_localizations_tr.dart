@@ -1869,6 +1869,63 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'Yükle';
+
+  @override
+  String get plateTabReverse => 'Üzerinde ne var?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '$bar bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '$bar bar + $collars kilit + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Temizle';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Her tarafa $plates ekle';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Her taraftan $plates çıkar';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Her taraftan $off çıkar, $on ekle';
+  }
+
+  @override
+  String get plateCollars => 'Kilitler (tanesi)';
+
+  @override
+  String get plateColours => 'PLAKA RENKLERİ';
+
+  @override
+  String get plateColoursColoured => 'Renkli';
+
+  @override
+  String get plateColoursIron => 'Demir';
+
+  @override
+  String get plateColoursCustom => 'Özel';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w rengi';
+  }
+
+  @override
+  String get plateColourHint => 'Rengini değiştirmek için bir plakaya uzun bas';
+
+  @override
   String get autoWarmup => 'Isınma setleriyle başla';
 
   @override

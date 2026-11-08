@@ -1925,6 +1925,63 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'Собрать';
+
+  @override
+  String get plateTabReverse => 'Что на штанге?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Гриф $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Гриф $bar + замки $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Сбросить';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Добавь $plates с каждой стороны';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Сними $plates с каждой стороны';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Сними $off, добавь $on с каждой стороны';
+  }
+
+  @override
+  String get plateCollars => 'Замки (каждый)';
+
+  @override
+  String get plateColours => 'ЦВЕТА БЛИНОВ';
+
+  @override
+  String get plateColoursColoured => 'Цветные';
+
+  @override
+  String get plateColoursIron => 'Железные';
+
+  @override
+  String get plateColoursCustom => 'Свои';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Цвет $w';
+  }
+
+  @override
+  String get plateColourHint => 'Удерживай блин, чтобы сменить его цвет';
+
+  @override
   String get autoWarmup => 'Начинать с разминки';
 
   @override

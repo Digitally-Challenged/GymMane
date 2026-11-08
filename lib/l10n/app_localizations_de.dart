@@ -1870,6 +1870,63 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'Beladen';
+
+  @override
+  String get plateTabReverse => 'Was ist drauf?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '$bar Stange + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '$bar Stange + $collars Verschlüsse + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Leeren';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Pro Seite $plates auflegen';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Pro Seite $plates abnehmen';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Pro Seite $off abnehmen, $on auflegen';
+  }
+
+  @override
+  String get plateCollars => 'Verschlüsse (je Stück)';
+
+  @override
+  String get plateColours => 'SCHEIBENFARBEN';
+
+  @override
+  String get plateColoursColoured => 'Farbig';
+
+  @override
+  String get plateColoursIron => 'Eisen';
+
+  @override
+  String get plateColoursCustom => 'Eigene';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Farbe für $w';
+  }
+
+  @override
+  String get plateColourHint => 'Scheibe gedrückt halten, um die Farbe zu ändern';
+
+  @override
   String get autoWarmup => 'Mit Aufwärmsätzen beginnen';
 
   @override

@@ -1861,6 +1861,63 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get plateTabLoad => 'Cargar';
+
+  @override
+  String get plateTabReverse => '¿Qué lleva?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Barra de $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Barra de $bar + $collars en seguros + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Vaciar';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Añade $plates por lado';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Quita $plates por lado';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Quita $off y añade $on por lado';
+  }
+
+  @override
+  String get plateCollars => 'Seguros (cada uno)';
+
+  @override
+  String get plateColours => 'COLORES DE LOS DISCOS';
+
+  @override
+  String get plateColoursColoured => 'De colores';
+
+  @override
+  String get plateColoursIron => 'Hierro';
+
+  @override
+  String get plateColoursCustom => 'Personalizados';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Color de $w';
+  }
+
+  @override
+  String get plateColourHint => 'Mantén pulsado un disco para cambiar su color';
+
+  @override
   String get autoWarmup => 'Empezar con calentamiento';
 
   @override
