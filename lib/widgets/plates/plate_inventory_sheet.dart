@@ -18,6 +18,7 @@ const double _discGap = 8;
 const double _gridMaxWidth = 400;
 const double _swatchSize = 48;
 const double _swatchGap = 14;
+const int _swatchColumns = 4;
 const double _hitSize = 44;
 const double _defaultBarLb = 45;
 const double _defaultBarKg = 20;
@@ -285,7 +286,7 @@ Future<void> _pickColour(BuildContext context, String placeId, double size, Colo
       builder: (sheet) => _SwatchSheet(placeId: placeId, size: size, current: current),
     );
 
-/// The fixed row of colours for one plate. Picking one stores it for the gym, turns Custom on
+/// The fixed set of colours for one plate. Picking one stores it for the gym, turns Custom on
 /// and closes the sheet.
 class _SwatchSheet extends StatelessWidget {
   const _SwatchSheet({required this.placeId, required this.size, required this.current});
@@ -312,25 +313,45 @@ class _SwatchSheet extends StatelessWidget {
             style: _titleStyle(gc),
           ),
           const SizedBox(height: 20),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: _swatchGap,
-            runSpacing: _swatchGap,
-            children: [
-              for (final c in kPlateSwatches)
-                _Swatch(
-                  colour: c,
-                  selected: c.toARGB32() == current.toARGB32(),
-                  onTap: () {
-                    fit.setPlateColour(placeId, fit.fromDisplayWeight(size), c);
-                    Navigator.of(context).pop();
-                  },
-                ),
-            ],
+          _SwatchGrid(
+            current: current,
+            onPick: (c) {
+              fit.setPlateColour(placeId, fit.fromDisplayWeight(size), c);
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
     );
+  }
+}
+
+/// The swatches in rows of [_swatchColumns], so the eight fall as two even rows on any phone
+/// instead of wrapping six and two.
+class _SwatchGrid extends StatelessWidget {
+  const _SwatchGrid({required this.current, required this.onPick});
+
+  final Color current;
+  final ValueChanged<Color> onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = <Widget>[];
+    for (var i = 0; i < kPlateSwatches.length; i += _swatchColumns) {
+      if (rows.isNotEmpty) rows.add(const SizedBox(height: _swatchGap));
+      rows.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (final (j, c) in kPlateSwatches.skip(i).take(_swatchColumns).indexed) ...[
+              if (j > 0) const SizedBox(width: _swatchGap),
+              _Swatch(colour: c, selected: c.toARGB32() == current.toARGB32(), onTap: () => onPick(c)),
+            ],
+          ],
+        ),
+      );
+    }
+    return Column(mainAxisSize: MainAxisSize.min, children: rows);
   }
 }
 

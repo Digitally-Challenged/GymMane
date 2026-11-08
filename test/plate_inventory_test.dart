@@ -1,5 +1,5 @@
 import 'dart:async' show unawaited;
-import 'dart:ui' show Tristate;
+import 'dart:ui' show SemanticsAction, Tristate;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +44,22 @@ Future<void> _open(WidgetTester tester, {double width = 360, double height = 110
   );
   await tester.tap(find.text('open'));
   await tester.pumpAndSettle();
+}
+
+/// The Places screen on a phone [width] px wide.
+Future<void> _pumpPlaces(WidgetTester tester, {required double width}) async {
+  tester.view.physicalSize = Size(width, 1100);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: AppTheme.light,
+      home: AnimatedBuilder(
+        animation: fit,
+        builder: (_, _) => const Scaffold(body: PlacesScreen()),
+      ),
+    ),
+  );
 }
 
 Finder _disc(double size) => find.byWidgetPredicate((w) => w is PlateDisc && w.size == size);
@@ -123,6 +139,28 @@ void main() {
       expect(_discWidget(tester, 35).colour, kPlateYellow, reason: 'the other plates keep their colour');
     });
 
+    _case('the picker lays the eight colours out as two even rows of four', (tester) async {
+      fit.setUnits('lb');
+      _gym();
+      await _open(tester, width: 402);
+      await tester.longPress(find.descendant(of: _disc(45), matching: find.text('45')));
+      await tester.pumpAndSettle();
+
+      final rects = [for (final c in kPlateSwatches) tester.getRect(_swatch(c))];
+      expect(rects, hasLength(8));
+      final tops = rects.map((r) => r.top).toSet();
+      expect(tops, hasLength(2), reason: 'a 402 px phone used to wrap 6 and 2');
+      expect(rects.take(4).map((r) => r.top).toSet(), hasLength(1));
+      expect(rects.skip(4).map((r) => r.top).toSet(), hasLength(1));
+      for (var i = 0; i < 4; i++) {
+        expect(rects[i + 4].left, rects[i].left, reason: 'column $i lines up across the rows');
+      }
+      for (final r in rects) {
+        expect(r.width, greaterThanOrEqualTo(44));
+        expect(r.height, greaterThanOrEqualTo(44));
+      }
+    });
+
     _case('a long press on the − or + button does not open the picker', (tester) async {
       _gym();
       await _open(tester);
@@ -161,6 +199,24 @@ void main() {
       await _tap(tester, find.text('Custom'));
       expect(fit.places.first.customColours, isFalse);
       expect(fit.places.first.colourBase, PlateColourBase.coloured);
+    });
+
+    _case('Custom reads as dimmed until a plate has its own colour', (tester) async {
+      final handle = tester.ensureSemantics();
+      _gym();
+      await _open(tester);
+
+      var custom = tester.getSemantics(find.bySemanticsLabel('Custom')).getSemanticsData();
+      expect(custom.flagsCollection.isEnabled, Tristate.isFalse);
+      expect(custom.hasAction(SemanticsAction.tap), isFalse);
+      final coloured = tester.getSemantics(find.bySemanticsLabel('Coloured')).getSemanticsData();
+      expect(coloured.flagsCollection.isEnabled, isNot(Tristate.isFalse), reason: 'only Custom is off');
+
+      fit.setPlateColour(fit.places.first.id, 20, kPlateRed);
+      await tester.pumpAndSettle();
+      custom = tester.getSemantics(find.bySemanticsLabel('Custom')).getSemanticsData();
+      expect(custom.flagsCollection.isEnabled, isNot(Tristate.isFalse));
+      handle.dispose();
     });
   });
 
@@ -292,25 +348,23 @@ void main() {
 
   group('entry point', () {
     _case('the Places screen opens it and Done closes it', (tester) async {
-      tester.view.physicalSize = const Size(360, 1100);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.reset);
-      fit.setPlatePairs(_gym(), 20, 1);
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.light,
-          home: AnimatedBuilder(
-            animation: fit,
-            builder: (_, _) => const Scaffold(body: PlacesScreen()),
-          ),
-        ),
-      );
+      _gym();
+      await _pumpPlaces(tester, width: 360);
 
+      expect(tester.takeException(), isNull, reason: 'the empty stock reads "Everything available"');
       await _tap(tester, find.text('Plates and bar'));
       expect(find.byType(PlateDisc), findsNWidgets(7));
 
       await _tap(tester, find.text('DONE'));
       expect(find.byType(PlateDisc), findsNothing);
+    });
+
+    _case('the Plates and bar row fits a 320 px phone', (tester) async {
+      _gym();
+      await _pumpPlaces(tester, width: 320);
+
+      expect(find.text('Everything available'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     _case('a small phone scrolls to Done without overflowing', (tester) async {

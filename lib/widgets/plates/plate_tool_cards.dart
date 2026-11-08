@@ -234,23 +234,27 @@ class PlateClearButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: _hitSize, minHeight: _hitSize),
-        child: Align(
-          alignment: Alignment.centerRight,
-          widthFactor: 1,
-          heightFactor: 1,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              t.plateClear,
-              style: AppTheme.f(
-                13,
-                weight: FontWeight.w700,
-                color: onTap == null ? gc.textTertiary : gc.accent,
+    return Semantics(
+      button: true,
+      enabled: onTap != null,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: _hitSize, minHeight: _hitSize),
+          child: Align(
+            alignment: Alignment.centerRight,
+            widthFactor: 1,
+            heightFactor: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                t.plateClear,
+                style: AppTheme.f(
+                  13,
+                  weight: FontWeight.w700,
+                  color: onTap == null ? gc.textTertiary : gc.accent,
+                ),
               ),
             ),
           ),

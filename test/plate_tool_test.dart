@@ -1,4 +1,5 @@
 import 'dart:async' show unawaited;
+import 'dart:ui' show SemanticsAction, Tristate;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -190,8 +191,9 @@ void main() {
       expect(find.text('45 bar + 2 × (45 + 45 + 45 + 10) = 335'), findsOneWidget);
     });
 
-    testWidgets('the first tap from the default 220.5 lb snaps to the grid, both ways', (tester) async {
+    testWidgets('the first tap from an off-grid 220.5 lb snaps to the grid, both ways', (tester) async {
       _units('lb');
+      fit.plateTarget = 100;
       await _open(tester);
       expect(find.text('220.5'), findsOneWidget);
 
@@ -317,6 +319,26 @@ void main() {
       final size = tester.getSize(hit);
       expect(size.width, greaterThanOrEqualTo(44));
       expect(size.height, greaterThanOrEqualTo(44));
+    });
+
+    testWidgets('Clear reads as a button, dimmed while the bar is empty', (tester) async {
+      final handle = tester.ensureSemantics();
+      _units('lb');
+      await _open(tester);
+      await _openReverse(tester);
+
+      var clear = tester.getSemantics(find.bySemanticsLabel('Clear')).getSemanticsData();
+      expect(clear.flagsCollection.isButton, isTrue);
+      expect(clear.flagsCollection.isEnabled, Tristate.isFalse, reason: 'nothing on the bar to clear');
+      expect(clear.hasAction(SemanticsAction.tap), isFalse);
+
+      await _press(tester, _inc(45));
+      await tester.pump();
+      clear = tester.getSemantics(find.bySemanticsLabel('Clear')).getSemanticsData();
+      expect(clear.flagsCollection.isButton, isTrue);
+      expect(clear.flagsCollection.isEnabled, Tristate.isTrue);
+      expect(clear.hasAction(SemanticsAction.tap), isTrue);
+      handle.dispose();
     });
 
     testWidgets('the tab survives the screen rebuilding on a change', (tester) async {
