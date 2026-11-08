@@ -21,7 +21,8 @@ const int _discColumns = 3;
 Color Function(double size) plateColourOf(GymColors gc) =>
     (size) => fit.plateColourFor(size, gc.brass);
 
-TextStyle _labelStyle(GymColors gc) =>
+/// The small caps label over a card or row, e.g. "PER SIDE".
+TextStyle plateLabelStyle(GymColors gc) =>
     AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.4);
 
 /// The bar drawing with the big total under it. Passing [onDec] and [onInc] adds a − and a +
@@ -183,7 +184,7 @@ class PlateBarChoice extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Text(t.barWeight, style: _labelStyle(gc))),
+              Expanded(child: Text(t.barWeight, style: plateLabelStyle(gc))),
               ?trailing,
             ],
           ),
@@ -287,7 +288,7 @@ class PlatePerSideCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(t.perSide, style: _labelStyle(gc)),
+          Text(t.perSide, style: plateLabelStyle(gc)),
           const SizedBox(height: 10),
           if (plates.isEmpty)
             Text(

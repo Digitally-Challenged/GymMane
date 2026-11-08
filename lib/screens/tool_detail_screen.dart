@@ -6,7 +6,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
-import '../widgets/glass.dart';
+import '../widgets/plates/plate_sheet.dart';
 import '../widgets/ui_kit.dart';
 import 'plate_tool.dart';
 
@@ -312,7 +312,7 @@ class ToolDetailScreen extends StatelessWidget {
     final plates = loadable ? fit.platesPerSide(weight, bar, collars: collars) : const <PlateCount>[];
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: loadable ? () => showPlateSheet(context, weight) : null,
+      onTap: loadable ? () => showPlateSheet(context, weight, collars: collars) : null,
       child: SoftCard(
         radius: 20,
         borderColor: Colors.transparent,
@@ -367,92 +367,4 @@ class ToolDetailScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void showPlateSheet(BuildContext context, double displayTarget, {double? startBar}) {
-  final gc = context.gc;
-  var bar = startBar ?? fit.defaultBar;
-  showAppSheet<void>(
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (sheet) => StatefulBuilder(
-      builder: (sheet, setSheet) {
-        final rows = fit.platesPerSide(displayTarget, bar);
-        final loadable = fit.loadableTotal(displayTarget, bar);
-        return Container(
-          padding: sheetPad(sheet),
-          decoration: BoxDecoration(
-            color: gc.bgRaised,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SheetHandle(),
-              const SizedBox(height: 16),
-              SheetTitle(t.toolTitle('plate')),
-              const SizedBox(height: 4),
-              Text('${fmt(displayTarget)} ${fit.units}',
-                  textAlign: TextAlign.center,
-                  style: AppTheme.f(30, weight: FontWeight.w700, color: gc.ember)),
-              const SizedBox(height: 18),
-              Text(t.barWeight,
-                  style: AppTheme.f(10, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-              const SizedBox(height: 8),
-              Row(children: [
-                for (final option in fit.barOptions) ...[
-                  if (option != fit.barOptions.first) const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => setSheet(() => bar = option),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: bar == option ? gc.ember : gc.bgRaised2,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text('${fmt(option)} ${fit.units}',
-                            style: AppTheme.f(13,
-                                weight: FontWeight.w600,
-                                color: bar == option ? gc.onEmber : gc.textSecondary)),
-                      ),
-                    ),
-                  ),
-                ],
-              ]),
-              const SizedBox(height: 18),
-              Text(t.perSide,
-                  style: AppTheme.f(10, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-              const SizedBox(height: 10),
-              if (rows.isEmpty)
-                Text(t.justTheBar, style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary))
-              else
-                for (final p in rows)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${fmt(p.weight)} ${fit.units}',
-                            style: AppTheme.f(14, weight: FontWeight.w600, color: gc.text)),
-                        Text(t.perSideCount(p.count), style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
-                      ],
-                    ),
-                  ),
-              if (loadable < displayTarget - 0.01) ...[
-                const SizedBox(height: 2),
-                Text(t.plateAchievable('${fmt(loadable)} ${fit.units}'),
-                    style: AppTheme.f(12, weight: FontWeight.w500, color: gc.brass)),
-              ],
-              const SizedBox(height: 18),
-              PrimaryButton(label: t.done, onTap: () => Navigator.of(sheet).pop()),
-            ],
-          ),
-        );
-      },
-    ),
-  );
 }
