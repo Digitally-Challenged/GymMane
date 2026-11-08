@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:flutter/painting.dart' show Color;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gymmane/catalog/exercise_catalog.dart';
 import 'package:gymmane/models/note.dart';
@@ -12,6 +13,7 @@ import 'package:gymmane/services/media_store.dart';
 import 'package:gymmane/services/progress_reminder.dart';
 import 'package:gymmane/services/train_reminder.dart';
 import 'package:gymmane/state/fit_state.dart';
+import 'package:gymmane/theme/plate_palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -90,6 +92,10 @@ void main() {
     fit.setPlatePairs(place, 20, 2);
     fit.setPlatePairs(place, 10, 3);
     fit.setPlaceBar(place, 15);
+    fit.setPlaceCollar(place, 1.25);
+    fit.setPlateColour(place, 20, const Color(0xFFD9473B));
+    fit.setPlaceColourBase(place, PlateColourBase.iron);
+    fit.setPlaceCustom(place);
 
     final routine = fit.createRoutine('Push');
     fit.toggleRoutineExercise(routine, bench.id);
@@ -270,6 +276,10 @@ void main() {
     expect(fit.platePairs(place, 20), 2);
     expect(fit.platePairs(place, 10), 3);
     expect(place.bar, 15);
+    expect(place.collarKg, 1.25);
+    expect(place.colourBase, PlateColourBase.iron);
+    expect(place.customColours, isTrue);
+    expect(place.plateColours, {20.0: 0xFFD9473B});
     expect(fit.activePlaceId, place.id);
   });
 

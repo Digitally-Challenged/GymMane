@@ -20,13 +20,13 @@ import '../widgets/liquid_notch.dart';
 import '../widgets/set_kind.dart';
 import '../widgets/share_cards.dart';
 import '../widgets/rolling_text.dart';
+import '../widgets/plates/plate_sheet.dart';
 import '../widgets/ruler_picker.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/timer_panel.dart';
 import '../widgets/ui_kit.dart';
 import '../widgets/workout_notes.dart';
 import 'exercises_screen.dart';
-import 'tool_detail_screen.dart';
 import 'share_sheet.dart';
 import 'sticker_screen.dart';
 import 'sync/completed_workout_delivery.dart';
@@ -1676,7 +1676,9 @@ class SessionScreen extends StatelessWidget {
   Widget _plateRow(BuildContext context, GymColors gc, SessionExercise ex) {
     final exercise = fit.exerciseById(ex.id);
     if (exercise == null || ex.sets.isEmpty) return const SizedBox.shrink();
-    final next = ex.sets.firstWhere((s) => !s.done, orElse: () => ex.sets.last);
+    final undone = ex.sets.indexWhere((s) => !s.done);
+    final nextIdx = undone < 0 ? ex.sets.length - 1 : undone;
+    final next = ex.sets[nextIdx];
     final hint = fit.plateHint(exercise.equipment, next.weight, id: ex.id);
     if (hint == null) return const SizedBox.shrink();
 
@@ -1685,8 +1687,13 @@ class SessionScreen extends StatelessWidget {
       label: t.toolTitle('plate'),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => showPlateSheet(context, fit.toDisplayWeight(next.weight),
-            startBar: fit.barFor(ex.id, equipment: exercise.equipment)),
+        onTap: () => showPlateSheet(
+          context,
+          fit.toDisplayWeight(next.weight),
+          startBar: fit.barFor(ex.id, equipment: exercise.equipment),
+          collars: fit.collarsFor(ex.id, equipment: exercise.equipment),
+          previousDisplay: nextIdx > 0 ? fit.toDisplayWeight(ex.sets[nextIdx - 1].weight) : null,
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(_rowPad, 8, _rowPad, 0),
           child: Row(

@@ -810,10 +810,13 @@ class ToolGroup extends StatelessWidget {
 }
 
 class SegOption {
-  const SegOption(this.label, this.selected, this.onTap);
+  const SegOption(this.label, this.selected, this.onTap, {this.enabled = true});
   final String label;
   final bool selected;
   final VoidCallback onTap;
+
+  /// A disabled option is drawn muted and ignores taps.
+  final bool enabled;
 }
 
 class SegToggle extends StatelessWidget {
@@ -832,23 +835,29 @@ class SegToggle extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          for (final o in options)
-            GestureDetector(
-              onTap: o.onTap,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
-                decoration: BoxDecoration(
-                  color: o.selected ? gc.ember : Colors.transparent,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Text(o.label,
-                    style: AppTheme.f(fontSize,
-                        weight: FontWeight.w600, color: o.selected ? gc.onEmber : gc.textSecondary)),
-              ),
-            ),
+          for (final o in options) _segment(gc, o),
         ],
       ),
     );
+  }
+
+  /// A disabled option is also dimmed for screen readers, not just drawn muted.
+  Widget _segment(GymColors gc, SegOption o) {
+    final segment = GestureDetector(
+      onTap: o.enabled ? o.onTap : null,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+        decoration: BoxDecoration(
+          color: o.selected ? gc.ember : Colors.transparent,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Text(o.label,
+            style: AppTheme.f(fontSize,
+                weight: FontWeight.w600,
+                color: o.selected ? gc.onEmber : (o.enabled ? gc.textSecondary : gc.textTertiary))),
+      ),
+    );
+    return o.enabled ? segment : Semantics(enabled: false, child: segment);
   }
 }
 

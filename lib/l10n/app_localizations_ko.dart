@@ -1362,11 +1362,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get justTheBar => '바만 사용.';
 
   @override
-  String perSideCount(int n) {
-    return '한쪽당 × $n';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
@@ -1410,9 +1405,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get toolHintBf => '미 해군 방식 추정';
-
-  @override
-  String get toolHintPlate => '바벨 총 중량';
 
   @override
   String get toolHintWarmup => '목표 작업 중량';
@@ -1813,6 +1805,63 @@ class AppLocalizationsKo extends AppLocalizations {
   String plateAchievable(String w) {
     return '가장 가까운 가능 중량: $w';
   }
+
+  @override
+  String get plateTabLoad => '장착';
+
+  @override
+  String get plateTabReverse => '무엇이 끼워져 있나요?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '바 $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '바 $bar + 칼라 $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => '지우기';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return '한쪽에 $plates 추가';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return '한쪽에서 $plates 빼기';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return '한쪽에서 $off 빼고 $on 추가';
+  }
+
+  @override
+  String get plateCollars => '칼라 (개당)';
+
+  @override
+  String get plateColours => '원판 색상';
+
+  @override
+  String get plateColoursColoured => '컬러';
+
+  @override
+  String get plateColoursIron => '철제';
+
+  @override
+  String get plateColoursCustom => '사용자 지정';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w 색상';
+  }
+
+  @override
+  String get plateColourHint => '원판을 길게 눌러 색상을 변경하세요';
 
   @override
   String get autoWarmup => '워밍업 세트로 시작';

@@ -18,6 +18,7 @@ import '../models/measure.dart';
 import '../models/note.dart';
 import '../models/nutrition.dart';
 import '../models/place.dart';
+import '../models/plate_math.dart';
 import '../models/profile.dart';
 import '../models/progress_shot.dart';
 import '../models/workout.dart';
@@ -37,6 +38,7 @@ import '../services/rest_alarm.dart';
 import '../services/supplement_reminder.dart';
 import '../services/train_reminder.dart';
 import '../services/workout_import.dart';
+import '../theme/plate_palette.dart';
 
 part 'awards_state.dart';
 part 'fit_core.dart';
@@ -46,6 +48,7 @@ part 'moments_state.dart';
 part 'notes_state.dart';
 part 'nutrition_state.dart';
 part 'places_state.dart';
+part 'plate_tool_state.dart';
 part 'routines_state.dart';
 part 'settings_state.dart';
 part 'stats_state.dart';
@@ -55,7 +58,7 @@ part 'tools_state.dart';
 part 'workout_state.dart';
 
 class FitState extends FitCore
-    with ToolsState, LibraryState, SettingsState, NotesState, PlacesState, MeasuresState, MomentsState, TimelineState, StatsState, StepsState, NutritionState, AwardsState, RoutinesState, WorkoutState {
+    with PlateToolState, ToolsState, LibraryState, SettingsState, NotesState, PlacesState, MeasuresState, MomentsState, TimelineState, StatsState, StepsState, NutritionState, AwardsState, RoutinesState, WorkoutState {
   /// Refresh only replicated entities after a pull; keep the active workout,
   /// navigation and device preferences untouched and do not enqueue an echo.
   void reloadSyncedEntities() {

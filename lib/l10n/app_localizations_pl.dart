@@ -1400,11 +1400,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get justTheBar => 'Tylko gryf.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n na stronę';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
@@ -1448,9 +1443,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get toolHintBf => 'Szacunek metodą US Navy';
-
-  @override
-  String get toolHintPlate => 'Łączny ciężar sztangi';
 
   @override
   String get toolHintWarmup => 'Docelowy ciężar roboczy';
@@ -1861,6 +1853,63 @@ class AppLocalizationsPl extends AppLocalizations {
   String plateAchievable(String w) {
     return 'Najbliższy możliwy ciężar: $w';
   }
+
+  @override
+  String get plateTabLoad => 'Obciąż';
+
+  @override
+  String get plateTabReverse => 'Co jest na gryfie?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Gryf $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Gryf $bar + zaciski $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Wyczyść';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Dodaj $plates z każdej strony';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Zdejmij $plates z każdej strony';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Zdejmij $off, dodaj $on z każdej strony';
+  }
+
+  @override
+  String get plateCollars => 'Zaciski (każdy)';
+
+  @override
+  String get plateColours => 'KOLORY TALERZY';
+
+  @override
+  String get plateColoursColoured => 'Kolorowe';
+
+  @override
+  String get plateColoursIron => 'Żeliwne';
+
+  @override
+  String get plateColoursCustom => 'Własne';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Kolor $w';
+  }
+
+  @override
+  String get plateColourHint => 'Przytrzymaj talerz, aby zmienić jego kolor';
 
   @override
   String get autoWarmup => 'Zacznij od serii rozgrzewkowych';

@@ -8,7 +8,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
-import '../widgets/glass.dart';
+import '../widgets/plates/plate_inventory_sheet.dart';
 import '../widgets/ui_kit.dart';
 
 class PlacesScreen extends StatelessWidget {
@@ -233,7 +233,7 @@ class PlacesScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: () => _editPlates(context, place),
+                    onTap: () => showPlateInventory(context, place),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       decoration: BoxDecoration(
@@ -248,9 +248,14 @@ class PlacesScreen extends StatelessWidget {
                             child: Text(t.placePlates,
                                 style: AppTheme.s(13, weight: FontWeight.w600, color: gc.text)),
                           ),
-                          Text(
-                            place.plates.isEmpty ? t.platesAll : t.platesOwned(place.plates.length),
-                            style: AppTheme.s(12, color: gc.textSecondary),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 110),
+                            child: Text(
+                              place.plates.isEmpty ? t.platesAll : t.platesOwned(place.plates.length),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTheme.s(12, color: gc.textSecondary),
+                            ),
                           ),
                           const SizedBox(width: 6),
                           Icon(PhosphorIconsRegular.caretRight, size: 14, color: gc.textTertiary),
@@ -296,102 +301,6 @@ class PlacesScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _editPlates(BuildContext context, GymPlace place) {
-    final gc = context.gc;
-    showAppSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (sheet) => StatefulBuilder(
-        builder: (sheet, setSheet) {
-          final current = fit.places.firstWhere((p) => p.id == place.id, orElse: () => place);
-          final bar = current.bar == null ? fit.defaultBar : fit.toDisplayWeight(current.bar!);
-          return Container(
-            padding: sheetPad(sheet),
-            decoration: BoxDecoration(
-              color: gc.bgRaised,
-              border: Border.all(color: gc.border),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SheetHandle(),
-                  const SizedBox(height: 18),
-                  Text(t.placePlates,
-                      textAlign: TextAlign.center,
-                      style: AppTheme.d(14, weight: FontWeight.w700, color: gc.text, letterSpacing: 2)),
-                  const SizedBox(height: 4),
-                  Text(current.name,
-                      textAlign: TextAlign.center,
-                      style: AppTheme.s(12.5, color: gc.textSecondary)),
-                  const SizedBox(height: 20),
-                  ToolRow(
-                    label: t.barWeight,
-                    control: StepperControl(
-                      value: '${fmt(bar)} ${fit.units}',
-                      minWidth: 66,
-                      btnSize: 28,
-                      gap: 8,
-                      fontSize: 14,
-                      onDec: () => setSheet(() =>
-                          fit.setPlaceBar(place.id, fit.fromDisplayWeight(bar - fit.plateStep))),
-                      onInc: () => setSheet(() =>
-                          fit.setPlaceBar(place.id, fit.fromDisplayWeight(bar + fit.plateStep))),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(t.platePairs,
-                          style: AppTheme.s(10,
-                              weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-                      if (current.plates.isNotEmpty)
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => setSheet(() => fit.clearPlates(place.id)),
-                          child: Text(t.platesAll,
-                              style: AppTheme.s(12, weight: FontWeight.w600, color: gc.accent)),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  for (final size in fit.plateSizes) ...[
-                    _plateRow(gc, place.id, current, size, setSheet),
-                    const SizedBox(height: 8),
-                  ],
-                  const SizedBox(height: 12),
-                  PrimaryButton(label: t.done, onTap: () => Navigator.of(sheet).pop()),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _plateRow(GymColors gc, String placeId, GymPlace place, double size,
-      void Function(VoidCallback) setSheet) {
-    final kg = fit.fromDisplayWeight(size);
-    final pairs = fit.platePairs(place, kg);
-    return ToolRow(
-      label: '${fmt(size)} ${fit.units}',
-      control: StepperControl(
-        value: '$pairs',
-        minWidth: 34,
-        btnSize: 28,
-        gap: 10,
-        fontSize: 14,
-        onDec: () => setSheet(() => fit.setPlatePairs(placeId, kg, pairs - 1)),
-        onInc: () => setSheet(() => fit.setPlatePairs(placeId, kg, pairs + 1)),
       ),
     );
   }

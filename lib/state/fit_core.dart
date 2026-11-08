@@ -6,8 +6,16 @@ String fmt(num n) {
 }
 
 double _round1(double n) => (n * 10).round() / 10;
+double _round2(double n) => (n * 100).round() / 100;
 double _round3(double n) => (n * 1000).round() / 1000;
 double _roundTo(double n, double step) => (n / step).round() * step;
+
+double _clamp(double v, double? min, double? max) {
+  if (min != null) v = math.max(min, v);
+  if (max != null) v = math.min(max, v);
+  return (v * 100).round() / 100;
+}
+
 DateTime _dayKey(DateTime d) => DateTime(d.year, d.month, d.day);
 
 DateTime shiftDays(DateTime d, int n) => DateTime(d.year, d.month, d.day + n);
@@ -110,6 +118,8 @@ abstract class FitCore extends ChangeNotifier {
 
   double? get placeBarKg => null;
 
+  double get placeCollarKg => 0;
+
   String units = 'kg';
   double stepKg = 2.5;
   double stepLb = 5;
@@ -183,8 +193,14 @@ abstract class FitCore extends ChangeNotifier {
 
   bool get showNav => const ['home', 'progress', 'exercises', 'settings'].contains(route);
 
+  /// Runs after the unit changes and before listeners hear about it, so state
+  /// keyed by display size can drop what no longer means the same thing.
+  void onUnitsChanged() {}
+
   void setUnits(String u) {
+    final changed = units != u;
     units = u;
+    if (changed) onUnitsChanged();
     _persist();
     notifyListeners();
   }
@@ -199,6 +215,10 @@ abstract class FitCore extends ChangeNotifier {
   String weightLabel(double kg) => '${fmt(_round1(toDisplayWeight(kg)))} $units';
 
   String weightValue(double kg) => fmt(_round1(toDisplayWeight(kg)));
+
+  /// [kg] in the unit the app is not set to, e.g. "124.7 kg" while in lb.
+  String otherUnitLabel(double kg) =>
+      isLb ? '${fmt(_round1(kg))} kg' : '${fmt(_round1(kg * _lbPerKg))} lb';
 
   double get weightStep => isLb ? stepLb : stepKg;
   double get plateStep => isLb ? 5 : 2.5;

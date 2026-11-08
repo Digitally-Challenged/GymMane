@@ -170,6 +170,16 @@ void main() {
       expect(b.map((p) => '${fmt(p.weight)}x${p.count}'), ['25x1', '15x1']);
     });
 
+    test('a bar left unset is the standard bar until one is picked', () {
+      fit.plateBar = null;
+      fit.plateTarget = 100;
+      expect(fit.plateBarDisplay, 20);
+      expect(fit.plateBreakdown.map((p) => '${fmt(p.weight)}x${p.count}'), ['25x1', '15x1']);
+      fit.setPlateBar(15);
+      expect(fit.plateBarDisplay, 15);
+      fit.plateBar = null;
+    });
+
     test('the plates always add up to the target', () {
       for (final target in [60.0, 82.5, 100.0, 142.5, 227.5]) {
         fit.plateTarget = target;

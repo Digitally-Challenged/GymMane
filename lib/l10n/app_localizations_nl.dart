@@ -1402,11 +1402,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get justTheBar => 'Alleen de stang.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n per kant';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
@@ -1450,9 +1445,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get toolHintBf => 'Schatting volgens de US Navy-methode';
-
-  @override
-  String get toolHintPlate => 'Totaal gewicht van de stang';
 
   @override
   String get toolHintWarmup => 'Doelwerkgewicht';
@@ -1865,6 +1857,63 @@ class AppLocalizationsNl extends AppLocalizations {
   String plateAchievable(String w) {
     return 'Dichtst mogelijke belasting: $w';
   }
+
+  @override
+  String get plateTabLoad => 'Beladen';
+
+  @override
+  String get plateTabReverse => 'Wat zit erop?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Stang van $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Stang van $bar + $collars aan klemmen + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Wissen';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Voeg $plates toe per kant';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Haal $plates eraf per kant';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Haal $off eraf, voeg $on toe per kant';
+  }
+
+  @override
+  String get plateCollars => 'Klemmen (per stuk)';
+
+  @override
+  String get plateColours => 'SCHIJFKLEUREN';
+
+  @override
+  String get plateColoursColoured => 'Gekleurd';
+
+  @override
+  String get plateColoursIron => 'IJzer';
+
+  @override
+  String get plateColoursCustom => 'Eigen';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Kleur van $w';
+  }
+
+  @override
+  String get plateColourHint => 'Houd een schijf ingedrukt om de kleur te wijzigen';
 
   @override
   String get autoWarmup => 'Beginnen met opwarmsets';

@@ -1399,11 +1399,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get justTheBar => 'Solo il bilanciere.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n per lato';
-  }
-
-  @override
   String get toolNameRm => 'Massimale';
 
   @override
@@ -1447,9 +1442,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get toolHintBf => 'Stima col metodo US Navy';
-
-  @override
-  String get toolHintPlate => 'Peso totale del bilanciere';
 
   @override
   String get toolHintWarmup => 'Peso di lavoro obiettivo';
@@ -1859,6 +1851,63 @@ class AppLocalizationsIt extends AppLocalizations {
   String plateAchievable(String w) {
     return 'Il più vicino che puoi caricare: $w';
   }
+
+  @override
+  String get plateTabLoad => 'Carica';
+
+  @override
+  String get plateTabReverse => 'Cosa c\'è sopra?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Bilanciere da $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Bilanciere da $bar + $collars di fermi + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Cancella';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Aggiungi $plates per lato';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Togli $plates per lato';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Togli $off, aggiungi $on per lato';
+  }
+
+  @override
+  String get plateCollars => 'Fermadischi (ciascuno)';
+
+  @override
+  String get plateColours => 'COLORI DEI DISCHI';
+
+  @override
+  String get plateColoursColoured => 'Colorati';
+
+  @override
+  String get plateColoursIron => 'Ghisa';
+
+  @override
+  String get plateColoursCustom => 'Personalizzati';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Colore di $w';
+  }
+
+  @override
+  String get plateColourHint => 'Tieni premuto un disco per cambiarne il colore';
 
   @override
   String get autoWarmup => 'Inizia con il riscaldamento';

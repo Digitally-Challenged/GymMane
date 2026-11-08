@@ -1399,11 +1399,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get justTheBar => 'Just the bar.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n per side';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
@@ -1447,9 +1442,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toolHintBf => 'US Navy method estimate';
-
-  @override
-  String get toolHintPlate => 'Total barbell weight';
 
   @override
   String get toolHintWarmup => 'Working weight target';
@@ -1860,6 +1852,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String plateAchievable(String w) {
     return 'Closest you can load: $w';
   }
+
+  @override
+  String get plateTabLoad => 'Load';
+
+  @override
+  String get plateTabReverse => 'What\'s on it?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '$bar bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '$bar bar + $collars collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Clear';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Add $plates each side';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Take off $plates each side';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Take off $off, add $on each side';
+  }
+
+  @override
+  String get plateCollars => 'Collars (each)';
+
+  @override
+  String get plateColours => 'PLATE COLOURS';
+
+  @override
+  String get plateColoursColoured => 'Coloured';
+
+  @override
+  String get plateColoursIron => 'Iron';
+
+  @override
+  String get plateColoursCustom => 'Custom';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w colour';
+  }
+
+  @override
+  String get plateColourHint => 'Long-press a plate to change its colour';
 
   @override
   String get autoWarmup => 'Start with warm-up sets';

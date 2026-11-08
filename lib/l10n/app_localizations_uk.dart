@@ -1399,11 +1399,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get justTheBar => 'Лише гриф.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n на сторону';
-  }
-
-  @override
   String get toolNameRm => '1ПМ';
 
   @override
@@ -1447,9 +1442,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get toolHintBf => 'Оцінка за методом ВМС США';
-
-  @override
-  String get toolHintPlate => 'Загальна вага штанги';
 
   @override
   String get toolHintWarmup => 'Цільова робоча вага';
@@ -1862,6 +1854,63 @@ class AppLocalizationsUk extends AppLocalizations {
   String plateAchievable(String w) {
     return 'Найближча доступна вага: $w';
   }
+
+  @override
+  String get plateTabLoad => 'Зібрати';
+
+  @override
+  String get plateTabReverse => 'Що на штанзі?';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return 'Гриф $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return 'Гриф $bar + замки $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => 'Очистити';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return 'Додай $plates з кожного боку';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return 'Зніми $plates з кожного боку';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return 'Зніми $off, додай $on з кожного боку';
+  }
+
+  @override
+  String get plateCollars => 'Замки (кожен)';
+
+  @override
+  String get plateColours => 'КОЛЬОРИ ДИСКІВ';
+
+  @override
+  String get plateColoursColoured => 'Кольорові';
+
+  @override
+  String get plateColoursIron => 'Залізні';
+
+  @override
+  String get plateColoursCustom => 'Власні';
+
+  @override
+  String plateColourOf(String w) {
+    return 'Колір $w';
+  }
+
+  @override
+  String get plateColourHint => 'Утримуй диск, щоб змінити його колір';
 
   @override
   String get autoWarmup => 'Починати з розминкових підходів';

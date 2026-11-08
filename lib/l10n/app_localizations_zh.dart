@@ -1334,11 +1334,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get justTheBar => '仅空杆。';
 
   @override
-  String perSideCount(int n) {
-    return '单侧各 $n 片';
-  }
-
-  @override
   String get toolNameRm => '极限重量 (1RM)';
 
   @override
@@ -1382,9 +1377,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get toolHintBf => '美国海军体脂估算法';
-
-  @override
-  String get toolHintPlate => '杠铃总重量';
 
   @override
   String get toolHintWarmup => '目标正式组重量';
@@ -1783,6 +1775,63 @@ class AppLocalizationsZh extends AppLocalizations {
   String plateAchievable(String w) {
     return '最接近可加到：$w';
   }
+
+  @override
+  String get plateTabLoad => '配重';
+
+  @override
+  String get plateTabReverse => '杠铃上有什么？';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '杠铃杆 $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '杠铃杆 $bar + 卡扣 $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => '清除';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return '单侧加上 $plates';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return '单侧取下 $plates';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return '单侧取下 $off，加上 $on';
+  }
+
+  @override
+  String get plateCollars => '卡扣（每个）';
+
+  @override
+  String get plateColours => '杠铃片颜色';
+
+  @override
+  String get plateColoursColoured => '彩色';
+
+  @override
+  String get plateColoursIron => '铸铁';
+
+  @override
+  String get plateColoursCustom => '自定义';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w 的颜色';
+  }
+
+  @override
+  String get plateColourHint => '长按杠铃片可更改颜色';
 
   @override
   String get autoWarmup => '先做热身组';
@@ -6596,11 +6645,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get justTheBar => '只有槓鈴桿。';
 
   @override
-  String perSideCount(int n) {
-    return '每側 × $n';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
@@ -6644,9 +6688,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get toolHintBf => '依美國海軍法估算';
-
-  @override
-  String get toolHintPlate => '槓鈴總重量';
 
   @override
   String get toolHintWarmup => '目標訓練重量';
@@ -7046,6 +7087,63 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String plateAchievable(String w) {
     return '最接近的可用重量：$w';
   }
+
+  @override
+  String get plateTabLoad => '配重';
+
+  @override
+  String get plateTabReverse => '槓鈴上有什麼？';
+
+  @override
+  String plateSum(String bar, String plates, String total) {
+    return '槓鈴桿 $bar + 2 × ($plates) = $total';
+  }
+
+  @override
+  String plateSumCollars(String bar, String collars, String plates, String total) {
+    return '槓鈴桿 $bar + 槓夾 $collars + 2 × ($plates) = $total';
+  }
+
+  @override
+  String get plateClear => '清除';
+
+  @override
+  String plateChangeAdd(String plates) {
+    return '每側加上 $plates';
+  }
+
+  @override
+  String plateChangeOff(String plates) {
+    return '每側取下 $plates';
+  }
+
+  @override
+  String plateChangeSwap(String off, String on) {
+    return '每側取下 $off，加上 $on';
+  }
+
+  @override
+  String get plateCollars => '槓夾（每個）';
+
+  @override
+  String get plateColours => '槓片顏色';
+
+  @override
+  String get plateColoursColoured => '彩色';
+
+  @override
+  String get plateColoursIron => '鑄鐵';
+
+  @override
+  String get plateColoursCustom => '自訂';
+
+  @override
+  String plateColourOf(String w) {
+    return '$w 的顏色';
+  }
+
+  @override
+  String get plateColourHint => '長按槓片即可更改顏色';
 
   @override
   String get autoWarmup => '從暖身組開始';

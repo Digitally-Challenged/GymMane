@@ -100,6 +100,9 @@ mixin PlacesState on FitCore, LibraryState {
   @override
   double? get placeBarKg => activePlace?.bar;
 
+  @override
+  double get placeCollarKg => activePlace?.collarKg ?? 0;
+
   void setPlatePairs(String placeId, double kg, int pairs) {
     final i = places.indexWhere((p) => p.id == placeId);
     if (i < 0) return;
@@ -129,6 +132,54 @@ mixin PlacesState on FitCore, LibraryState {
     places[i] = places[i].copyWith(bar: _round3(kg.clamp(1, 60)));
     _persist();
     notifyListeners();
+  }
+
+  void setPlaceCollar(String placeId, double kg) {
+    final i = places.indexWhere((p) => p.id == placeId);
+    if (i < 0) return;
+    places[i] = places[i].copyWith(collarKg: _round3(kg.clamp(0, 10)));
+    _persist();
+    notifyListeners();
+  }
+
+  void setPlaceColourBase(String placeId, PlateColourBase base) {
+    final i = places.indexWhere((p) => p.id == placeId);
+    if (i < 0) return;
+    places[i] = places[i].copyWith(colourBase: base, customColours: false);
+    _persist();
+    notifyListeners();
+  }
+
+  void setPlaceCustom(String placeId) {
+    final i = places.indexWhere((p) => p.id == placeId);
+    if (i < 0) return;
+    places[i] = places[i].copyWith(customColours: true);
+    _persist();
+    notifyListeners();
+  }
+
+  void setPlateColour(String placeId, double kg, Color c) {
+    final i = places.indexWhere((p) => p.id == placeId);
+    if (i < 0) return;
+    final colours = {...places[i].plateColours};
+    colours[_plateKey(colours, kg)] = c.toARGB32();
+    places[i] = places[i].copyWith(plateColours: colours, customColours: true);
+    _persist();
+    notifyListeners();
+  }
+
+  /// The colour of the plate shown as [displaySize], in [place] or the active
+  /// gym. With no gym the Coloured preset applies.
+  Color plateColourFor(double displaySize, Color brass, {GymPlace? place}) {
+    final p = place ?? activePlace;
+    return plateColour(
+      sizeKg: fromDisplayWeight(displaySize),
+      isLb: isLb,
+      base: p?.colourBase ?? PlateColourBase.coloured,
+      custom: p?.customColours ?? false,
+      overridesKg: p?.plateColours ?? const {},
+      brass: brass,
+    );
   }
 
   int platePairs(GymPlace place, double kg) {
