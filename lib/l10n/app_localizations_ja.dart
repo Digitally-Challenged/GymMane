@@ -1399,9 +1399,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get toolHintBf => '米海軍方式による推定';
 
   @override
-  String get toolHintPlate => 'バーベル総重量';
-
-  @override
   String get toolHintWarmup => '目標作業重量';
 
   @override

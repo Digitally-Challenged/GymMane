@@ -1449,9 +1449,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toolHintBf => 'US Navy method estimate';
 
   @override
-  String get toolHintPlate => 'Total barbell weight';
-
-  @override
   String get toolHintWarmup => 'Working weight target';
 
   @override

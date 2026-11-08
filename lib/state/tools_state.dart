@@ -281,6 +281,19 @@ mixin ToolsState on FitCore {
 
   void bumpPlateTarget(double d) { plateTarget = _clamp(plateTarget + d, 0, null); notifyListeners(); }
 
+  /// One [plateStep] up ([direction] 1) or down (-1) from the target as shown, landing on the plate
+  /// grid (220.5 lb goes to 225 up and 220 down; never below 0). Stepping in kilos instead would
+  /// add 5.0045 lb a tap, and 275 lb would read 330.1 after eleven.
+  void stepPlateTarget(int direction) {
+    final step = plateStep;
+    final shown = plateTargetDisplay;
+    final next = direction > 0
+        ? (shown / step + 1e-6).floor() * step + step
+        : math.max(0.0, (shown / step - 1e-6).ceil() * step - step);
+    plateTarget = _clamp(fromDisplayWeight(next), 0, null);
+    notifyListeners();
+  }
+
   void setPlateBar(double b) { plateBar = fromDisplayWeight(b); notifyListeners(); }
 
   double get plateBarDisplay => plateBar == null ? defaultBar : _round1(toDisplayWeight(plateBar!));

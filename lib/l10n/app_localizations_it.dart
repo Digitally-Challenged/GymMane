@@ -1449,9 +1449,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get toolHintBf => 'Stima col metodo US Navy';
 
   @override
-  String get toolHintPlate => 'Peso totale del bilanciere';
-
-  @override
   String get toolHintWarmup => 'Peso di lavoro obiettivo';
 
   @override

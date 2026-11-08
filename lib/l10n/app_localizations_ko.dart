@@ -1412,9 +1412,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get toolHintBf => '미 해군 방식 추정';
 
   @override
-  String get toolHintPlate => '바벨 총 중량';
-
-  @override
   String get toolHintWarmup => '목표 작업 중량';
 
   @override

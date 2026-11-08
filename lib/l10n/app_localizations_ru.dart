@@ -1495,9 +1495,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get toolHintBf => 'Оценка по методу ВМС США';
 
   @override
-  String get toolHintPlate => 'Общий вес штанги';
-
-  @override
   String get toolHintWarmup => 'Целевой рабочий вес';
 
   @override

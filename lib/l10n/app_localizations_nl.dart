@@ -1452,9 +1452,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolHintBf => 'Schatting volgens de US Navy-methode';
 
   @override
-  String get toolHintPlate => 'Totaal gewicht van de stang';
-
-  @override
   String get toolHintWarmup => 'Doelwerkgewicht';
 
   @override

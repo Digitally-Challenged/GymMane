@@ -1442,9 +1442,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get toolHintBf => 'تخمین روش نیروی دریایی آمریکا';
 
   @override
-  String get toolHintPlate => 'وزن کل هالتر';
-
-  @override
   String get toolHintWarmup => 'هدف وزن کاری';
 
   @override

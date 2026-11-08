@@ -17,31 +17,30 @@ class ToolDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final gc = context.gc;
     final id = fit.activeToolId;
-    final plate = id == 'plate';
+    if (id == 'plate') return _page(t.toolTitle('plate'), [PlateToolBody()]);
     final meta = _meta(id);
-
-    return SafeArea(
-      bottom: false,
-      child: SingleChildScrollView(
-        clipBehavior: Clip.none,
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ScreenHeader(title: plate ? t.toolTitle('plate') : meta.$1, onBack: fit.closeTool, titleSize: 21),
-            const SizedBox(height: 20),
-            if (plate)
-              PlateToolBody()
-            else ...[
-              _resultCard(gc, meta),
-              const SizedBox(height: 18),
-              ..._grouped(_inputs(context, gc, id)),
-            ],
-          ],
-        ),
-      ),
-    );
+    return _page(meta.$1, [
+      _resultCard(gc, meta),
+      const SizedBox(height: 18),
+      ..._grouped(_inputs(context, gc, id)),
+    ]);
   }
+
+  Widget _page(String title, List<Widget> body) => SafeArea(
+        bottom: false,
+        child: SingleChildScrollView(
+          clipBehavior: Clip.none,
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ScreenHeader(title: title, onBack: fit.closeTool, titleSize: 21),
+              const SizedBox(height: 20),
+              ...body,
+            ],
+          ),
+        ),
+      );
 
   Widget _resultCard(GymColors gc, (String, String, String) meta) => Container(
         padding: const EdgeInsets.fromLTRB(22, 24, 22, 24),

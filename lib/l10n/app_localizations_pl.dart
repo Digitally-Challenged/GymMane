@@ -1450,9 +1450,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get toolHintBf => 'Szacunek metodą US Navy';
 
   @override
-  String get toolHintPlate => 'Łączny ciężar sztangi';
-
-  @override
   String get toolHintWarmup => 'Docelowy ciężar roboczy';
 
   @override

@@ -417,7 +417,6 @@
   "toolHintRm": "Szacowane maksimum na 1 powtórzenie (wzór Epleya)",
   "toolHintCal": "Szacowane dzienne zapotrzebowanie na utrzymanie",
   "toolHintBf": "Szacunek metodą US Navy",
-  "toolHintPlate": "Łączny ciężar sztangi",
   "toolHintWarmup": "Docelowy ciężar roboczy",
   "toolDescRm": "Szacowane maksimum na jedno powtórzenie",
   "toolDescBmi": "Wskaźnik masy ciała",

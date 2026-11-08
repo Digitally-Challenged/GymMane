@@ -83,7 +83,6 @@ class _LoadTab extends StatelessWidget {
     final collars = fit.collarsDisplay;
     final plates = fit.plateBreakdown;
     final loadable = fit.loadableTotal(target, fit.plateBarDisplay, collars: collars);
-    final step = fit.fromDisplayWeight(fit.plateStep);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -97,8 +96,8 @@ class _LoadTab extends StatelessWidget {
           total: fit.weightValue(fit.plateTarget),
           otherUnit: fit.otherUnitLabel(fit.plateTarget),
           onEdit: () => _editTarget(context),
-          onDec: () => fit.bumpPlateTarget(-step),
-          onInc: () => fit.bumpPlateTarget(step),
+          onDec: () => fit.stepPlateTarget(-1),
+          onInc: () => fit.stepPlateTarget(1),
         ),
         const SizedBox(height: _cardGap),
         PlateBarChoice(),

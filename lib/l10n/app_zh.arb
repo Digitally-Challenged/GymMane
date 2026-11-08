@@ -417,7 +417,6 @@
   "toolHintRm": "估算单次最大重量（Epley 公式）",
   "toolHintCal": "估算每日维持热量（TDEE）",
   "toolHintBf": "美国海军体脂估算法",
-  "toolHintPlate": "杠铃总重量",
   "toolHintWarmup": "目标正式组重量",
   "toolDescRm": "估算单次最大重量",
   "toolDescBmi": "身体质量指数",

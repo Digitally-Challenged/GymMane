@@ -1441,9 +1441,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get toolHintBf => 'تقدير بطريقة البحرية الأمريكية';
 
   @override
-  String get toolHintPlate => 'الوزن الإجمالي للبار';
-
-  @override
   String get toolHintWarmup => 'وزن العمل المستهدف';
 
   @override

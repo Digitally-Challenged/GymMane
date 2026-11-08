@@ -2626,12 +2626,6 @@ abstract class AppLocalizations {
   /// **'US Navy method estimate'**
   String get toolHintBf;
 
-  /// No description provided for @toolHintPlate.
-  ///
-  /// In en, this message translates to:
-  /// **'Total barbell weight'**
-  String get toolHintPlate;
-
   /// No description provided for @toolHintWarmup.
   ///
   /// In en, this message translates to:

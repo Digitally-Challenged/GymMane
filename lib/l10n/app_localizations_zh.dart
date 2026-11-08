@@ -1384,9 +1384,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get toolHintBf => '美国海军体脂估算法';
 
   @override
-  String get toolHintPlate => '杠铃总重量';
-
-  @override
   String get toolHintWarmup => '目标正式组重量';
 
   @override
@@ -6701,9 +6698,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get toolHintBf => '依美國海軍法估算';
-
-  @override
-  String get toolHintPlate => '槓鈴總重量';
 
   @override
   String get toolHintWarmup => '目標訓練重量';

@@ -1449,9 +1449,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get toolHintBf => 'Оцінка за методом ВМС США';
 
   @override
-  String get toolHintPlate => 'Загальна вага штанги';
-
-  @override
   String get toolHintWarmup => 'Цільова робоча вага';
 
   @override

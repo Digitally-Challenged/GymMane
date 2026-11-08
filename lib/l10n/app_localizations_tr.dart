@@ -1450,9 +1450,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get toolHintBf => 'ABD Donanması yöntemine göre tahmin';
 
   @override
-  String get toolHintPlate => 'Toplam bar ağırlığı';
-
-  @override
   String get toolHintWarmup => 'Hedef çalışma ağırlığı';
 
   @override

@@ -1455,9 +1455,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get toolHintBf => 'Schätzung nach der US-Navy-Methode';
 
   @override
-  String get toolHintPlate => 'Gesamtgewicht der Langhantel';
-
-  @override
   String get toolHintWarmup => 'Ziel Arbeitsgewicht';
 
   @override

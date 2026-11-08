@@ -10,6 +10,7 @@ import 'plate_chips.dart';
 import 'plate_disc.dart';
 
 const double _stepSize = 52;
+const double _hitSize = 44;
 const double _discGap = 8;
 const int _discColumns = 3;
 
@@ -93,6 +94,7 @@ class _Readout extends StatelessWidget {
     return Semantics(
       button: onEdit != null,
       child: GestureDetector(
+        key: const ValueKey('plate-total'),
         behavior: HitTestBehavior.opaque,
         onTap: onEdit,
         child: Column(
@@ -234,11 +236,23 @@ class PlateClearButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-        child: Text(
-          t.plateClear,
-          style: AppTheme.f(13, weight: FontWeight.w700, color: onTap == null ? gc.textTertiary : gc.accent),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: _hitSize, minHeight: _hitSize),
+        child: Align(
+          alignment: Alignment.centerRight,
+          widthFactor: 1,
+          heightFactor: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              t.plateClear,
+              style: AppTheme.f(
+                13,
+                weight: FontWeight.w700,
+                color: onTap == null ? gc.textTertiary : gc.accent,
+              ),
+            ),
+          ),
         ),
       ),
     );

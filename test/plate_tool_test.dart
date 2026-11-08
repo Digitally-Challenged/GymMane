@@ -65,6 +65,23 @@ Future<void> _press(WidgetTester tester, Finder target) async {
   await tester.pump();
 }
 
+/// Types [text] into the target dialog the way a user does, so the target is stored rounded to
+/// 0.01 kg like a real one.
+Future<void> _typeTarget(WidgetTester tester, String text) async {
+  await tester.tap(find.byKey(const ValueKey('plate-total')));
+  await tester.pump(const Duration(milliseconds: 500));
+  await tester.enterText(find.byType(TextField), text);
+  await tester.tap(find.text('Set'));
+  await tester.pump(const Duration(milliseconds: 500));
+}
+
+Future<void> _step(WidgetTester tester, String which, [int times = 1]) async {
+  for (var i = 0; i < times; i++) {
+    await tester.tap(find.byKey(ValueKey('plate-step-$which')));
+    await tester.pump();
+  }
+}
+
 Future<void> _openReverse(WidgetTester tester) async {
   await tester.tap(find.text(_reverseTab));
   await tester.pump();
@@ -85,6 +102,28 @@ void main() {
       for (var lb = 55; lb <= 695; lb += 5) {
         fit.bumpPlateTarget(fit.fromDisplayWeight(lb.toDouble()) - fit.plateTarget);
         expect(fit.plateBreakdown, fit.platesPerSide(lb.toDouble(), 45), reason: '$lb lb');
+      }
+    });
+
+    test('stepping never goes below zero and snaps off-grid targets', () {
+      _units('lb');
+      fit.bumpPlateTarget(fit.fromDisplayWeight(7) - fit.plateTarget);
+      fit.stepPlateTarget(-1);
+      expect(fit.plateTargetDisplay, 5);
+      fit.stepPlateTarget(-1);
+      expect(fit.plateTargetDisplay, 0);
+      fit.stepPlateTarget(-1);
+      expect(fit.plateTargetDisplay, 0);
+      fit.stepPlateTarget(1);
+      expect(fit.plateTargetDisplay, 5);
+    });
+
+    test('stepping up 100 times from a typed lb target stays on the grid', () {
+      _units('lb');
+      fit.bumpPlateTarget(fit.fromDisplayWeight(135) - fit.plateTarget);
+      for (var i = 1; i <= 100; i++) {
+        fit.stepPlateTarget(1);
+        expect(fit.plateTargetDisplay, 135 + 5 * i, reason: 'tap $i');
       }
     });
 
@@ -138,15 +177,48 @@ void main() {
       expect(find.text('270'), findsOneWidget);
     });
 
+    testWidgets('a typed 275 lb is still on the plate grid after twelve + taps', (tester) async {
+      _units('lb');
+      await _open(tester);
+      await _typeTarget(tester, '275');
+      expect(find.text('275'), findsOneWidget);
+
+      await _step(tester, 'inc', 12);
+
+      expect(find.text('335'), findsOneWidget);
+      expect(find.textContaining('Closest you can load'), findsNothing);
+      expect(find.text('45 bar + 2 × (45 + 45 + 45 + 10) = 335'), findsOneWidget);
+    });
+
+    testWidgets('the first tap from the default 220.5 lb snaps to the grid, both ways', (tester) async {
+      _units('lb');
+      await _open(tester);
+      expect(find.text('220.5'), findsOneWidget);
+
+      await _step(tester, 'inc');
+      expect(find.text('225'), findsOneWidget);
+      await _step(tester, 'dec');
+      expect(find.text('220'), findsOneWidget);
+      await _step(tester, 'dec');
+      expect(find.text('215'), findsOneWidget);
+    });
+
+    testWidgets('in kilos the buttons move 2.5 at a time', (tester) async {
+      await _open(tester);
+      expect(find.text('100'), findsOneWidget);
+
+      await _step(tester, 'inc');
+      expect(find.text('102.5'), findsOneWidget);
+      await _step(tester, 'dec', 2);
+      expect(find.text('97.5'), findsOneWidget);
+      expect(find.textContaining('Closest you can load'), findsNothing);
+    });
+
     testWidgets('tapping the total lets you type a target', (tester) async {
       _lbTarget(275);
       await _open(tester);
 
-      await tester.tap(find.text('275'));
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.enterText(find.byType(TextField), '315');
-      await tester.tap(find.text('Set'));
-      await tester.pump(const Duration(milliseconds: 500));
+      await _typeTarget(tester, '315');
 
       expect(find.text('315'), findsOneWidget);
       expect(fit.weightValue(fit.plateTarget), '315');
@@ -234,6 +306,17 @@ void main() {
       await tester.pump();
       expect(fit.reverseCounts, isEmpty);
       expect(fit.reverseTotal, 35);
+    });
+
+    testWidgets('Clear has at least a 44 x 44 hit area', (tester) async {
+      _units('lb');
+      await _open(tester);
+      await _openReverse(tester);
+
+      final hit = find.ancestor(of: find.text('Clear'), matching: find.byType(GestureDetector)).first;
+      final size = tester.getSize(hit);
+      expect(size.width, greaterThanOrEqualTo(44));
+      expect(size.height, greaterThanOrEqualTo(44));
     });
 
     testWidgets('the tab survives the screen rebuilding on a change', (tester) async {

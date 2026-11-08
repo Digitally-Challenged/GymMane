@@ -417,7 +417,6 @@
   "toolHintRm": "예상 1회 최대중량(Epley 공식)",
   "toolHintCal": "일일 유지 필요량 추정",
   "toolHintBf": "미 해군 방식 추정",
-  "toolHintPlate": "바벨 총 중량",
   "toolHintWarmup": "목표 작업 중량",
   "toolDescRm": "예상 1회 최대중량",
   "toolDescBmi": "체질량지수",

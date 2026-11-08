@@ -110,7 +110,6 @@ extension GymL10n on AppLocalizations {
         'rm' => toolHintRm,
         'cal' => toolHintCal,
         'bf' => toolHintBf,
-        'plate' => toolHintPlate,
         _ => toolHintWarmup,
       };
 

@@ -1454,9 +1454,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get toolHintBf => 'Estimation selon la méthode de l’US Navy';
 
   @override
-  String get toolHintPlate => 'Poids total de la barre';
-
-  @override
   String get toolHintWarmup => 'Charge de travail cible';
 
   @override
