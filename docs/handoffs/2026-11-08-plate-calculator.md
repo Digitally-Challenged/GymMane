@@ -43,11 +43,9 @@ Calls made during the build (cost if wrong in brackets):
 - **The primary checkout** (`~/Documents/GitHub/GymMane`) is still on `feat-watch-companion` with untracked `data/`. That predates this work and was left untouched.
 
 ### ⏭️ NEXT
-Fix the regression on the "Plates and bar" row in `lib/screens/places_screen.dart` (~250).
-- **The bug:** a `Flexible` value next to the `Expanded` label pulls the value and caret about 57 px left of the trailing edge for short values like "3 sizes".
-- **The fix:** keep the label `Expanded` and wrap the value `Text` (ellipsis, maxLines 1) in `ConstrainedBox(maxWidth: ~110)`. Add a widget test that the caret's right edge equals the row's right edge for a short value, and keep the existing 320/360 px no-overflow test passing.
-- **Then:** open a PR from `feat-plate-calculator` into `main` on the fork.
+Merge `feat-plate-calculator` into `main` with a merge commit and push `main` to `fork`. This repo doesn't use PRs.
+- The "Plates and bar" row fix is in: the value is capped at 110 px so the caret stays on the trailing edge. A widget test covers it.
 
 ### Open status
-- Not merged and no PR yet. The branch is pushed to `fork` (Digitally-Challenged/GymMane).
+- Not merged into `main` yet. The branch is pushed to `fork` (Digitally-Challenged/GymMane).
 - Deferred minors worth a later sweep: translation wording in ar, it, es, fa, ja and ko needs a native-speaker check; swatches have no screen-reader names; −/+ buttons can't be reached by keyboard on web; there is no RTL test of the sum line.
