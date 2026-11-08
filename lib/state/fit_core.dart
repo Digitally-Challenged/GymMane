@@ -110,6 +110,8 @@ abstract class FitCore extends ChangeNotifier {
 
   double? get placeBarKg => null;
 
+  double get placeCollarKg => 0;
+
   String units = 'kg';
   double stepKg = 2.5;
   double stepLb = 5;
@@ -183,8 +185,14 @@ abstract class FitCore extends ChangeNotifier {
 
   bool get showNav => const ['home', 'progress', 'exercises', 'settings'].contains(route);
 
+  /// Runs after the unit changes and before listeners hear about it, so state
+  /// keyed by display size can drop what no longer means the same thing.
+  void onUnitsChanged() {}
+
   void setUnits(String u) {
+    final changed = units != u;
     units = u;
+    if (changed) onUnitsChanged();
     _persist();
     notifyListeners();
   }

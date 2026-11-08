@@ -18,7 +18,8 @@ mixin ToolsState on FitCore {
   double bfWaist = 84;
   double bfHip = 95;
   double plateTarget = 100;
-  double plateBar = 20;
+  double? plateBar;
+  final Map<double, int> reverseCounts = {};
   double warmupTarget = 100;
   double rpeWeight = 100;
   int rpeReps = 5;
@@ -131,8 +132,20 @@ mixin ToolsState on FitCore {
   List<double> get _plateSteps =>
       isLb ? const [45, 35, 25, 10, 5, 2.5] : const [25, 20, 15, 10, 5, 2.5, 1.25];
 
-  List<({double weight, int count})> get plateBreakdown =>
-      platesPerSide(toDisplayWeight(plateTarget), toDisplayWeight(plateBar));
+  List<double> get plateBarOptions {
+    final bars = [...barOptions];
+    final gym = defaultBar;
+    if (!bars.any((b) => (b - gym).abs() < 0.05)) bars.add(gym);
+    return bars..sort((a, b) => b.compareTo(a));
+  }
+
+  double get collarsDisplay => _round1(2 * toDisplayWeight(placeCollarKg));
+
+  double collarsFor(String id, {String equipment = 'Barbell'}) =>
+      equipment == 'Barbell' && !hasOwnBar(id) ? collarsDisplay : 0;
+
+  List<PlateCount> get plateBreakdown =>
+      platesPerSide(toDisplayWeight(plateTarget), plateBarDisplay, collars: collarsDisplay);
 
   double get defaultBar {
     final placeBar = placeBarKg;
@@ -146,13 +159,13 @@ mixin ToolsState on FitCore {
     return {for (final e in stock.entries) _round1(toDisplayWeight(e.key)): e.value};
   }
 
-  List<({double weight, int count})> platesPerSide(double displayTarget, double displayBar) {
+  List<PlateCount> platesPerSide(double displayTarget, double displayBar, {double collars = 0}) {
     final stock = plateStockDisplay;
     final steps = stock == null
         ? _plateSteps
         : (stock.keys.toList()..sort((a, b) => b.compareTo(a)));
-    double perSide = math.max(0, (displayTarget - displayBar) / 2);
-    final out = <({double weight, int count})>[];
+    double perSide = math.max(0, (displayTarget - displayBar - collars) / 2);
+    final out = <PlateCount>[];
     for (final p in steps) {
       var count = (perSide / p + 1e-6).floor();
       if (stock != null) count = math.min(count, stock[p] ?? 0);
@@ -164,9 +177,9 @@ mixin ToolsState on FitCore {
     return out;
   }
 
-  double loadableTotal(double displayTarget, double displayBar) {
-    final parts = platesPerSide(displayTarget, displayBar);
-    return _round1(displayBar + parts.fold<double>(0, (a, p) => a + p.weight * p.count) * 2);
+  double loadableTotal(double displayTarget, double displayBar, {double collars = 0}) {
+    final parts = platesPerSide(displayTarget, displayBar, collars: collars);
+    return _round1(displayBar + collars + parts.fold<double>(0, (a, p) => a + p.weight * p.count) * 2);
   }
 
   bool hasOwnBar(String id) => exerciseBar.containsKey(id);
@@ -192,7 +205,7 @@ mixin ToolsState on FitCore {
     final bar = barFor(id, equipment: equipment);
     final target = _round1(toDisplayWeight(weightKg));
     if (target <= bar) return null;
-    final parts = platesPerSide(target, bar);
+    final parts = platesPerSide(target, bar, collars: collarsFor(id, equipment: equipment));
     if (parts.isEmpty) return null;
     return parts
         .map((p) => p.count == 1 ? fmt(p.weight) : '${fmt(p.weight)}×${p.count}')
@@ -230,7 +243,9 @@ mixin ToolsState on FitCore {
   double get rmAtPct {
     final target = toDisplayWeight(rmResult * rmPct / 100);
     final bar = defaultBar;
-    return target <= bar ? _roundTo(target, isLb ? 5.0 : 2.5) : loadableTotal(target, bar);
+    final collars = collarsDisplay;
+    if (target <= bar + collars) return _roundTo(target, isLb ? 5.0 : 2.5);
+    return loadableTotal(target, bar, collars: collars);
   }
 
   void bumpRmReps(int d) { rmReps = _clamp(rmReps + d.toDouble(), 1, 20).round(); notifyListeners(); }
@@ -263,7 +278,32 @@ mixin ToolsState on FitCore {
 
   void setPlateBar(double b) { plateBar = fromDisplayWeight(b); notifyListeners(); }
 
-  double get plateBarDisplay => _round1(toDisplayWeight(plateBar));
+  double get plateBarDisplay {
+    final kg = plateBar;
+    return kg == null ? defaultBar : _round1(toDisplayWeight(kg));
+  }
+
+  void bumpReverse(double size, int d) {
+    final next = math.max(0, (reverseCounts[size] ?? 0) + d);
+    next == 0 ? reverseCounts.remove(size) : reverseCounts[size] = next;
+    notifyListeners();
+  }
+
+  void clearReverse() {
+    reverseCounts.clear();
+    notifyListeners();
+  }
+
+  double get reverseTotal {
+    final perSide = reverseCounts.entries.fold<double>(0, (a, e) => a + e.key * e.value);
+    return _round1(plateBarDisplay + collarsDisplay + 2 * perSide);
+  }
+
+  @override
+  void onUnitsChanged() {
+    super.onUnitsChanged();
+    reverseCounts.clear();
+  }
 
   static double _effortShare(int reps, double rpe) => rpePercent(reps, rpe) ?? 1 / (1 + reps / 30);
 

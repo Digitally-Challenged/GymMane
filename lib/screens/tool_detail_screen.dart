@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/l10n.dart';
+import '../models/plate_math.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -348,7 +349,7 @@ class ToolDetailScreen extends StatelessWidget {
   Widget _perSideCard(GymColors gc) {
     final rows = fit.plateBreakdown;
     final target = fit.toDisplayWeight(fit.plateTarget);
-    final loadable = fit.loadableTotal(target, fit.plateBarDisplay);
+    final loadable = fit.loadableTotal(target, fit.plateBarDisplay, collars: fit.collarsDisplay);
     return SoftCard(
       radius: 20,
       borderColor: Colors.transparent,
@@ -383,10 +384,12 @@ class ToolDetailScreen extends StatelessWidget {
   Widget _rmPctCard(BuildContext context, GymColors gc) {
     final weight = fit.rmAtPct;
     final bar = fit.defaultBar;
-    final plates = weight > bar ? fit.platesPerSide(weight, bar) : const <({double weight, int count})>[];
+    final collars = fit.collarsDisplay;
+    final loadable = weight > bar + collars;
+    final plates = loadable ? fit.platesPerSide(weight, bar, collars: collars) : const <PlateCount>[];
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: weight > bar ? () => showPlateSheet(context, weight) : null,
+      onTap: loadable ? () => showPlateSheet(context, weight) : null,
       child: SoftCard(
         radius: 20,
         borderColor: Colors.transparent,
