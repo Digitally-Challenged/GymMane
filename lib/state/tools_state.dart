@@ -144,8 +144,13 @@ mixin ToolsState on FitCore {
   double collarsFor(String id, {String equipment = 'Barbell'}) =>
       equipment == 'Barbell' && !hasOwnBar(id) ? collarsDisplay : 0;
 
+  /// The target as shown on screen (0.1 of a pound or kilo). The plates are worked out from this,
+  /// not from the kilos kept to 0.01: 315 lb is stored as 142.88 kg, which is 314.996 lb, and
+  /// the fill then swaps the third 45 for a 35 and a 10.
+  double get plateTargetDisplay => _round1(toDisplayWeight(plateTarget));
+
   List<PlateCount> get plateBreakdown =>
-      platesPerSide(toDisplayWeight(plateTarget), plateBarDisplay, collars: collarsDisplay);
+      platesPerSide(plateTargetDisplay, plateBarDisplay, collars: collarsDisplay);
 
   double get defaultBar {
     final placeBar = placeBarKg;

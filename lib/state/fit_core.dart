@@ -209,6 +209,10 @@ abstract class FitCore extends ChangeNotifier {
 
   String weightValue(double kg) => fmt(_round1(toDisplayWeight(kg)));
 
+  /// [kg] in the unit the app is not set to, e.g. "124.7 kg" while in lb.
+  String otherUnitLabel(double kg) =>
+      isLb ? '${fmt(_round1(kg))} kg' : '${fmt(_round1(kg * _lbPerKg))} lb';
+
   double get weightStep => isLb ? stepLb : stepKg;
   double get plateStep => isLb ? 5 : 2.5;
   String get volumeUnit => isLb ? 'k lb' : 't';

@@ -8,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/glass.dart';
 import '../widgets/ui_kit.dart';
+import 'plate_tool.dart';
 
 class ToolDetailScreen extends StatelessWidget {
   const ToolDetailScreen({super.key});
@@ -16,6 +17,7 @@ class ToolDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final gc = context.gc;
     final id = fit.activeToolId;
+    final plate = id == 'plate';
     final meta = _meta(id);
 
     return SafeArea(
@@ -26,33 +28,38 @@ class ToolDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ScreenHeader(title: meta.$1, onBack: fit.closeTool, titleSize: 21),
+            ScreenHeader(title: plate ? t.toolTitle('plate') : meta.$1, onBack: fit.closeTool, titleSize: 21),
             const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.fromLTRB(22, 24, 22, 24),
-              decoration: BoxDecoration(
-                color: gc.bgRaised,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(children: [
-                Text(t.result.toUpperCase(),
-                    style: AppTheme.f(10.5,
-                        weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.6)),
-                const SizedBox(height: 8),
-                Text(meta.$2,
-                    textAlign: TextAlign.center,
-                    style: AppTheme.f(40, weight: FontWeight.w800, color: gc.text)),
-                const SizedBox(height: 8),
-                Text(meta.$3, style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary), textAlign: TextAlign.center),
-              ]),
-            ),
-            const SizedBox(height: 18),
-            ..._grouped(_inputs(context, gc, id)),
+            if (plate)
+              PlateToolBody()
+            else ...[
+              _resultCard(gc, meta),
+              const SizedBox(height: 18),
+              ..._grouped(_inputs(context, gc, id)),
+            ],
           ],
         ),
       ),
     );
   }
+
+  Widget _resultCard(GymColors gc, (String, String, String) meta) => Container(
+        padding: const EdgeInsets.fromLTRB(22, 24, 22, 24),
+        decoration: BoxDecoration(
+          color: gc.bgRaised,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(children: [
+          Text(t.result.toUpperCase(),
+              style: AppTheme.f(10.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.6)),
+          const SizedBox(height: 8),
+          Text(meta.$2,
+              textAlign: TextAlign.center,
+              style: AppTheme.f(40, weight: FontWeight.w800, color: gc.text)),
+          const SizedBox(height: 8),
+          Text(meta.$3, style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary), textAlign: TextAlign.center),
+        ]),
+      );
 
   List<Widget> _grouped(List<Widget> items) {
     final out = <Widget>[];
@@ -92,8 +99,6 @@ class ToolDetailScreen extends StatelessWidget {
         return (t.toolTitle('cal'), '${fit.tdee} kcal', t.toolResultHint('cal'));
       case 'bf':
         return (t.toolTitle('bf'), '${fmt(fit.bfVal)}%', t.toolResultHint('bf'));
-      case 'plate':
-        return (t.toolTitle('plate'), '${fit.weightValue(fit.plateTarget)} ${fit.units}', t.toolResultHint('plate'));
       case 'warmup':
         return (t.toolTitle('warmup'), '${fit.weightValue(fit.warmupTarget)} ${fit.units}', t.toolResultHint('warmup'));
       case 'rpe':
@@ -157,14 +162,6 @@ class ToolDetailScreen extends StatelessWidget {
           ToolRow(label: t.waist, control: StepperControl(value: fit.cmLabel(fit.bfWaist), onDec: () => fit.bumpBfWaist(-fit.girthStep), onInc: () => fit.bumpBfWaist(fit.girthStep), onEdit: () => _editNumber(context, title: t.waist, current: fit.toDisplayCm(fit.bfWaist), decimal: true, apply: (v) => fit.bumpBfWaist(fit.fromDisplayCm(v) - fit.bfWaist)))),
           const SizedBox(height: 10),
           ToolRow(label: t.hip, control: StepperControl(value: fit.cmLabel(fit.bfHip), onDec: () => fit.bumpBfHip(-fit.girthStep), onInc: () => fit.bumpBfHip(fit.girthStep), onEdit: () => _editNumber(context, title: t.hip, current: fit.toDisplayCm(fit.bfHip), decimal: true, apply: (v) => fit.bumpBfHip(fit.fromDisplayCm(v) - fit.bfHip)))),
-        ];
-      case 'plate':
-        return [
-          ToolRow(label: t.targetWeight, control: StepperControl(value: '${fit.weightValue(fit.plateTarget)} ${fit.units}', onDec: () => fit.bumpPlateTarget(-fit.fromDisplayWeight(fit.weightStep)), onInc: () => fit.bumpPlateTarget(fit.fromDisplayWeight(fit.weightStep)), onEdit: () => _editNumber(context, title: t.targetWeight, current: fit.toDisplayWeight(fit.plateTarget), decimal: true, apply: (v) => fit.bumpPlateTarget(fit.fromDisplayWeight(v) - fit.plateTarget)))),
-          const SizedBox(height: 10),
-          _barWeightCard(gc),
-          const SizedBox(height: 10),
-          _perSideCard(gc),
         ];
       case 'warmup':
         return [
@@ -306,79 +303,6 @@ class ToolDetailScreen extends StatelessWidget {
       const SizedBox(width: 10),
       card(t.macroFat, '${fit.calFat}g'),
     ]);
-  }
-
-  Widget _barWeightCard(GymColors gc) {
-    Widget opt(double v) {
-      final active = fit.plateBarDisplay == v;
-      return Expanded(
-        child: GestureDetector(
-          onTap: () => fit.setPlateBar(v),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(color: active ? gc.ember : gc.bgRaised2, borderRadius: BorderRadius.circular(10)),
-            child: Text('${fmt(v)} ${fit.units}',
-                style: AppTheme.f(13, weight: FontWeight.w600, color: active ? gc.onEmber : gc.textSecondary)),
-          ),
-        ),
-      );
-    }
-
-    final bars = fit.barOptions;
-    return SoftCard(
-      radius: 20,
-      borderColor: Colors.transparent,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(t.barWeight, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
-          const SizedBox(height: 10),
-          Row(children: [
-            for (int i = 0; i < bars.length; i++) ...[
-              if (i > 0) const SizedBox(width: 8),
-              opt(bars[i]),
-            ],
-          ]),
-        ],
-      ),
-    );
-  }
-
-  Widget _perSideCard(GymColors gc) {
-    final rows = fit.plateBreakdown;
-    final target = fit.toDisplayWeight(fit.plateTarget);
-    final loadable = fit.loadableTotal(target, fit.plateBarDisplay, collars: fit.collarsDisplay);
-    return SoftCard(
-      radius: 20,
-      borderColor: Colors.transparent,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(t.perSide, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
-          const SizedBox(height: 10),
-          if (rows.isEmpty)
-            Text(t.justTheBar, style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary))
-          else
-            for (final p in rows)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('${fmt(p.weight)} ${fit.units}', style: AppTheme.f(14, weight: FontWeight.w600, color: gc.text)),
-                    Text(t.perSideCount(p.count), style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
-                  ],
-                ),
-              ),
-          if (loadable < target - 0.01)
-            Text(t.plateAchievable('${fmt(loadable)} ${fit.units}'),
-                style: AppTheme.f(12, weight: FontWeight.w500, color: gc.brass)),
-        ],
-      ),
-    );
   }
 
   Widget _rmPctCard(BuildContext context, GymColors gc) {
