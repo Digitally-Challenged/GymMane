@@ -156,7 +156,7 @@ mixin ToolsState on FitCore {
   Map<double, int>? get plateStockDisplay {
     final stock = plateStockKg;
     if (stock == null) return null;
-    return {for (final e in stock.entries) _round1(toDisplayWeight(e.key)): e.value};
+    return {for (final e in stock.entries) _round2(toDisplayWeight(e.key)): e.value};
   }
 
   List<PlateCount> platesPerSide(double displayTarget, double displayBar, {double collars = 0}) {
@@ -278,10 +278,7 @@ mixin ToolsState on FitCore {
 
   void setPlateBar(double b) { plateBar = fromDisplayWeight(b); notifyListeners(); }
 
-  double get plateBarDisplay {
-    final kg = plateBar;
-    return kg == null ? defaultBar : _round1(toDisplayWeight(kg));
-  }
+  double get plateBarDisplay => plateBar == null ? defaultBar : _round1(toDisplayWeight(plateBar!));
 
   void bumpReverse(double size, int d) {
     final next = math.max(0, (reverseCounts[size] ?? 0) + d);
@@ -303,6 +300,7 @@ mixin ToolsState on FitCore {
   void onUnitsChanged() {
     super.onUnitsChanged();
     reverseCounts.clear();
+    plateBar = null;
   }
 
   static double _effortShare(int reps, double rpe) => rpePercent(reps, rpe) ?? 1 / (1 + reps / 30);

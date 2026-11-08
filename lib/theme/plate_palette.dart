@@ -48,9 +48,12 @@ const List<(double, Color)> _colouredKg = [
 
 const double _tolerance = 0.05;
 
+/// Within [_tolerance], allowing for floating point (1.3 - 1.25 is 0.05000000000000004).
+bool _close(double a, double b) => (a - b).abs() <= _tolerance + 1e-9;
+
 Color? _near(List<(double, Color)> table, double size) {
   for (final (s, colour) in table) {
-    if ((s - size).abs() < _tolerance) return colour;
+    if (_close(s, size)) return colour;
   }
   return null;
 }
@@ -69,7 +72,7 @@ Color plateColour({
 }) {
   if (custom) {
     for (final e in overridesKg.entries) {
-      if ((e.key - sizeKg).abs() < _tolerance) return Color(e.value);
+      if (_close(e.key, sizeKg)) return Color(e.value);
     }
   }
   final size = isLb ? (sizeKg * _lbPerKg * 10).round() / 10 : sizeKg;
@@ -77,7 +80,7 @@ Color plateColour({
   if (coloured == null) return kPlateGrey;
   if (base == PlateColourBase.coloured) return coloured;
   final largest = isLb ? 45.0 : 25.0;
-  return (size - largest).abs() < _tolerance ? kPlateIron : brass;
+  return _close(size, largest) ? kPlateIron : brass;
 }
 
 /// Light plates need a thin outline to show on the light theme.

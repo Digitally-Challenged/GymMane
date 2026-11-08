@@ -6,6 +6,7 @@ String fmt(num n) {
 }
 
 double _round1(double n) => (n * 10).round() / 10;
+double _round2(double n) => (n * 100).round() / 100;
 double _round3(double n) => (n * 1000).round() / 1000;
 double _roundTo(double n, double step) => (n / step).round() * step;
 DateTime _dayKey(DateTime d) => DateTime(d.year, d.month, d.day);
