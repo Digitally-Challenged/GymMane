@@ -810,10 +810,13 @@ class ToolGroup extends StatelessWidget {
 }
 
 class SegOption {
-  const SegOption(this.label, this.selected, this.onTap);
+  const SegOption(this.label, this.selected, this.onTap, {this.enabled = true});
   final String label;
   final bool selected;
   final VoidCallback onTap;
+
+  /// A disabled option is drawn muted and ignores taps.
+  final bool enabled;
 }
 
 class SegToggle extends StatelessWidget {
@@ -834,7 +837,7 @@ class SegToggle extends StatelessWidget {
         children: [
           for (final o in options)
             GestureDetector(
-              onTap: o.onTap,
+              onTap: o.enabled ? o.onTap : null,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
                 decoration: BoxDecoration(
@@ -843,7 +846,10 @@ class SegToggle extends StatelessWidget {
                 ),
                 child: Text(o.label,
                     style: AppTheme.f(fontSize,
-                        weight: FontWeight.w600, color: o.selected ? gc.onEmber : gc.textSecondary)),
+                        weight: FontWeight.w600,
+                        color: o.selected
+                            ? gc.onEmber
+                            : (o.enabled ? gc.textSecondary : gc.textTertiary))),
               ),
             ),
         ],
