@@ -1392,11 +1392,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get justTheBar => 'فقط میله.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n هر طرف';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

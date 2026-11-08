@@ -401,7 +401,6 @@
   "barWeight": "바 무게",
   "perSide": "한쪽당",
   "justTheBar": "바만 사용.",
-  "perSideCount": "한쪽당 × {n}",
   "toolNameRm": "1RM",
   "toolNameBmi": "BMI",
   "toolNameCal": "칼로리",

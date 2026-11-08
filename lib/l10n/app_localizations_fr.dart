@@ -1404,11 +1404,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get justTheBar => 'Barre seule.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n par côté';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

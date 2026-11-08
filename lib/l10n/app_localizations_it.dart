@@ -1399,11 +1399,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get justTheBar => 'Solo il bilanciere.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n per lato';
-  }
-
-  @override
   String get toolNameRm => 'Massimale';
 
   @override

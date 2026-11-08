@@ -2530,12 +2530,6 @@ abstract class AppLocalizations {
   /// **'Just the bar.'**
   String get justTheBar;
 
-  /// No description provided for @perSideCount.
-  ///
-  /// In en, this message translates to:
-  /// **'× {n} per side'**
-  String perSideCount(int n);
-
   /// No description provided for @toolNameRm.
   ///
   /// In en, this message translates to:

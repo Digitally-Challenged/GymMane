@@ -477,8 +477,6 @@
   "barWeight": "BAR WEIGHT",
   "perSide": "PER SIDE",
   "justTheBar": "Just the bar.",
-  "perSideCount": "× {n} per side",
-  "@perSideCount": { "placeholders": { "n": { "type": "int" } } },
 
   "toolNameRm": "1RM",
   "toolNameBmi": "BMI",

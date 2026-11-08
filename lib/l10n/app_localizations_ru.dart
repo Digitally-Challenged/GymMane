@@ -1445,11 +1445,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get justTheBar => 'Только гриф.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n на сторону';
-  }
-
-  @override
   String get toolNameRm => '1ПМ';
 
   @override

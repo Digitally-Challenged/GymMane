@@ -401,7 +401,6 @@
   "barWeight": "杠铃杆重",
   "perSide": "单侧配重",
   "justTheBar": "仅空杆。",
-  "perSideCount": "单侧各 {n} 片",
   "toolNameRm": "极限重量 (1RM)",
   "toolNameBmi": "BMI 指数",
   "toolNameCal": "卡路里",

@@ -401,7 +401,6 @@
   "barWeight": "STANGGEWICHT",
   "perSide": "PER KANT",
   "justTheBar": "Alleen de stang.",
-  "perSideCount": "× {n} per kant",
   "toolNameRm": "1RM",
   "toolNameBmi": "BMI",
   "toolNameCal": "Calorieën",

@@ -1334,11 +1334,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get justTheBar => '仅空杆。';
 
   @override
-  String perSideCount(int n) {
-    return '单侧各 $n 片';
-  }
-
-  @override
   String get toolNameRm => '极限重量 (1RM)';
 
   @override
@@ -6648,11 +6643,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get justTheBar => '只有槓鈴桿。';
-
-  @override
-  String perSideCount(int n) {
-    return '每側 × $n';
-  }
 
   @override
   String get toolNameRm => '1RM';

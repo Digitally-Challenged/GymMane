@@ -1398,11 +1398,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get justTheBar => 'Solo la barra.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n por lado';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

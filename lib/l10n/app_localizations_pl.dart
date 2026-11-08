@@ -1400,11 +1400,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get justTheBar => 'Tylko gryf.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n na stronę';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

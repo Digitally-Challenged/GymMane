@@ -1402,11 +1402,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get justTheBar => 'Alleen de stang.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n per kant';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

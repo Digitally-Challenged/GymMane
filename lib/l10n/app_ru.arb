@@ -401,7 +401,6 @@
   "barWeight": "ВЕС ГРИФА",
   "perSide": "НА СТОРОНУ",
   "justTheBar": "Только гриф.",
-  "perSideCount": "× {n} на сторону",
   "toolNameRm": "1ПМ",
   "toolNameBmi": "ИМТ",
   "toolNameCal": "Калории",

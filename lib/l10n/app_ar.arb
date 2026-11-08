@@ -401,7 +401,6 @@
   "barWeight": "وزن البار",
   "perSide": "لكل جانب",
   "justTheBar": "البار فقط.",
-  "perSideCount": "× {n} لكل جانب",
   "toolNameRm": "1RM",
   "toolNameBmi": "مؤشر كتلة الجسم",
   "toolNameCal": "السعرات الحرارية",

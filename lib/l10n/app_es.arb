@@ -401,7 +401,6 @@
   "barWeight": "PESO DE LA BARRA",
   "perSide": "POR LADO",
   "justTheBar": "Solo la barra.",
-  "perSideCount": "× {n} por lado",
   "toolNameRm": "1RM",
   "toolNameBmi": "IMC",
   "toolNameCal": "Calorías",

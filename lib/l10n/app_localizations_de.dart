@@ -1405,11 +1405,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get justTheBar => 'Nur die Stange.';
 
   @override
-  String perSideCount(int n) {
-    return '× $n pro Seite';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

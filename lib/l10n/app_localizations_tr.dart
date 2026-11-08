@@ -1400,11 +1400,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get justTheBar => 'Sadece bar.';
 
   @override
-  String perSideCount(int n) {
-    return 'Her taraf × $n';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override

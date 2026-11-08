@@ -401,7 +401,6 @@
   "barWeight": "STANGENGEWICHT",
   "perSide": "PRO SEITE",
   "justTheBar": "Nur die Stange.",
-  "perSideCount": "× {n} pro Seite",
   "toolNameRm": "1RM",
   "toolNameBmi": "BMI",
   "toolNameCal": "Kalorien",

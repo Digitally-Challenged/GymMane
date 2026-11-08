@@ -401,7 +401,6 @@
   "barWeight": "槓鈴重量",
   "perSide": "每側",
   "justTheBar": "只有槓鈴桿。",
-  "perSideCount": "每側 × {n}",
   "toolNameRm": "1RM",
   "toolNameBmi": "BMI",
   "toolNameCal": "卡路里",

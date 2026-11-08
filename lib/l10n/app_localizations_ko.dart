@@ -1362,11 +1362,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get justTheBar => '바만 사용.';
 
   @override
-  String perSideCount(int n) {
-    return '한쪽당 × $n';
-  }
-
-  @override
   String get toolNameRm => '1RM';
 
   @override
