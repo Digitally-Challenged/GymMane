@@ -135,10 +135,14 @@ mixin PlateToolState on FitCore {
     return _round1(plateBarDisplay + collarsDisplay + 2 * perSide);
   }
 
+  /// The reverse counts and the picked bar are keyed by display size, so they clear. The target
+  /// snaps to the new unit's [plateStep] grid: 247.5 kg would otherwise show as 545.6 lb, which no
+  /// plates can load, until the first tap.
   @override
   void onUnitsChanged() {
     super.onUnitsChanged();
     reverseCounts.clear();
     plateBar = null;
+    plateTarget = _clamp(fromDisplayWeight(_roundTo(plateTargetDisplay, plateStep)), 0, null);
   }
 }

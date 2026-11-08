@@ -15,6 +15,7 @@ double _clamp(double v, double? min, double? max) {
   if (max != null) v = math.min(max, v);
   return (v * 100).round() / 100;
 }
+
 DateTime _dayKey(DateTime d) => DateTime(d.year, d.month, d.day);
 
 DateTime shiftDays(DateTime d, int n) => DateTime(d.year, d.month, d.day + n);

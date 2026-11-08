@@ -145,7 +145,7 @@ mixin ToolsState on FitCore, PlateToolState {
   void bumpRmPct(int d) { rmPct = (rmPct + d).clamp(30, 100); notifyListeners(); }
 
   double get rmAtPct {
-    final target = toDisplayWeight(rmResult * rmPct / 100);
+    final target = _round1(toDisplayWeight(rmResult * rmPct / 100));
     final bar = defaultBar;
     final collars = collarsDisplay;
     if (target <= bar + collars) return _roundTo(target, isLb ? 5.0 : 2.5);

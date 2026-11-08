@@ -117,6 +117,19 @@ void main() {
       expect(fit.rmAtPct, 89.5, reason: '90 kg minus collars lands on 89.5 with these plates');
     });
 
+    test('the 1RM card loads the same plates as the Load tab for the target it shows', () {
+      fit.setUnits('lb');
+      fit.rmWeight = 49.94;
+      fit.rmReps = 4;
+      fit.rmPct = 60;
+      final shown = fit.toDisplayWeight(fit.rmResult * fit.rmPct / 100);
+      expect(shown, closeTo(74.87, 0.01));
+
+      final loadTab = fit.loadableTotal(74.9, fit.defaultBar, collars: fit.collarsDisplay);
+      expect(loadTab, 75);
+      expect(fit.rmAtPct, loadTab, reason: '74.87 reads 74.9, and 74.9 loads the extra 5 pair');
+    });
+
     test('exercises with their own bar never get collars', () {
       final id = _id();
       fit.setPlaceCollar(id, 2.5);
@@ -194,6 +207,34 @@ void main() {
       fit.setUnits('kg');
       expect(fit.plateBar, 15);
       expect(fit.plateBarDisplay, 15);
+    });
+
+    test('changing units snaps the target onto the new unit\'s plate grid', () {
+      fit.plateTarget = 247.5;
+      fit.setUnits('lb');
+      expect(fit.plateTargetDisplay, 545);
+      expect(
+        fit.loadableTotal(fit.plateTargetDisplay, fit.plateBarDisplay, collars: fit.collarsDisplay),
+        fit.plateTargetDisplay,
+        reason: 'no "closest you can load" gap right after the switch',
+      );
+
+      fit.setUnits('kg');
+      expect(fit.plateTargetDisplay, 247.5);
+      expect(
+        fit.loadableTotal(fit.plateTargetDisplay, fit.plateBarDisplay, collars: fit.collarsDisplay),
+        fit.plateTargetDisplay,
+      );
+    });
+
+    test('snapping keeps an empty bar empty and leaves a same-unit set alone', () {
+      fit.plateTarget = 0;
+      fit.setUnits('lb');
+      expect(fit.plateTargetDisplay, 0);
+
+      fit.plateTarget = fit.fromDisplayWeight(222);
+      fit.setUnits('lb');
+      expect(fit.plateTargetDisplay, 222, reason: 'no unit change, no snap');
     });
   });
 
