@@ -248,7 +248,8 @@ class PlacesScreen extends StatelessWidget {
                             child: Text(t.placePlates,
                                 style: AppTheme.s(13, weight: FontWeight.w600, color: gc.text)),
                           ),
-                          Flexible(
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 110),
                             child: Text(
                               place.plates.isEmpty ? t.platesAll : t.platesOwned(place.plates.length),
                               maxLines: 1,

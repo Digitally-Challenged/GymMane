@@ -367,6 +367,19 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    _case('a short Plates and bar value keeps the caret on the trailing edge', (tester) async {
+      final id = _gym();
+      fit.setPlatePairs(id, 20, 1);
+      fit.setPlatePairs(id, 10, 1);
+      fit.setPlatePairs(id, 5, 1);
+      await _pumpPlaces(tester, width: 360);
+
+      expect(find.text('3 sizes'), findsOneWidget);
+      final row = find.ancestor(of: find.text('Plates and bar'), matching: find.byType(Row)).first;
+      final caret = find.descendant(of: row, matching: find.byType(Icon)).last;
+      expect(tester.getTopRight(caret).dx, tester.getTopRight(row).dx);
+    });
+
     _case('a small phone scrolls to Done without overflowing', (tester) async {
       _gym();
       await _open(tester, width: 320, height: 568);
