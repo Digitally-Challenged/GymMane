@@ -1,0 +1,8 @@
+#!/bin/zsh
+# usage: menucap <name> <popup label> [nth] — open a popup menu, capture it, cancel it
+ROOT=~/workspace/gymaholic-ui; PID=$(pgrep -x Gymaholic | head -1)
+"$ROOT/tools/ax" press $PID "$2" ${3:-0} >/dev/null || { echo "NOT_FOUND $2"; exit 1; }
+sleep 0.5
+"$ROOT/tools/step" "$1" | grep -e AXMenu | "$ROOT/tools/lab"
+"$ROOT/tools/ax" cancelmenu $PID >/dev/null
+sleep 0.4

@@ -1,0 +1,3 @@
+#!/bin/zsh
+# compact a step/scrollcap output: labels only, deduped, one line
+grep -v -e '^== ' -e 'AXWindow' -e PopoverDismiss -e "d=' '" -e '^press ' -e '^pick ' | sed -E 's/ \| .*//; s/^AX//' | awk '!seen[$0]++' | paste -sd';' -

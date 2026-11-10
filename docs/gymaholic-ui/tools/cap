@@ -1,0 +1,12 @@
+#!/bin/zsh
+# usage: cap <name>  — window-only screenshot + AX dump for the running Gymaholic window
+set -e
+ROOT=~/workspace/gymaholic-ui
+PID=$(pgrep -x Gymaholic | head -1)
+WID=$(swift $ROOT/tools/winid.swift 2>/dev/null | head -1 | cut -f1)
+sleep "${CAP_DELAY:-0.8}"
+screencapture -x -o -l "$WID" "$ROOT/screens/$1.png"
+"$ROOT/tools/ax" dump "$PID" > "$ROOT/ui/$1.txt"
+mkdir -p "$THUMBS"; sips -Z 1024 "$ROOT/screens/$1.png" --out "$THUMBS/$1.png" >/dev/null 2>&1
+echo "== $1 ($(wc -l < "$ROOT/ui/$1.txt") nodes)"
+cat "$ROOT/ui/$1.txt"

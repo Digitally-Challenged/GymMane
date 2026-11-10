@@ -1,0 +1,12 @@
+#!/bin/zsh
+# usage: scrollcap <prefix> [max] — page down and capture until the tree stops changing
+ROOT=~/workspace/gymaholic-ui; PID=$(pgrep -x Gymaholic | head -1); max=${2:-8}
+prev=$("$ROOT/tools/ax" dump $PID | md5)
+for i in $(seq 1 $max); do
+  "$ROOT/tools/ax" scroll $PID down >/dev/null || break
+  sleep 0.7
+  cur=$("$ROOT/tools/ax" dump $PID | md5)
+  [ "$cur" = "$prev" ] && break
+  prev=$cur
+  "$ROOT/tools/step" "$1-s$i" | tail -n +3
+done

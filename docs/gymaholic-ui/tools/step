@@ -1,0 +1,8 @@
+#!/bin/zsh
+# usage: step <capture-name> [label [nth [action]]] — optionally press a control, then capture
+ROOT=~/workspace/gymaholic-ui
+export THUMBS="${THUMBS:-$ROOT/.thumbs}"
+PID=$(pgrep -x Gymaholic | head -1)
+name=$1; shift
+if [ -n "$1" ]; then "$ROOT/tools/ax" press "$PID" "$@" || exit 1; fi
+"$ROOT/tools/cap" "$name" | grep -v -e 'AXGroup  |' -e "d='Hide Sidebar'" -e "AXStaticText d='\(Home\|Workouts\|History\|My Body\|Exercises\)' " -e '^ AXButton  | ' -e 'AXStaticText v=.Gymaholic' | sed 's/^ *//'

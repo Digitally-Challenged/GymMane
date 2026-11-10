@@ -1,0 +1,8 @@
+#!/bin/zsh
+# usage: reveal <label> — scroll the current list until a control with this label is in the tree
+ROOT=~/workspace/gymaholic-ui; PID=$(pgrep -x Gymaholic | head -1)
+has() { "$ROOT/tools/ax" dump $PID | grep -qF "d='$1"; }
+has "$1" && exit 0
+for i in 1 2 3 4 5 6; do "$ROOT/tools/ax" scroll $PID up >/dev/null; sleep 0.25; done
+for i in 1 2 3 4 5 6 7 8; do has "$1" && exit 0; "$ROOT/tools/ax" scroll $PID down >/dev/null; sleep 0.5; done
+has "$1"
